@@ -1,6 +1,19 @@
 # Mobi Website
 
-A modern, immersive website showcasing seamless design inspired by the Möbius strip. Built with Next.js, Tailwind CSS, and Framer Motion.
+This is the source code for the Mobi website, available at [stilwellc.github.io/mobi](https://stilwellc.github.io/mobi).
+
+## Development
+
+```bash
+npm install
+npm run dev
+```
+
+## Building for Production
+
+```bash
+npm run build
+```
 
 ## Features
 
@@ -17,19 +30,6 @@ A modern, immersive website showcasing seamless design inspired by the Möbius s
 - Tailwind CSS
 - Framer Motion
 - TypeScript
-
-## Getting Started
-
-1. Clone the repository
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Run the development server:
-   ```bash
-   npm run dev
-   ```
-4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
 ## Project Structure
 
