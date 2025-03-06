@@ -13,6 +13,10 @@ const nextConfig = {
     config.resolve.fallback = { fs: false, path: false };
     return config;
   },
+  // Additional configuration for GitHub Pages
+  poweredByHeader: false,
+  generateEtags: false,
+  compress: false,
 }
 
 module.exports = nextConfig 
