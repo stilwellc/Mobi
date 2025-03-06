@@ -7,6 +7,8 @@ const nextConfig = {
   },
   trailingSlash: true,
   assetPrefix: '/mobi/',
+  distDir: 'out',
+  reactStrictMode: true,
 }
 
 module.exports = nextConfig 
