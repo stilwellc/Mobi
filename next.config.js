@@ -17,6 +17,13 @@ const nextConfig = {
   poweredByHeader: false,
   generateEtags: false,
   compress: false,
+  // Ensure proper static export
+  experimental: {
+    appDir: true,
+  },
+  // Optimize for static hosting
+  optimizeFonts: true,
+  swcMinify: true,
 }
 
 module.exports = nextConfig 
