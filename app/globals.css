@@ -1,0 +1,212 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 29, 29, 31;
+  --background-rgb: 255, 255, 255;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-rgb));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+.mobius-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(135deg, #1D1D1F 0%, #5a0028 100%);
+  perspective: 1000px;
+}
+
+.mobius-element {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+  opacity: 0.1;
+  transform-origin: center;
+  animation: mobius-spin 20s linear infinite;
+  backdrop-filter: blur(100px);
+  transform-style: preserve-3d;
+}
+
+.mobius-element::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+  animation: mobius-shine 8s linear infinite;
+}
+
+.mobius-element::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.1), transparent);
+  animation: mobius-glow 12s ease-in-out infinite;
+}
+
+.glass-card {
+  background: rgba(237, 233, 218, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(237, 233, 218, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease;
+}
+
+.glass-card:hover {
+  transform: translateZ(20px) rotateX(5deg) rotateY(5deg);
+}
+
+.premium-text {
+  background: linear-gradient(135deg, #1D1D1F 0%, #5a0028 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+}
+
+.premium-text::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #5a0028, transparent);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.3s ease;
+}
+
+.premium-text:hover::after {
+  transform: scaleX(1);
+}
+
+@keyframes mobius-shine {
+  0% {
+    transform: translateX(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) rotate(45deg);
+  }
+}
+
+@keyframes mobius-glow {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #ede9da;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #5a0028;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3d001b;
+}
+
+/* Floating animation for cards */
+.float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotateX(0) rotateY(0);
+  }
+  50% {
+    transform: translateY(-20px) rotateX(5deg) rotateY(5deg);
+  }
+}
+
+/* Continuous flow animation */
+.flow {
+  position: relative;
+  overflow: hidden;
+}
+
+.flow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(237, 233, 218, 0.2),
+    transparent
+  );
+  animation: flow 3s linear infinite;
+}
+
+@keyframes flow {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+.hero-gradient {
+  background: linear-gradient(135deg, #1D1D1F 0%, #5a0028 100%);
+}
+
+.loading-gradient {
+  background: linear-gradient(135deg, #1D1D1F 0%, #5a0028 100%);
+}
+
+.loading-bar {
+  background: linear-gradient(90deg, transparent, #5a0028, transparent);
+}
+
+.dot {
+  background: #ede9da;
+}
+
+.dot.active {
+  background: #5a0028;
+}
+
+.dot:hover {
+  background: #3d001b;
+} 
