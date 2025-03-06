@@ -34,6 +34,15 @@ jobs:
       - name: Build
         run: npm run build
         
+      - name: Clean up
+        run: |
+          rm -rf .next
+          rm -rf node_modules
+          rm -f next-env.d.ts
+          rm -f package-lock.json
+          rm -f package.json
+          rm -rf .git
+        
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
