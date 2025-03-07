@@ -146,7 +146,7 @@ export default function ScreechProject() {
       {/* News Feed */}
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="space-y-6">
-          {newsFeed.slice().reverse().map((entry, index) => (
+          {newsFeed.map((entry, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}
