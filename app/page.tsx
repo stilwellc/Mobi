@@ -183,21 +183,21 @@ export default function Home() {
                       </svg>
                     </div>
                   </div>
-                  <div className="absolute inset-0 p-12 flex flex-col justify-end">
-                    <span className="text-sm text-white/90 font-medium tracking-wider uppercase mb-4">
+                  <div className="absolute inset-0 p-12 sm:p-12 p-6">
+                    <span className="text-xs sm:text-sm text-white/90 font-medium tracking-wider uppercase mb-2 sm:mb-4">
                       featured project
                     </span>
-                    <h3 className="text-4xl sm:text-5xl font-bold text-white mb-4">
+                    <h3 className="text-2xl sm:text-4xl md:text-5xl font-bold text-white mb-2 sm:mb-4">
                       Screech
                     </h3>
-                    <p className="text-xl text-white/90 max-w-2xl">
+                    <p className="text-base sm:text-xl text-white/90 max-w-2xl">
                       Stay in the Know, Powered by AI – Your Smart Guide to Local Events!
                     </p>
                     <div 
-                      className="mt-8 inline-flex items-center text-white/90 hover:text-white transition-colors"
+                      className="mt-4 sm:mt-8 inline-flex items-center text-white/90 hover:text-white transition-colors"
                     >
-                      <span className="mr-2 text-lg">explore project</span>
-                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <span className="mr-2 text-base sm:text-lg">explore project</span>
+                      <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                       </svg>
                     </div>
@@ -222,21 +222,21 @@ export default function Home() {
                       <div className="w-4 h-4 border-2 border-white/10 rounded-full" />
                     </div>
                   </div>
-                  <div className="absolute inset-0 p-12 flex flex-col justify-end">
-                    <span className="text-sm text-white/90 font-medium tracking-wider uppercase mb-4">
+                  <div className="absolute inset-0 p-12 sm:p-12 p-6">
+                    <span className="text-xs sm:text-sm text-white/90 font-medium tracking-wider uppercase mb-2 sm:mb-4">
                       featured project
                     </span>
-                    <h3 className="text-4xl sm:text-5xl font-bold text-white mb-4">
+                    <h3 className="text-2xl sm:text-4xl md:text-5xl font-bold text-white mb-2 sm:mb-4">
                       project title {item}
                     </h3>
-                    <p className="text-xl text-white/90 max-w-2xl">
+                    <p className="text-base sm:text-xl text-white/90 max-w-2xl">
                       a brief description of the project and its impact
                     </p>
                     <div 
-                      className="mt-8 inline-flex items-center text-white/90 hover:text-white transition-colors"
+                      className="mt-4 sm:mt-8 inline-flex items-center text-white/90 hover:text-white transition-colors"
                     >
-                      <span className="mr-2 text-lg">explore project</span>
-                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <span className="mr-2 text-base sm:text-lg">explore project</span>
+                      <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                       </svg>
                     </div>
