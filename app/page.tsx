@@ -56,7 +56,7 @@ export default function Home() {
 
       {/* Main Content */}
       <motion.div 
-        className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 sm:px-6"
+        className="relative z-10 min-h-screen flex flex-col items-center justify-center px-6 sm:px-6"
         style={{ y, opacity, scale }}
       >
         <motion.div
@@ -90,7 +90,7 @@ export default function Home() {
             where design transcends boundaries, creating experiences that shape the future of human interaction
           </p>
           
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -98,7 +98,7 @@ export default function Home() {
               className="group relative"
             >
               <Link href="/physical" className="block">
-                <div className="relative aspect-square rounded-2xl overflow-hidden bg-mobi-cream/40">
+                <div className="relative aspect-[3/1] md:aspect-square rounded-2xl overflow-hidden bg-mobi-cream/40">
                   <div className="absolute inset-0" style={{ 
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(90,0,40,0.1) 1px, transparent 0)`,
                     backgroundSize: '20px 20px'
@@ -120,7 +120,7 @@ export default function Home() {
               className="group relative"
             >
               <Link href="/digital" className="block">
-                <div className="relative aspect-square rounded-2xl overflow-hidden bg-mobi-cream/40">
+                <div className="relative aspect-[3/1] md:aspect-square rounded-2xl overflow-hidden bg-mobi-cream/40">
                   <div className="absolute inset-0" style={{ 
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(90,0,40,0.1) 1px, transparent 0)`,
                     backgroundSize: '20px 20px'
@@ -142,7 +142,7 @@ export default function Home() {
               className="group relative"
             >
               <Link href="/social" className="block">
-                <div className="relative aspect-square rounded-2xl overflow-hidden bg-mobi-cream/40">
+                <div className="relative aspect-[3/1] md:aspect-square rounded-2xl overflow-hidden bg-mobi-cream/40">
                   <div className="absolute inset-0" style={{ 
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(90,0,40,0.1) 1px, transparent 0)`,
                     backgroundSize: '20px 20px'
@@ -164,7 +164,7 @@ export default function Home() {
               className="group relative"
             >
               <Link href="/store" className="block">
-                <div className="relative aspect-square rounded-2xl overflow-hidden bg-mobi-cream/40">
+                <div className="relative aspect-[3/1] md:aspect-square rounded-2xl overflow-hidden bg-mobi-cream/40">
                   <div className="absolute inset-0" style={{ 
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(90,0,40,0.1) 1px, transparent 0)`,
                     backgroundSize: '20px 20px'
