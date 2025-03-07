@@ -90,7 +90,7 @@ export default function Home() {
             where design transcends boundaries, creating experiences that shape the future of human interaction
           </p>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
