@@ -2,8 +2,16 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 
 const projects = [
+  {
+    title: "Screech",
+    description: "An automated newsletter that curates the best local events and activities in your city",
+    category: "Newsletter",
+    image: "/images/screech.jpg",
+    href: "/digital/screech"
+  },
   {
     title: "Digital Platform",
     description: "An immersive digital platform that redefines user experience",
@@ -95,37 +103,49 @@ export default function DigitalProjects() {
                 viewport={{ once: true }}
                 className="group relative"
               >
-                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-mobi-cream/80">
-                  <div className="absolute inset-0" style={{ 
-                    backgroundImage: `radial-gradient(circle at 1px 1px, rgba(90,0,40,0.1) 1px, transparent 0)`,
-                    backgroundSize: '20px 20px'
-                  }} />
-                  <div className="absolute top-4 right-4">
-                    <div className="w-6 h-6 border-2 border-white/10 rounded-full flex items-center justify-center">
-                      <div className="w-3 h-3 border-2 border-white/10 rounded-full" />
+                <Link href={project.href || '#'}>
+                  <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-mobi-cream/80">
+                    <div className="absolute inset-0" style={{ 
+                      backgroundImage: `radial-gradient(circle at 1px 1px, rgba(90,0,40,0.1) 1px, transparent 0)`,
+                      backgroundSize: '20px 20px'
+                    }} />
+                    <div className="absolute top-4 right-4">
+                      {project.title === "Screech" ? (
+                        <div className="w-6 h-6 flex items-center justify-center">
+                          <svg className="w-5 h-5 text-mobi-burgundy/70" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M12 2C8 2 4 6 4 10c0 4 4 8 8 8s8-4 8-8c0-4-4-8-8-8z" />
+                            <path d="M12 6c-2 0-4 2-4 4s2 4 4 4 4-2 4-4-2-4-4-4z" />
+                            <path d="M12 14c-1 0-2 1-2 2s1 2 2 2 2-1 2-2-1-2-2-2z" />
+                          </svg>
+                        </div>
+                      ) : (
+                        <div className="w-6 h-6 border-2 border-white/10 rounded-full flex items-center justify-center">
+                          <div className="w-3 h-3 border-2 border-white/10 rounded-full" />
+                        </div>
+                      )}
+                    </div>
+                    <div className="absolute inset-0 p-8 flex flex-col justify-end">
+                      <span className="text-xs text-mobi-burgundy/70 font-medium tracking-wider uppercase mb-2">
+                        {project.category}
+                      </span>
+                      <h3 className="text-xl sm:text-2xl font-bold text-mobi-burgundy mb-2">
+                        {project.title}
+                      </h3>
+                      <p className="text-base text-mobi-burgundy/90 max-w-xl">
+                        {project.description}
+                      </p>
+                      <motion.div 
+                        className="mt-6 inline-flex items-center text-mobi-burgundy/90 hover:text-mobi-burgundy transition-colors"
+                        whileHover={{ x: 5 }}
+                      >
+                        <span className="mr-2 text-sm">Explore Project</span>
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                      </motion.div>
                     </div>
                   </div>
-                  <div className="absolute inset-0 p-8 flex flex-col justify-end">
-                    <span className="text-xs text-mobi-burgundy/70 font-medium tracking-wider uppercase mb-2">
-                      {project.category}
-                    </span>
-                    <h3 className="text-xl sm:text-2xl font-bold text-mobi-burgundy mb-2">
-                      {project.title}
-                    </h3>
-                    <p className="text-base text-mobi-burgundy/90 max-w-xl">
-                      {project.description}
-                    </p>
-                    <motion.div 
-                      className="mt-6 inline-flex items-center text-mobi-burgundy/90 hover:text-mobi-burgundy transition-colors"
-                      whileHover={{ x: 5 }}
-                    >
-                      <span className="mr-2 text-sm">Explore Project</span>
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                      </svg>
-                    </motion.div>
-                  </div>
-                </div>
+                </Link>
               </motion.div>
             ))}
           </div>
