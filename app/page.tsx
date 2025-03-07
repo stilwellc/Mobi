@@ -164,7 +164,49 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 gap-16">
-            {[1, 2, 3].map((item, index) => (
+            <div className="group relative">
+              <Link href="/digital/screech">
+                <div className="relative aspect-[16/9] rounded-3xl overflow-hidden border border-white/10">
+                  <div className="absolute inset-0 bg-gradient-to-br from-gray-900/20 to-black/80" />
+                  <div className="absolute inset-0" style={{ 
+                    backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0)`,
+                    backgroundSize: '20px 20px'
+                  }} />
+                  <div className="absolute top-6 right-6">
+                    <div className="w-8 h-8 flex items-center justify-center">
+                      <svg className="w-7 h-7 text-white/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                        <path d="M12 2C8 2 4 6 4 10c0 4 4 8 8 8s8-4 8-8c0-4-4-8-8-8z" />
+                        <path d="M12 6c-2 0-4 2-4 4s2 4 4 4 4-2 4-4-2-4-4-4z" />
+                        <path d="M12 14c-1 0-2 1-2 2s1 2 2 2 2-1 2-2-1-2-2-2z" />
+                        <path d="M8 8c-1 0-2 1-2 2s1 2 2 2 2-1 2-2-1-2-2-2z" />
+                        <path d="M16 8c-1 0-2 1-2 2s1 2 2 2 2-1 2-2-1-2-2-2z" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div className="absolute inset-0 p-12 flex flex-col justify-end">
+                    <span className="text-sm text-white/90 font-medium tracking-wider uppercase mb-4">
+                      featured project
+                    </span>
+                    <h3 className="text-4xl sm:text-5xl font-bold text-white mb-4">
+                      Screech
+                    </h3>
+                    <p className="text-xl text-white/90 max-w-2xl">
+                      Stay in the Know, Powered by AI – Your Smart Guide to Local Events!
+                    </p>
+                    <div 
+                      className="mt-8 inline-flex items-center text-white/90 hover:text-white transition-colors"
+                    >
+                      <span className="mr-2 text-lg">explore project</span>
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </div>
+
+            {[1, 2].map((item, index) => (
               <div
                 key={item}
                 className="group relative"
