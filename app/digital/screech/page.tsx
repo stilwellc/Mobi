@@ -121,17 +121,6 @@ export default function ScreechProject() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <div className="absolute -top-8 left-1/2 transform -translate-x-1/2">
-              <div className="w-16 h-16 flex items-center justify-center">
-                <svg className="w-14 h-14 text-white/70" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <path d="M12 2C8 2 4 6 4 10c0 4 4 8 8 8s8-4 8-8c0-4-4-8-8-8z" />
-                  <path d="M12 6c-2 0-4 2-4 4s2 4 4 4 4-2 4-4-2-4-4-4z" />
-                  <path d="M12 14c-1 0-2 1-2 2s1 2 2 2 2-1 2-2-1-2-2-2z" />
-                  <path d="M8 8c-1 0-2 1-2 2s1 2 2 2 2-1 2-2-1-2-2-2z" />
-                  <path d="M16 8c-1 0-2 1-2 2s1 2 2 2 2-1 2-2-1-2-2-2z" />
-                </svg>
-              </div>
-            </div>
             <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold text-white mb-8"
               style={{
                 textShadow: '0 0 80px rgba(255,255,255,0.1)',
