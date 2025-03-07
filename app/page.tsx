@@ -69,7 +69,7 @@ export default function Home() {
                   }} />
                   <div className="absolute inset-0 flex items-center justify-center px-6 md:px-0">
                     <div className="text-xl md:hidden font-bold text-black absolute left-6">physical projects</div>
-                    <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-mobi-burgundy/40 rounded-full flex items-center justify-center">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-mobi-burgundy/40 rounded-full flex items-center justify-center md:relative absolute right-6 md:right-auto">
                       <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-mobi-burgundy/60 rounded-full" />
                     </div>
                   </div>
@@ -87,7 +87,7 @@ export default function Home() {
                   }} />
                   <div className="absolute inset-0 flex items-center justify-center px-6 md:px-0">
                     <div className="text-xl md:hidden font-bold text-black absolute left-6">digital projects</div>
-                    <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-mobi-burgundy/40 rotate-45 flex items-center justify-center">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-mobi-burgundy/40 rotate-45 flex items-center justify-center md:relative absolute right-6 md:right-auto">
                       <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-mobi-burgundy/60 rotate-45" />
                     </div>
                   </div>
@@ -105,7 +105,7 @@ export default function Home() {
                   }} />
                   <div className="absolute inset-0 flex items-center justify-center px-6 md:px-0">
                     <div className="text-xl md:hidden font-bold text-black absolute left-6">social spaces</div>
-                    <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-mobi-burgundy/40 rounded-[30%] flex items-center justify-center">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-mobi-burgundy/40 rounded-[30%] flex items-center justify-center md:relative absolute right-6 md:right-auto">
                       <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-mobi-burgundy/60 rounded-[30%]" />
                     </div>
                   </div>
@@ -123,7 +123,7 @@ export default function Home() {
                   }} />
                   <div className="absolute inset-0 flex items-center justify-center px-6 md:px-0">
                     <div className="text-xl md:hidden font-bold text-black absolute left-6">design store</div>
-                    <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-mobi-burgundy/40 rounded-[60%] flex items-center justify-center">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-mobi-burgundy/40 rounded-[60%] flex items-center justify-center md:relative absolute right-6 md:right-auto">
                       <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-mobi-burgundy/60 rounded-[60%]" />
                     </div>
                   </div>
