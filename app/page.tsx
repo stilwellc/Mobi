@@ -28,30 +28,6 @@ export default function Home() {
           backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0)`,
           backgroundSize: '40px 40px'
         }} />
-        
-        {/* Large Geometric Shapes */}
-        <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-mobi-burgundy/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-0 w-[800px] h-[800px] bg-white/5 rounded-full blur-3xl" />
-        
-        {/* Decorative Lines */}
-        <div className="absolute top-1/4 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-        <div className="absolute top-3/4 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-        
-        {/* Corner Accents */}
-        <div className="absolute top-0 left-0 w-32 h-32 border-t-2 border-l-2 border-white/10" />
-        <div className="absolute top-0 right-0 w-32 h-32 border-t-2 border-r-2 border-white/10" />
-        <div className="absolute bottom-0 left-0 w-32 h-32 border-b-2 border-l-2 border-white/10" />
-        <div className="absolute bottom-0 right-0 w-32 h-32 border-b-2 border-r-2 border-white/10" />
-
-        {/* Minimal Logos */}
-        <div className="absolute top-8 left-8 w-12 h-12 border-2 border-white/10 rounded-full flex items-center justify-center">
-          <div className="w-6 h-6 border-2 border-white/10 rounded-full" />
-        </div>
-        <div className="absolute top-8 right-8 w-12 h-12 border-2 border-white/10 rotate-45" />
-        <div className="absolute bottom-8 left-8 w-12 h-12 border-2 border-white/10 rounded-full flex items-center justify-center">
-          <div className="w-6 h-6 border-2 border-white/10 rounded-full" />
-        </div>
-        <div className="absolute bottom-8 right-8 w-12 h-12 border-2 border-white/10 rotate-45" />
       </div>
 
       {/* Main Content */}
@@ -69,7 +45,7 @@ export default function Home() {
                 <div className="w-6 h-6 sm:w-8 sm:h-8 border-2 border-white/10 rounded-full" />
               </div>
             </div>
-            <h1 className="text-7xl sm:text-[12rem] md:text-[16rem] font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-mobi-burgundy to-white"
+            <h1 className="text-7xl sm:text-[12rem] md:text-[16rem] font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-mobi-burgundy to-white flex items-center justify-center gap-4"
               style={{
                 textShadow: '0 0 80px rgba(255,255,255,0.1)',
                 letterSpacing: '-0.05em',
@@ -91,9 +67,9 @@ export default function Home() {
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(90,0,40,0.1) 1px, transparent 0)`,
                     backgroundSize: '20px 20px'
                   }} />
-                  <div className="absolute inset-0 flex items-center justify-between px-6 md:px-0 md:justify-center">
-                    <div className="text-xl md:hidden font-bold text-black">physical</div>
-                    <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-mobi-burgundy/40 rounded-full flex items-center justify-center ml-auto">
+                  <div className="absolute inset-0 flex items-center justify-center px-6 md:px-0">
+                    <div className="text-xl md:hidden font-bold text-black absolute left-6">physical</div>
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-mobi-burgundy/40 rounded-full flex items-center justify-center">
                       <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-mobi-burgundy/60 rounded-full" />
                     </div>
                   </div>
@@ -109,9 +85,9 @@ export default function Home() {
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(90,0,40,0.1) 1px, transparent 0)`,
                     backgroundSize: '20px 20px'
                   }} />
-                  <div className="absolute inset-0 flex items-center justify-between px-6 md:px-0 md:justify-center">
-                    <div className="text-xl md:hidden font-bold text-black">digital</div>
-                    <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-mobi-burgundy/40 rotate-45 flex items-center justify-center ml-auto">
+                  <div className="absolute inset-0 flex items-center justify-center px-6 md:px-0">
+                    <div className="text-xl md:hidden font-bold text-black absolute left-6">digital</div>
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-mobi-burgundy/40 rotate-45 flex items-center justify-center">
                       <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-mobi-burgundy/60 rotate-45" />
                     </div>
                   </div>
@@ -127,9 +103,9 @@ export default function Home() {
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(90,0,40,0.1) 1px, transparent 0)`,
                     backgroundSize: '20px 20px'
                   }} />
-                  <div className="absolute inset-0 flex items-center justify-between px-6 md:px-0 md:justify-center">
-                    <div className="text-xl md:hidden font-bold text-black">social</div>
-                    <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-mobi-burgundy/40 rounded-[30%] flex items-center justify-center ml-auto">
+                  <div className="absolute inset-0 flex items-center justify-center px-6 md:px-0">
+                    <div className="text-xl md:hidden font-bold text-black absolute left-6">social</div>
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-mobi-burgundy/40 rounded-[30%] flex items-center justify-center">
                       <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-mobi-burgundy/60 rounded-[30%]" />
                     </div>
                   </div>
@@ -145,9 +121,9 @@ export default function Home() {
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(90,0,40,0.1) 1px, transparent 0)`,
                     backgroundSize: '20px 20px'
                   }} />
-                  <div className="absolute inset-0 flex items-center justify-between px-6 md:px-0 md:justify-center">
-                    <div className="text-xl md:hidden font-bold text-black">store</div>
-                    <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-mobi-burgundy/40 rounded-[60%] flex items-center justify-center ml-auto">
+                  <div className="absolute inset-0 flex items-center justify-center px-6 md:px-0">
+                    <div className="text-xl md:hidden font-bold text-black absolute left-6">store</div>
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-mobi-burgundy/40 rounded-[60%] flex items-center justify-center">
                       <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-mobi-burgundy/60 rounded-[60%]" />
                     </div>
                   </div>
