@@ -76,7 +76,7 @@ export default function Home() {
                 <div className="w-6 h-6 sm:w-8 sm:h-8 border-2 border-white/10 rounded-full" />
               </div>
             </div>
-            <h1 className="text-6xl sm:text-[12rem] md:text-[16rem] font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-mobi-burgundy to-white"
+            <h1 className="text-7xl sm:text-[12rem] md:text-[16rem] font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-mobi-burgundy to-white"
               style={{
                 textShadow: '0 0 80px rgba(255,255,255,0.1)',
                 letterSpacing: '-0.05em',
@@ -103,13 +103,15 @@ export default function Home() {
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(90,0,40,0.1) 1px, transparent 0)`,
                     backgroundSize: '20px 20px'
                   }} />
-                  <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="absolute inset-0 flex items-center justify-between px-6 md:px-0 md:justify-center">
+                    <div className="text-xl md:hidden font-medium text-white">physical</div>
                     <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-mobi-burgundy/40 rounded-full flex items-center justify-center">
                       <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-mobi-burgundy/60 rounded-full" />
                     </div>
+                    <div className="md:hidden w-8"></div>
                   </div>
                 </div>
-                <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-medium text-white text-center">physical</h3>
+                <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-medium text-white text-center hidden md:block">physical</h3>
               </Link>
             </motion.div>
 
@@ -125,13 +127,15 @@ export default function Home() {
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(90,0,40,0.1) 1px, transparent 0)`,
                     backgroundSize: '20px 20px'
                   }} />
-                  <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="absolute inset-0 flex items-center justify-between px-6 md:px-0 md:justify-center">
+                    <div className="text-xl md:hidden font-medium text-white">digital</div>
                     <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-mobi-burgundy/40 rotate-45 flex items-center justify-center">
                       <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-mobi-burgundy/60 rotate-45" />
                     </div>
+                    <div className="md:hidden w-8"></div>
                   </div>
                 </div>
-                <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-medium text-white text-center">digital</h3>
+                <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-medium text-white text-center hidden md:block">digital</h3>
               </Link>
             </motion.div>
 
@@ -147,13 +151,15 @@ export default function Home() {
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(90,0,40,0.1) 1px, transparent 0)`,
                     backgroundSize: '20px 20px'
                   }} />
-                  <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="absolute inset-0 flex items-center justify-between px-6 md:px-0 md:justify-center">
+                    <div className="text-xl md:hidden font-medium text-white">social</div>
                     <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-mobi-burgundy/40 rounded-[30%] flex items-center justify-center">
                       <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-mobi-burgundy/60 rounded-[30%]" />
                     </div>
+                    <div className="md:hidden w-8"></div>
                   </div>
                 </div>
-                <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-medium text-white text-center">social</h3>
+                <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-medium text-white text-center hidden md:block">social</h3>
               </Link>
             </motion.div>
 
@@ -169,13 +175,15 @@ export default function Home() {
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(90,0,40,0.1) 1px, transparent 0)`,
                     backgroundSize: '20px 20px'
                   }} />
-                  <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="absolute inset-0 flex items-center justify-between px-6 md:px-0 md:justify-center">
+                    <div className="text-xl md:hidden font-medium text-white">store</div>
                     <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-mobi-burgundy/40 rounded-[60%] flex items-center justify-center">
                       <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-mobi-burgundy/60 rounded-[60%]" />
                     </div>
+                    <div className="md:hidden w-8"></div>
                   </div>
                 </div>
-                <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-medium text-white text-center">store</h3>
+                <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-medium text-white text-center hidden md:block">store</h3>
               </Link>
             </motion.div>
           </div>
