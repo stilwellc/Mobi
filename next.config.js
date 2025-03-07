@@ -1,25 +1,27 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
-  basePath: '/mobi',
+  output: 'standalone',
+  reactStrictMode: true,
   images: {
     unoptimized: true,
   },
-  trailingSlash: true,
-  assetPrefix: '/mobi/',
-  distDir: '.next',
-  reactStrictMode: true,
-  webpack: (config) => {
-    config.resolve.fallback = { fs: false, path: false };
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        path: false,
+      };
+    }
     return config;
   },
-  // Additional configuration for GitHub Pages
-  poweredByHeader: false,
-  generateEtags: false,
-  compress: false,
-  // Optimize for static hosting
+  // Remove basePath and assetPrefix as they're not needed for Vercel
+  // Remove trailingSlash as it's not needed for Vercel
+  // Keep other optimizations
   optimizeFonts: true,
   swcMinify: true,
+  compress: true,
+  generateEtags: true,
 }
 
 module.exports = nextConfig 
