@@ -86,17 +86,17 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-3 sm:gap-4 md:gap-8 px-2">
             <div className="group relative">
               <Link href="/physical" className="block">
-                <div className="relative aspect-[3/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-cream/40">
+                <div className="relative aspect-[6/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-cream/40">
                   <div className="absolute inset-0" style={{ 
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(90,0,40,0.1) 1px, transparent 0)`,
                     backgroundSize: '20px 20px'
                   }} />
                   <div className="absolute inset-0 flex items-center justify-between px-6 md:px-0 md:justify-center">
-                    <div className="text-xl md:hidden font-medium text-black">physical</div>
+                    <div className="text-xl md:hidden font-bold text-black">physical</div>
                     <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-mobi-burgundy/40 rounded-full flex items-center justify-center">
                       <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-mobi-burgundy/60 rounded-full" />
                     </div>
-                    <div className="md:hidden w-8"></div>
+                    <div className="md:hidden"></div>
                   </div>
                 </div>
                 <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-medium text-white text-center hidden md:block">physical</h3>
@@ -105,17 +105,17 @@ export default function Home() {
 
             <div className="group relative">
               <Link href="/digital" className="block">
-                <div className="relative aspect-[3/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-cream/40">
+                <div className="relative aspect-[6/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-cream/40">
                   <div className="absolute inset-0" style={{ 
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(90,0,40,0.1) 1px, transparent 0)`,
                     backgroundSize: '20px 20px'
                   }} />
                   <div className="absolute inset-0 flex items-center justify-between px-6 md:px-0 md:justify-center">
-                    <div className="text-xl md:hidden font-medium text-black">digital</div>
+                    <div className="text-xl md:hidden font-bold text-black">digital</div>
                     <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-mobi-burgundy/40 rotate-45 flex items-center justify-center">
                       <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-mobi-burgundy/60 rotate-45" />
                     </div>
-                    <div className="md:hidden w-8"></div>
+                    <div className="md:hidden"></div>
                   </div>
                 </div>
                 <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-medium text-white text-center hidden md:block">digital</h3>
@@ -124,17 +124,17 @@ export default function Home() {
 
             <div className="group relative">
               <Link href="/social" className="block">
-                <div className="relative aspect-[3/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-cream/40">
+                <div className="relative aspect-[6/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-cream/40">
                   <div className="absolute inset-0" style={{ 
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(90,0,40,0.1) 1px, transparent 0)`,
                     backgroundSize: '20px 20px'
                   }} />
                   <div className="absolute inset-0 flex items-center justify-between px-6 md:px-0 md:justify-center">
-                    <div className="text-xl md:hidden font-medium text-black">social</div>
+                    <div className="text-xl md:hidden font-bold text-black">social</div>
                     <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-mobi-burgundy/40 rounded-[30%] flex items-center justify-center">
                       <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-mobi-burgundy/60 rounded-[30%]" />
                     </div>
-                    <div className="md:hidden w-8"></div>
+                    <div className="md:hidden"></div>
                   </div>
                 </div>
                 <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-medium text-white text-center hidden md:block">social</h3>
@@ -143,17 +143,17 @@ export default function Home() {
 
             <div className="group relative">
               <Link href="/store" className="block">
-                <div className="relative aspect-[3/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-cream/40">
+                <div className="relative aspect-[6/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-cream/40">
                   <div className="absolute inset-0" style={{ 
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(90,0,40,0.1) 1px, transparent 0)`,
                     backgroundSize: '20px 20px'
                   }} />
                   <div className="absolute inset-0 flex items-center justify-between px-6 md:px-0 md:justify-center">
-                    <div className="text-xl md:hidden font-medium text-black">store</div>
+                    <div className="text-xl md:hidden font-bold text-black">store</div>
                     <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-mobi-burgundy/40 rounded-[60%] flex items-center justify-center">
                       <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-mobi-burgundy/60 rounded-[60%]" />
                     </div>
-                    <div className="md:hidden w-8"></div>
+                    <div className="md:hidden"></div>
                   </div>
                 </div>
                 <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-medium text-white text-center hidden md:block">store</h3>
