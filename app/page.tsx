@@ -55,21 +55,14 @@ export default function Home() {
       </div>
 
       {/* Main Content */}
-      <motion.div 
+      <div 
         className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 sm:px-6"
-        style={{ y, opacity, scale }}
       >
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+        <div
           className="text-center max-w-5xl mx-auto"
         >
-          <motion.div
+          <div
             className="relative mb-8 sm:mb-12"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
           >
             <div className="absolute -top-16 sm:-top-24 left-1/2 transform -translate-x-1/2">
               <div className="w-12 h-12 sm:w-16 sm:h-16 border-2 border-white/10 rounded-full flex items-center justify-center">
@@ -84,19 +77,14 @@ export default function Home() {
             >
               mobi.
             </h1>
-          </motion.div>
+          </div>
 
           <p className="text-lg sm:text-2xl md:text-3xl text-white/80 font-light mb-12 sm:mb-16 max-w-3xl mx-auto leading-relaxed px-4">
             where design transcends boundaries, creating experiences that shape the future of human interaction
           </p>
           
           <div className="grid grid-cols-1 md:grid-cols-4 gap-3 sm:gap-4 md:gap-8 px-2">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="group relative"
-            >
+            <div className="group relative">
               <Link href="/physical" className="block">
                 <div className="relative aspect-[3/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-cream/40">
                   <div className="absolute inset-0" style={{ 
@@ -104,7 +92,7 @@ export default function Home() {
                     backgroundSize: '20px 20px'
                   }} />
                   <div className="absolute inset-0 flex items-center justify-between px-6 md:px-0 md:justify-center">
-                    <div className="text-xl md:hidden font-medium text-white">physical</div>
+                    <div className="text-xl md:hidden font-medium text-black">physical</div>
                     <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-mobi-burgundy/40 rounded-full flex items-center justify-center">
                       <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-mobi-burgundy/60 rounded-full" />
                     </div>
@@ -113,14 +101,9 @@ export default function Home() {
                 </div>
                 <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-medium text-white text-center hidden md:block">physical</h3>
               </Link>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="group relative"
-            >
+            <div className="group relative">
               <Link href="/digital" className="block">
                 <div className="relative aspect-[3/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-cream/40">
                   <div className="absolute inset-0" style={{ 
@@ -128,7 +111,7 @@ export default function Home() {
                     backgroundSize: '20px 20px'
                   }} />
                   <div className="absolute inset-0 flex items-center justify-between px-6 md:px-0 md:justify-center">
-                    <div className="text-xl md:hidden font-medium text-white">digital</div>
+                    <div className="text-xl md:hidden font-medium text-black">digital</div>
                     <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-mobi-burgundy/40 rotate-45 flex items-center justify-center">
                       <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-mobi-burgundy/60 rotate-45" />
                     </div>
@@ -137,14 +120,9 @@ export default function Home() {
                 </div>
                 <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-medium text-white text-center hidden md:block">digital</h3>
               </Link>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              className="group relative"
-            >
+            <div className="group relative">
               <Link href="/social" className="block">
                 <div className="relative aspect-[3/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-cream/40">
                   <div className="absolute inset-0" style={{ 
@@ -152,7 +130,7 @@ export default function Home() {
                     backgroundSize: '20px 20px'
                   }} />
                   <div className="absolute inset-0 flex items-center justify-between px-6 md:px-0 md:justify-center">
-                    <div className="text-xl md:hidden font-medium text-white">social</div>
+                    <div className="text-xl md:hidden font-medium text-black">social</div>
                     <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-mobi-burgundy/40 rounded-[30%] flex items-center justify-center">
                       <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-mobi-burgundy/60 rounded-[30%]" />
                     </div>
@@ -161,14 +139,9 @@ export default function Home() {
                 </div>
                 <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-medium text-white text-center hidden md:block">social</h3>
               </Link>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-              className="group relative"
-            >
+            <div className="group relative">
               <Link href="/store" className="block">
                 <div className="relative aspect-[3/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-cream/40">
                   <div className="absolute inset-0" style={{ 
@@ -176,7 +149,7 @@ export default function Home() {
                     backgroundSize: '20px 20px'
                   }} />
                   <div className="absolute inset-0 flex items-center justify-between px-6 md:px-0 md:justify-center">
-                    <div className="text-xl md:hidden font-medium text-white">store</div>
+                    <div className="text-xl md:hidden font-medium text-black">store</div>
                     <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-mobi-burgundy/40 rounded-[60%] flex items-center justify-center">
                       <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-mobi-burgundy/60 rounded-[60%]" />
                     </div>
@@ -185,37 +158,25 @@ export default function Home() {
                 </div>
                 <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-medium text-white text-center hidden md:block">store</h3>
               </Link>
-            </motion.div>
+            </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Scroll Indicator */}
-        <motion.div 
+        <div 
           className="absolute bottom-6 sm:bottom-8 left-1/2 transform -translate-x-1/2"
-          animate={{ 
-            y: [0, 10, 0],
-          }}
-          transition={{
-            duration: 1.5,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
         >
           <div className="w-6 h-6 sm:w-8 sm:h-8 border-2 border-white/10 rounded-full flex items-center justify-center">
             <div className="w-3 h-3 sm:w-4 sm:h-4 border-2 border-white/10 rounded-full" />
           </div>
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
 
       {/* Featured Section */}
       <section className="relative z-10 min-h-screen bg-black py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
+          <div 
             className="text-center mb-20"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
           >
             <div className="relative inline-block mb-8">
               <div className="w-12 h-12 border-2 border-white/10 rounded-full flex items-center justify-center">
@@ -228,16 +189,12 @@ export default function Home() {
             <p className="text-xl sm:text-2xl text-white/70 max-w-3xl mx-auto">
               explore our latest projects that push the boundaries of design and innovation
             </p>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-1 gap-16">
             {[1, 2, 3].map((item, index) => (
-              <motion.div
+              <div
                 key={item}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
                 className="group relative"
               >
                 <div className="relative aspect-[16/9] rounded-3xl overflow-hidden border border-white/10">
@@ -261,18 +218,17 @@ export default function Home() {
                     <p className="text-xl text-white/90 max-w-2xl">
                       a brief description of the project and its impact
                     </p>
-                    <motion.div 
+                    <div 
                       className="mt-8 inline-flex items-center text-white/90 hover:text-white transition-colors"
-                      whileHover={{ x: 5 }}
                     >
                       <span className="mr-2 text-lg">explore project</span>
                       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                       </svg>
-                    </motion.div>
+                    </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
