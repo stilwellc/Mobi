@@ -56,7 +56,7 @@ export default function Home() {
 
       {/* Main Content */}
       <motion.div 
-        className="relative z-10 min-h-screen flex flex-col items-center justify-center px-6 sm:px-6"
+        className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 sm:px-6"
         style={{ y, opacity, scale }}
       >
         <motion.div
@@ -66,17 +66,17 @@ export default function Home() {
           className="text-center max-w-5xl mx-auto"
         >
           <motion.div
-            className="relative mb-12"
+            className="relative mb-8 sm:mb-12"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <div className="absolute -top-24 left-1/2 transform -translate-x-1/2">
-              <div className="w-16 h-16 border-2 border-white/10 rounded-full flex items-center justify-center">
-                <div className="w-8 h-8 border-2 border-white/10 rounded-full" />
+            <div className="absolute -top-16 sm:-top-24 left-1/2 transform -translate-x-1/2">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 border-2 border-white/10 rounded-full flex items-center justify-center">
+                <div className="w-6 h-6 sm:w-8 sm:h-8 border-2 border-white/10 rounded-full" />
               </div>
             </div>
-            <h1 className="text-8xl sm:text-[12rem] md:text-[16rem] font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-mobi-burgundy to-white"
+            <h1 className="text-6xl sm:text-[12rem] md:text-[16rem] font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-mobi-burgundy to-white"
               style={{
                 textShadow: '0 0 80px rgba(255,255,255,0.1)',
                 letterSpacing: '-0.05em',
@@ -86,11 +86,11 @@ export default function Home() {
             </h1>
           </motion.div>
 
-          <p className="text-xl sm:text-2xl md:text-3xl text-white/80 font-light mb-16 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg sm:text-2xl md:text-3xl text-white/80 font-light mb-12 sm:mb-16 max-w-3xl mx-auto leading-relaxed px-4">
             where design transcends boundaries, creating experiences that shape the future of human interaction
           </p>
           
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-3 sm:gap-4 md:gap-8 px-2">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -98,18 +98,18 @@ export default function Home() {
               className="group relative"
             >
               <Link href="/physical" className="block">
-                <div className="relative aspect-[3/1] md:aspect-square rounded-2xl overflow-hidden bg-mobi-cream/40">
+                <div className="relative aspect-[3/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-cream/40">
                   <div className="absolute inset-0" style={{ 
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(90,0,40,0.1) 1px, transparent 0)`,
                     backgroundSize: '20px 20px'
                   }} />
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-16 h-16 border-4 border-mobi-burgundy/40 rounded-full flex items-center justify-center">
-                      <div className="w-8 h-8 border-4 border-mobi-burgundy/60 rounded-full" />
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-mobi-burgundy/40 rounded-full flex items-center justify-center">
+                      <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-mobi-burgundy/60 rounded-full" />
                     </div>
                   </div>
                 </div>
-                <h3 className="mt-4 text-lg font-medium text-white text-center">physical</h3>
+                <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-medium text-white text-center">physical</h3>
               </Link>
             </motion.div>
 
@@ -120,18 +120,18 @@ export default function Home() {
               className="group relative"
             >
               <Link href="/digital" className="block">
-                <div className="relative aspect-[3/1] md:aspect-square rounded-2xl overflow-hidden bg-mobi-cream/40">
+                <div className="relative aspect-[3/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-cream/40">
                   <div className="absolute inset-0" style={{ 
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(90,0,40,0.1) 1px, transparent 0)`,
                     backgroundSize: '20px 20px'
                   }} />
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-16 h-16 border-4 border-mobi-burgundy/40 rotate-45 flex items-center justify-center">
-                      <div className="w-8 h-8 border-4 border-mobi-burgundy/60 rotate-45" />
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-mobi-burgundy/40 rotate-45 flex items-center justify-center">
+                      <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-mobi-burgundy/60 rotate-45" />
                     </div>
                   </div>
                 </div>
-                <h3 className="mt-4 text-lg font-medium text-white text-center">digital</h3>
+                <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-medium text-white text-center">digital</h3>
               </Link>
             </motion.div>
 
@@ -142,18 +142,18 @@ export default function Home() {
               className="group relative"
             >
               <Link href="/social" className="block">
-                <div className="relative aspect-[3/1] md:aspect-square rounded-2xl overflow-hidden bg-mobi-cream/40">
+                <div className="relative aspect-[3/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-cream/40">
                   <div className="absolute inset-0" style={{ 
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(90,0,40,0.1) 1px, transparent 0)`,
                     backgroundSize: '20px 20px'
                   }} />
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-16 h-16 border-4 border-mobi-burgundy/40 rounded-[30%] flex items-center justify-center">
-                      <div className="w-8 h-8 border-4 border-mobi-burgundy/60 rounded-[30%]" />
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-mobi-burgundy/40 rounded-[30%] flex items-center justify-center">
+                      <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-mobi-burgundy/60 rounded-[30%]" />
                     </div>
                   </div>
                 </div>
-                <h3 className="mt-4 text-lg font-medium text-white text-center">social</h3>
+                <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-medium text-white text-center">social</h3>
               </Link>
             </motion.div>
 
@@ -164,18 +164,18 @@ export default function Home() {
               className="group relative"
             >
               <Link href="/store" className="block">
-                <div className="relative aspect-[3/1] md:aspect-square rounded-2xl overflow-hidden bg-mobi-cream/40">
+                <div className="relative aspect-[3/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-cream/40">
                   <div className="absolute inset-0" style={{ 
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(90,0,40,0.1) 1px, transparent 0)`,
                     backgroundSize: '20px 20px'
                   }} />
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-16 h-16 border-4 border-mobi-burgundy/40 rounded-[60%] flex items-center justify-center">
-                      <div className="w-8 h-8 border-4 border-mobi-burgundy/60 rounded-[60%]" />
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-mobi-burgundy/40 rounded-[60%] flex items-center justify-center">
+                      <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-mobi-burgundy/60 rounded-[60%]" />
                     </div>
                   </div>
                 </div>
-                <h3 className="mt-4 text-lg font-medium text-white text-center">store</h3>
+                <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-medium text-white text-center">store</h3>
               </Link>
             </motion.div>
           </div>
@@ -183,7 +183,7 @@ export default function Home() {
 
         {/* Scroll Indicator */}
         <motion.div 
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+          className="absolute bottom-6 sm:bottom-8 left-1/2 transform -translate-x-1/2"
           animate={{ 
             y: [0, 10, 0],
           }}
@@ -193,8 +193,8 @@ export default function Home() {
             ease: "easeInOut"
           }}
         >
-          <div className="w-8 h-8 border-2 border-white/10 rounded-full flex items-center justify-center">
-            <div className="w-4 h-4 border-2 border-white/10 rounded-full" />
+          <div className="w-6 h-6 sm:w-8 sm:h-8 border-2 border-white/10 rounded-full flex items-center justify-center">
+            <div className="w-3 h-3 sm:w-4 sm:h-4 border-2 border-white/10 rounded-full" />
           </div>
         </motion.div>
       </motion.div>
