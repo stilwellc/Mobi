@@ -46,7 +46,7 @@ export default function ScreechProject() {
         const response = await fetch('https://script.google.com/macros/s/AKfycbyWcDyElkuQ44d2AIv9zx4dGLRTOJydzJCNLlu2L8aWVbjoggOHd_HXz9Qh675fIYi3mw/exec');
         const data = await response.json();
         if (data && data.cleanData) {
-          setNewsFeed(data.cleanData.reverse());
+          setNewsFeed(data.cleanData);
         }
       } catch (error) {
         console.error('Error loading news feed:', error);
@@ -146,7 +146,7 @@ export default function ScreechProject() {
       {/* News Feed */}
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="space-y-6">
-          {newsFeed.map((entry, index) => (
+          {newsFeed.slice().reverse().map((entry, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}
