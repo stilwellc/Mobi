@@ -35,7 +35,7 @@ export default function Navigation() {
                   alt="mobi."
                   width={100}
                   height={40}
-                  className="absolute top-[-10%] w-full h-[120%] object-cover"
+                  className="absolute top-[-5%] w-full h-[110%] object-cover"
                   priority
                   quality={100}
                 />
