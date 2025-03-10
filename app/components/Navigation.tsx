@@ -30,12 +30,13 @@ export default function Navigation() {
               className="flex items-center"
             >
               <Image
-                src="/images/mobi-logo.png"
+                src="/images/mobi-logo.jpg"
                 alt="mobi."
-                width={80}
-                height={24}
-                className="h-6 w-auto"
+                width={100}
+                height={30}
+                className="h-8 w-auto"
                 priority
+                quality={100}
               />
             </motion.div>
           </Link>

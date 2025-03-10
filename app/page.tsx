@@ -53,12 +53,13 @@ export default function Home() {
               }}
             >
               <Image
-                src="/images/mobi-logo.png"
+                src="/images/mobi-logo.jpg"
                 alt="mobi."
-                width={600}
-                height={180}
-                className="w-[300px] sm:w-[400px] md:w-[600px] h-auto"
+                width={800}
+                height={240}
+                className="w-[280px] sm:w-[480px] md:w-[800px] h-auto"
                 priority
+                quality={100}
               />
             </motion.div>
           </div>
