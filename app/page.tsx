@@ -73,7 +73,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-3 sm:gap-4 md:gap-8 px-2">
             <div className="group relative">
               <Link href="/physical" className="block">
-                <div className="relative aspect-[6/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-burgundy/90">
+                <div className="relative aspect-[6/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-burgundy">
                   <div className="absolute inset-0" style={{ 
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(237,232,208,0.1) 1px, transparent 0)`,
                     backgroundSize: '20px 20px'
@@ -91,7 +91,7 @@ export default function Home() {
 
             <div className="group relative">
               <Link href="/digital" className="block">
-                <div className="relative aspect-[6/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-burgundy/90">
+                <div className="relative aspect-[6/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-burgundy">
                   <div className="absolute inset-0" style={{ 
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(237,232,208,0.1) 1px, transparent 0)`,
                     backgroundSize: '20px 20px'
@@ -109,7 +109,7 @@ export default function Home() {
 
             <div className="group relative">
               <Link href="/social" className="block">
-                <div className="relative aspect-[6/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-burgundy/90">
+                <div className="relative aspect-[6/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-burgundy">
                   <div className="absolute inset-0" style={{ 
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(237,232,208,0.1) 1px, transparent 0)`,
                     backgroundSize: '20px 20px'
@@ -127,7 +127,7 @@ export default function Home() {
 
             <div className="group relative">
               <Link href="/store" className="block">
-                <div className="relative aspect-[6/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-burgundy/90">
+                <div className="relative aspect-[6/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-burgundy">
                   <div className="absolute inset-0" style={{ 
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(237,232,208,0.1) 1px, transparent 0)`,
                     backgroundSize: '20px 20px'
@@ -178,20 +178,14 @@ export default function Home() {
             <div className="group relative">
               <Link href="/digital/screech">
                 <div className="relative aspect-[16/9] rounded-3xl overflow-hidden border border-white/10">
-                  <div className="absolute inset-0 bg-gradient-to-br from-gray-900/20 to-black/80" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-mobi-burgundy/20 to-black/80" />
                   <div className="absolute inset-0" style={{ 
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0)`,
                     backgroundSize: '20px 20px'
                   }} />
                   <div className="absolute top-6 right-6">
-                    <div className="w-8 h-8 flex items-center justify-center">
-                      <svg className="w-7 h-7 text-white/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                        <path d="M12 2C8 2 4 6 4 10c0 4 4 8 8 8s8-4 8-8c0-4-4-8-8-8z" />
-                        <path d="M12 6c-2 0-4 2-4 4s2 4 4 4 4-2 4-4-2-4-4-4z" />
-                        <path d="M12 14c-1 0-2 1-2 2s1 2 2 2 2-1 2-2-1-2-2-2z" />
-                        <path d="M8 8c-1 0-2 1-2 2s1 2 2 2 2-1 2-2-1-2-2-2z" />
-                        <path d="M16 8c-1 0-2 1-2 2s1 2 2 2 2-1 2-2-1-2-2-2z" />
-                      </svg>
+                    <div className="w-8 h-8 border-2 border-white/10 rounded-full flex items-center justify-center">
+                      <div className="w-4 h-4 border-2 border-white/10 rounded-full" />
                     </div>
                   </div>
                   <div className="absolute inset-0 p-12 sm:p-12 p-6">
