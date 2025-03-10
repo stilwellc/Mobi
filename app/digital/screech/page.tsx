@@ -74,7 +74,7 @@ export default function ScreechProject() {
       }} />
 
       {/* Hero Section */}
-      <section className="relative min-h-[400px] flex items-center justify-center overflow-hidden bg-black pt-16">
+      <section className="relative min-h-[250px] flex items-center justify-center overflow-hidden bg-black pt-16">
         <div className="absolute inset-0">
           <div className="absolute inset-0" style={{ 
             backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0)`,
@@ -108,10 +108,10 @@ export default function ScreechProject() {
 
       {/* Streak Tracker */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="bg-[#EDE8D0] backdrop-blur-sm text-mobi-black rounded-2xl p-6 text-center">
+        <div className="bg-mobi-burgundy backdrop-blur-sm text-[#EDE8D0] rounded-2xl p-6 text-center">
           <div className="flex items-center justify-center space-x-3">
-            <div className="w-4 h-4 border-2 border-mobi-black/40 rounded-full flex items-center justify-center">
-              <div className="w-2 h-2 border-2 border-mobi-black/60 rounded-full" />
+            <div className="w-4 h-4 border-2 border-[#EDE8D0]/40 rounded-full flex items-center justify-center">
+              <div className="w-2 h-2 border-2 border-[#EDE8D0]/60 rounded-full" />
             </div>
             <span className="font-medium tracking-tight">Current Streak: {streak} days</span>
           </div>
