@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import Link from 'next/link';
 
@@ -45,14 +46,21 @@ export default function Home() {
                 <div className="w-6 h-6 sm:w-8 sm:h-8 border-2 border-white/10 rounded-full" />
               </div>
             </div>
-            <h1 className="text-7xl sm:text-[12rem] md:text-[16rem] font-bold text-[#EDE8D0] font-museo-moderno flex items-center justify-center gap-4"
+            <motion.div
+              className="flex justify-center items-center"
               style={{
-                textShadow: '0 0 80px rgba(255,255,255,0.1)',
-                letterSpacing: '-0.05em',
+                filter: 'drop-shadow(0 0 80px rgba(255,255,255,0.1))',
               }}
             >
-              mobi.
-            </h1>
+              <Image
+                src="/images/mobi-logo.png"
+                alt="mobi."
+                width={600}
+                height={180}
+                className="w-[300px] sm:w-[400px] md:w-[600px] h-auto"
+                priority
+              />
+            </motion.div>
           </div>
 
           <p className="text-lg sm:text-2xl md:text-3xl text-white/80 font-light mb-12 sm:mb-16 max-w-3xl mx-auto leading-relaxed px-4">
