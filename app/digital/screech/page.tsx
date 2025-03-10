@@ -6,17 +6,10 @@ import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
 
 export default function ScreechProject() {
-  const [darkMode, setDarkMode] = useState(false);
   const [streak, setStreak] = useState(0);
   const [newsFeed, setNewsFeed] = useState<string[]>([]);
 
   useEffect(() => {
-    // Load dark mode preference
-    const darkModeSetting = localStorage.getItem('darkMode');
-    if (darkModeSetting === 'enabled') {
-      setDarkMode(true);
-    }
-
     // Update streak
     const today = new Date().toISOString().split('T')[0];
     const lastVisit = localStorage.getItem('lastVisit') || '';
@@ -56,12 +49,6 @@ export default function ScreechProject() {
     loadNewsFeed();
   }, []);
 
-  const toggleDarkMode = () => {
-    const newDarkMode = !darkMode;
-    setDarkMode(newDarkMode);
-    localStorage.setItem('darkMode', newDarkMode ? 'enabled' : 'disabled');
-  };
-
   const formatMarkdown = (text: string) => {
     // Convert emoji headers to markdown headers
     let formatted = text.replace(/^(🛡️|☁️|📦|🔗|🤖)\s*(.*)$/gm, '## $2');
@@ -82,31 +69,14 @@ export default function ScreechProject() {
     <div className="min-h-screen bg-black">
       {/* Background Dots */}
       <div className="fixed inset-0 z-0" style={{
-        backgroundImage: `radial-gradient(circle at 1rem 1rem, rgba(75, 75, 75, 0.1) 0.15rem, transparent 0.15rem)`,
-        backgroundSize: '2rem 2rem'
+        backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0)`,
+        backgroundSize: '40px 40px'
       }} />
 
       {/* Hero Section */}
-      <section className="relative h-[250px] flex items-center justify-center overflow-hidden bg-gradient-to-b from-black to-gray-900 pt-16">
+      <section className="relative h-[300px] flex items-center justify-center overflow-hidden bg-gradient-to-b from-black to-mobi-burgundy/20 pt-16">
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(75,75,75,0.05)_0%,transparent_100%)]" />
-          <motion.div
-            className="absolute w-[800px] h-[800px] rounded-full bg-gray-900/20 blur-[120px]"
-            animate={{
-              x: [0, 100, 0],
-              y: [0, 50, 0],
-              scale: [1, 1.2, 1],
-            }}
-            transition={{
-              duration: 20,
-              repeat: Infinity,
-              ease: "linear"
-            }}
-            style={{
-              top: "-20%",
-              left: "-20%",
-            }}
-          />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(237,232,208,0.03)_0%,transparent_100%)]" />
         </div>
         
         <motion.div 
@@ -115,21 +85,25 @@ export default function ScreechProject() {
           transition={{ duration: 0.8 }}
           className="text-center z-10 px-4 max-w-4xl mx-auto"
         >
+          <div className="absolute -top-8 left-1/2 transform -translate-x-1/2">
+            <div className="w-12 h-12 border-2 border-[#EDE8D0]/10 rounded-full flex items-center justify-center">
+              <div className="w-6 h-6 border-2 border-[#EDE8D0]/10 rounded-full" />
+            </div>
+          </div>
           <motion.div
-            className="relative mb-12"
+            className="relative"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold text-white mb-8"
+            <h1 className="text-5xl sm:text-6xl md:text-7xl font-semibold tracking-tight text-[#EDE8D0] mb-6"
               style={{
                 textShadow: '0 0 80px rgba(255,255,255,0.1)',
-                letterSpacing: '-0.05em',
               }}
             >
               Screech
             </h1>
-            <p className="text-xl sm:text-2xl text-white/80 font-light max-w-2xl mx-auto leading-relaxed">
+            <p className="text-xl sm:text-2xl text-[#EDE8D0]/80 font-light tracking-tight max-w-2xl mx-auto leading-relaxed">
               Stay in the Know, Powered by AI – Your Smart Guide to Local Events!
             </p>
           </motion.div>
@@ -137,9 +111,14 @@ export default function ScreechProject() {
       </section>
 
       {/* Streak Tracker */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <div className="bg-gray-900/50 text-white rounded-lg p-4 text-center font-semibold">
-          Current Streak: {streak} days
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="bg-mobi-burgundy/60 backdrop-blur-sm text-[#EDE8D0] rounded-2xl p-6 text-center">
+          <div className="flex items-center justify-center space-x-3">
+            <div className="w-4 h-4 border-2 border-[#EDE8D0]/40 rounded-full flex items-center justify-center">
+              <div className="w-2 h-2 border-2 border-[#EDE8D0]/60 rounded-full" />
+            </div>
+            <span className="font-medium tracking-tight">Current Streak: {streak} days</span>
+          </div>
         </div>
       </div>
 
@@ -152,39 +131,42 @@ export default function ScreechProject() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-gray-900/30 backdrop-blur-sm rounded-lg p-6 shadow-lg"
+              className="bg-mobi-burgundy/60 backdrop-blur-sm rounded-2xl p-6 shadow-lg"
             >
-              <div className="text-sm text-gray-500 mb-2">
-                {new Date().toLocaleDateString()}
+              <div className="text-sm text-[#EDE8D0]/60 mb-4 flex items-center space-x-2">
+                <div className="w-3 h-3 border border-[#EDE8D0]/40 rounded-full flex items-center justify-center">
+                  <div className="w-1.5 h-1.5 border border-[#EDE8D0]/60 rounded-full" />
+                </div>
+                <span>{new Date().toLocaleDateString()}</span>
               </div>
               <div className="prose prose-invert max-w-none">
                 <ReactMarkdown
                   components={{
-                    h1: ({ children }) => <h1 className="text-white text-2xl font-bold mb-4">{children}</h1>,
-                    h2: ({ children }) => <h2 className="text-white text-xl font-semibold mb-3">{children}</h2>,
-                    h3: ({ children }) => <h3 className="text-white text-lg font-medium mb-2">{children}</h3>,
-                    p: ({ children }) => <p className="text-white mb-4">{children}</p>,
-                    ul: ({ children }) => <ul className="text-white list-disc pl-6 mb-4">{children}</ul>,
-                    ol: ({ children }) => <ol className="text-white list-decimal pl-6 mb-4">{children}</ol>,
-                    li: ({ children }) => <li className="text-white mb-2">{children}</li>,
+                    h1: ({ children }) => <h1 className="text-[#EDE8D0] text-2xl font-semibold tracking-tight mb-4">{children}</h1>,
+                    h2: ({ children }) => <h2 className="text-[#EDE8D0] text-xl font-medium tracking-tight mb-3">{children}</h2>,
+                    h3: ({ children }) => <h3 className="text-[#EDE8D0] text-lg font-medium tracking-tight mb-2">{children}</h3>,
+                    p: ({ children }) => <p className="text-[#EDE8D0]/90 mb-4 leading-relaxed">{children}</p>,
+                    ul: ({ children }) => <ul className="text-[#EDE8D0]/90 list-disc pl-6 mb-4 space-y-2">{children}</ul>,
+                    ol: ({ children }) => <ol className="text-[#EDE8D0]/90 list-decimal pl-6 mb-4 space-y-2">{children}</ol>,
+                    li: ({ children }) => <li className="text-[#EDE8D0]/90">{children}</li>,
                     a: ({ href, children }) => (
-                      <a href={href} className="text-gray-400 hover:text-gray-300 underline" target="_blank" rel="noopener noreferrer">
+                      <a href={href} className="text-[#EDE8D0]/80 hover:text-[#EDE8D0] underline transition-colors" target="_blank" rel="noopener noreferrer">
                         {children}
                       </a>
                     ),
-                    code: ({ children }) => <code className="text-white bg-gray-900 px-2 py-1 rounded">{children}</code>,
-                    pre: ({ children }) => <pre className="text-white bg-gray-900 p-4 rounded-lg mb-4 overflow-x-auto">{children}</pre>,
-                    blockquote: ({ children }) => <blockquote className="text-white border-l-4 border-gray-700 pl-4 italic mb-4">{children}</blockquote>,
-                    hr: () => <hr className="border-gray-800 my-4" />,
+                    code: ({ children }) => <code className="text-[#EDE8D0] bg-black/20 px-2 py-1 rounded">{children}</code>,
+                    pre: ({ children }) => <pre className="text-[#EDE8D0] bg-black/20 p-4 rounded-lg mb-4 overflow-x-auto">{children}</pre>,
+                    blockquote: ({ children }) => <blockquote className="text-[#EDE8D0]/90 border-l-4 border-[#EDE8D0]/20 pl-4 italic mb-4">{children}</blockquote>,
+                    hr: () => <hr className="border-[#EDE8D0]/20 my-4" />,
                     table: ({ children }) => (
                       <div className="overflow-x-auto mb-4">
-                        <table className="min-w-full text-white border-collapse border border-gray-800">
+                        <table className="min-w-full text-[#EDE8D0] border-collapse border border-[#EDE8D0]/20">
                           {children}
                         </table>
                       </div>
                     ),
-                    th: ({ children }) => <th className="border border-gray-800 px-4 py-2 bg-gray-900">{children}</th>,
-                    td: ({ children }) => <td className="border border-gray-800 px-4 py-2">{children}</td>,
+                    th: ({ children }) => <th className="border border-[#EDE8D0]/20 px-4 py-2 bg-black/20">{children}</th>,
+                    td: ({ children }) => <td className="border border-[#EDE8D0]/20 px-4 py-2">{children}</td>,
                   }}
                 >
                   {formatMarkdown(entry)}
@@ -199,13 +181,13 @@ export default function ScreechProject() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Link href="/digital">
           <motion.div 
-            className="inline-flex items-center text-white/90 hover:text-white transition-colors"
-            whileHover={{ x: 5 }}
+            className="inline-flex items-center text-[#EDE8D0]/80 hover:text-[#EDE8D0] transition-colors group"
+            whileHover={{ x: -5 }}
           >
-            <span className="mr-2 text-lg">Back to Digital Projects</span>
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 mr-2 transform transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
+            <span className="text-lg font-medium tracking-tight">Back to Digital Projects</span>
           </motion.div>
         </Link>
       </div>
