@@ -42,7 +42,7 @@ export default function Navigation() {
                 />
               </svg>
             </motion.div>
-            <span className="font-medium text-white text-lg tracking-tight">mobi.</span>
+            <span className="font-medium text-[#EDE8D0] text-lg tracking-tight font-museo-moderno">mobi.</span>
           </Link>
 
           {/* Desktop Navigation */}
