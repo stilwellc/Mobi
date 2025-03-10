@@ -31,57 +31,35 @@ export default function Store() {
   return (
     <div className="min-h-screen bg-black">
       {/* Hero Section */}
-      <section className="relative h-[160px] flex items-center justify-center overflow-hidden">
+      <section className="relative h-[300px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.1)_0%,transparent_100%)]" />
-          <motion.div
-            className="absolute w-[800px] h-[800px] rounded-full bg-mobi-burgundy/20 blur-[120px]"
-            animate={{
-              x: [0, 100, 0],
-              y: [0, 50, 0],
-              scale: [1, 1.2, 1],
-            }}
-            transition={{
-              duration: 20,
-              repeat: Infinity,
-              ease: "linear"
-            }}
-            style={{
-              top: "-20%",
-              left: "-20%",
-            }}
-          />
+          <div className="absolute inset-0" style={{ 
+            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0)`,
+            backgroundSize: '40px 40px'
+          }} />
         </div>
         
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-center z-10 px-4"
+          className="relative z-10 px-4 max-w-4xl mx-auto py-20"
         >
-          <motion.div
-            className="relative mb-8"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            <div className="absolute -top-12 left-1/2 transform -translate-x-1/2">
-              <div className="w-12 h-12 border-2 border-white/10 rounded-full flex items-center justify-center">
-                <div className="w-6 h-6 border-2 border-white/10 rounded-full" />
-              </div>
-            </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white"
-              style={{
-                textShadow: '0 0 80px rgba(255,255,255,0.1)',
-                letterSpacing: '-0.05em',
-              }}
+          <div className="flex flex-col items-center">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-center"
             >
-              Store
-            </h1>
-          </motion.div>
-          <p className="text-lg sm:text-xl text-white/80 font-light max-w-2xl mx-auto leading-relaxed">
-            Discover our curated collection of design objects
-          </p>
+              <h1 className="text-6xl sm:text-7xl md:text-8xl font-semibold tracking-tight text-[#EDE8D0] mb-8">
+                Design Store
+              </h1>
+              <p className="text-xl sm:text-2xl text-[#EDE8D0]/80 font-light tracking-tight max-w-2xl mx-auto leading-relaxed">
+                Discover our curated collection of design objects
+              </p>
+            </motion.div>
+          </div>
         </motion.div>
       </section>
 
