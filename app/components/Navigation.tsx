@@ -27,17 +27,19 @@ export default function Navigation() {
           <Link href="/" className="flex items-center">
             <motion.div
               whileHover={{ scale: 1.1 }}
-              className="flex items-center"
+              className="flex items-center overflow-hidden"
             >
-              <Image
-                src="/images/mobi-logo.jpg"
-                alt="mobi."
-                width={100}
-                height={30}
-                className="h-8 w-auto"
-                priority
-                quality={100}
-              />
+              <div className="relative h-8 w-[100px]">
+                <Image
+                  src="/images/mobi-logo.png"
+                  alt="mobi."
+                  width={100}
+                  height={40}
+                  className="absolute top-[-10%] w-full h-[120%] object-cover"
+                  priority
+                  quality={100}
+                />
+              </div>
             </motion.div>
           </Link>
 

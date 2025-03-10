@@ -52,15 +52,17 @@ export default function Home() {
                 filter: 'drop-shadow(0 0 80px rgba(255,255,255,0.1))',
               }}
             >
-              <Image
-                src="/images/mobi-logo.jpg"
-                alt="mobi."
-                width={800}
-                height={240}
-                className="w-[280px] sm:w-[480px] md:w-[800px] h-auto"
-                priority
-                quality={100}
-              />
+              <div className="relative w-[280px] sm:w-[480px] md:w-[800px] h-[84px] sm:h-[144px] md:h-[240px] overflow-hidden">
+                <Image
+                  src="/images/mobi-logo.png"
+                  alt="mobi."
+                  width={800}
+                  height={320}
+                  className="absolute top-[-10%] w-full h-[120%] object-cover"
+                  priority
+                  quality={100}
+                />
+              </div>
             </motion.div>
           </div>
 
