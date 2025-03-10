@@ -66,80 +66,80 @@ export default function Home() {
             </motion.div>
           </div>
 
-          <p className="text-lg sm:text-2xl md:text-3xl text-white/80 font-light mb-12 sm:mb-16 max-w-3xl mx-auto leading-relaxed px-4">
+          <p className="text-lg sm:text-2xl md:text-3xl text-white/80 font-light tracking-tight mb-12 sm:mb-16 max-w-3xl mx-auto leading-relaxed px-4">
             where design transcends boundaries, creating experiences that shape the future of human interaction
           </p>
           
           <div className="grid grid-cols-1 md:grid-cols-4 gap-3 sm:gap-4 md:gap-8 px-2">
             <div className="group relative">
               <Link href="/physical" className="block">
-                <div className="relative aspect-[6/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-burgundy">
+                <div className="relative aspect-[6/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-burgundy/60">
                   <div className="absolute inset-0" style={{ 
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(237,232,208,0.1) 1px, transparent 0)`,
                     backgroundSize: '20px 20px'
                   }} />
                   <div className="absolute inset-0 flex items-center justify-center px-6 md:px-0">
-                    <div className="text-xl md:hidden font-bold text-[#EDE8D0] absolute left-6">physical projects</div>
+                    <div className="text-xl md:hidden font-medium text-[#EDE8D0] absolute left-6">physical projects</div>
                     <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-[#EDE8D0]/40 rounded-full flex items-center justify-center md:relative absolute right-6 md:right-auto">
                       <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-[#EDE8D0]/60 rounded-full" />
                     </div>
                   </div>
                 </div>
-                <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-medium text-[#EDE8D0] text-center hidden md:block">physical projects</h3>
+                <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-medium tracking-tight text-[#EDE8D0] text-center hidden md:block">physical projects</h3>
               </Link>
             </div>
 
             <div className="group relative">
               <Link href="/digital" className="block">
-                <div className="relative aspect-[6/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-burgundy">
+                <div className="relative aspect-[6/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-burgundy/60">
                   <div className="absolute inset-0" style={{ 
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(237,232,208,0.1) 1px, transparent 0)`,
                     backgroundSize: '20px 20px'
                   }} />
                   <div className="absolute inset-0 flex items-center justify-center px-6 md:px-0">
-                    <div className="text-xl md:hidden font-bold text-[#EDE8D0] absolute left-6">digital projects</div>
+                    <div className="text-xl md:hidden font-medium text-[#EDE8D0] absolute left-6">digital projects</div>
                     <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-[#EDE8D0]/40 rotate-45 flex items-center justify-center md:relative absolute right-6 md:right-auto">
                       <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-[#EDE8D0]/60 rotate-45" />
                     </div>
                   </div>
                 </div>
-                <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-medium text-[#EDE8D0] text-center hidden md:block">digital projects</h3>
+                <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-medium tracking-tight text-[#EDE8D0] text-center hidden md:block">digital projects</h3>
               </Link>
             </div>
 
             <div className="group relative">
               <Link href="/social" className="block">
-                <div className="relative aspect-[6/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-burgundy">
+                <div className="relative aspect-[6/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-burgundy/60">
                   <div className="absolute inset-0" style={{ 
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(237,232,208,0.1) 1px, transparent 0)`,
                     backgroundSize: '20px 20px'
                   }} />
                   <div className="absolute inset-0 flex items-center justify-center px-6 md:px-0">
-                    <div className="text-xl md:hidden font-bold text-[#EDE8D0] absolute left-6">social spaces</div>
+                    <div className="text-xl md:hidden font-medium text-[#EDE8D0] absolute left-6">social spaces</div>
                     <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-[#EDE8D0]/40 rounded-[30%] flex items-center justify-center md:relative absolute right-6 md:right-auto">
                       <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-[#EDE8D0]/60 rounded-[30%]" />
                     </div>
                   </div>
                 </div>
-                <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-medium text-[#EDE8D0] text-center hidden md:block">social spaces</h3>
+                <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-medium tracking-tight text-[#EDE8D0] text-center hidden md:block">social spaces</h3>
               </Link>
             </div>
 
             <div className="group relative">
               <Link href="/store" className="block">
-                <div className="relative aspect-[6/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-burgundy">
+                <div className="relative aspect-[6/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-burgundy/60">
                   <div className="absolute inset-0" style={{ 
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(237,232,208,0.1) 1px, transparent 0)`,
                     backgroundSize: '20px 20px'
                   }} />
                   <div className="absolute inset-0 flex items-center justify-center px-6 md:px-0">
-                    <div className="text-xl md:hidden font-bold text-[#EDE8D0] absolute left-6">design store</div>
+                    <div className="text-xl md:hidden font-medium text-[#EDE8D0] absolute left-6">design store</div>
                     <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-[#EDE8D0]/40 rounded-[60%] flex items-center justify-center md:relative absolute right-6 md:right-auto">
                       <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-[#EDE8D0]/60 rounded-[60%]" />
                     </div>
                   </div>
                 </div>
-                <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-medium text-[#EDE8D0] text-center hidden md:block">design store</h3>
+                <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-medium tracking-tight text-[#EDE8D0] text-center hidden md:block">design store</h3>
               </Link>
             </div>
           </div>
@@ -166,10 +166,10 @@ export default function Home() {
                 <div className="w-6 h-6 border-2 border-white/10 rounded-full" />
               </div>
             </div>
-            <h2 className="text-5xl sm:text-6xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-mobi-burgundy mb-8">
+            <h2 className="text-5xl sm:text-6xl md:text-7xl font-semibold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white to-mobi-burgundy mb-8">
               featured work
             </h2>
-            <p className="text-xl sm:text-2xl text-white/70 max-w-3xl mx-auto">
+            <p className="text-xl sm:text-2xl text-white/70 max-w-3xl mx-auto font-light tracking-tight">
               explore our latest projects that push the boundaries of design and innovation
             </p>
           </div>

@@ -9,7 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['var(--font-inter)'],
+        'geist': ['var(--font-geist)'],
         'museo-moderno': ['var(--font-museo-moderno)'],
       },
       colors: {
