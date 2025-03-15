@@ -101,7 +101,7 @@ export default function ScreechProject() {
       <section className="relative z-10 py-12 sm:py-16">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="relative rounded-lg overflow-hidden bg-[#EDE8D0] p-6 sm:p-8 group hover:scale-[1.01] transition-all duration-300">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#EDE8D0]/80 via-[#E6DFC0]/20 to-[#EDE8D0]/60 opacity-50" />
+            <div className="absolute inset-0 bg-gradient-to-br from-[#EDE8D0] to-[#E6DFC0]" />
             <div className="absolute inset-0" style={{ 
               backgroundImage: `radial-gradient(circle at 1px 1px, rgba(0,0,0,0.03) 1px, transparent 0)`,
               backgroundSize: '16px 16px'
@@ -134,7 +134,7 @@ export default function ScreechProject() {
                 key={index}
                 className="relative rounded-lg overflow-hidden bg-[#EDE8D0] p-6 sm:p-8 group hover:scale-[1.01] transition-all duration-300"
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-[#EDE8D0]/80 via-[#E6DFC0]/20 to-[#EDE8D0]/60 opacity-50" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[#EDE8D0] to-[#E6DFC0]" />
                 <div className="absolute inset-0" style={{ 
                   backgroundImage: `radial-gradient(circle at 1px 1px, rgba(0,0,0,0.03) 1px, transparent 0)`,
                   backgroundSize: '16px 16px'
