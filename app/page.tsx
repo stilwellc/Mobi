@@ -65,7 +65,7 @@ export default function Home() {
             <div className="group relative">
               <Link href="/physical" className="block">
                 <div className="relative aspect-[6/1] md:aspect-square rounded-lg overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-all duration-300 hover:scale-[1.02]">
-                  <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 to-black" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-zinc-900/50 via-black/10 to-zinc-900/30 opacity-50" />
                   <div className="absolute inset-0" style={{ 
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0)`,
                     backgroundSize: '16px 16px'
@@ -86,7 +86,7 @@ export default function Home() {
             <div className="group relative">
               <Link href="/digital" className="block">
                 <div className="relative aspect-[6/1] md:aspect-square rounded-lg overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-all duration-300 hover:scale-[1.02]">
-                  <div className="absolute inset-0 bg-gradient-to-bl from-zinc-900 to-black" />
+                  <div className="absolute inset-0 bg-gradient-to-bl from-zinc-900/50 via-black/10 to-zinc-900/30 opacity-50" />
                   <div className="absolute inset-0" style={{ 
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0)`,
                     backgroundSize: '16px 16px'
@@ -107,7 +107,7 @@ export default function Home() {
             <div className="group relative">
               <Link href="/social" className="block">
                 <div className="relative aspect-[6/1] md:aspect-square rounded-lg overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-all duration-300 hover:scale-[1.02]">
-                  <div className="absolute inset-0 bg-gradient-to-tr from-zinc-900 to-black" />
+                  <div className="absolute inset-0 bg-gradient-to-tr from-zinc-900/50 via-black/10 to-zinc-900/30 opacity-50" />
                   <div className="absolute inset-0" style={{ 
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0)`,
                     backgroundSize: '16px 16px'
@@ -128,7 +128,7 @@ export default function Home() {
             <div className="group relative">
               <Link href="/store" className="block">
                 <div className="relative aspect-[6/1] md:aspect-square rounded-lg overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-all duration-300 hover:scale-[1.02]">
-                  <div className="absolute inset-0 bg-gradient-to-tl from-zinc-900 to-black" />
+                  <div className="absolute inset-0 bg-gradient-to-tl from-zinc-900/50 via-black/10 to-zinc-900/30 opacity-50" />
                   <div className="absolute inset-0" style={{ 
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0)`,
                     backgroundSize: '16px 16px'
@@ -174,7 +174,7 @@ export default function Home() {
             <div className="group relative">
               <Link href="/digital/screech">
                 <div className="relative aspect-[16/9] rounded-lg overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-all duration-300 hover:scale-[1.01]">
-                  <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 via-black to-zinc-900" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-zinc-900/50 via-black/10 to-zinc-900/30 opacity-50" />
                   <div className="absolute inset-0" style={{ 
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0)`,
                     backgroundSize: '16px 16px'
