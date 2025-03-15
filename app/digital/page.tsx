@@ -39,8 +39,8 @@ export default function DigitalProjects() {
       <section className="relative h-[300px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute inset-0" style={{ 
-            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0)`,
-            backgroundSize: '40px 40px'
+            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0)`,
+            backgroundSize: '24px 24px'
           }} />
         </div>
         
@@ -57,10 +57,10 @@ export default function DigitalProjects() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="text-center"
             >
-              <h1 className="text-6xl sm:text-7xl md:text-8xl font-semibold tracking-tight text-[#EDE8D0] mb-8">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-medium tracking-tight text-white mb-6">
                 Digital Projects
               </h1>
-              <p className="text-xl sm:text-2xl text-[#EDE8D0]/80 font-light tracking-tight max-w-2xl mx-auto leading-relaxed">
+              <p className="text-lg text-zinc-400 font-normal max-w-2xl mx-auto leading-relaxed">
                 Where innovation meets imagination in the digital realm
               </p>
             </motion.div>
@@ -82,41 +82,33 @@ export default function DigitalProjects() {
                 className="group relative"
               >
                 <Link href={project.href || '#'}>
-                  <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-mobi-cream/80">
+                  <div className="relative aspect-[4/3] rounded-lg overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-colors">
                     <div className="absolute inset-0" style={{ 
-                      backgroundImage: `radial-gradient(circle at 1px 1px, rgba(90,0,40,0.1) 1px, transparent 0)`,
-                      backgroundSize: '20px 20px'
+                      backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0)`,
+                      backgroundSize: '16px 16px'
                     }} />
                     <div className="absolute top-4 right-4">
                       {project.title === "Screech" ? (
-                        <div className="w-6 h-6 flex items-center justify-center">
-                          <svg className="w-5 h-5 text-mobi-burgundy/70" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M12 2C8 2 4 6 4 10c0 4 4 8 8 8s8-4 8-8c0-4-4-8-8-8z" />
-                            <path d="M12 6c-2 0-4 2-4 4s2 4 4 4 4-2 4-4-2-4-4-4z" />
-                            <path d="M12 14c-1 0-2 1-2 2s1 2 2 2 2-1 2-2-1-2-2-2z" />
-                          </svg>
-                        </div>
+                        <div className="w-2 h-2 bg-mobi-burgundy rounded-full" />
                       ) : (
-                        <div className="w-6 h-6 border-2 border-white/10 rounded-full flex items-center justify-center">
-                          <div className="w-3 h-3 border-2 border-white/10 rounded-full" />
-                        </div>
+                        <div className="w-2 h-2 bg-zinc-700 rounded-full" />
                       )}
                     </div>
                     <div className="absolute inset-0 p-8 flex flex-col justify-end">
-                      <span className="text-xs text-mobi-burgundy/70 font-medium tracking-wider uppercase mb-2">
+                      <span className="text-xs text-zinc-500 font-medium tracking-wider uppercase mb-2">
                         {project.category}
                       </span>
-                      <h3 className="text-xl sm:text-2xl font-bold text-mobi-burgundy mb-2">
+                      <h3 className="text-xl sm:text-2xl font-medium text-white mb-2">
                         {project.title}
                       </h3>
-                      <p className="text-base text-mobi-burgundy/90 max-w-xl">
+                      <p className="text-base text-zinc-400 max-w-xl">
                         {project.description}
                       </p>
                       <motion.div 
-                        className="mt-6 inline-flex items-center text-mobi-burgundy/90 hover:text-mobi-burgundy transition-colors"
+                        className="mt-6 inline-flex items-center text-zinc-400 hover:text-[#EDE8D0] transition-colors group"
                         whileHover={{ x: 5 }}
                       >
-                        <span className="mr-2 text-sm">Explore Project</span>
+                        <span className="mr-2 text-sm">View Details</span>
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                         </svg>

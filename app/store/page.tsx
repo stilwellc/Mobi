@@ -34,8 +34,8 @@ export default function Store() {
       <section className="relative h-[300px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute inset-0" style={{ 
-            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0)`,
-            backgroundSize: '40px 40px'
+            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0)`,
+            backgroundSize: '24px 24px'
           }} />
         </div>
         
@@ -52,10 +52,10 @@ export default function Store() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="text-center"
             >
-              <h1 className="text-6xl sm:text-7xl md:text-8xl font-semibold tracking-tight text-[#EDE8D0] mb-8">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-medium tracking-tight text-white mb-6">
                 Design Store
               </h1>
-              <p className="text-xl sm:text-2xl text-[#EDE8D0]/80 font-light tracking-tight max-w-2xl mx-auto leading-relaxed">
+              <p className="text-lg text-zinc-400 font-normal max-w-2xl mx-auto leading-relaxed">
                 Discover our curated collection of design objects
               </p>
             </motion.div>
@@ -76,40 +76,32 @@ export default function Store() {
                 viewport={{ once: true }}
                 className="group relative"
               >
-                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-mobi-cream/80">
+                <div className="relative aspect-[4/3] rounded-lg overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-colors">
                   <div className="absolute inset-0" style={{ 
-                    backgroundImage: `radial-gradient(circle at 1px 1px, rgba(90,0,40,0.1) 1px, transparent 0)`,
-                    backgroundSize: '20px 20px'
+                    backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0)`,
+                    backgroundSize: '16px 16px'
                   }} />
                   <div className="absolute top-4 right-4">
-                    <div className="w-6 h-6 border-2 border-white/10 rounded-full flex items-center justify-center">
-                      <div className="w-3 h-3 border-2 border-white/10 rounded-full" />
-                    </div>
+                    <div className="w-2 h-2 bg-zinc-700 rounded-full" />
                   </div>
                   <div className="absolute inset-0 p-8 flex flex-col justify-end">
-                    <span className="text-xs text-mobi-burgundy/70 font-medium tracking-wider uppercase mb-2">
+                    <span className="text-xs text-zinc-500 font-medium tracking-wider uppercase mb-2">
                       {product.category}
                     </span>
-                    <h3 className="text-xl sm:text-2xl font-bold text-mobi-burgundy mb-2">
+                    <h3 className="text-xl sm:text-2xl font-medium text-white mb-2">
                       {product.title}
                     </h3>
-                    <p className="text-base text-mobi-burgundy/90 max-w-xl">
+                    <p className="text-base text-zinc-400 max-w-xl">
                       {product.description}
                     </p>
                     <div className="mt-6 flex items-center justify-between">
-                      <span className="text-2xl font-bold text-mobi-burgundy">{product.price}</span>
+                      <span className="text-2xl font-medium text-white">{product.price}</span>
                       <motion.button 
-                        className="relative px-6 py-2 bg-transparent text-mobi-burgundy rounded-full text-sm font-medium overflow-hidden border border-mobi-burgundy/30"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
+                        className="px-6 py-2 bg-zinc-800 text-white rounded-md text-sm font-medium hover:bg-zinc-700 transition-colors border border-zinc-700 hover:border-zinc-600"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
                       >
-                        <span className="relative z-10">Add to Cart</span>
-                        <motion.div
-                          className="absolute inset-0 bg-gradient-to-r from-mobi-burgundy/20 to-mobi-burgundy/10"
-                          initial={{ x: '-100%' }}
-                          whileHover={{ x: 0 }}
-                          transition={{ duration: 0.3 }}
-                        />
+                        Add to Cart
                       </motion.button>
                     </div>
                   </div>
