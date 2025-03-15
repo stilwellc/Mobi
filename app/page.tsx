@@ -26,8 +26,8 @@ export default function Home() {
       <div className="absolute inset-0">
         {/* Dot Grid */}
         <div className="absolute inset-0" style={{ 
-          backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0)`,
-          backgroundSize: '40px 40px'
+          backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0)`,
+          backgroundSize: '24px 24px'
         }} />
       </div>
 
@@ -38,108 +38,91 @@ export default function Home() {
         <div
           className="text-center max-w-5xl mx-auto -mt-20 sm:-mt-32"
         >
-          <div
-            className="relative mb-8 sm:mb-12"
+          <motion.div
+            className="flex justify-center items-center mb-12"
+            style={{
+              filter: 'drop-shadow(0 0 40px rgba(255,255,255,0.05))',
+            }}
           >
-            <div className="absolute -top-16 sm:-top-24 left-1/2 transform -translate-x-1/2">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 border-2 border-white/10 rounded-full flex items-center justify-center">
-                <div className="w-6 h-6 sm:w-8 sm:h-8 border-2 border-white/10 rounded-full" />
-              </div>
+            <div className="relative w-[280px] sm:w-[480px] md:w-[800px] h-[84px] sm:h-[144px] md:h-[240px] overflow-hidden">
+              <Image
+                src="/images/mobi-logo.png"
+                alt="mobi."
+                width={800}
+                height={320}
+                className="absolute top-[-5%] w-full h-[110%] object-cover"
+                priority
+                quality={100}
+              />
             </div>
-            <motion.div
-              className="flex justify-center items-center"
-              style={{
-                filter: 'drop-shadow(0 0 80px rgba(255,255,255,0.1))',
-              }}
-            >
-              <div className="relative w-[280px] sm:w-[480px] md:w-[800px] h-[84px] sm:h-[144px] md:h-[240px] overflow-hidden">
-                <Image
-                  src="/images/mobi-logo.png"
-                  alt="mobi."
-                  width={800}
-                  height={320}
-                  className="absolute top-[-5%] w-full h-[110%] object-cover"
-                  priority
-                  quality={100}
-                />
-              </div>
-            </motion.div>
-          </div>
+          </motion.div>
 
-          <p className="text-lg sm:text-2xl md:text-3xl text-white/80 font-light tracking-tight mb-12 sm:mb-16 max-w-3xl mx-auto leading-relaxed px-4">
+          <p className="text-lg sm:text-xl md:text-2xl text-zinc-400 font-normal tracking-tight mb-16 max-w-3xl mx-auto leading-relaxed px-4">
             where design transcends boundaries, creating experiences that shape the future of human interaction
           </p>
           
           <div className="grid grid-cols-1 md:grid-cols-4 gap-3 sm:gap-4 md:gap-8 px-2">
             <div className="group relative">
               <Link href="/physical" className="block">
-                <div className="relative aspect-[6/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-burgundy/60">
+                <div className="relative aspect-[6/1] md:aspect-square rounded-lg overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-colors">
                   <div className="absolute inset-0" style={{ 
-                    backgroundImage: `radial-gradient(circle at 1px 1px, rgba(237,232,208,0.1) 1px, transparent 0)`,
-                    backgroundSize: '20px 20px'
+                    backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0)`,
+                    backgroundSize: '16px 16px'
                   }} />
                   <div className="absolute inset-0 flex items-center justify-center px-6 md:px-0">
-                    <div className="text-xl md:hidden font-medium text-[#EDE8D0] absolute left-6">physical projects</div>
-                    <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-[#EDE8D0]/40 rounded-full flex items-center justify-center md:relative absolute right-6 md:right-auto">
-                      <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-[#EDE8D0]/60 rounded-full" />
-                    </div>
+                    <div className="text-xl md:hidden font-medium text-white absolute left-6">physical projects</div>
+                    <div className="w-2 h-2 bg-mobi-burgundy rounded-full md:relative absolute right-6 md:right-auto" />
                   </div>
                 </div>
-                <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-medium tracking-tight text-[#EDE8D0] text-center hidden md:block">physical projects</h3>
+                <h3 className="mt-3 text-sm font-medium text-zinc-400 text-center hidden md:block group-hover:text-white transition-colors">physical projects</h3>
               </Link>
             </div>
 
             <div className="group relative">
               <Link href="/digital" className="block">
-                <div className="relative aspect-[6/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-burgundy/60">
+                <div className="relative aspect-[6/1] md:aspect-square rounded-lg overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-colors">
                   <div className="absolute inset-0" style={{ 
-                    backgroundImage: `radial-gradient(circle at 1px 1px, rgba(237,232,208,0.1) 1px, transparent 0)`,
-                    backgroundSize: '20px 20px'
+                    backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0)`,
+                    backgroundSize: '16px 16px'
                   }} />
                   <div className="absolute inset-0 flex items-center justify-center px-6 md:px-0">
-                    <div className="text-xl md:hidden font-medium text-[#EDE8D0] absolute left-6">digital projects</div>
-                    <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-[#EDE8D0]/40 rotate-45 flex items-center justify-center md:relative absolute right-6 md:right-auto">
-                      <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-[#EDE8D0]/60 rotate-45" />
-                    </div>
+                    <div className="text-xl md:hidden font-medium text-white absolute left-6">digital projects</div>
+                    <div className="w-2 h-2 bg-mobi-burgundy rounded-full md:relative absolute right-6 md:right-auto" />
                   </div>
                 </div>
-                <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-medium tracking-tight text-[#EDE8D0] text-center hidden md:block">digital projects</h3>
+                <h3 className="mt-3 text-sm font-medium text-zinc-400 text-center hidden md:block group-hover:text-white transition-colors">digital projects</h3>
               </Link>
             </div>
 
             <div className="group relative">
               <Link href="/social" className="block">
-                <div className="relative aspect-[6/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-burgundy/60">
+                <div className="relative aspect-[6/1] md:aspect-square rounded-lg overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-colors">
                   <div className="absolute inset-0" style={{ 
-                    backgroundImage: `radial-gradient(circle at 1px 1px, rgba(237,232,208,0.1) 1px, transparent 0)`,
-                    backgroundSize: '20px 20px'
+                    backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0)`,
+                    backgroundSize: '16px 16px'
                   }} />
                   <div className="absolute inset-0 flex items-center justify-center px-6 md:px-0">
-                    <div className="text-xl md:hidden font-medium text-[#EDE8D0] absolute left-6">social spaces</div>
-                    <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-[#EDE8D0]/40 rounded-[30%] flex items-center justify-center md:relative absolute right-6 md:right-auto">
-                      <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-[#EDE8D0]/60 rounded-[30%]" />
-                    </div>
+                    <div className="text-xl md:hidden font-medium text-white absolute left-6">social spaces</div>
+                    <div className="w-2 h-2 bg-mobi-burgundy rounded-full md:relative absolute right-6 md:right-auto" />
                   </div>
                 </div>
-                <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-medium tracking-tight text-[#EDE8D0] text-center hidden md:block">social spaces</h3>
+                <h3 className="mt-3 text-sm font-medium text-zinc-400 text-center hidden md:block group-hover:text-white transition-colors">social spaces</h3>
               </Link>
             </div>
 
             <div className="group relative">
               <Link href="/store" className="block">
-                <div className="relative aspect-[6/1] md:aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-mobi-burgundy/60">
+                <div className="relative aspect-[6/1] md:aspect-square rounded-lg overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-colors">
                   <div className="absolute inset-0" style={{ 
-                    backgroundImage: `radial-gradient(circle at 1px 1px, rgba(237,232,208,0.1) 1px, transparent 0)`,
-                    backgroundSize: '20px 20px'
+                    backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0)`,
+                    backgroundSize: '16px 16px'
                   }} />
                   <div className="absolute inset-0 flex items-center justify-center px-6 md:px-0">
-                    <div className="text-xl md:hidden font-medium text-[#EDE8D0] absolute left-6">design store</div>
-                    <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-[#EDE8D0]/40 rounded-[60%] flex items-center justify-center md:relative absolute right-6 md:right-auto">
-                      <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-[#EDE8D0]/60 rounded-[60%]" />
-                    </div>
+                    <div className="text-xl md:hidden font-medium text-white absolute left-6">design store</div>
+                    <div className="w-2 h-2 bg-mobi-burgundy rounded-full md:relative absolute right-6 md:right-auto" />
                   </div>
                 </div>
-                <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-medium tracking-tight text-[#EDE8D0] text-center hidden md:block">design store</h3>
+                <h3 className="mt-3 text-sm font-medium text-zinc-400 text-center hidden md:block group-hover:text-white transition-colors">design store</h3>
               </Link>
             </div>
           </div>
@@ -149,9 +132,7 @@ export default function Home() {
         <div 
           className="absolute bottom-6 sm:bottom-8 left-1/2 transform -translate-x-1/2"
         >
-          <div className="w-6 h-6 sm:w-8 sm:h-8 border-2 border-white/10 rounded-full flex items-center justify-center">
-            <div className="w-3 h-3 sm:w-4 sm:h-4 border-2 border-white/10 rounded-full" />
-          </div>
+          <div className="w-2 h-2 bg-zinc-700 rounded-full" />
         </div>
       </div>
 
@@ -161,15 +142,10 @@ export default function Home() {
           <div 
             className="text-center mb-20"
           >
-            <div className="relative inline-block mb-8">
-              <div className="w-12 h-12 border-2 border-white/10 rounded-full flex items-center justify-center">
-                <div className="w-6 h-6 border-2 border-white/10 rounded-full" />
-              </div>
-            </div>
-            <h2 className="text-5xl sm:text-6xl md:text-7xl font-semibold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white to-mobi-burgundy mb-8">
-              featured work
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-medium tracking-tight text-white mb-6">
+              Featured Work
             </h2>
-            <p className="text-xl sm:text-2xl text-white/70 max-w-3xl mx-auto font-light tracking-tight">
+            <p className="text-lg text-zinc-400 font-normal max-w-2xl mx-auto leading-relaxed">
               explore our latest projects that push the boundaries of design and innovation
             </p>
           </div>
@@ -177,35 +153,33 @@ export default function Home() {
           <div className="grid grid-cols-1 gap-16">
             <div className="group relative">
               <Link href="/digital/screech">
-                <div className="relative aspect-[16/9] rounded-3xl overflow-hidden border border-white/10">
-                  <div className="absolute inset-0 bg-gradient-to-br from-mobi-burgundy/20 to-black/80" />
+                <div className="relative aspect-[16/9] rounded-lg overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-colors">
                   <div className="absolute inset-0" style={{ 
-                    backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0)`,
-                    backgroundSize: '20px 20px'
+                    backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0)`,
+                    backgroundSize: '16px 16px'
                   }} />
-                  <div className="absolute top-6 right-6">
-                    <div className="w-8 h-8 border-2 border-white/10 rounded-full flex items-center justify-center">
-                      <div className="w-4 h-4 border-2 border-white/10 rounded-full" />
-                    </div>
+                  <div className="absolute top-4 right-4">
+                    <div className="w-2 h-2 bg-mobi-burgundy rounded-full" />
                   </div>
-                  <div className="absolute inset-0 p-12 sm:p-12 p-6">
-                    <span className="text-xs sm:text-sm text-white/90 font-medium tracking-wider uppercase mb-2 sm:mb-4">
+                  <div className="absolute inset-0 p-8 sm:p-12">
+                    <span className="text-xs text-zinc-500 font-medium tracking-wider uppercase mb-2">
                       featured project
                     </span>
-                    <h3 className="text-2xl sm:text-4xl md:text-5xl font-bold text-white mb-2 sm:mb-4">
+                    <h3 className="text-2xl sm:text-3xl md:text-4xl font-medium text-white mb-4">
                       Screech
                     </h3>
-                    <p className="text-base sm:text-xl text-white/90 max-w-2xl">
+                    <p className="text-base sm:text-lg text-zinc-400 max-w-2xl">
                       Stay in the Know, Powered by AI – Your Smart Guide to Local Events!
                     </p>
-                    <div 
-                      className="mt-4 sm:mt-8 inline-flex items-center text-white/90 hover:text-white transition-colors"
+                    <motion.div 
+                      className="mt-6 inline-flex items-center text-zinc-400 hover:text-[#EDE8D0] transition-colors group"
+                      whileHover={{ x: 5 }}
                     >
-                      <span className="mr-2 text-base sm:text-lg">explore project</span>
-                      <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <span className="mr-2 text-sm">View Details</span>
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                       </svg>
-                    </div>
+                    </motion.div>
                   </div>
                 </div>
               </Link>
@@ -216,35 +190,33 @@ export default function Home() {
                 key={item}
                 className="group relative"
               >
-                <div className="relative aspect-[16/9] rounded-3xl overflow-hidden border border-white/10">
-                  <div className="absolute inset-0 bg-gradient-to-br from-mobi-burgundy/20 to-black/80" />
+                <div className="relative aspect-[16/9] rounded-lg overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-colors">
                   <div className="absolute inset-0" style={{ 
-                    backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0)`,
-                    backgroundSize: '20px 20px'
+                    backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0)`,
+                    backgroundSize: '16px 16px'
                   }} />
-                  <div className="absolute top-6 right-6">
-                    <div className="w-8 h-8 border-2 border-white/10 rounded-full flex items-center justify-center">
-                      <div className="w-4 h-4 border-2 border-white/10 rounded-full" />
-                    </div>
+                  <div className="absolute top-4 right-4">
+                    <div className="w-2 h-2 bg-zinc-700 rounded-full" />
                   </div>
-                  <div className="absolute inset-0 p-12 sm:p-12 p-6">
-                    <span className="text-xs sm:text-sm text-white/90 font-medium tracking-wider uppercase mb-2 sm:mb-4">
+                  <div className="absolute inset-0 p-8 sm:p-12">
+                    <span className="text-xs text-zinc-500 font-medium tracking-wider uppercase mb-2">
                       featured project
                     </span>
-                    <h3 className="text-2xl sm:text-4xl md:text-5xl font-bold text-white mb-2 sm:mb-4">
+                    <h3 className="text-2xl sm:text-3xl md:text-4xl font-medium text-white mb-4">
                       project title {item}
                     </h3>
-                    <p className="text-base sm:text-xl text-white/90 max-w-2xl">
+                    <p className="text-base sm:text-lg text-zinc-400 max-w-2xl">
                       a brief description of the project and its impact
                     </p>
-                    <div 
-                      className="mt-4 sm:mt-8 inline-flex items-center text-white/90 hover:text-white transition-colors"
+                    <motion.div 
+                      className="mt-6 inline-flex items-center text-zinc-400 hover:text-[#EDE8D0] transition-colors group"
+                      whileHover={{ x: 5 }}
                     >
-                      <span className="mr-2 text-base sm:text-lg">explore project</span>
-                      <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <span className="mr-2 text-sm">View Details</span>
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                       </svg>
-                    </div>
+                    </motion.div>
                   </div>
                 </div>
               </div>
