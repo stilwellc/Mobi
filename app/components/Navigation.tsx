@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence, useScroll } from 'framer-motion';
+import { usePathname } from 'next/navigation';
 
 const navItems = [
   { name: 'physical', href: '/physical', shape: 'rounded-full' },
@@ -16,6 +17,8 @@ export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const { scrollY } = useScroll();
   const [isScrolled, setIsScrolled] = useState(false);
+  const pathname = usePathname();
+  const isHomePage = pathname === '/';
 
   React.useEffect(() => {
     return scrollY.onChange((latest) => {
@@ -32,35 +35,36 @@ export default function Navigation() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center">
-            <motion.div
-              whileHover={{ scale: 1.1 }}
-              className="flex items-center overflow-hidden"
-            >
-              <div className="relative h-8 w-[100px]">
-                <Image
-                  src="/images/mobi-logo.png"
-                  alt="mobi."
-                  width={100}
-                  height={40}
-                  className="absolute top-[-5%] w-full h-[110%] object-cover"
-                  priority
-                  quality={100}
-                />
-              </div>
-            </motion.div>
-          </Link>
-
-          {/* Desktop Navigation */}
-          <motion.div 
-            className="hidden md:flex items-center space-x-8"
+          <motion.div
             animate={{
-              opacity: isScrolled ? 0 : 1,
-              x: isScrolled ? 20 : 0,
-              pointerEvents: isScrolled ? 'none' : 'auto'
+              opacity: isHomePage ? (isScrolled ? 1 : 0) : 1,
+              x: isHomePage ? (isScrolled ? 0 : -20) : 0,
+              pointerEvents: isHomePage ? (isScrolled ? 'auto' : 'none') : 'auto'
             }}
             transition={{ duration: 0.2 }}
           >
+            <Link href="/" className="flex items-center">
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                className="flex items-center overflow-hidden"
+              >
+                <div className="relative h-8 w-[100px]">
+                  <Image
+                    src="/images/mobi-logo.png"
+                    alt="mobi."
+                    width={100}
+                    height={40}
+                    className="absolute top-[-5%] w-full h-[110%] object-cover"
+                    priority
+                    quality={100}
+                  />
+                </div>
+              </motion.div>
+            </Link>
+          </motion.div>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
               <Link
                 key={item.name}
@@ -84,15 +88,10 @@ export default function Navigation() {
                 />
               </Link>
             ))}
-          </motion.div>
+          </div>
 
           {/* Mobile Menu Button */}
           <motion.button
-            animate={{
-              opacity: isScrolled ? 0 : 1,
-              x: isScrolled ? 20 : 0,
-              pointerEvents: isScrolled ? 'none' : 'auto'
-            }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsOpen(!isOpen)}
             className="md:hidden w-10 h-10 flex items-center justify-center"
@@ -117,7 +116,7 @@ export default function Navigation() {
 
       {/* Mobile Menu */}
       <AnimatePresence>
-        {isOpen && !isScrolled && (
+        {isOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
