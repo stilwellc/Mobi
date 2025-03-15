@@ -100,21 +100,26 @@ export default function ScreechProject() {
       {/* Streak Tracker */}
       <section className="relative z-10 py-12 sm:py-16">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <div className="relative rounded-lg overflow-hidden bg-[#EDE8D0] p-6 sm:p-8">
+          <div className="relative rounded-lg overflow-hidden bg-[#EDE8D0] p-6 sm:p-8 group hover:scale-[1.01] transition-all duration-300">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#EDE8D0] to-[#E6DFC0]" />
             <div className="absolute inset-0" style={{ 
               backgroundImage: `radial-gradient(circle at 1px 1px, rgba(0,0,0,0.03) 1px, transparent 0)`,
               backgroundSize: '16px 16px'
             }} />
             <div className="relative flex items-center justify-between">
               <div>
-                <h2 className="text-xl sm:text-2xl font-medium text-black mb-2">
+                <h2 className="text-xl sm:text-2xl font-medium text-black mb-2 group-hover:translate-y-[-1px] transition-transform">
                   Current Streak
                 </h2>
-                <p className="text-base text-black/70">
+                <p className="text-base text-black/70 group-hover:text-black transition-colors">
                   {streak} days of continuous updates
                 </p>
               </div>
-              <div className="w-2 h-2 bg-mobi-burgundy rounded-full" />
+              <motion.div 
+                className="w-2 h-2 bg-mobi-burgundy rounded-full"
+                whileHover={{ scale: 1.5 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              />
             </div>
           </div>
         </div>
@@ -127,20 +132,25 @@ export default function ScreechProject() {
             {newsFeed.map((item, index) => (
               <div 
                 key={index}
-                className="relative rounded-lg overflow-hidden bg-[#EDE8D0] p-6 sm:p-8"
+                className="relative rounded-lg overflow-hidden bg-[#EDE8D0] p-6 sm:p-8 group hover:scale-[1.01] transition-all duration-300"
               >
+                <div className="absolute inset-0 bg-gradient-to-br from-[#EDE8D0] to-[#E6DFC0]" />
                 <div className="absolute inset-0" style={{ 
                   backgroundImage: `radial-gradient(circle at 1px 1px, rgba(0,0,0,0.03) 1px, transparent 0)`,
                   backgroundSize: '16px 16px'
                 }} />
                 <div className="relative">
                   <div className="flex items-center justify-between mb-4">
-                    <time className="text-sm text-black/70">
+                    <time className="text-sm text-black/70 group-hover:text-black transition-colors">
                       {new Date().toLocaleDateString()}
                     </time>
-                    <div className="w-2 h-2 bg-mobi-burgundy rounded-full" />
+                    <motion.div 
+                      className="w-2 h-2 bg-mobi-burgundy rounded-full"
+                      whileHover={{ scale: 1.5 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                    />
                   </div>
-                  <div className="prose prose-black max-w-none">
+                  <div className="prose prose-black max-w-none group-hover:translate-y-[-1px] transition-transform">
                     <ReactMarkdown>{formatMarkdown(item)}</ReactMarkdown>
                   </div>
                 </div>
