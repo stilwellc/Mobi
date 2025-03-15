@@ -28,7 +28,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${museoModerno.variable} ${inter.variable}`}>
-      <body className="bg-mobi-cream text-mobi-black antialiased font-sans">
+      <body className="bg-black text-white antialiased font-sans">
         <Navigation />
         <main className="pt-16">
           {children}
