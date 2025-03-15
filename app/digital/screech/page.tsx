@@ -59,8 +59,14 @@ export default function ScreechProject() {
       '[$1]($1)'
     );
     
-    // Convert bullet points
+    // Convert bullet points with bold text
+    formatted = formatted.replace(/^[-•]\s*\*\*(.*?)\*\*(.*)$/gm, '- **$1**$2');
+    
+    // Convert remaining bullet points
     formatted = formatted.replace(/^[-•]\s*(.*)$/gm, '- $1');
+    
+    // Ensure proper spacing for bullet points
+    formatted = formatted.replace(/^-/gm, '\n- ');
     
     return formatted;
   };
