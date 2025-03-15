@@ -36,15 +36,15 @@ export default function Home() {
         className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 sm:px-6"
       >
         <div
-          className="text-center max-w-5xl mx-auto -mt-20 sm:-mt-32"
+          className="text-center max-w-5xl mx-auto -mt-8 sm:-mt-16"
         >
           <motion.div
-            className="flex justify-center items-center mb-12"
+            className="flex justify-center items-center mb-8 sm:mb-10"
             style={{
               filter: 'drop-shadow(0 0 40px rgba(255,255,255,0.05))',
             }}
           >
-            <div className="relative w-[280px] sm:w-[480px] md:w-[800px] h-[84px] sm:h-[144px] md:h-[240px] overflow-hidden">
+            <div className="relative w-[200px] sm:w-[400px] md:w-[600px] h-[60px] sm:h-[120px] md:h-[180px] overflow-hidden">
               <Image
                 src="/images/mobi-logo.png"
                 alt="mobi."
@@ -57,11 +57,11 @@ export default function Home() {
             </div>
           </motion.div>
 
-          <p className="text-lg sm:text-xl md:text-2xl text-zinc-400 font-normal tracking-tight mb-16 max-w-3xl mx-auto leading-relaxed px-4">
+          <p className="text-base sm:text-lg md:text-xl text-zinc-400 font-normal tracking-tight mb-8 sm:mb-12 max-w-2xl mx-auto leading-relaxed px-4">
             where design transcends boundaries, creating experiences that shape the future of human interaction
           </p>
           
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-3 sm:gap-4 md:gap-8 px-2">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4 px-2">
             <div className="group relative">
               <Link href="/physical" className="block">
                 <div className="relative aspect-[6/1] md:aspect-square rounded-lg overflow-hidden bg-zinc-900 border border-zinc-800 md:hover:border-zinc-700 transition-all duration-300 md:hover:scale-[1.02]">
@@ -157,20 +157,20 @@ export default function Home() {
       </div>
 
       {/* Featured Section */}
-      <section className="relative z-10 min-h-screen bg-black py-20">
+      <section className="relative z-10 min-h-screen bg-black py-12 sm:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div 
-            className="text-center mb-20"
+            className="text-center mb-12 sm:mb-16"
           >
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-medium tracking-tight text-white mb-6">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-white mb-4">
               Featured Work
             </h2>
-            <p className="text-lg text-zinc-400 font-normal max-w-2xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg text-zinc-400 font-normal max-w-2xl mx-auto leading-relaxed">
               explore our latest projects that push the boundaries of design and innovation
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-16">
+          <div className="grid grid-cols-1 gap-8 sm:gap-12">
             <div className="group relative">
               <Link href="/digital/screech">
                 <div className="relative aspect-[16/9] rounded-lg overflow-hidden bg-zinc-900 border border-zinc-800 md:hover:border-zinc-700 transition-all duration-300 md:hover:scale-[1.01]">
@@ -184,7 +184,7 @@ export default function Home() {
                     whileHover={{ scale: [null, 1.5] }}
                     transition={{ type: "spring", stiffness: 400, damping: 10 }}
                   />
-                  <div className="absolute inset-0 p-8 sm:p-12 md:group-hover:translate-y-[-2px] transition-transform duration-300">
+                  <div className="absolute inset-0 p-6 sm:p-8 md:group-hover:translate-y-[-2px] transition-transform duration-300">
                     <span className="text-xs text-zinc-500 font-medium tracking-wider uppercase mb-2 block md:group-hover:text-zinc-400 transition-colors">
                       featured project
                     </span>
@@ -221,7 +221,7 @@ export default function Home() {
                   <div className="absolute top-4 right-4">
                     <div className="w-2 h-2 bg-zinc-700 rounded-full" />
                   </div>
-                  <div className="absolute inset-0 p-8 sm:p-12">
+                  <div className="absolute inset-0 p-6 sm:p-8">
                     <span className="text-xs text-zinc-500 font-medium tracking-wider uppercase mb-2">
                       featured project
                     </span>
