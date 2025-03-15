@@ -33,18 +33,18 @@ export default function Home() {
 
       {/* Main Content */}
       <div 
-        className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 sm:px-6"
+        className="relative z-10 min-h-screen flex flex-col items-center justify-start pt-20 sm:justify-center sm:pt-0 px-4 sm:px-6"
       >
         <div
-          className="text-center max-w-5xl mx-auto -mt-8 sm:-mt-16"
+          className="text-center max-w-5xl mx-auto"
         >
           <motion.div
-            className="flex justify-center items-center mb-8 sm:mb-10"
+            className="flex justify-center items-center mb-6 sm:mb-10"
             style={{
               filter: 'drop-shadow(0 0 40px rgba(255,255,255,0.05))',
             }}
           >
-            <div className="relative w-[200px] sm:w-[400px] md:w-[600px] h-[60px] sm:h-[120px] md:h-[180px] overflow-hidden">
+            <div className="relative w-[160px] sm:w-[400px] md:w-[600px] h-[48px] sm:h-[120px] md:h-[180px] overflow-hidden">
               <Image
                 src="/images/mobi-logo.png"
                 alt="mobi."
@@ -57,7 +57,7 @@ export default function Home() {
             </div>
           </motion.div>
 
-          <p className="text-base sm:text-lg md:text-xl text-zinc-400 font-normal tracking-tight mb-8 sm:mb-12 max-w-2xl mx-auto leading-relaxed px-4">
+          <p className="text-base sm:text-lg md:text-xl text-zinc-400 font-normal tracking-tight mb-6 sm:mb-12 max-w-2xl mx-auto leading-relaxed px-4">
             where design transcends boundaries, creating experiences that shape the future of human interaction
           </p>
           
