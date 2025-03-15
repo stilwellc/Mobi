@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll } from 'framer-motion';
 
 const navItems = [
   { name: 'physical', href: '/physical', shape: 'rounded-full' },
@@ -14,6 +14,14 @@ const navItems = [
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
+  const { scrollY } = useScroll();
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  React.useEffect(() => {
+    return scrollY.onChange((latest) => {
+      setIsScrolled(latest > 50);
+    });
+  }, [scrollY]);
 
   return (
     <motion.nav
@@ -44,7 +52,15 @@ export default function Navigation() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <motion.div 
+            className="hidden md:flex items-center space-x-8"
+            animate={{
+              opacity: isScrolled ? 0 : 1,
+              x: isScrolled ? 20 : 0,
+              pointerEvents: isScrolled ? 'none' : 'auto'
+            }}
+            transition={{ duration: 0.2 }}
+          >
             {navItems.map((item) => (
               <Link
                 key={item.name}
@@ -68,10 +84,15 @@ export default function Navigation() {
                 />
               </Link>
             ))}
-          </div>
+          </motion.div>
 
           {/* Mobile Menu Button */}
           <motion.button
+            animate={{
+              opacity: isScrolled ? 0 : 1,
+              x: isScrolled ? 20 : 0,
+              pointerEvents: isScrolled ? 'none' : 'auto'
+            }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsOpen(!isOpen)}
             className="md:hidden w-10 h-10 flex items-center justify-center"
@@ -96,7 +117,7 @@ export default function Navigation() {
 
       {/* Mobile Menu */}
       <AnimatePresence>
-        {isOpen && (
+        {isOpen && !isScrolled && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
