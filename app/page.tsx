@@ -155,7 +155,7 @@ export default function Home() {
                     backgroundSize: '16px 16px'
                   }} />
                   <div className="absolute inset-0 flex items-center justify-center px-6 md:px-0">
-                    <div className="text-xl md:hidden font-medium text-zinc-400 absolute left-6">about me</div>
+                    <div className="text-xl md:hidden font-medium text-zinc-400 absolute left-6">about us</div>
                     <motion.div 
                       className="w-2 h-2 bg-[#4a0011] rounded-full md:relative absolute right-6 md:right-auto"
                       whileHover={{ scale: [null, 1.5] }}
@@ -163,7 +163,7 @@ export default function Home() {
                     />
                   </div>
                 </div>
-                <h3 className="mt-3 text-sm font-medium text-zinc-600 text-center hidden md:block md:group-hover:text-zinc-400 transition-colors">about me</h3>
+                <h3 className="mt-3 text-sm font-medium text-zinc-600 text-center hidden md:block md:group-hover:text-zinc-400 transition-colors">about us</h3>
               </Link>
             </div>
           </div>
