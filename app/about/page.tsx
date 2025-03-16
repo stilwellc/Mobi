@@ -107,37 +107,44 @@ export default function AboutPage() {
 
   return (
     <div className="min-h-screen bg-black">
-      {/* Geometric Background */}
-      <div className="absolute inset-0">
-        <div className="absolute inset-0" style={{ 
-          backgroundImage: `radial-gradient(circle at 1px 1px, rgba(128,0,32,0.015) 1px, transparent 0)`,
-          backgroundSize: '24px 24px'
-        }} />
+      {/* Hero Section */}
+      <div className="relative">
+        <div className="absolute inset-0">
+          <div className="absolute inset-0" style={{ 
+            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(128,0,32,0.015) 1px, transparent 0)`,
+            backgroundSize: '24px 24px'
+          }} />
+        </div>
+        
+        <div className="relative z-10 pt-16 pb-8">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6">
+            <div className="flex items-center space-x-4 mb-4">
+              <motion.div 
+                className="w-2 h-2 bg-[#4a0011] rounded-full"
+                whileHover={{ scale: [null, 1.5] }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              />
+              <h1 className="text-3xl sm:text-4xl font-medium tracking-tight text-zinc-300">
+                About Us
+              </h1>
+            </div>
+            <p className="text-base sm:text-lg text-zinc-500 max-w-2xl leading-relaxed">
+              Modern, Optimized, Balanced Innovation
+            </p>
+            <div className="mt-6">
+              <Link href="/" className="inline-flex items-center text-zinc-600 hover:text-zinc-400 transition-colors">
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                <span className="text-sm">Back to Home</span>
+              </Link>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Hero Section */}
-      <section className="relative min-h-[400px] flex items-center justify-center px-4 sm:px-6">
-        <div className="max-w-5xl mx-auto text-center">
-          <div className="mb-8">
-            <div className="w-2 h-2 bg-[#4a0011] rounded-full mx-auto" />
-          </div>
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-medium tracking-tight text-zinc-300 mb-6">
-            About Us
-          </h1>
-          <p className="text-lg sm:text-xl text-zinc-500 max-w-2xl mx-auto leading-relaxed mb-12">
-            Modern, Optimized, Balanced Innovation
-          </p>
-          <Link href="/" className="inline-flex items-center text-zinc-600 hover:text-zinc-400 transition-colors">
-            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            <span className="text-sm">Back to Home</span>
-          </Link>
-        </div>
-      </section>
-
       {/* Main Content */}
-      <section className="relative z-10 py-12 sm:py-16">
+      <section className="relative z-10 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           {/* Introduction Sections */}
           {sections.map((section, index) => (
@@ -172,7 +179,7 @@ export default function AboutPage() {
           ))}
 
           {/* Our Approach */}
-          <div className="mb-12">
+          <div className="mb-8">
             <div className="text-center mb-8">
               <h2 className="text-2xl sm:text-3xl font-medium text-zinc-300">Our Approach</h2>
             </div>
@@ -201,7 +208,7 @@ export default function AboutPage() {
           </div>
 
           {/* How We Help */}
-          <div className="mb-12">
+          <div className="mb-8">
             <div className="text-center mb-8">
               <h2 className="text-2xl sm:text-3xl font-medium text-zinc-300">How We Help</h2>
             </div>

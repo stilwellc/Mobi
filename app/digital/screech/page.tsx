@@ -73,38 +73,44 @@ export default function ScreechProject() {
 
   return (
     <div className="min-h-screen bg-black">
-      {/* Geometric Background */}
-      <div className="absolute inset-0">
-        {/* Dot Grid */}
-        <div className="absolute inset-0" style={{ 
-          backgroundImage: `radial-gradient(circle at 1px 1px, rgba(128,0,32,0.015) 1px, transparent 0)`,
-          backgroundSize: '24px 24px'
-        }} />
+      {/* Hero Section */}
+      <div className="relative">
+        <div className="absolute inset-0">
+          <div className="absolute inset-0" style={{ 
+            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(128,0,32,0.015) 1px, transparent 0)`,
+            backgroundSize: '24px 24px'
+          }} />
+        </div>
+        
+        <div className="relative z-10 pt-16 pb-8">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6">
+            <div className="flex items-center space-x-4 mb-4">
+              <motion.div 
+                className="w-2 h-2 bg-[#4a0011] rounded-full"
+                whileHover={{ scale: [null, 1.5] }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              />
+              <h1 className="text-3xl sm:text-4xl font-medium tracking-tight text-zinc-300">
+                Screech
+              </h1>
+            </div>
+            <p className="text-base sm:text-lg text-zinc-500 max-w-2xl leading-relaxed">
+              Stay in the Know, Powered by AI – Your Smart Guide to Local Events!
+            </p>
+            <div className="mt-6">
+              <Link href="/" className="inline-flex items-center text-zinc-600 hover:text-zinc-400 transition-colors">
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                <span className="text-sm">Back to Home</span>
+              </Link>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Hero Section */}
-      <section className="relative min-h-[400px] flex items-center justify-center px-4 sm:px-6">
-        <div className="max-w-5xl mx-auto text-center">
-          <div className="mb-8">
-            <div className="w-2 h-2 bg-[#4a0011] rounded-full mx-auto" />
-          </div>
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-medium tracking-tight text-zinc-300 mb-6">
-            Screech
-          </h1>
-          <p className="text-lg sm:text-xl text-zinc-500 max-w-2xl mx-auto leading-relaxed mb-12">
-            Stay in the Know, Powered by AI – Your Smart Guide to Local Events!
-          </p>
-          <Link href="/" className="inline-flex items-center text-zinc-600 hover:text-zinc-400 transition-colors">
-            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            <span className="text-sm">Back to Home</span>
-          </Link>
-        </div>
-      </section>
-
       {/* Streak Tracker */}
-      <section className="relative z-10 py-12 sm:py-16">
+      <section className="relative z-10 py-8">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="relative rounded-lg overflow-hidden bg-zinc-950 border border-zinc-900 p-6 sm:p-8 group md:hover:scale-[1.01] transition-all duration-300">
             <div className="absolute inset-0 bg-gradient-to-br from-zinc-950/90 to-black/60" />
@@ -132,7 +138,7 @@ export default function ScreechProject() {
       </section>
 
       {/* News Feed */}
-      <section className="relative z-10 py-12 sm:py-16">
+      <section className="relative z-10 py-8">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="grid gap-6">
             {newsFeed.map((item, index) => (
