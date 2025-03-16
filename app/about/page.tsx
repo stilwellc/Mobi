@@ -122,10 +122,10 @@ export default function AboutPage() {
             <div className="w-2 h-2 bg-[#4a0011] rounded-full mx-auto" />
           </div>
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-medium tracking-tight text-zinc-300 mb-6">
-            Mobi
+            About Us
           </h1>
           <p className="text-lg sm:text-xl text-zinc-500 max-w-2xl mx-auto leading-relaxed mb-12">
-            "Modern, Optimized, Balanced Innovation" – optimized and balanced designs with a modern approach to innovation.
+            Modern, Optimized, Balanced Innovation
           </p>
           <Link href="/" className="inline-flex items-center text-zinc-600 hover:text-zinc-400 transition-colors">
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
