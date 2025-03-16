@@ -28,7 +28,7 @@ export default function SocialSpaces() {
   return (
     <div className="min-h-screen bg-black">
       {/* Hero Section */}
-      <section className="relative h-[300px] flex items-center justify-center overflow-hidden">
+      <div className="relative">
         <div className="absolute inset-0">
           <div className="absolute inset-0" style={{ 
             backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0)`,
@@ -36,34 +36,29 @@ export default function SocialSpaces() {
           }} />
         </div>
         
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="relative z-10 px-4 max-w-4xl mx-auto py-20"
-        >
-          <div className="flex flex-col items-center">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-center"
-            >
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-medium tracking-tight text-white mb-6">
+        <div className="relative z-10 pt-16 pb-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center space-x-4 mb-4">
+              <motion.div 
+                className="w-2 h-2 bg-[#4a0011] rounded-full"
+                whileHover={{ scale: [null, 1.5] }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              />
+              <h1 className="text-3xl sm:text-4xl font-medium tracking-tight text-zinc-300">
                 Social Spaces
               </h1>
-              <p className="text-lg text-zinc-400 font-normal max-w-2xl mx-auto leading-relaxed">
-                Where connections flourish and communities thrive
-              </p>
-            </motion.div>
+            </div>
+            <p className="text-base sm:text-lg text-zinc-500 max-w-2xl leading-relaxed">
+              Where connections flourish and communities thrive
+            </p>
           </div>
-        </motion.div>
-      </section>
+        </div>
+      </div>
 
       {/* Spaces Grid */}
-      <section className="py-20">
+      <section className="py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {spaces.map((space, index) => (
               <motion.div
                 key={space.title}
@@ -73,30 +68,35 @@ export default function SocialSpaces() {
                 viewport={{ once: true }}
                 className="group relative"
               >
-                <div className="relative aspect-[4/3] rounded-lg overflow-hidden bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-colors">
+                <div className="relative aspect-[4/3] rounded-lg overflow-hidden bg-zinc-950 border border-zinc-900 hover:border-zinc-800 transition-all duration-300 md:hover:scale-[1.02]">
+                  <div className="absolute inset-0 bg-gradient-to-br from-zinc-950/90 to-black/60" />
                   <div className="absolute inset-0" style={{ 
-                    backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0)`,
+                    backgroundImage: `radial-gradient(circle at 1px 1px, rgba(128,0,32,0.03) 1px, transparent 0)`,
                     backgroundSize: '16px 16px'
                   }} />
                   <div className="absolute top-4 right-4">
-                    <div className="w-2 h-2 bg-zinc-700 rounded-full" />
+                    <motion.div 
+                      className="w-2 h-2 bg-[#4a0011] rounded-full"
+                      whileHover={{ scale: [null, 1.5] }}
+                      transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                    />
                   </div>
-                  <div className="absolute inset-0 p-8 flex flex-col justify-end">
-                    <span className="text-xs text-zinc-500 font-medium tracking-wider uppercase mb-2">
+                  <div className="absolute inset-0 p-6 sm:p-8 flex flex-col justify-end group-hover:translate-y-[-2px] transition-transform duration-300">
+                    <span className="text-xs text-zinc-500 font-medium tracking-wider uppercase mb-2 group-hover:text-zinc-400 transition-colors">
                       {space.category}
                     </span>
-                    <h3 className="text-xl sm:text-2xl font-medium text-white mb-2">
+                    <h3 className="text-xl sm:text-2xl font-medium text-zinc-300 mb-2 group-hover:text-zinc-200 transition-colors">
                       {space.title}
                     </h3>
-                    <p className="text-base text-zinc-400 max-w-xl">
+                    <p className="text-base text-zinc-500 max-w-xl group-hover:text-zinc-400 transition-colors">
                       {space.description}
                     </p>
                     <motion.div 
-                      className="mt-6 inline-flex items-center text-zinc-400 hover:text-[#EDE8D0] transition-colors group"
-                      whileHover={{ x: 5 }}
+                      className="mt-4 inline-flex items-center text-zinc-500 group-hover:text-zinc-300 transition-colors"
+                      whileHover={{ x: [null, 5] }}
                     >
                       <span className="mr-2 text-sm">View Details</span>
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                       </svg>
                     </motion.div>
