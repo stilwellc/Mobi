@@ -116,15 +116,20 @@ export default function ShopPage() {
                     <h3 className="text-lg font-medium text-zinc-300 group-hover:text-zinc-200 transition-colors">
                       {item.title}
                     </h3>
-                    <motion.div 
+                    <Link 
+                      href={`/shop/${item.id}`}
                       className="inline-flex items-center text-zinc-500 group-hover:text-zinc-400 transition-colors"
-                      whileHover={{ x: [null, 5] }}
                     >
-                      <span className="mr-2 text-sm">View Details</span>
-                      <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                      </svg>
-                    </motion.div>
+                      <motion.div 
+                        className="inline-flex items-center"
+                        whileHover={{ x: [null, 5] }}
+                      >
+                        <span className="mr-2 text-sm">View Details</span>
+                        <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                      </motion.div>
+                    </Link>
                   </div>
                 </motion.div>
               ))}
