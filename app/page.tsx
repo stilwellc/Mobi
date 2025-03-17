@@ -126,7 +126,7 @@ export default function Home() {
             </div>
 
             <div className="group relative">
-              <Link href="/store" className="block">
+              <Link href="/shop" className="block">
                 <div className="relative aspect-[6/1] md:aspect-square rounded-lg overflow-hidden bg-zinc-950 border border-zinc-900 md:hover:border-zinc-800 transition-all duration-300 md:hover:scale-[1.02]">
                   <div className="absolute inset-0 bg-gradient-to-tl from-zinc-950/90 to-black/60" />
                   <div className="absolute inset-0" style={{ 
@@ -134,7 +134,7 @@ export default function Home() {
                     backgroundSize: '16px 16px'
                   }} />
                   <div className="absolute inset-0 flex items-center justify-center px-6 md:px-0">
-                    <div className="text-xl md:hidden font-medium text-zinc-400 absolute left-6">design store</div>
+                    <div className="text-xl md:hidden font-medium text-zinc-400 absolute left-6">shop</div>
                     <motion.div 
                       className="w-2 h-2 bg-[#4a0011] rounded-full md:relative absolute right-6 md:right-auto"
                       whileHover={{ scale: [null, 1.5] }}
@@ -142,7 +142,7 @@ export default function Home() {
                     />
                   </div>
                 </div>
-                <h3 className="mt-3 text-sm font-medium text-zinc-600 text-center hidden md:block md:group-hover:text-zinc-400 transition-colors">design store</h3>
+                <h3 className="mt-3 text-sm font-medium text-zinc-600 text-center hidden md:block md:group-hover:text-zinc-400 transition-colors">shop</h3>
               </Link>
             </div>
 
