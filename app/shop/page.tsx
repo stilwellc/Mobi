@@ -87,35 +87,39 @@ export default function ShopPage() {
                   viewport={{ once: true }}
                   className="group relative"
                 >
-                  <div className="relative aspect-square rounded-lg overflow-hidden bg-zinc-950 border border-zinc-900 hover:border-zinc-800 transition-all duration-300 md:hover:scale-[1.02]">
-                    <div className="absolute inset-0 bg-gradient-to-br from-zinc-950/90 to-black/60" />
-                    <div className="absolute inset-0" style={{ 
-                      backgroundImage: `radial-gradient(circle at 1px 1px, rgba(128,0,32,0.03) 1px, transparent 0)`,
-                      backgroundSize: '16px 16px'
-                    }} />
-                    <Image
-                      src={item.imagePath}
-                      alt={item.title}
-                      fill
-                      className="object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300"
-                    />
-                    <div className="absolute bottom-4 right-4">
-                      <div className="px-2 py-1 bg-[#4a0011]/90 backdrop-blur-sm rounded text-xs font-medium tracking-wider text-zinc-200">
-                        SOLD
+                  <Link href={`/shop/${item.id}`} className="block">
+                    <div className="relative aspect-square rounded-lg overflow-hidden bg-zinc-950 border border-zinc-900 hover:border-zinc-800 transition-all duration-300 md:hover:scale-[1.02]">
+                      <div className="absolute inset-0 bg-gradient-to-br from-zinc-950/90 to-black/60" />
+                      <div className="absolute inset-0" style={{ 
+                        backgroundImage: `radial-gradient(circle at 1px 1px, rgba(128,0,32,0.03) 1px, transparent 0)`,
+                        backgroundSize: '16px 16px'
+                      }} />
+                      <Image
+                        src={item.imagePath}
+                        alt={item.title}
+                        fill
+                        className="object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300"
+                      />
+                      <div className="absolute bottom-4 right-4">
+                        <div className="px-2 py-1 bg-[#4a0011]/90 backdrop-blur-sm rounded text-xs font-medium tracking-wider text-zinc-200">
+                          SOLD
+                        </div>
+                      </div>
+                      <div className="absolute top-4 right-4">
+                        <motion.div 
+                          className="w-2 h-2 bg-[#4a0011] rounded-full"
+                          whileHover={{ scale: [null, 1.5] }}
+                          transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                        />
                       </div>
                     </div>
-                    <div className="absolute top-4 right-4">
-                      <motion.div 
-                        className="w-2 h-2 bg-[#4a0011] rounded-full"
-                        whileHover={{ scale: [null, 1.5] }}
-                        transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                      />
-                    </div>
-                  </div>
+                  </Link>
                   <div className="mt-4 space-y-2">
-                    <h3 className="text-lg font-medium text-zinc-300 group-hover:text-zinc-200 transition-colors">
-                      {item.title}
-                    </h3>
+                    <Link href={`/shop/${item.id}`}>
+                      <h3 className="text-lg font-medium text-zinc-300 group-hover:text-zinc-200 transition-colors hover:text-zinc-100">
+                        {item.title}
+                      </h3>
+                    </Link>
                     <Link 
                       href={`/shop/${item.id}`}
                       className="inline-flex items-center text-zinc-500 group-hover:text-zinc-400 transition-colors"
