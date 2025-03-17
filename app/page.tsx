@@ -189,31 +189,6 @@ export default function Home() {
                 </div>
               </Link>
             </div>
-
-            {[1, 2].map((item) => (
-              <div
-                key={item}
-                className="group relative"
-              >
-                <div className="relative aspect-[16/9] rounded-lg overflow-hidden bg-zinc-950/50 border border-zinc-900/50">
-                  <div className="absolute inset-0" style={{ 
-                    backgroundImage: `radial-gradient(circle at 1px 1px, rgba(128,0,32,0.015) 1px, transparent 0)`,
-                    backgroundSize: '16px 16px'
-                  }} />
-                  <div className="absolute top-4 right-4">
-                    <div className="w-2 h-2 bg-zinc-800 rounded-full" />
-                  </div>
-                  <div className="absolute inset-0 p-6 sm:p-8">
-                    <span className="text-xs text-zinc-700 font-medium tracking-wider uppercase mb-2">
-                      coming soon
-                    </span>
-                    <h3 className="text-2xl sm:text-3xl md:text-4xl font-medium text-zinc-800">
-                      ———
-                    </h3>
-                  </div>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </section>
