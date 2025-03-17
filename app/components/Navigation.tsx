@@ -10,7 +10,7 @@ const navItems = [
   { name: 'physical', href: '/physical', shape: 'rounded-full' },
   { name: 'digital', href: '/digital', shape: 'rotate-45' },
   { name: 'social', href: '/social', shape: 'rounded-[30%]' },
-  { name: 'store', href: '/store', shape: 'rounded-[60%]' },
+  { name: 'store', href: '/shop', shape: 'rounded-[60%]' },
 ];
 
 export default function Navigation() {
