@@ -63,7 +63,7 @@ export default function Home() {
 
       {/* Main Content */}
       <div 
-        className="relative z-10 min-h-screen flex flex-col items-center justify-start pt-32 sm:justify-center sm:pt-0 px-4 sm:px-6"
+        className="relative z-10 min-h-screen flex flex-col items-center justify-start pt-20 sm:justify-center sm:pt-32 px-4 sm:px-6"
       >
         <div
           className="text-center max-w-[90rem] mx-auto"
