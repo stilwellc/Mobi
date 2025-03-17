@@ -88,7 +88,7 @@ export default function ShopPage() {
                   className="group relative"
                 >
                   <Link href={`/shop/${item.id}`} className="block">
-                    <div className="relative aspect-square rounded-lg overflow-hidden bg-zinc-950 border border-zinc-900 hover:border-zinc-800 transition-all duration-300 md:hover:scale-[1.02]">
+                    <div className="relative aspect-square rounded-lg overflow-hidden bg-zinc-950 border border-zinc-900 transition-all duration-300 md:hover:border-zinc-800 md:hover:scale-[1.02]">
                       <div className="absolute inset-0 bg-gradient-to-br from-zinc-950/90 to-black/60" />
                       <div className="absolute inset-0" style={{ 
                         backgroundImage: `radial-gradient(circle at 1px 1px, rgba(128,0,32,0.03) 1px, transparent 0)`,
@@ -98,7 +98,7 @@ export default function ShopPage() {
                         src={item.imagePath}
                         alt={item.title}
                         fill
-                        className="object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300"
+                        className="object-cover opacity-80 md:group-hover:opacity-100 transition-opacity duration-300"
                       />
                       <div className="absolute bottom-4 right-4">
                         <div className="px-2 py-1 bg-[#4a0011]/90 backdrop-blur-sm rounded text-xs font-medium tracking-wider text-zinc-200">
@@ -116,20 +116,21 @@ export default function ShopPage() {
                   </Link>
                   <div className="mt-4 space-y-2">
                     <Link href={`/shop/${item.id}`}>
-                      <h3 className="text-lg font-medium text-zinc-300 group-hover:text-zinc-200 transition-colors hover:text-zinc-100">
+                      <h3 className="text-lg font-medium text-zinc-300 md:group-hover:text-zinc-200 transition-colors md:hover:text-zinc-100">
                         {item.title}
                       </h3>
                     </Link>
                     <Link 
                       href={`/shop/${item.id}`}
-                      className="inline-flex items-center text-zinc-500 group-hover:text-zinc-400 transition-colors"
+                      className="inline-flex items-center text-zinc-500 md:group-hover:text-zinc-400 transition-colors"
                     >
                       <motion.div 
                         className="inline-flex items-center"
                         whileHover={{ x: [null, 5] }}
+                        transition={{ type: "spring", stiffness: 400, damping: 10 }}
                       >
                         <span className="mr-2 text-sm">View Details</span>
-                        <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4 md:group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                         </svg>
                       </motion.div>
