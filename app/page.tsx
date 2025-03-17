@@ -190,38 +190,26 @@ export default function Home() {
               </Link>
             </div>
 
-            {[1, 2].map((item, index) => (
+            {[1, 2].map((item) => (
               <div
                 key={item}
                 className="group relative"
               >
-                <div className="relative aspect-[16/9] rounded-lg overflow-hidden bg-zinc-950 border border-zinc-900 hover:border-zinc-800 transition-colors">
+                <div className="relative aspect-[16/9] rounded-lg overflow-hidden bg-zinc-950/50 border border-zinc-900/50">
                   <div className="absolute inset-0" style={{ 
-                    backgroundImage: `radial-gradient(circle at 1px 1px, rgba(128,0,32,0.03) 1px, transparent 0)`,
+                    backgroundImage: `radial-gradient(circle at 1px 1px, rgba(128,0,32,0.015) 1px, transparent 0)`,
                     backgroundSize: '16px 16px'
                   }} />
                   <div className="absolute top-4 right-4">
-                    <div className="w-2 h-2 bg-zinc-700 rounded-full" />
+                    <div className="w-2 h-2 bg-zinc-800 rounded-full" />
                   </div>
                   <div className="absolute inset-0 p-6 sm:p-8">
-                    <span className="text-xs text-zinc-600 font-medium tracking-wider uppercase mb-2">
-                      featured project
+                    <span className="text-xs text-zinc-700 font-medium tracking-wider uppercase mb-2">
+                      coming soon
                     </span>
-                    <h3 className="text-2xl sm:text-3xl md:text-4xl font-medium text-zinc-500 mb-4">
-                      project title {item}
+                    <h3 className="text-2xl sm:text-3xl md:text-4xl font-medium text-zinc-800">
+                      ———
                     </h3>
-                    <p className="text-base sm:text-lg text-zinc-600 max-w-2xl">
-                      a brief description of the project and its impact
-                    </p>
-                    <motion.div 
-                      className="mt-6 inline-flex items-center text-zinc-600 hover:text-zinc-400 transition-colors group"
-                      whileHover={{ x: 5 }}
-                    >
-                      <span className="mr-2 text-sm">View Details</span>
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                      </svg>
-                    </motion.div>
                   </div>
                 </div>
               </div>
