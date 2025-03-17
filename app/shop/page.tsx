@@ -99,6 +99,11 @@ export default function ShopPage() {
                       fill
                       className="object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300"
                     />
+                    <div className="absolute bottom-4 left-4">
+                      <div className="px-2 py-1 bg-[#4a0011]/90 backdrop-blur-sm rounded text-xs font-medium tracking-wider text-zinc-200">
+                        SOLD
+                      </div>
+                    </div>
                     <div className="absolute top-4 right-4">
                       <motion.div 
                         className="w-2 h-2 bg-[#4a0011] rounded-full"
