@@ -5,6 +5,36 @@ import Image from 'next/image';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import Link from 'next/link';
 
+const icons = {
+  'physical': (
+    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M3 21V3h18v18M3 15h18M12 15v6M7 3v6m10-6v6" stroke="currentColor" strokeWidth="1.5"/>
+    </svg>
+  ),
+  'digital': (
+    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M3 12h18M12 3v18M15 3l-3 3-3-3m-3 18l3-3 3 3m6-6l-3 3 3 3M6 9l3 3-3 3" stroke="currentColor" strokeWidth="1.5"/>
+    </svg>
+  ),
+  'social': (
+    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M17 8a3 3 0 100-6 3 3 0 000 6zM7 15a3 3 0 100-6 3 3 0 000 6zM17 22a3 3 0 100-6 3 3 0 000 6zM14 7l-4 4m0 2l4 4" stroke="currentColor" strokeWidth="1.5"/>
+    </svg>
+  ),
+  'shop': (
+    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M3 6h2l.6 3m0 0L7 15h10l2-6H5.6z" stroke="currentColor" strokeWidth="1.5"/>
+      <circle cx="8" cy="18" r="2" stroke="currentColor" strokeWidth="1.5"/>
+      <circle cx="16" cy="18" r="2" stroke="currentColor" strokeWidth="1.5"/>
+    </svg>
+  ),
+  'about': (
+    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 11.5v5M12 7.51l.01-.011M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  )
+};
+
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -33,10 +63,10 @@ export default function Home() {
 
       {/* Main Content */}
       <div 
-        className="relative z-10 min-h-screen flex flex-col items-center justify-start pt-20 sm:justify-center sm:pt-0 px-4 sm:px-6"
+        className="relative z-10 min-h-screen flex flex-col items-center justify-start pt-32 sm:justify-center sm:pt-0 px-4 sm:px-6"
       >
         <div
-          className="text-center max-w-5xl mx-auto"
+          className="text-center max-w-[90rem] mx-auto"
         >
           <motion.div
             className="flex justify-center items-center mb-6 sm:mb-10"
@@ -61,111 +91,42 @@ export default function Home() {
             where design transcends boundaries, creating experiences that shape the future of human interaction
           </p>
           
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4 px-2">
-            <div className="group relative">
-              <Link href="/physical" className="block">
-                <div className="relative aspect-[6/1] md:aspect-square rounded-lg overflow-hidden bg-zinc-950 border border-zinc-900 md:hover:border-zinc-800 transition-all duration-300 md:hover:scale-[1.02]">
-                  <div className="absolute inset-0 bg-gradient-to-br from-zinc-950/90 to-black/60" />
-                  <div className="absolute inset-0" style={{ 
-                    backgroundImage: `radial-gradient(circle at 1px 1px, rgba(128,0,32,0.03) 1px, transparent 0)`,
-                    backgroundSize: '16px 16px'
-                  }} />
-                  <div className="absolute inset-0 flex items-center justify-center px-6 md:px-0">
-                    <div className="text-xl md:hidden font-medium text-zinc-400 absolute left-6">physical projects</div>
-                    <motion.div 
-                      className="w-2 h-2 bg-[#4a0011] rounded-full md:relative absolute right-6 md:right-auto"
-                      whileHover={{ scale: [null, 1.5] }}
-                      transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                    />
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-2 sm:gap-3 md:gap-4 px-2">
+            {[
+              { href: '/physical', title: 'physical projects', icon: 'physical' },
+              { href: '/digital', title: 'digital projects', icon: 'digital' },
+              { href: '/social', title: 'social spaces', icon: 'social' },
+              { href: '/shop', title: 'shop', icon: 'shop' },
+              { href: '/about', title: 'about us', icon: 'about' }
+            ].map((item) => (
+              <div key={item.href} className="group relative">
+                <Link href={item.href} className="block">
+                  <div className="relative aspect-[6/1] md:aspect-square rounded-lg overflow-hidden bg-zinc-950 border border-zinc-900 md:hover:border-zinc-800 transition-all duration-300 md:hover:scale-[1.02]">
+                    <div className="absolute inset-0 bg-gradient-to-br from-zinc-950/90 to-black/60" />
+                    <div className="absolute inset-0" style={{ 
+                      backgroundImage: `radial-gradient(circle at 1px 1px, rgba(128,0,32,0.03) 1px, transparent 0)`,
+                      backgroundSize: '16px 16px'
+                    }} />
+                    <div className="absolute inset-0 flex items-center justify-center px-6 md:px-0">
+                      <div className="text-xl md:hidden font-medium text-zinc-400 absolute left-6">{item.title}</div>
+                      <motion.div 
+                        className="md:hidden w-2 h-2 bg-[#4a0011] rounded-full absolute right-6"
+                        whileHover={{ scale: [null, 1.5] }}
+                        transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                      />
+                      <motion.div 
+                        className="hidden md:flex text-zinc-500 group-hover:text-zinc-400 transition-colors"
+                        whileHover={{ scale: [null, 1.2] }}
+                        transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                      >
+                        {icons[item.icon as keyof typeof icons]}
+                      </motion.div>
+                    </div>
                   </div>
-                </div>
-                <h3 className="mt-3 text-sm font-medium text-zinc-600 text-center hidden md:block md:group-hover:text-zinc-400 transition-colors">physical projects</h3>
-              </Link>
-            </div>
-
-            <div className="group relative">
-              <Link href="/digital" className="block">
-                <div className="relative aspect-[6/1] md:aspect-square rounded-lg overflow-hidden bg-zinc-950 border border-zinc-900 md:hover:border-zinc-800 transition-all duration-300 md:hover:scale-[1.02]">
-                  <div className="absolute inset-0 bg-gradient-to-bl from-zinc-950/90 to-black/60" />
-                  <div className="absolute inset-0" style={{ 
-                    backgroundImage: `radial-gradient(circle at 1px 1px, rgba(128,0,32,0.03) 1px, transparent 0)`,
-                    backgroundSize: '16px 16px'
-                  }} />
-                  <div className="absolute inset-0 flex items-center justify-center px-6 md:px-0">
-                    <div className="text-xl md:hidden font-medium text-zinc-400 absolute left-6">digital projects</div>
-                    <motion.div 
-                      className="w-2 h-2 bg-[#4a0011] rounded-full md:relative absolute right-6 md:right-auto"
-                      whileHover={{ scale: [null, 1.5] }}
-                      transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                    />
-                  </div>
-                </div>
-                <h3 className="mt-3 text-sm font-medium text-zinc-600 text-center hidden md:block md:group-hover:text-zinc-400 transition-colors">digital projects</h3>
-              </Link>
-            </div>
-
-            <div className="group relative">
-              <Link href="/social" className="block">
-                <div className="relative aspect-[6/1] md:aspect-square rounded-lg overflow-hidden bg-zinc-950 border border-zinc-900 md:hover:border-zinc-800 transition-all duration-300 md:hover:scale-[1.02]">
-                  <div className="absolute inset-0 bg-gradient-to-tr from-zinc-950/90 to-black/60" />
-                  <div className="absolute inset-0" style={{ 
-                    backgroundImage: `radial-gradient(circle at 1px 1px, rgba(128,0,32,0.03) 1px, transparent 0)`,
-                    backgroundSize: '16px 16px'
-                  }} />
-                  <div className="absolute inset-0 flex items-center justify-center px-6 md:px-0">
-                    <div className="text-xl md:hidden font-medium text-zinc-400 absolute left-6">social spaces</div>
-                    <motion.div 
-                      className="w-2 h-2 bg-[#4a0011] rounded-full md:relative absolute right-6 md:right-auto"
-                      whileHover={{ scale: [null, 1.5] }}
-                      transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                    />
-                  </div>
-                </div>
-                <h3 className="mt-3 text-sm font-medium text-zinc-600 text-center hidden md:block md:group-hover:text-zinc-400 transition-colors">social spaces</h3>
-              </Link>
-            </div>
-
-            <div className="group relative">
-              <Link href="/shop" className="block">
-                <div className="relative aspect-[6/1] md:aspect-square rounded-lg overflow-hidden bg-zinc-950 border border-zinc-900 md:hover:border-zinc-800 transition-all duration-300 md:hover:scale-[1.02]">
-                  <div className="absolute inset-0 bg-gradient-to-tl from-zinc-950/90 to-black/60" />
-                  <div className="absolute inset-0" style={{ 
-                    backgroundImage: `radial-gradient(circle at 1px 1px, rgba(128,0,32,0.03) 1px, transparent 0)`,
-                    backgroundSize: '16px 16px'
-                  }} />
-                  <div className="absolute inset-0 flex items-center justify-center px-6 md:px-0">
-                    <div className="text-xl md:hidden font-medium text-zinc-400 absolute left-6">shop</div>
-                    <motion.div 
-                      className="w-2 h-2 bg-[#4a0011] rounded-full md:relative absolute right-6 md:right-auto"
-                      whileHover={{ scale: [null, 1.5] }}
-                      transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                    />
-                  </div>
-                </div>
-                <h3 className="mt-3 text-sm font-medium text-zinc-600 text-center hidden md:block md:group-hover:text-zinc-400 transition-colors">shop</h3>
-              </Link>
-            </div>
-
-            <div className="group relative">
-              <Link href="/about" className="block">
-                <div className="relative aspect-[6/1] md:aspect-square rounded-lg overflow-hidden bg-zinc-950 border border-zinc-900 md:hover:border-zinc-800 transition-all duration-300 md:hover:scale-[1.02]">
-                  <div className="absolute inset-0 bg-gradient-to-tl from-zinc-950/90 to-black/60" />
-                  <div className="absolute inset-0" style={{ 
-                    backgroundImage: `radial-gradient(circle at 1px 1px, rgba(128,0,32,0.03) 1px, transparent 0)`,
-                    backgroundSize: '16px 16px'
-                  }} />
-                  <div className="absolute inset-0 flex items-center justify-center px-6 md:px-0">
-                    <div className="text-xl md:hidden font-medium text-zinc-400 absolute left-6">about us</div>
-                    <motion.div 
-                      className="w-2 h-2 bg-[#4a0011] rounded-full md:relative absolute right-6 md:right-auto"
-                      whileHover={{ scale: [null, 1.5] }}
-                      transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                    />
-                  </div>
-                </div>
-                <h3 className="mt-3 text-sm font-medium text-zinc-600 text-center hidden md:block md:group-hover:text-zinc-400 transition-colors">about us</h3>
-              </Link>
-            </div>
+                  <h3 className="mt-3 text-sm font-medium text-zinc-600 text-center hidden md:block md:group-hover:text-zinc-400 transition-colors">{item.title}</h3>
+                </Link>
+              </div>
+            ))}
           </div>
         </div>
 

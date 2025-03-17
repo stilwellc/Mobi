@@ -11,30 +11,6 @@ interface ShopItem {
   imagePath: string;
 }
 
-const icons = {
-  'herman-miller': (
-    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M3 10.4V21h18V10.4M3 10.4V3h18v7.4M3 10.4l9 5.4 9-5.4" stroke="currentColor" strokeWidth="1.5"/>
-    </svg>
-  ),
-  'chair': (
-    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M6 15h12M6 15v4M6 15V8m12 7v4m0-4V8M6 8V5a2 2 0 012-2h8a2 2 0 012 2v3M6 8h12" stroke="currentColor" strokeWidth="1.5"/>
-    </svg>
-  ),
-  'shelf': (
-    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M4 5h16M4 12h16M4 19h16" stroke="currentColor" strokeWidth="1.5"/>
-    </svg>
-  )
-};
-
-const getItemIcon = (itemId: string) => {
-  if (itemId.includes('herman-miller')) return icons['herman-miller'];
-  if (itemId.includes('shelf')) return icons['shelf'];
-  return icons['chair'];
-};
-
 export default function ShopPage() {
   const [items, setItems] = useState<ShopItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -66,11 +42,11 @@ export default function ShopPage() {
           }} />
         </div>
         
-        <div className="relative z-10 pt-24 pb-8">
-          <div className="max-w-[90rem] mx-auto px-4 sm:px-6">
+        <div className="relative z-10 pt-16 pb-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="flex items-center space-x-4 mb-4">
               <motion.div 
-                className="w-2 h-2 bg-[#4a0011] rounded-full md:hidden"
+                className="w-2 h-2 bg-[#4a0011] rounded-full"
                 whileHover={{ scale: [null, 1.5] }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               />
@@ -95,13 +71,13 @@ export default function ShopPage() {
 
       {/* Shop Grid */}
       <section className="relative z-10 py-8">
-        <div className="max-w-[90rem] mx-auto px-4 sm:px-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           {loading ? (
             <div className="flex justify-center items-center min-h-[200px]">
               <div className="w-2 h-2 bg-[#4a0011] rounded-full animate-ping" />
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {items.map((item) => (
                 <motion.div
                   key={item.id}
@@ -125,14 +101,7 @@ export default function ShopPage() {
                     />
                     <div className="absolute top-4 right-4">
                       <motion.div 
-                        className="hidden md:flex text-zinc-500 group-hover:text-zinc-400 transition-colors"
-                        whileHover={{ scale: [null, 1.2] }}
-                        transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                      >
-                        {getItemIcon(item.id)}
-                      </motion.div>
-                      <motion.div 
-                        className="md:hidden w-2 h-2 bg-[#4a0011] rounded-full"
+                        className="w-2 h-2 bg-[#4a0011] rounded-full"
                         whileHover={{ scale: [null, 1.5] }}
                         transition={{ type: "spring", stiffness: 400, damping: 10 }}
                       />
