@@ -175,7 +175,7 @@ export default function ScreechProject() {
                       [&_li]:relative [&_li]:pl-6 [&_li]:text-zinc-500 [&_li]:leading-relaxed
                       [&_li]:before:content-['•'] [&_li]:before:absolute [&_li]:before:left-0 [&_li]:before:text-zinc-600
                       [&_li]:before:top-0 [&_li]:before:text-lg
-                      divide-zinc-800 divide-y space-y-6
+                      space-y-6
                     ">
                       <ReactMarkdown>{formatMarkdown(item)}</ReactMarkdown>
                     </div>
