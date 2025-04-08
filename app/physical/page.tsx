@@ -5,22 +5,10 @@ import { motion } from 'framer-motion';
 
 const projects = [
   {
-    title: "Urban Furniture Collection",
-    description: "A series of modular furniture pieces that adapt to urban living spaces",
-    category: "Furniture",
-    image: "/images/urban-furniture.jpg"
-  },
-  {
-    title: "Sustainable Architecture",
-    description: "Eco-friendly building designs that harmonize with nature",
-    category: "Architecture",
-    image: "/images/sustainable-architecture.jpg"
-  },
-  {
-    title: "Product Design",
-    description: "Innovative product designs that blend aesthetics with functionality",
-    category: "Products",
-    image: "/images/product-design.jpg"
+    title: "Project 1122",
+    description: "A groundbreaking exploration of form and function in physical space",
+    category: "Installation",
+    image: "/images/project-1122.jpg"
   }
 ];
 
@@ -49,26 +37,26 @@ export default function PhysicalProjects() {
               </h1>
             </div>
             <p className="text-base sm:text-lg text-zinc-500 max-w-2xl leading-relaxed">
-              Where form meets function in the physical world
+              Exploring the intersection of design and physical space
             </p>
           </div>
         </div>
       </div>
 
-      {/* Projects Grid */}
+      {/* Project 1122 */}
       <section className="py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {projects.map((project, index) => (
+          <div className="max-w-3xl mx-auto">
+            {projects.map((project) => (
               <motion.div
                 key={project.title}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                transition={{ duration: 0.5 }}
                 viewport={{ once: true }}
                 className="group relative"
               >
-                <div className="relative aspect-[4/3] rounded-lg overflow-hidden bg-zinc-950 border border-zinc-900 hover:border-zinc-800 transition-all duration-300 md:hover:scale-[1.02]">
+                <div className="relative aspect-[16/9] rounded-lg overflow-hidden bg-zinc-950 border border-zinc-900 hover:border-zinc-800 transition-all duration-300 md:hover:scale-[1.02]">
                   <div className="absolute inset-0 bg-gradient-to-br from-zinc-950/90 to-black/60" />
                   <div className="absolute inset-0" style={{ 
                     backgroundImage: `radial-gradient(circle at 1px 1px, rgba(128,0,32,0.03) 1px, transparent 0)`,
