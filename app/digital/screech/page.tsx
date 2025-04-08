@@ -59,17 +59,7 @@ export default function ScreechProject() {
       if (line.match(/^[^•-].*?[🎁✨|🍽️🍹|👨‍👩‍👧‍👦|🏡|🌿🚴|🎶🎭|🎉|🎨|🎭|🎪|🎯|🎮|💻|📚|🎓|🏆|🎪|🎨|🎭]/) && !line.startsWith('•')) {
         // Remove any markdown headers (###) and style the text
         const cleanLine = line.replace(/^#+\s*/, '');
-        return `<span class="category-header">${cleanLine}</span>`;
-      }
-      
-      // Split line into individual bullet points if it contains multiple bullets
-      if (line.includes('•')) {
-        return line.split('•').map(point => {
-          if (point.trim()) {
-            return `• ${point.trim()}`;
-          }
-          return '';
-        }).filter(Boolean).join('\n');
+        return `### ${cleanLine}`;
       }
       
       // Convert bullet points with bold text
@@ -200,15 +190,12 @@ export default function ScreechProject() {
                       [&_li]:relative [&_li]:pl-6 [&_li]:text-zinc-500 [&_li]:leading-relaxed
                       [&_li]:before:content-['•'] [&_li]:before:absolute [&_li]:before:left-0 [&_li]:before:text-zinc-600
                       [&_li]:before:top-0 [&_li]:before:text-lg
-                      [&_.category-header]:text-[#800020] [&_.category-header]:text-xl [&_.category-header]:font-bold 
-                      [&_.category-header]:block [&_.category-header]:mb-6 [&_.category-header]:mt-8 
-                      [&_.category-header:first-child]:mt-0
+                      prose-h3:text-[#800020] prose-h3:text-xl prose-h3:font-bold 
+                      prose-h3:block prose-h3:mb-6 prose-h3:mt-8 
+                      prose-h3:first:mt-0
                       space-y-6
                     ">
-                      <ReactMarkdown components={{
-                        // Override the default paragraph component to preserve our HTML
-                        p: ({ children }) => <p dangerouslySetInnerHTML={{ __html: children as string }} />
-                      }}>{formatMarkdown(item)}</ReactMarkdown>
+                      <ReactMarkdown>{formatMarkdown(item)}</ReactMarkdown>
                     </div>
                   </div>
                 </div>
