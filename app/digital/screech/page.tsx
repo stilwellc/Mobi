@@ -50,26 +50,37 @@ export default function ScreechProject() {
   }, []);
 
   const formatMarkdown = (text: string) => {
-    // Convert section headers with emojis to markdown headers with proper spacing
-    let formatted = text.replace(
-      /^([^•-].*?)([🎁✨|🍽️🍹|👨‍👩‍👧‍👦|🏡|🌿🚴|🎶🎭|🎉|🎨|🎭|🎪|🎯|🎮|💻|📚|🎓|🏆|🎪|🎨|🎭]+)$/gm,
-      '\n## $1$2\n'
-    );
+    // First, split the text into lines
+    let lines = text.split('\n');
+    
+    // Process each line
+    lines = lines.map(line => {
+      // Check if this is a category header (contains emojis and no bullet points)
+      if (line.match(/^[^•-].*?[🎁✨|🍽️🍹|👨‍👩‍👧‍👦|🏡|🌿🚴|🎶🎭|🎉|🎨|🎭|🎪|🎯|🎮|💻|📚|🎓|🏆|🎪|🎨|🎭]/) && !line.startsWith('•')) {
+        return `<span class="category-header">${line}</span>`;
+      }
+      
+      // Convert bullet points with bold text
+      if (line.match(/^[-•]\s*\*\*(.*?)\*\*(.*)/)) {
+        return line.replace(/^[-•]\s*\*\*(.*?)\*\*(.*)/, '• **$1**$2');
+      }
+      
+      // Convert remaining bullet points
+      if (line.match(/^[-•]\s*.*/)) {
+        return line.replace(/^[-•]\s*(.*)/, '• $1');
+      }
+      
+      return line;
+    });
+    
+    // Join lines back together
+    let formatted = lines.join('\n');
     
     // Convert URLs to markdown links
     formatted = formatted.replace(
       /(https?:\/\/[^\s]+)/g,
       '[$1]($1)'
     );
-    
-    // Convert bullet points with bold text, ensuring proper spacing
-    formatted = formatted.replace(/^[-•]\s*\*\*(.*?)\*\*(.*)$/gm, '\n• **$1**$2');
-    
-    // Convert remaining bullet points with proper spacing
-    formatted = formatted.replace(/^[-•]\s*(.*)$/gm, '\n• $1');
-    
-    // Add extra line break before sections
-    formatted = formatted.replace(/\n##/g, '\n\n##');
     
     // Clean up any duplicate bullet points
     formatted = formatted.replace(/[•-]\s*[•-]\s*/g, '• ');
@@ -170,8 +181,6 @@ export default function ScreechProject() {
                   </div>
                   <div className="prose prose-invert prose-zinc max-w-none md:group-hover:translate-y-[-1px] transition-transform">
                     <div className="
-                      prose-h2:text-[#800020] prose-h2:mb-6 prose-h2:mt-8 prose-h2:first:mt-0 
-                      prose-h2:text-xl prose-h2:font-bold prose-h2:tracking-wide
                       prose-p:text-zinc-500 prose-p:my-3 prose-p:leading-relaxed
                       prose-strong:text-zinc-400 prose-strong:font-medium
                       prose-a:text-zinc-400 hover:prose-a:text-zinc-300 prose-a:no-underline hover:prose-a:underline
@@ -179,9 +188,15 @@ export default function ScreechProject() {
                       [&_li]:relative [&_li]:pl-6 [&_li]:text-zinc-500 [&_li]:leading-relaxed
                       [&_li]:before:content-['•'] [&_li]:before:absolute [&_li]:before:left-0 [&_li]:before:text-zinc-600
                       [&_li]:before:top-0 [&_li]:before:text-lg
+                      [&_.category-header]:text-[#800020] [&_.category-header]:text-xl [&_.category-header]:font-bold 
+                      [&_.category-header]:block [&_.category-header]:mb-6 [&_.category-header]:mt-8 
+                      [&_.category-header:first-child]:mt-0
                       space-y-6
                     ">
-                      <ReactMarkdown>{formatMarkdown(item)}</ReactMarkdown>
+                      <ReactMarkdown components={{
+                        // Override the default paragraph component to preserve our HTML
+                        p: ({ children }) => <p dangerouslySetInnerHTML={{ __html: children as string }} />
+                      }}>{formatMarkdown(item)}</ReactMarkdown>
                     </div>
                   </div>
                 </div>
