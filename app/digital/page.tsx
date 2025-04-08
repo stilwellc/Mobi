@@ -11,6 +11,13 @@ const projects = [
     category: "Newsletter",
     image: "/images/screech.jpg",
     href: "/digital/screech"
+  },
+  {
+    title: "Hot Brush",
+    description: "Track the hottest artists to invest in with real-time market data.",
+    href: "/digital/hotbrush",
+    icon: "🎨",
+    color: "bg-[#800020]",
   }
 ];
 
