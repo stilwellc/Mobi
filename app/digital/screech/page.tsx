@@ -57,7 +57,9 @@ export default function ScreechProject() {
     lines = lines.map(line => {
       // Check if this is a category header (contains emojis and no bullet points)
       if (line.match(/^[^•-].*?[🎁✨|🍽️🍹|👨‍👩‍👧‍👦|🏡|🌿🚴|🎶🎭|🎉|🎨|🎭|🎪|🎯|🎮|💻|📚|🎓|🏆|🎪|🎨|🎭]/) && !line.startsWith('•')) {
-        return `<span class="category-header">${line}</span>`;
+        // Remove any markdown headers (###) and style the text
+        const cleanLine = line.replace(/^#+\s*/, '');
+        return `<span class="category-header">${cleanLine}</span>`;
       }
       
       // Convert bullet points with bold text
