@@ -167,7 +167,8 @@ export default function ScreechProject() {
                   </div>
                   <div className="prose prose-invert prose-zinc max-w-none md:group-hover:translate-y-[-1px] transition-transform">
                     <div className="
-                      prose-headings:text-zinc-300 prose-headings:mb-6 prose-headings:mt-8 prose-headings:first:mt-0 prose-headings:text-xl
+                      prose-headings:text-[#800020] prose-headings:mb-6 prose-headings:mt-8 prose-headings:first:mt-0 
+                      prose-headings:text-xl prose-headings:font-bold
                       prose-p:text-zinc-500 prose-p:my-3 prose-p:leading-relaxed
                       prose-strong:text-zinc-400 prose-strong:font-medium
                       prose-a:text-zinc-400 hover:prose-a:text-zinc-300 prose-a:no-underline hover:prose-a:underline
