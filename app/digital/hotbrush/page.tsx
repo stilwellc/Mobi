@@ -3,29 +3,28 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-
-interface ArtworkSale {
-  title: string;
-  price: number;
-  date: string;
-  venue: string;
-}
+import ArtistAnalytics from '@/app/components/ArtistAnalytics';
 
 interface Artist {
+  id: string;
   name: string;
+  category: string;
   trend: 'up' | 'down' | 'stable';
   priceRange: string;
-  recentSales: ArtworkSale[];
+  recentSales: {
+    title: string;
+    price: number;
+    date: string;
+    venue: string;
+  }[];
   monthlyVolume: number;
   description: string;
-  category: string;
   followers: number;
-  monthlyRank?: number;
-  artsyId?: string;
-  imageUrl?: string;
+  monthlyRank: number;
+  lastMonthRank: number;
   galleryRepresentation: string[];
   upcomingShows: string[];
-  lastMonthRank?: number;
+  marketScore: number;
 }
 
 interface ArtsyArtist {
@@ -52,101 +51,32 @@ export default function HotBrushProject() {
   const [artists, setArtists] = useState<Artist[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
+  const [viewMode, setViewMode] = useState<'list' | 'analytics'>('list');
 
   useEffect(() => {
-    const fetchArtsyData = async () => {
+    const fetchArtists = async () => {
       try {
         setLoading(true);
-        // Note: In a real implementation, you would need to:
-        // 1. Set up proper API authentication
-        // 2. Store API keys securely
-        // 3. Create a backend API route to proxy these requests
-        const ARTSY_API_KEY = process.env.NEXT_PUBLIC_ARTSY_API_KEY;
-        const ARTSY_API_URL = 'https://api.artsy.net/api';
+        const response = await fetch(
+          `/api/rankings?timeframe=${selectedTimeframe}&category=${selectedCategory}`
+        );
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch artists');
+        }
 
-        // This is a mock of what the real implementation would look like
-        const mockArtists: Artist[] = [
-          {
-            name: "Amoako Boafo",
-            trend: "up",
-            priceRange: "$50,000-250,000",
-            recentSales: [
-              {
-                title: "Green Beret",
-                price: 175000,
-                date: "2024-03-15",
-                venue: "Phillips London"
-              },
-              {
-                title: "Self Portrait",
-                price: 220000,
-                date: "2024-03-01",
-                venue: "Christie's New York"
-              }
-            ],
-            monthlyVolume: 890000,
-            description: "Ghanaian artist known for his vibrant portraits. Recent auction performance shows strong market momentum with consistent price appreciation.",
-            category: "Contemporary",
-            followers: 125000,
-            monthlyRank: 1,
-            lastMonthRank: 3,
-            galleryRepresentation: ["Roberts Projects", "Mariane Ibrahim"],
-            upcomingShows: ["Solo Exhibition at Roberts Projects, LA (May 2024)"]
-          },
-          {
-            name: "Flora Yukhnovich",
-            trend: "up",
-            priceRange: "$100,000-500,000",
-            recentSales: [
-              {
-                title: "Rococo Study",
-                price: 320000,
-                date: "2024-03-10",
-                venue: "Sotheby's London"
-              }
-            ],
-            monthlyVolume: 750000,
-            description: "Rising star known for her contemporary interpretations of Rococo aesthetics. Strong institutional support and growing collector base.",
-            category: "Contemporary",
-            followers: 98000,
-            monthlyRank: 2,
-            lastMonthRank: 5,
-            galleryRepresentation: ["Victoria Miro", "Parafin"],
-            upcomingShows: ["Group Show at Victoria Miro (June 2024)"]
-          },
-          {
-            name: "Anna Weyant",
-            trend: "stable",
-            priceRange: "$150,000-800,000",
-            recentSales: [
-              {
-                title: "Evening Study",
-                price: 450000,
-                date: "2024-02-28",
-                venue: "Gagosian New York"
-              }
-            ],
-            monthlyVolume: 680000,
-            description: "Contemporary figurative painter represented by Gagosian. Market showing strong stability after meteoric rise.",
-            category: "Contemporary",
-            followers: 145000,
-            monthlyRank: 3,
-            lastMonthRank: 1,
-            galleryRepresentation: ["Gagosian"],
-            upcomingShows: ["Solo Exhibition at Gagosian London (July 2024)"]
-          }
-        ];
-
-        setArtists(mockArtists);
+        const data = await response.json();
+        setArtists(data.artists);
         setLoading(false);
       } catch (err) {
-        setError('Failed to fetch artist data');
+        setError('Failed to load artist data');
         setLoading(false);
       }
     };
 
-    fetchArtsyData();
-  }, [selectedTimeframe]);
+    fetchArtists();
+  }, [selectedCategory, selectedTimeframe]);
 
   const categories = ['all', ...Array.from(new Set(artists.map(artist => artist.category)))];
 
@@ -198,6 +128,36 @@ export default function HotBrushProject() {
         </div>
       </div>
 
+      {/* View Mode Toggle */}
+      <div className="relative z-10 py-4">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <div className="flex justify-end">
+            <div className="flex space-x-2 bg-zinc-900 rounded-full p-1">
+              <button
+                onClick={() => setViewMode('list')}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  viewMode === 'list'
+                    ? 'bg-[#800020] text-white'
+                    : 'text-zinc-400 hover:text-zinc-300'
+                }`}
+              >
+                List View
+              </button>
+              <button
+                onClick={() => setViewMode('analytics')}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  viewMode === 'analytics'
+                    ? 'bg-[#800020] text-white'
+                    : 'text-zinc-400 hover:text-zinc-300'
+                }`}
+              >
+                Analytics
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Filters */}
       <section className="relative z-10 py-8">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
@@ -239,7 +199,7 @@ export default function HotBrushProject() {
         </div>
       </section>
 
-      {/* Artist Cards */}
+      {/* Content */}
       <section className="relative z-10 py-8">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           {loading ? (
@@ -251,11 +211,13 @@ export default function HotBrushProject() {
             <div className="text-center py-12">
               <p className="text-red-500">{error}</p>
             </div>
+          ) : viewMode === 'analytics' && selectedArtist ? (
+            <ArtistAnalytics artistId={selectedArtist.id} />
           ) : (
             <div className="grid gap-6">
-              {filteredArtists.map((artist, index) => (
+              {filteredArtists.map((artist) => (
                 <div 
-                  key={index}
+                  key={artist.id}
                   className="relative rounded-lg overflow-hidden bg-zinc-950 border border-zinc-900 p-6 sm:p-8 group md:hover:scale-[1.01] transition-all duration-300"
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-zinc-950/90 to-black/60" />
@@ -278,8 +240,8 @@ export default function HotBrushProject() {
                             Rank #{artist.monthlyRank}
                             {artist.lastMonthRank && (
                               <span className="ml-1 text-xs">
-                                {artist.monthlyRank! < artist.lastMonthRank ? '↑' : '↓'}
-                                {Math.abs(artist.monthlyRank! - artist.lastMonthRank)}
+                                {artist.monthlyRank < artist.lastMonthRank ? '↑' : '↓'}
+                                {Math.abs(artist.monthlyRank - artist.lastMonthRank)}
                               </span>
                             )}
                           </span>
@@ -357,6 +319,19 @@ export default function HotBrushProject() {
                           </div>
                         </div>
                       )}
+
+                      {/* View Analytics Button */}
+                      <div className="mt-6">
+                        <button
+                          onClick={() => {
+                            setSelectedArtist(artist);
+                            setViewMode('analytics');
+                          }}
+                          className="w-full px-4 py-2 rounded-lg bg-[#800020] text-white text-sm font-medium hover:bg-[#4a0011] transition-colors"
+                        >
+                          View Detailed Analytics
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
