@@ -50,8 +50,8 @@ export default function ScreechProject() {
   }, []);
 
   const formatMarkdown = (text: string) => {
-    // Convert emoji headers to markdown headers
-    let formatted = text.replace(/^(🛡️|☁️|📦|🔗|🤖)\s*(.*)$/gm, '## $2');
+    // Convert emoji headers to markdown headers with proper spacing
+    let formatted = text.replace(/^(🛡️|☁️|📦|🔗|🤖)\s*(.*)$/gm, '\n## $2\n');
     
     // Convert URLs to markdown links
     formatted = formatted.replace(
@@ -59,14 +59,17 @@ export default function ScreechProject() {
       '[$1]($1)'
     );
     
-    // Convert bullet points with bold text
-    formatted = formatted.replace(/^[-•]\s*\*\*(.*?)\*\*(.*)$/gm, '- **$1**$2');
+    // Convert bullet points with bold text, ensuring proper spacing
+    formatted = formatted.replace(/^[-•]\s*\*\*(.*?)\*\*(.*)$/gm, '\n- **$1**$2');
     
-    // Convert remaining bullet points
-    formatted = formatted.replace(/^[-•]\s*(.*)$/gm, '- $1');
+    // Convert remaining bullet points with proper spacing
+    formatted = formatted.replace(/^[-•]\s*(.*)$/gm, '\n- $1');
     
-    // Ensure proper spacing for bullet points
-    formatted = formatted.replace(/^-/gm, '\n- ');
+    // Add extra line break before sections
+    formatted = formatted.replace(/\n##/g, '\n\n##');
+    
+    // Ensure proper spacing between bullet points
+    formatted = formatted.replace(/\n-/g, '\n\n-');
     
     return formatted;
   };
@@ -162,8 +165,18 @@ export default function ScreechProject() {
                       transition={{ type: "spring", stiffness: 400, damping: 10 }}
                     />
                   </div>
-                  <div className="prose prose-invert prose-zinc max-w-none md:group-hover:translate-y-[-1px] transition-transform prose-headings:text-zinc-300 prose-p:text-zinc-500 prose-strong:text-zinc-400 prose-a:text-zinc-400 hover:prose-a:text-zinc-300 prose-ul:text-zinc-500">
-                    <ReactMarkdown>{formatMarkdown(item)}</ReactMarkdown>
+                  <div className="prose prose-invert prose-zinc max-w-none md:group-hover:translate-y-[-1px] transition-transform">
+                    <div className="
+                      prose-headings:text-zinc-300 prose-headings:mb-4 prose-headings:mt-6 prose-headings:first:mt-0
+                      prose-p:text-zinc-500 prose-p:my-3
+                      prose-strong:text-zinc-400
+                      prose-a:text-zinc-400 hover:prose-a:text-zinc-300 prose-a:no-underline hover:prose-a:underline
+                      prose-ul:my-4 prose-ul:list-none
+                      prose-li:text-zinc-500 prose-li:my-2 prose-li:pl-4 prose-li:border-l prose-li:border-zinc-800
+                      [&_ul]:space-y-2
+                    ">
+                      <ReactMarkdown>{formatMarkdown(item)}</ReactMarkdown>
+                    </div>
                   </div>
                 </div>
               </div>
