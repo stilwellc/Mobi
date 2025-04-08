@@ -60,16 +60,16 @@ export default function ScreechProject() {
     );
     
     // Convert bullet points with bold text, ensuring proper spacing
-    formatted = formatted.replace(/^[-•]\s*\*\*(.*?)\*\*(.*)$/gm, '\n- **$1**$2');
+    formatted = formatted.replace(/^[-•]\s*\*\*(.*?)\*\*(.*)$/gm, '\n• **$1**$2');
     
     // Convert remaining bullet points with proper spacing
-    formatted = formatted.replace(/^[-•]\s*(.*)$/gm, '\n- $1');
+    formatted = formatted.replace(/^[-•]\s*(.*)$/gm, '\n• $1');
     
     // Add extra line break before sections
     formatted = formatted.replace(/\n##/g, '\n\n##');
     
-    // Ensure proper spacing between bullet points
-    formatted = formatted.replace(/\n-/g, '\n\n-');
+    // Clean up any duplicate bullet points
+    formatted = formatted.replace(/[•-]\s*[•-]\s*/g, '• ');
     
     return formatted;
   };
@@ -167,13 +167,15 @@ export default function ScreechProject() {
                   </div>
                   <div className="prose prose-invert prose-zinc max-w-none md:group-hover:translate-y-[-1px] transition-transform">
                     <div className="
-                      prose-headings:text-zinc-300 prose-headings:mb-4 prose-headings:mt-6 prose-headings:first:mt-0
-                      prose-p:text-zinc-500 prose-p:my-3
-                      prose-strong:text-zinc-400
+                      prose-headings:text-zinc-300 prose-headings:mb-6 prose-headings:mt-8 prose-headings:first:mt-0 prose-headings:text-xl
+                      prose-p:text-zinc-500 prose-p:my-3 prose-p:leading-relaxed
+                      prose-strong:text-zinc-400 prose-strong:font-medium
                       prose-a:text-zinc-400 hover:prose-a:text-zinc-300 prose-a:no-underline hover:prose-a:underline
-                      prose-ul:my-4 prose-ul:list-none
-                      prose-li:text-zinc-500 prose-li:my-2 prose-li:pl-4 prose-li:border-l prose-li:border-zinc-800
-                      [&_ul]:space-y-2
+                      prose-ul:my-6 prose-ul:space-y-3 prose-ul:list-none
+                      [&_li]:relative [&_li]:pl-6 [&_li]:text-zinc-500 [&_li]:leading-relaxed
+                      [&_li]:before:content-['•'] [&_li]:before:absolute [&_li]:before:left-0 [&_li]:before:text-zinc-600
+                      [&_li]:before:top-0 [&_li]:before:text-lg
+                      divide-zinc-800 divide-y space-y-6
                     ">
                       <ReactMarkdown>{formatMarkdown(item)}</ReactMarkdown>
                     </div>
