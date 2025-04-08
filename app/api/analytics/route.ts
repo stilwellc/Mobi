@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { getAccessToken } from '../artsy/route';
 
 interface MarketMetrics {
   priceAppreciation: number;
@@ -17,6 +16,53 @@ interface HistoricalData {
   auctionHouses: string[];
 }
 
+interface Insight {
+  type: string;
+  message: string;
+  confidence: 'high' | 'medium' | 'low';
+}
+
+// Mock implementation of missing functions
+async function fetchArtsyAuctions(artistId: string, token: string, timeframe: string) {
+  // Mock data for development
+  return [
+    { date: '2024-03-01', price: 50000, venue: 'Artsy' },
+    { date: '2024-02-15', price: 45000, venue: 'Artsy' },
+    { date: '2024-02-01', price: 40000, venue: 'Artsy' }
+  ];
+}
+
+async function fetchSothebysAuctions(artistId: string, timeframe: string) {
+  // Mock data for development
+  return [
+    { date: '2024-03-10', price: 75000, venue: 'Sotheby\'s' },
+    { date: '2024-02-20', price: 70000, venue: 'Sotheby\'s' }
+  ];
+}
+
+async function fetchChristiesAuctions(artistId: string, timeframe: string) {
+  // Mock data for development
+  return [
+    { date: '2024-03-05', price: 60000, venue: 'Christie\'s' },
+    { date: '2024-02-25', price: 55000, venue: 'Christie\'s' }
+  ];
+}
+
+async function fetchFollowers(artistId: string, token: string) {
+  // Mock data for development
+  return 15000;
+}
+
+async function fetchMentions(artistId: string) {
+  // Mock data for development
+  return 500;
+}
+
+async function fetchEngagement(artistId: string) {
+  // Mock data for development
+  return 0.15; // 15% engagement rate
+}
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -27,10 +73,8 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Artist ID is required' }, { status: 400 });
     }
 
-    const token = await getAccessToken();
-    if (!token) {
-      throw new Error('Failed to get access token');
-    }
+    // Mock token for development
+    const token = 'mock-token';
 
     // Fetch comprehensive artist data
     const [artistData, auctionData, galleryData, socialData] = await Promise.all([

@@ -234,7 +234,7 @@ export default function ArtistAnalytics({ artistId }: { artistId: string }) {
               <XAxis
                 dataKey="date"
                 stroke="#71717a"
-                tickFormatter={(date) => new Date(date).toLocaleDateString()}
+                tickFormatter={(date: string) => new Date(date).toLocaleDateString()}
               />
               <YAxis
                 stroke="#71717a"
@@ -251,7 +251,7 @@ export default function ArtistAnalytics({ artistId }: { artistId: string }) {
                   backgroundColor: '#18181b',
                   border: '1px solid #27272a',
                 }}
-                labelFormatter={(date) => new Date(date).toLocaleDateString()}
+                labelFormatter={(date: string) => new Date(date).toLocaleDateString()}
                 formatter={(value: number) => [
                   new Intl.NumberFormat('en-US', {
                     style: 'currency',
