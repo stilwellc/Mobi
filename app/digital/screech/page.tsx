@@ -62,6 +62,16 @@ export default function ScreechProject() {
         return `<span class="category-header">${cleanLine}</span>`;
       }
       
+      // Split line into individual bullet points if it contains multiple bullets
+      if (line.includes('•')) {
+        return line.split('•').map(point => {
+          if (point.trim()) {
+            return `• ${point.trim()}`;
+          }
+          return '';
+        }).filter(Boolean).join('\n');
+      }
+      
       // Convert bullet points with bold text
       if (line.match(/^[-•]\s*\*\*(.*?)\*\*(.*)/)) {
         return line.replace(/^[-•]\s*\*\*(.*?)\*\*(.*)/, '• **$1**$2');
