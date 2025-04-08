@@ -50,8 +50,11 @@ export default function ScreechProject() {
   }, []);
 
   const formatMarkdown = (text: string) => {
-    // Convert emoji headers to markdown headers with proper spacing
-    let formatted = text.replace(/^(🛡️|☁️|📦|🔗|🤖)\s*(.*)$/gm, '\n## $2\n');
+    // Convert section headers with emojis to markdown headers with proper spacing
+    let formatted = text.replace(
+      /^([^•-].*?)([🎁✨|🍽️🍹|👨‍👩‍👧‍👦|🏡|🌿🚴|🎶🎭|🎉|🎨|🎭|🎪|🎯|🎮|💻|📚|🎓|🏆|🎪|🎨|🎭]+)$/gm,
+      '\n## $1$2\n'
+    );
     
     // Convert URLs to markdown links
     formatted = formatted.replace(
@@ -167,8 +170,8 @@ export default function ScreechProject() {
                   </div>
                   <div className="prose prose-invert prose-zinc max-w-none md:group-hover:translate-y-[-1px] transition-transform">
                     <div className="
-                      prose-headings:text-[#800020] prose-headings:mb-6 prose-headings:mt-8 prose-headings:first:mt-0 
-                      prose-headings:text-xl prose-headings:font-bold
+                      prose-h2:text-[#800020] prose-h2:mb-6 prose-h2:mt-8 prose-h2:first:mt-0 
+                      prose-h2:text-xl prose-h2:font-bold prose-h2:tracking-wide
                       prose-p:text-zinc-500 prose-p:my-3 prose-p:leading-relaxed
                       prose-strong:text-zinc-400 prose-strong:font-medium
                       prose-a:text-zinc-400 hover:prose-a:text-zinc-300 prose-a:no-underline hover:prose-a:underline
