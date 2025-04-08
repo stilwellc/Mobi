@@ -7,9 +7,13 @@ const ARTSY_CLIENT_SECRET = process.env.ARTSY_CLIENT_SECRET;
 let accessToken: string | null = null;
 let tokenExpiry: number | null = null;
 
-async function getAccessToken() {
+export async function getAccessToken(): Promise<string> {
   if (accessToken && tokenExpiry && Date.now() < tokenExpiry) {
     return accessToken;
+  }
+
+  if (!ARTSY_CLIENT_ID || !ARTSY_CLIENT_SECRET) {
+    throw new Error('Artsy API credentials not configured');
   }
 
   const response = await fetch(`${ARTSY_API_URL}/tokens/xapp_token`, {
@@ -31,6 +35,19 @@ async function getAccessToken() {
   accessToken = data.token;
   tokenExpiry = Date.now() + (data.expires_in * 1000);
   return accessToken;
+}
+
+export async function GET() {
+  try {
+    const token = await getAccessToken();
+    return NextResponse.json({ token });
+  } catch (error) {
+    console.error('Artsy Token Error:', error);
+    return NextResponse.json(
+      { error: 'Failed to get Artsy token' },
+      { status: 500 }
+    );
+  }
 }
 
 export async function GET(request: Request) {

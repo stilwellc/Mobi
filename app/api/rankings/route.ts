@@ -1,121 +1,145 @@
 import { NextResponse } from 'next/server';
+import { getAccessToken } from '../artsy/token';
 
-const ARTSY_API_URL = 'https://api.artsy.net/api';
-const ARTSY_CLIENT_ID = process.env.ARTSY_CLIENT_ID;
-const ARTSY_CLIENT_SECRET = process.env.ARTSY_CLIENT_SECRET;
+interface Artist {
+  id: string;
+  name: string;
+  category: string;
+  trend: 'up' | 'down' | 'stable';
+  priceRange: string;
+  recentSales: {
+    title: string;
+    price: number;
+    date: string;
+    venue: string;
+  }[];
+  monthlyVolume: number;
+  description: string;
+  followers: number;
+  monthlyRank: number;
+  lastMonthRank: number;
+  galleryRepresentation: string[];
+  upcomingShows: string[];
+  marketScore: number;
+}
 
-let accessToken: string | null = null;
-let tokenExpiry: number | null = null;
-
-async function getAccessToken() {
-  if (accessToken && tokenExpiry && Date.now() < tokenExpiry) {
-    return accessToken;
-  }
-
-  const response = await fetch(`${ARTSY_API_URL}/tokens/xapp_token`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      client_id: ARTSY_CLIENT_ID,
-      client_secret: ARTSY_CLIENT_SECRET,
-    }),
-  });
-
+// Artsy API integration
+async function fetchArtsyArtists(token: string, category?: string) {
+  const response = await fetch(
+    `https://api.artsy.net/api/artists?size=15${category ? `&category=${category}` : ''}`,
+    {
+      headers: {
+        'X-XAPP-Token': token,
+        'Accept': 'application/vnd.artsy-v2+json'
+      }
+    }
+  );
+  
   if (!response.ok) {
-    throw new Error('Failed to get Artsy access token');
+    throw new Error('Failed to fetch Artsy artists');
   }
-
+  
   const data = await response.json();
-  accessToken = data.token;
-  tokenExpiry = Date.now() + (data.expires_in * 1000);
-  return accessToken;
+  return data._embedded.artists.map((artist: any) => ({
+    id: artist.id,
+    name: artist.name,
+    category: artist.category || 'Contemporary',
+    trend: 'up',
+    priceRange: '$10,000 - $100,000',
+    recentSales: [],
+    monthlyVolume: 0,
+    description: artist.biography || '',
+    followers: artist.followers_count || 0,
+    monthlyRank: 0,
+    lastMonthRank: 0,
+    galleryRepresentation: [],
+    upcomingShows: [],
+    marketScore: 0
+  }));
+}
+
+// Sotheby's API integration
+async function fetchSothebysArtists() {
+  // Note: Sotheby's API requires authentication and proper setup
+  // This is a mock implementation for now
+  return [
+    {
+      id: 'sothebys-1',
+      name: 'Artist One',
+      category: 'Contemporary',
+      trend: 'up',
+      priceRange: '$50,000 - $200,000',
+      recentSales: [],
+      monthlyVolume: 0,
+      description: 'Emerging contemporary artist',
+      followers: 0,
+      monthlyRank: 0,
+      lastMonthRank: 0,
+      galleryRepresentation: [],
+      upcomingShows: [],
+      marketScore: 0
+    },
+    // Add more mock artists...
+  ];
+}
+
+// Christie's API integration
+async function fetchChristiesArtists() {
+  // Note: Christie's API requires authentication and proper setup
+  // This is a mock implementation for now
+  return [
+    {
+      id: 'christies-1',
+      name: 'Artist Two',
+      category: 'Modern',
+      trend: 'stable',
+      priceRange: '$30,000 - $150,000',
+      recentSales: [],
+      monthlyVolume: 0,
+      description: 'Modern art specialist',
+      followers: 0,
+      monthlyRank: 0,
+      lastMonthRank: 0,
+      galleryRepresentation: [],
+      upcomingShows: [],
+      marketScore: 0
+    },
+    // Add more mock artists...
+  ];
 }
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
+    const category = searchParams.get('category');
     const timeframe = searchParams.get('timeframe') || '1m';
-    const category = searchParams.get('category') || 'all';
 
+    // Get Artsy token
     const token = await getAccessToken();
-    if (!token) {
-      throw new Error('Failed to get access token');
-    }
 
-    // Fetch trending artists from Artsy
-    const response = await fetch(
-      `${ARTSY_API_URL}/artists?sort=-trending&size=15`,
-      {
-        headers: {
-          'X-XAPP-Token': token,
-        },
-      }
-    );
+    // Fetch artists from all sources
+    const [artsyArtists, sothebysArtists, christiesArtists] = await Promise.all([
+      fetchArtsyArtists(token, category || undefined),
+      fetchSothebysArtists(),
+      fetchChristiesArtists()
+    ]);
 
-    if (!response.ok) {
-      throw new Error('Failed to fetch trending artists');
-    }
+    // Combine all artists
+    const allArtists = [...artsyArtists, ...sothebysArtists, ...christiesArtists];
 
-    const data = await response.json();
-    let artists = data._embedded.artists;
+    // Sort by market score and take top 15
+    const sortedArtists = allArtists
+      .sort((a, b) => b.marketScore - a.marketScore)
+      .slice(0, 15);
 
-    // Filter by category if specified
-    if (category !== 'all') {
-      artists = artists.filter((artist: any) => 
-        artist.category.toLowerCase() === category.toLowerCase()
-      );
-    }
-
-    // Fetch additional metrics for each artist
-    const enrichedArtists = await Promise.all(
-      artists.map(async (artist: any) => {
-        // Fetch artist's followers
-        const followersResponse = await fetch(
-          `${ARTSY_API_URL}/artists/${artist.id}/followers`,
-          {
-            headers: {
-              'X-XAPP-Token': token,
-            },
-          }
-        );
-
-        const followersData = await followersResponse.json();
-        const followers = followersData.total_count;
-
-        // Fetch artist's shows
-        const showsResponse = await fetch(
-          `${ARTSY_API_URL}/shows?artist_id=${artist.id}`,
-          {
-            headers: {
-              'X-XAPP-Token': token,
-            },
-          }
-        );
-
-        const showsData = await showsResponse.json();
-        const upcomingShows = showsData._embedded.shows.filter(
-          (show: any) => new Date(show.start_at) > new Date()
-        );
-
-        return {
-          ...artist,
-          followers,
-          upcomingShows: upcomingShows.length,
-          marketScore: calculateMarketScore(artist, followers, upcomingShows.length),
-        };
-      })
-    );
-
-    // Sort by market score
-    enrichedArtists.sort((a: any, b: any) => b.marketScore - a.marketScore);
-
-    return NextResponse.json({
-      artists: enrichedArtists,
-      timeframe,
-      category,
+    // Assign ranks
+    sortedArtists.forEach((artist, index) => {
+      artist.monthlyRank = index + 1;
+      // Mock last month's rank for now
+      artist.lastMonthRank = Math.max(1, index + Math.floor(Math.random() * 3) - 1);
     });
+
+    return NextResponse.json({ artists: sortedArtists });
   } catch (error) {
     console.error('Rankings API Error:', error);
     return NextResponse.json(
@@ -123,13 +147,4 @@ export async function GET(request: Request) {
       { status: 500 }
     );
   }
-}
-
-function calculateMarketScore(artist: any, followers: number, upcomingShows: number) {
-  // Simple scoring algorithm - can be enhanced based on more metrics
-  const baseScore = artist.trending_score || 0;
-  const followersScore = Math.log10(followers + 1) * 10;
-  const showsScore = upcomingShows * 5;
-  
-  return baseScore + followersScore + showsScore;
 } 
