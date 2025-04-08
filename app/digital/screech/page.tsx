@@ -141,7 +141,7 @@ export default function ScreechProject() {
       <section className="relative z-10 py-8">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="grid gap-6">
-            {newsFeed.map((item, index) => (
+            {[...newsFeed].reverse().map((item, index) => (
               <div 
                 key={index}
                 className="relative rounded-lg overflow-hidden bg-zinc-950 border border-zinc-900 p-6 sm:p-8 group md:hover:scale-[1.01] transition-all duration-300"
