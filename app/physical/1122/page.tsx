@@ -54,8 +54,10 @@ export default function Project1122() {
                     alt="Before blueprint"
                     className="w-full h-full object-contain"
                   />
-                  <div className="absolute bottom-0 left-0 right-0 p-4 bg-black/60">
-                    <span className="text-sm text-zinc-300">Before</span>
+                  <div className="absolute bottom-4 left-4">
+                    <div className="px-3 py-1.5 bg-[#800020] rounded-full">
+                      <span className="text-sm font-medium text-white">Before</span>
+                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -74,8 +76,10 @@ export default function Project1122() {
                     alt="After blueprint"
                     className="w-full h-full object-contain"
                   />
-                  <div className="absolute bottom-0 left-0 right-0 p-4 bg-black/60">
-                    <span className="text-sm text-zinc-300">After</span>
+                  <div className="absolute bottom-4 left-4">
+                    <div className="px-3 py-1.5 bg-[#800020] rounded-full">
+                      <span className="text-sm font-medium text-white">After</span>
+                    </div>
                   </div>
                 </div>
               </motion.div>
