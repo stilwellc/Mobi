@@ -1,10 +1,10 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { motion } from 'framer-motion'
-import { ArrowLeft } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { ArrowLeft, X } from 'lucide-react'
 
 const roomGroups = {
   bathroom: [
@@ -50,6 +50,8 @@ const roomTitles = {
 };
 
 export default function BeforeGallery() {
+  const [selectedImage, setSelectedImage] = useState<{ src: string; alt: string } | null>(null);
+
   return (
     <div className="min-h-screen bg-black">
       {/* Hero Section */}
@@ -102,14 +104,15 @@ export default function BeforeGallery() {
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: (groupIndex * 0.1) + (index * 0.05) }}
                     viewport={{ once: true }}
-                    className="relative rounded-lg overflow-hidden bg-black border border-zinc-900 hover:border-zinc-800 transition-all duration-300"
+                    className="relative rounded-lg overflow-hidden bg-black border border-zinc-900 hover:border-zinc-800 transition-all duration-300 cursor-pointer"
+                    onClick={() => setSelectedImage(photo)}
                   >
                     <div className="relative w-full" style={{ paddingBottom: '75%' }}>
                       <Image
                         src={photo.src}
                         alt={photo.alt}
                         fill
-                        className="object-contain p-4"
+                        className="object-contain p-4 rounded-lg"
                       />
                     </div>
                   </motion.div>
@@ -129,6 +132,43 @@ export default function BeforeGallery() {
           </div>
         </div>
       </section>
+
+      {/* Modal */}
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
+            onClick={() => setSelectedImage(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative max-w-5xl w-full max-h-[90vh]"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                className="absolute -top-12 right-0 text-zinc-400 hover:text-white transition-colors"
+                onClick={() => setSelectedImage(null)}
+              >
+                <X className="w-6 h-6" />
+              </button>
+              <div className="relative w-full" style={{ paddingBottom: '75%' }}>
+                <Image
+                  src={selectedImage.src}
+                  alt={selectedImage.alt}
+                  fill
+                  className="object-contain rounded-lg"
+                  priority
+                />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 } 
