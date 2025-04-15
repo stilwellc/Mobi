@@ -33,27 +33,29 @@ export default function Gallery() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-[2000px] mx-auto">
             <div className="flex flex-col gap-8">
-              {/* Before Blueprint */}
+              {/* Before Section */}
               <div>
-                <h2 className="text-2xl font-medium text-zinc-300 mb-6">Before Blueprint</h2>
-                <div className="relative aspect-[3/2] rounded-lg overflow-hidden bg-black border border-zinc-900">
-                  <img 
-                    src="/images/1122/1122before.png"
-                    alt="Before blueprint"
-                    className="w-full h-full object-contain"
-                  />
+                <h2 className="text-2xl font-medium text-zinc-300 mb-6">Before</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {/* Placeholder for before photos */}
+                  <div className="relative aspect-[4/3] rounded-lg overflow-hidden bg-black border border-zinc-900">
+                    <div className="absolute inset-0 flex items-center justify-center text-zinc-600">
+                      Coming Soon
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              {/* After Blueprint */}
+              {/* After Section */}
               <div>
-                <h2 className="text-2xl font-medium text-zinc-300 mb-6">After Blueprint</h2>
-                <div className="relative aspect-[3/2] rounded-lg overflow-hidden bg-black border border-zinc-900">
-                  <img 
-                    src="/images/1122/1122affter.png"
-                    alt="After blueprint"
-                    className="w-full h-full object-contain"
-                  />
+                <h2 className="text-2xl font-medium text-zinc-300 mb-6">After</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {/* Placeholder for after photos */}
+                  <div className="relative aspect-[4/3] rounded-lg overflow-hidden bg-black border border-zinc-900">
+                    <div className="absolute inset-0 flex items-center justify-center text-zinc-600">
+                      Coming Soon
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
