@@ -154,21 +154,21 @@ export default function BeforeGallery() {
                     <>
                       <button
                         onClick={() => handlePrevious(roomType)}
-                        className={`absolute -left-12 top-1/2 -translate-y-1/2 p-2 rounded-full bg-zinc-900/50 hover:bg-zinc-900 transition-colors ${
+                        className={`absolute -left-12 top-1/2 -translate-y-1/2 p-2 rounded-full bg-[#4a0011]/50 hover:bg-[#4a0011] transition-colors ${
                           startIdx === 0 ? 'opacity-50 cursor-not-allowed' : 'opacity-100'
                         }`}
                         disabled={startIdx === 0}
                       >
-                        <ChevronLeft className="w-6 h-6 text-zinc-300" />
+                        <ChevronLeft className="w-6 h-6 text-white" />
                       </button>
                       <button
                         onClick={() => handleNext(roomType, maxIndex)}
-                        className={`absolute -right-12 top-1/2 -translate-y-1/2 p-2 rounded-full bg-zinc-900/50 hover:bg-zinc-900 transition-colors ${
+                        className={`absolute -right-12 top-1/2 -translate-y-1/2 p-2 rounded-full bg-[#4a0011]/50 hover:bg-[#4a0011] transition-colors ${
                           startIdx >= maxIndex ? 'opacity-50 cursor-not-allowed' : 'opacity-100'
                         }`}
                         disabled={startIdx >= maxIndex}
                       >
-                        <ChevronRight className="w-6 h-6 text-zinc-300" />
+                        <ChevronRight className="w-6 h-6 text-white" />
                       </button>
                     </>
                   )}
