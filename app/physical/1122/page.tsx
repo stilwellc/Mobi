@@ -38,8 +38,8 @@ export default function Project1122() {
       {/* Project Content */}
       <section className="py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="max-w-[2000px] mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Before Image */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -48,7 +48,7 @@ export default function Project1122() {
                 viewport={{ once: true }}
                 className="relative"
               >
-                <div className="relative aspect-[4/3] rounded-lg overflow-hidden bg-zinc-950 border border-zinc-900 hover:border-zinc-800 transition-all duration-300">
+                <div className="relative aspect-[3/2] rounded-lg overflow-hidden bg-zinc-950 border border-zinc-900 hover:border-zinc-800 transition-all duration-300">
                   <img 
                     src="/images/1122/1122before.png" 
                     alt="Before blueprint"
@@ -68,7 +68,7 @@ export default function Project1122() {
                 viewport={{ once: true }}
                 className="relative"
               >
-                <div className="relative aspect-[4/3] rounded-lg overflow-hidden bg-zinc-950 border border-zinc-900 hover:border-zinc-800 transition-all duration-300">
+                <div className="relative aspect-[3/2] rounded-lg overflow-hidden bg-zinc-950 border border-zinc-900 hover:border-zinc-800 transition-all duration-300">
                   <img 
                     src="/images/1122/1122affter.png" 
                     alt="After blueprint"
@@ -81,7 +81,7 @@ export default function Project1122() {
               </motion.div>
             </div>
 
-            <div className="mt-12">
+            <div className="mt-12 max-w-4xl mx-auto">
               <h2 className="text-2xl font-medium text-zinc-300 mb-4">Project Details</h2>
               <p className="text-base text-zinc-500 leading-relaxed">
                 This project represents a significant transformation in physical space design, 
@@ -91,7 +91,7 @@ export default function Project1122() {
               </p>
             </div>
 
-            <div className="mt-8">
+            <div className="mt-8 max-w-4xl mx-auto">
               <Link 
                 href="/physical"
                 className="inline-flex items-center text-zinc-500 hover:text-zinc-300 transition-colors"
