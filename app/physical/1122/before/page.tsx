@@ -125,7 +125,33 @@ export default function BeforeGallery() {
                   {roomTitles[roomType as keyof typeof roomTitles]}
                 </motion.h2>
                 <div className="relative">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {/* Mobile/Tablet: Show all photos, no carousel/arrows */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:hidden">
+                    <AnimatePresence mode="popLayout">
+                      {photos.map((photo, index) => (
+                        <motion.div
+                          key={photo.src}
+                          initial={{ opacity: 0, x: 50 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -50 }}
+                          transition={{ duration: 0.3 }}
+                          className="relative rounded-lg overflow-hidden bg-black border border-zinc-900 hover:border-zinc-800 transition-all duration-300 cursor-pointer"
+                          onClick={() => setSelectedImage(photo)}
+                        >
+                          <div className="relative w-full" style={{ paddingBottom: '75%' }}>
+                            <Image
+                              src={photo.src}
+                              alt={photo.alt}
+                              fill
+                              className="object-contain p-4 rounded-lg"
+                            />
+                          </div>
+                        </motion.div>
+                      ))}
+                    </AnimatePresence>
+                  </div>
+                  {/* Desktop: Carousel with arrows */}
+                  <div className="hidden lg:grid lg:grid-cols-3 gap-6">
                     <AnimatePresence mode="popLayout">
                       {visiblePhotos.map((photo, index) => (
                         <motion.div
@@ -149,12 +175,12 @@ export default function BeforeGallery() {
                       ))}
                     </AnimatePresence>
                   </div>
-                  
+                  {/* Desktop: Carousel Arrows */}
                   {showNavigation && (
                     <>
                       <button
                         onClick={() => handlePrevious(roomType)}
-                        className={`absolute -left-12 top-1/2 -translate-y-1/2 p-2 rounded-full bg-[#4a0011]/50 hover:bg-[#4a0011] transition-colors ${
+                        className={`hidden lg:flex absolute -left-12 top-1/2 -translate-y-1/2 p-2 rounded-full bg-[#4a0011]/50 hover:bg-[#4a0011] transition-colors ${
                           startIdx === 0 ? 'opacity-50 cursor-not-allowed' : 'opacity-100'
                         }`}
                         disabled={startIdx === 0}
@@ -163,7 +189,7 @@ export default function BeforeGallery() {
                       </button>
                       <button
                         onClick={() => handleNext(roomType, maxIndex)}
-                        className={`absolute -right-12 top-1/2 -translate-y-1/2 p-2 rounded-full bg-[#4a0011]/50 hover:bg-[#4a0011] transition-colors ${
+                        className={`hidden lg:flex absolute -right-12 top-1/2 -translate-y-1/2 p-2 rounded-full bg-[#4a0011]/50 hover:bg-[#4a0011] transition-colors ${
                           startIdx >= maxIndex ? 'opacity-50 cursor-not-allowed' : 'opacity-100'
                         }`}
                         disabled={startIdx >= maxIndex}
