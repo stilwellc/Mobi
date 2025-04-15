@@ -7,25 +7,16 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, X } from 'lucide-react'
 
 const roomGroups = {
-  bathroom: [
-    { src: '/images/1122/before/bathroom1.webp', alt: 'Bathroom Before' }
-  ],
-  bedroom: [
-    { src: '/images/1122/before/bedroom1.webp', alt: 'Bedroom 1 Before' },
-    { src: '/images/1122/before/bedroom2.webp', alt: 'Bedroom 2 Before' },
-    { src: '/images/1122/before/bedroom3.webp', alt: 'Bedroom 3 Before' },
-    { src: '/images/1122/before/bedroom4.webp', alt: 'Bedroom 4 Before' }
-  ],
-  dining: [
-    { src: '/images/1122/before/diningroom1.webp', alt: 'Dining Room 1 Before' },
-    { src: '/images/1122/before/diningroom2.webp', alt: 'Dining Room 2 Before' },
-    { src: '/images/1122/before/diningroom3.webp', alt: 'Dining Room 3 Before' }
-  ],
   kitchen: [
     { src: '/images/1122/before/kitchen1.webp', alt: 'Kitchen 1 Before' },
     { src: '/images/1122/before/kitchen2.webp', alt: 'Kitchen 2 Before' },
     { src: '/images/1122/before/kitchen3.webp', alt: 'Kitchen 3 Before' },
     { src: '/images/1122/before/kitchen4.webp', alt: 'Kitchen 4 Before' }
+  ],
+  dining: [
+    { src: '/images/1122/before/diningroom1.webp', alt: 'Dining Room 1 Before' },
+    { src: '/images/1122/before/diningroom2.webp', alt: 'Dining Room 2 Before' },
+    { src: '/images/1122/before/diningroom3.webp', alt: 'Dining Room 3 Before' }
   ],
   living: [
     { src: '/images/1122/before/Livingroom1.webp', alt: 'Living Room 1 Before' },
@@ -33,20 +24,29 @@ const roomGroups = {
     { src: '/images/1122/before/livingroom3.webp', alt: 'Living Room 3 Before' },
     { src: '/images/1122/before/livingroom4.webp', alt: 'Living Room 4 Before' }
   ],
+  bedroom: [
+    { src: '/images/1122/before/bedroom1.webp', alt: 'Bedroom 1 Before' },
+    { src: '/images/1122/before/bedroom2.webp', alt: 'Bedroom 2 Before' },
+    { src: '/images/1122/before/bedroom3.webp', alt: 'Bedroom 3 Before' },
+    { src: '/images/1122/before/bedroom4.webp', alt: 'Bedroom 4 Before' }
+  ],
   office: [
     { src: '/images/1122/before/office1.webp', alt: 'Office 1 Before' },
     { src: '/images/1122/before/office2.webp', alt: 'Office 2 Before' },
     { src: '/images/1122/before/office3.webp', alt: 'Office 3 Before' }
+  ],
+  bathroom: [
+    { src: '/images/1122/before/bathroom1.webp', alt: 'Bathroom Before' }
   ]
 };
 
 const roomTitles = {
-  bathroom: 'Bathroom',
-  bedroom: 'Bedroom',
-  dining: 'Dining Room',
   kitchen: 'Kitchen',
+  dining: 'Dining Room',
   living: 'Living Room',
-  office: 'Office'
+  bedroom: 'Bedroom',
+  office: 'Office',
+  bathroom: 'Bathroom'
 };
 
 export default function BeforeGallery() {
