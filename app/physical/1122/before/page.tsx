@@ -1,13 +1,9 @@
-import { Metadata } from 'next'
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ArrowLeft } from 'lucide-react'
-
-export const metadata: Metadata = {
-  title: 'Before Gallery | Project 1122 | Stilwell',
-  description: 'Before photos of the historic home renovation.',
-}
 
 const photos = [
   {

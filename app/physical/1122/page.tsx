@@ -1,70 +1,9 @@
 'use client';
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import { Metadata } from 'next'
+import { motion } from 'framer-motion'
+import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowLeft } from 'lucide-react'
-
-export const metadata: Metadata = {
-  title: 'Project 1122 | Stilwell',
-  description: 'A complete renovation of a historic home in the heart of the city.',
-}
-
-const beforePhotos = [
-  {
-    src: '/physical/1122/before/1.jpg',
-    alt: 'Before - Front Exterior',
-  },
-  {
-    src: '/physical/1122/before/2.jpg',
-    alt: 'Before - Living Room',
-  },
-  {
-    src: '/physical/1122/before/3.jpg',
-    alt: 'Before - Kitchen',
-  },
-  {
-    src: '/physical/1122/before/4.jpg',
-    alt: 'Before - Bathroom',
-  },
-  {
-    src: '/physical/1122/before/5.jpg',
-    alt: 'Before - Bedroom',
-  },
-  {
-    src: '/physical/1122/before/6.jpg',
-    alt: 'Before - Backyard',
-  },
-]
-
-const afterPhotos = [
-  {
-    src: '/physical/1122/after/1.jpg',
-    alt: 'After - Front Exterior',
-  },
-  {
-    src: '/physical/1122/after/2.jpg',
-    alt: 'After - Living Room',
-  },
-  {
-    src: '/physical/1122/after/3.jpg',
-    alt: 'After - Kitchen',
-  },
-  {
-    src: '/physical/1122/after/4.jpg',
-    alt: 'After - Bathroom',
-  },
-  {
-    src: '/physical/1122/after/5.jpg',
-    alt: 'After - Bedroom',
-  },
-  {
-    src: '/physical/1122/after/6.jpg',
-    alt: 'After - Backyard',
-  },
-]
 
 export default function Project1122() {
   return (
@@ -184,5 +123,5 @@ export default function Project1122() {
         </div>
       </div>
     </div>
-  );
+  )
 } 
