@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowLeft, X } from 'lucide-react'
+import { ArrowLeft, X, ChevronLeft, ChevronRight } from 'lucide-react'
 
 const roomGroups = {
   kitchen: [
@@ -51,6 +51,28 @@ const roomTitles = {
 
 export default function BeforeGallery() {
   const [selectedImage, setSelectedImage] = useState<{ src: string; alt: string } | null>(null);
+  const [carouselIndices, setCarouselIndices] = useState<Record<string, number>>({
+    kitchen: 0,
+    dining: 0,
+    living: 0,
+    bedroom: 0,
+    office: 0,
+    bathroom: 0,
+  });
+
+  const handlePrevious = (roomType: string) => {
+    setCarouselIndices(prev => ({
+      ...prev,
+      [roomType]: Math.max(0, prev[roomType] - 1)
+    }));
+  };
+
+  const handleNext = (roomType: string, maxIndex: number) => {
+    setCarouselIndices(prev => ({
+      ...prev,
+      [roomType]: Math.min(maxIndex, prev[roomType] + 1)
+    }));
+  };
 
   return (
     <div className="min-h-screen bg-black">
@@ -85,41 +107,75 @@ export default function BeforeGallery() {
       {/* Photo Grid */}
       <section className="py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {Object.entries(roomGroups).map(([roomType, photos], groupIndex) => (
-            <div key={roomType} className="mb-16">
-              <motion.h2
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: groupIndex * 0.1 }}
-                viewport={{ once: true }}
-                className="text-2xl font-medium text-zinc-300 mb-6"
-              >
-                {roomTitles[roomType as keyof typeof roomTitles]}
-              </motion.h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {photos.map((photo, index) => (
-                  <motion.div
-                    key={photo.src}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: (groupIndex * 0.1) + (index * 0.05) }}
-                    viewport={{ once: true }}
-                    className="relative rounded-lg overflow-hidden bg-black border border-zinc-900 hover:border-zinc-800 transition-all duration-300 cursor-pointer"
-                    onClick={() => setSelectedImage(photo)}
-                  >
-                    <div className="relative w-full" style={{ paddingBottom: '75%' }}>
-                      <Image
-                        src={photo.src}
-                        alt={photo.alt}
-                        fill
-                        className="object-contain p-4 rounded-lg"
-                      />
-                    </div>
-                  </motion.div>
-                ))}
+          {Object.entries(roomGroups).map(([roomType, photos], groupIndex) => {
+            const startIdx = carouselIndices[roomType];
+            const visiblePhotos = photos.slice(startIdx, startIdx + 3);
+            const maxIndex = Math.max(0, photos.length - 3);
+            const showNavigation = photos.length > 3;
+
+            return (
+              <div key={roomType} className="mb-16">
+                <motion.h2
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: groupIndex * 0.1 }}
+                  viewport={{ once: true }}
+                  className="text-2xl font-medium text-zinc-300 mb-6"
+                >
+                  {roomTitles[roomType as keyof typeof roomTitles]}
+                </motion.h2>
+                <div className="relative">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <AnimatePresence mode="popLayout">
+                      {visiblePhotos.map((photo, index) => (
+                        <motion.div
+                          key={photo.src}
+                          initial={{ opacity: 0, x: 50 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -50 }}
+                          transition={{ duration: 0.3 }}
+                          className="relative rounded-lg overflow-hidden bg-black border border-zinc-900 hover:border-zinc-800 transition-all duration-300 cursor-pointer"
+                          onClick={() => setSelectedImage(photo)}
+                        >
+                          <div className="relative w-full" style={{ paddingBottom: '75%' }}>
+                            <Image
+                              src={photo.src}
+                              alt={photo.alt}
+                              fill
+                              className="object-contain p-4 rounded-lg"
+                            />
+                          </div>
+                        </motion.div>
+                      ))}
+                    </AnimatePresence>
+                  </div>
+                  
+                  {showNavigation && (
+                    <>
+                      <button
+                        onClick={() => handlePrevious(roomType)}
+                        className={`absolute -left-12 top-1/2 -translate-y-1/2 p-2 rounded-full bg-zinc-900/50 hover:bg-zinc-900 transition-colors ${
+                          startIdx === 0 ? 'opacity-50 cursor-not-allowed' : 'opacity-100'
+                        }`}
+                        disabled={startIdx === 0}
+                      >
+                        <ChevronLeft className="w-6 h-6 text-zinc-300" />
+                      </button>
+                      <button
+                        onClick={() => handleNext(roomType, maxIndex)}
+                        className={`absolute -right-12 top-1/2 -translate-y-1/2 p-2 rounded-full bg-zinc-900/50 hover:bg-zinc-900 transition-colors ${
+                          startIdx >= maxIndex ? 'opacity-50 cursor-not-allowed' : 'opacity-100'
+                        }`}
+                        disabled={startIdx >= maxIndex}
+                      >
+                        <ChevronRight className="w-6 h-6 text-zinc-300" />
+                      </button>
+                    </>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
 
           <div className="mt-8">
             <Link 
@@ -170,5 +226,5 @@ export default function BeforeGallery() {
         )}
       </AnimatePresence>
     </div>
-  )
+  );
 } 
