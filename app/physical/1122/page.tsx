@@ -39,14 +39,14 @@ export default function Project1122() {
       <section className="py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-[2000px] mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="flex flex-col gap-8">
               {/* Before Image */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
                 viewport={{ once: true }}
-                className="relative"
+                className="relative w-full"
               >
                 <div className="relative aspect-[3/2] rounded-lg overflow-hidden bg-zinc-950 border border-zinc-900 hover:border-zinc-800 transition-all duration-300">
                   <img 
@@ -66,7 +66,7 @@ export default function Project1122() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
                 viewport={{ once: true }}
-                className="relative"
+                className="relative w-full"
               >
                 <div className="relative aspect-[3/2] rounded-lg overflow-hidden bg-zinc-950 border border-zinc-900 hover:border-zinc-800 transition-all duration-300">
                   <img 
