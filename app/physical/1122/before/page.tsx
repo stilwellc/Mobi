@@ -11,27 +11,27 @@ export const metadata: Metadata = {
 
 const photos = [
   {
-    src: '/physical/1122/before/1.jpg',
+    src: '/images/1122/before/1.jpg',
     alt: 'Before - Front Exterior',
   },
   {
-    src: '/physical/1122/before/2.jpg',
+    src: '/images/1122/before/2.jpg',
     alt: 'Before - Living Room',
   },
   {
-    src: '/physical/1122/before/3.jpg',
+    src: '/images/1122/before/3.jpg',
     alt: 'Before - Kitchen',
   },
   {
-    src: '/physical/1122/before/4.jpg',
+    src: '/images/1122/before/4.jpg',
     alt: 'Before - Bathroom',
   },
   {
-    src: '/physical/1122/before/5.jpg',
+    src: '/images/1122/before/5.jpg',
     alt: 'Before - Bedroom',
   },
   {
-    src: '/physical/1122/before/6.jpg',
+    src: '/images/1122/before/6.jpg',
     alt: 'Before - Backyard',
   },
 ]

@@ -96,7 +96,7 @@ export default function Project1122() {
                   className="relative w-full aspect-[3/2] overflow-hidden rounded-lg border border-zinc-800 bg-black"
                 >
                   <Image
-                    src="/physical/1122/blueprint-before.jpg"
+                    src="/images/1122/blueprint-before.jpg"
                     alt="Before Blueprint"
                     fill
                     className="object-contain p-4"
@@ -113,7 +113,7 @@ export default function Project1122() {
                   className="relative w-full aspect-[3/2] overflow-hidden rounded-lg border border-zinc-800 bg-black"
                 >
                   <Image
-                    src="/physical/1122/blueprint-after.jpg"
+                    src="/images/1122/blueprint-after.jpg"
                     alt="After Blueprint"
                     fill
                     className="object-contain p-4"
