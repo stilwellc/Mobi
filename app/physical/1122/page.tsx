@@ -48,18 +48,20 @@ export default function Project1122() {
                 viewport={{ once: true }}
                 className="relative w-full"
               >
-                <div className="relative aspect-[3/2] rounded-lg overflow-hidden bg-black border border-zinc-900 hover:border-zinc-800 transition-all duration-300">
-                  <img 
-                    src="/images/1122/1122before.png" 
-                    alt="Before blueprint"
-                    className="w-full h-full object-contain"
-                  />
-                  <div className="absolute bottom-4 left-4">
-                    <div className="px-3 py-1.5 bg-[#800020] rounded-full">
-                      <span className="text-sm font-medium text-white">Before</span>
+                <Link href="/physical/1122/gallery">
+                  <div className="relative aspect-[3/2] rounded-lg overflow-hidden bg-black border border-zinc-900 hover:border-zinc-800 transition-all duration-300 cursor-pointer">
+                    <img 
+                      src="/images/1122/1122before.png" 
+                      alt="Before blueprint"
+                      className="w-full h-full object-contain"
+                    />
+                    <div className="absolute bottom-4 left-4">
+                      <div className="px-3 py-1.5 bg-[#800020] rounded-full">
+                        <span className="text-sm font-medium text-white">Before</span>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               </motion.div>
               
               {/* After Image */}
@@ -70,18 +72,20 @@ export default function Project1122() {
                 viewport={{ once: true }}
                 className="relative w-full"
               >
-                <div className="relative aspect-[3/2] rounded-lg overflow-hidden bg-black border border-zinc-900 hover:border-zinc-800 transition-all duration-300">
-                  <img 
-                    src="/images/1122/1122affter.png" 
-                    alt="After blueprint"
-                    className="w-full h-full object-contain"
-                  />
-                  <div className="absolute bottom-4 left-4">
-                    <div className="px-3 py-1.5 bg-[#800020] rounded-full">
-                      <span className="text-sm font-medium text-white">After</span>
+                <Link href="/physical/1122/gallery">
+                  <div className="relative aspect-[3/2] rounded-lg overflow-hidden bg-black border border-zinc-900 hover:border-zinc-800 transition-all duration-300 cursor-pointer">
+                    <img 
+                      src="/images/1122/1122affter.png" 
+                      alt="After blueprint"
+                      className="w-full h-full object-contain"
+                    />
+                    <div className="absolute bottom-4 left-4">
+                      <div className="px-3 py-1.5 bg-[#800020] rounded-full">
+                        <span className="text-sm font-medium text-white">After</span>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               </motion.div>
             </div>
 

@@ -6,11 +6,6 @@ import Link from 'next/link';
 
 const projects = [
   {
-    title: "Digital Projects",
-    description: "Explore my digital projects and experiments",
-    href: "/digital",
-  },
-  {
     title: "Screech",
     description: "An automated newsletter that curates the best local events and activities in your city",
     category: "Newsletter",
@@ -18,9 +13,9 @@ const projects = [
     href: "/digital/screech"
   },
   {
-    title: "Hot Brush",
-    description: "Track the hottest artists to invest in with real-time market data.",
-    href: "/digital/hotbrush",
+    title: "TBD",
+    description: "TBD",
+    href: "/digital/TBD",
     icon: "🎨",
     color: "bg-[#800020]",
   }
