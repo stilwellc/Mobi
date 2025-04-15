@@ -53,7 +53,7 @@ export default function Project1122() {
                 <Link href="/physical/1122/before">
                   <div className="relative aspect-[3/2] rounded-lg overflow-hidden bg-black border border-zinc-900 hover:border-zinc-800 transition-all duration-300 cursor-pointer">
                     <Image 
-                      src="/images/1122/blueprint-before.jpg" 
+                      src="/images/1122/1122beforeBP.png" 
                       alt="Before blueprint"
                       fill
                       className="object-contain p-4"
@@ -78,7 +78,7 @@ export default function Project1122() {
                 <Link href="/physical/1122/after">
                   <div className="relative aspect-[3/2] rounded-lg overflow-hidden bg-black border border-zinc-900 hover:border-zinc-800 transition-all duration-300 cursor-pointer">
                     <Image 
-                      src="/images/1122/blueprint-after.jpg" 
+                      src="/images/1122/1122afterBP.png" 
                       alt="After blueprint"
                       fill
                       className="object-contain p-4"
