@@ -48,7 +48,7 @@ export default function Project1122() {
                 viewport={{ once: true }}
                 className="relative w-full"
               >
-                <div className="relative aspect-[3/2] rounded-lg overflow-hidden bg-zinc-950 border border-zinc-900 hover:border-zinc-800 transition-all duration-300">
+                <div className="relative aspect-[3/2] rounded-lg overflow-hidden bg-black border border-zinc-900 hover:border-zinc-800 transition-all duration-300">
                   <img 
                     src="/images/1122/1122before.png" 
                     alt="Before blueprint"
@@ -68,7 +68,7 @@ export default function Project1122() {
                 viewport={{ once: true }}
                 className="relative w-full"
               >
-                <div className="relative aspect-[3/2] rounded-lg overflow-hidden bg-zinc-950 border border-zinc-900 hover:border-zinc-800 transition-all duration-300">
+                <div className="relative aspect-[3/2] rounded-lg overflow-hidden bg-black border border-zinc-900 hover:border-zinc-800 transition-all duration-300">
                   <img 
                     src="/images/1122/1122affter.png" 
                     alt="After blueprint"
