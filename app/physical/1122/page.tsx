@@ -39,8 +39,8 @@ export default function Project1122() {
       <section className="py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-[2000px] mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {/* Bedroom */}
+            <div className="flex flex-col gap-8">
+              {/* Before Image */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -50,41 +50,19 @@ export default function Project1122() {
               >
                 <div className="relative aspect-[3/2] rounded-lg overflow-hidden bg-black border border-zinc-900 hover:border-zinc-800 transition-all duration-300">
                   <img 
-                    src="/images/1122/bedroom.png" 
-                    alt="Bedroom blueprint"
+                    src="/images/1122/1122before.png" 
+                    alt="Before blueprint"
                     className="w-full h-full object-contain"
                   />
                   <div className="absolute bottom-4 left-4">
                     <div className="px-3 py-1.5 bg-[#800020] rounded-full">
-                      <span className="text-sm font-medium text-white">Bedroom</span>
+                      <span className="text-sm font-medium text-white">Before</span>
                     </div>
                   </div>
                 </div>
               </motion.div>
-
-              {/* Kitchen */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                viewport={{ once: true }}
-                className="relative w-full"
-              >
-                <div className="relative aspect-[3/2] rounded-lg overflow-hidden bg-black border border-zinc-900 hover:border-zinc-800 transition-all duration-300">
-                  <img 
-                    src="/images/1122/kitchen.png" 
-                    alt="Kitchen blueprint"
-                    className="w-full h-full object-contain"
-                  />
-                  <div className="absolute bottom-4 left-4">
-                    <div className="px-3 py-1.5 bg-[#800020] rounded-full">
-                      <span className="text-sm font-medium text-white">Kitchen</span>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Living Room */}
+              
+              {/* After Image */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -94,79 +72,13 @@ export default function Project1122() {
               >
                 <div className="relative aspect-[3/2] rounded-lg overflow-hidden bg-black border border-zinc-900 hover:border-zinc-800 transition-all duration-300">
                   <img 
-                    src="/images/1122/living-room.png" 
-                    alt="Living Room blueprint"
+                    src="/images/1122/1122affter.png" 
+                    alt="After blueprint"
                     className="w-full h-full object-contain"
                   />
                   <div className="absolute bottom-4 left-4">
                     <div className="px-3 py-1.5 bg-[#800020] rounded-full">
-                      <span className="text-sm font-medium text-white">Living Room</span>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Hall */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                viewport={{ once: true }}
-                className="relative w-full"
-              >
-                <div className="relative aspect-[3/2] rounded-lg overflow-hidden bg-black border border-zinc-900 hover:border-zinc-800 transition-all duration-300">
-                  <img 
-                    src="/images/1122/hall.png" 
-                    alt="Hall blueprint"
-                    className="w-full h-full object-contain"
-                  />
-                  <div className="absolute bottom-4 left-4">
-                    <div className="px-3 py-1.5 bg-[#800020] rounded-full">
-                      <span className="text-sm font-medium text-white">Hall</span>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Bath */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                viewport={{ once: true }}
-                className="relative w-full"
-              >
-                <div className="relative aspect-[3/2] rounded-lg overflow-hidden bg-black border border-zinc-900 hover:border-zinc-800 transition-all duration-300">
-                  <img 
-                    src="/images/1122/bath.png" 
-                    alt="Bath blueprint"
-                    className="w-full h-full object-contain"
-                  />
-                  <div className="absolute bottom-4 left-4">
-                    <div className="px-3 py-1.5 bg-[#800020] rounded-full">
-                      <span className="text-sm font-medium text-white">Bath</span>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Office */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.5 }}
-                viewport={{ once: true }}
-                className="relative w-full"
-              >
-                <div className="relative aspect-[3/2] rounded-lg overflow-hidden bg-black border border-zinc-900 hover:border-zinc-800 transition-all duration-300">
-                  <img 
-                    src="/images/1122/office.png" 
-                    alt="Office blueprint"
-                    className="w-full h-full object-contain"
-                  />
-                  <div className="absolute bottom-4 left-4">
-                    <div className="px-3 py-1.5 bg-[#800020] rounded-full">
-                      <span className="text-sm font-medium text-white">Office</span>
+                      <span className="text-sm font-medium text-white">After</span>
                     </div>
                   </div>
                 </div>
@@ -178,8 +90,8 @@ export default function Project1122() {
               <p className="text-base text-zinc-500 leading-relaxed">
                 This project represents a significant transformation in physical space design, 
                 showcasing the evolution from initial concept to final implementation. The 
-                blueprints demonstrate the thoughtful consideration of form, function, and 
-                spatial relationships across all living spaces.
+                before and after blueprints demonstrate the thoughtful consideration of form, 
+                function, and spatial relationships.
               </p>
             </div>
 
