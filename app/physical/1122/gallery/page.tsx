@@ -33,49 +33,27 @@ export default function Gallery() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-[2000px] mx-auto">
             <div className="flex flex-col gap-8">
-              {/* Before Photos */}
+              {/* Before Blueprint */}
               <div>
-                <h2 className="text-2xl font-medium text-zinc-300 mb-6">Before</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {[1, 2, 3].map((index) => (
-                    <motion.div
-                      key={`before-${index}`}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
-                      viewport={{ once: true }}
-                      className="relative aspect-[4/3] rounded-lg overflow-hidden bg-black border border-zinc-900 hover:border-zinc-800 transition-all duration-300"
-                    >
-                      <img 
-                        src={`/images/1122/before-${index}.jpg`}
-                        alt={`Before photo ${index}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </motion.div>
-                  ))}
+                <h2 className="text-2xl font-medium text-zinc-300 mb-6">Before Blueprint</h2>
+                <div className="relative aspect-[3/2] rounded-lg overflow-hidden bg-black border border-zinc-900">
+                  <img 
+                    src="/images/1122/1122before.png"
+                    alt="Before blueprint"
+                    className="w-full h-full object-contain"
+                  />
                 </div>
               </div>
 
-              {/* After Photos */}
+              {/* After Blueprint */}
               <div>
-                <h2 className="text-2xl font-medium text-zinc-300 mb-6">After</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {[1, 2, 3].map((index) => (
-                    <motion.div
-                      key={`after-${index}`}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
-                      viewport={{ once: true }}
-                      className="relative aspect-[4/3] rounded-lg overflow-hidden bg-black border border-zinc-900 hover:border-zinc-800 transition-all duration-300"
-                    >
-                      <img 
-                        src={`/images/1122/after-${index}.jpg`}
-                        alt={`After photo ${index}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </motion.div>
-                  ))}
+                <h2 className="text-2xl font-medium text-zinc-300 mb-6">After Blueprint</h2>
+                <div className="relative aspect-[3/2] rounded-lg overflow-hidden bg-black border border-zinc-900">
+                  <img 
+                    src="/images/1122/1122affter.png"
+                    alt="After blueprint"
+                    className="w-full h-full object-contain"
+                  />
                 </div>
               </div>
             </div>
