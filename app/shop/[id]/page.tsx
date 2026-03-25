@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
@@ -40,148 +39,121 @@ export default function ShopItemPage() {
         setLoading(false);
       }
     }
-
     fetchItem();
   }, [params.id]);
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-black flex justify-center items-center">
-        <div className="w-2 h-2 bg-[#4a0011] rounded-full animate-ping" />
+      <div style={{ minHeight: '100vh', background: '#060606', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#D4B896', opacity: 0.5 }} />
       </div>
     );
   }
 
   if (!item) {
     return (
-      <div className="min-h-screen bg-black">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
-          <h1 className="text-2xl text-zinc-300">Item not found</h1>
-          <Link href="/shop" className="text-zinc-500 hover:text-zinc-400 mt-4 inline-block">
-            ← Back to Shop
-          </Link>
-        </div>
+      <div style={{ minHeight: '100vh', background: '#060606', color: '#F0EDE8', fontFamily: "'Syne', sans-serif", padding: 56 }}>
+        <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 36, fontWeight: 300 }}>Item not found</h1>
+        <Link href="/shop" style={{ color: '#555', fontSize: 14, marginTop: 16, display: 'inline-block' }}>
+          &#8592; Back to Shop
+        </Link>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-black">
-      <div className="relative">
-        <div className="absolute inset-0">
-          <div className="absolute inset-0" style={{ 
-            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(128,0,32,0.015) 1px, transparent 0)`,
-            backgroundSize: '24px 24px'
-          }} />
-        </div>
-        
-        <div className="relative z-10 pt-16 pb-8">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6">
-            <div className="mb-8">
-              <Link href="/shop" className="inline-flex items-center text-zinc-600 hover:text-zinc-400 transition-colors">
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                <span className="text-sm">Back to Shop</span>
-              </Link>
-            </div>
+    <div style={{ minHeight: '100vh', background: '#060606', color: '#F0EDE8', fontFamily: "'Syne', sans-serif" }}>
+      {/* Nav */}
+      <nav style={{
+        padding: '24px 56px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        borderBottom: '1px solid rgba(255,255,255,0.04)',
+        background: 'rgba(6,6,6,0.85)', backdropFilter: 'blur(30px)',
+        position: 'sticky', top: 0, zIndex: 100,
+      }}>
+        <Link href="/" style={{ textDecoration: 'none', color: '#F0EDE8', fontFamily: "'Syne', sans-serif", fontSize: 26, fontWeight: 700, letterSpacing: '-0.04em' }}>
+          mobi<span style={{ color: '#D4B896' }}>.</span>
+        </Link>
+        <Link href="/shop" style={{
+          textDecoration: 'none', fontSize: 12, color: '#444', fontWeight: 500,
+          letterSpacing: '0.1em', textTransform: 'uppercase',
+        }}>
+          &#8592; Back to Shop
+        </Link>
+      </nav>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-              {/* Image Section */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="relative aspect-square"
-              >
-                <div className="relative w-full h-full rounded-lg overflow-hidden bg-zinc-950 border border-zinc-900">
-                  <div className="absolute inset-0 bg-gradient-to-br from-zinc-950/90 to-black/60" />
-                  <div className="absolute inset-0" style={{ 
-                    backgroundImage: `radial-gradient(circle at 1px 1px, rgba(128,0,32,0.03) 1px, transparent 0)`,
-                    backgroundSize: '16px 16px'
-                  }} />
-                  <Image
-                    src={item.imagePath}
-                    alt={item.title}
-                    fill
-                    className="object-cover"
-                  />
-                  <div className="absolute bottom-4 right-4">
-                    <div className="px-2 py-1 bg-[#4a0011]/90 backdrop-blur-sm rounded text-xs font-medium tracking-wider text-zinc-200">
-                      SOLD
-                    </div>
-                  </div>
+      {/* Content */}
+      <section style={{ padding: '60px 56px 120px', maxWidth: 1100, margin: '0 auto' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 60 }}>
+          {/* Image */}
+          <div style={{
+            position: 'relative', borderRadius: 20, overflow: 'hidden', background: '#0c0c0c',
+            border: '1px solid rgba(255,255,255,0.04)', aspectRatio: '1',
+          }}>
+            <Image src={item.imagePath} alt={item.title} fill style={{ objectFit: 'cover' }} />
+            <div style={{
+              position: 'absolute', bottom: 16, right: 16,
+              padding: '4px 12px', borderRadius: 100,
+              background: 'rgba(212,184,150,0.1)', border: '1px solid rgba(212,184,150,0.2)',
+              fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase',
+              color: '#D4B896', fontWeight: 600,
+            }}>SOLD</div>
+          </div>
+
+          {/* Details */}
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <h1 style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 300, letterSpacing: '-0.02em',
+              marginBottom: 24,
+            }}>{item.title}</h1>
+
+            <p style={{ fontSize: 15, lineHeight: 1.85, color: '#555', fontWeight: 400, marginBottom: 36 }}>
+              {item.description}
+            </p>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+              {item.details.designer && (
+                <div>
+                  <dt style={{ fontSize: 10, fontWeight: 600, color: '#3a3a3a', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 4 }}>Designer</dt>
+                  <dd style={{ fontSize: 15, color: '#888' }}>{item.details.designer}</dd>
                 </div>
-              </motion.div>
-
-              {/* Content Section */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="flex flex-col justify-center"
-              >
-                <h1 className="text-3xl sm:text-4xl font-medium tracking-tight text-zinc-300 mb-6">
-                  {item.title}
-                </h1>
-                
-                <div className="prose prose-invert prose-zinc max-w-none mb-8">
-                  <p className="text-zinc-400 leading-relaxed">
-                    {item.description}
-                  </p>
+              )}
+              {item.details.artist && (
+                <div>
+                  <dt style={{ fontSize: 10, fontWeight: 600, color: '#3a3a3a', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 4 }}>Artist</dt>
+                  <dd style={{ fontSize: 15, color: '#888' }}>{item.details.artist}</dd>
                 </div>
-
-                <div className="space-y-6">
-                  {item.details.designer && (
-                    <div>
-                      <dt className="text-sm font-medium text-zinc-500">Designer</dt>
-                      <dd className="mt-1 text-zinc-300">{item.details.designer}</dd>
-                    </div>
-                  )}
-                  
-                  {item.details.artist && (
-                    <div>
-                      <dt className="text-sm font-medium text-zinc-500">Artist</dt>
-                      <dd className="mt-1 text-zinc-300">{item.details.artist}</dd>
-                    </div>
-                  )}
-
-                  <div>
-                    <dt className="text-sm font-medium text-zinc-500">Period</dt>
-                    <dd className="mt-1 text-zinc-300">{item.details.period}</dd>
-                  </div>
-
-                  {item.details.condition && (
-                    <div>
-                      <dt className="text-sm font-medium text-zinc-500">Condition</dt>
-                      <dd className="mt-1 text-zinc-300">{item.details.condition}</dd>
-                    </div>
-                  )}
-
-                  {item.details.materials && (
-                    <div>
-                      <dt className="text-sm font-medium text-zinc-500">Materials</dt>
-                      <dd className="mt-1 text-zinc-300">{item.details.materials.join(', ')}</dd>
-                    </div>
-                  )}
-
-                  {item.details.medium && (
-                    <div>
-                      <dt className="text-sm font-medium text-zinc-500">Medium</dt>
-                      <dd className="mt-1 text-zinc-300">{item.details.medium}</dd>
-                    </div>
-                  )}
-
-                  <div>
-                    <dt className="text-sm font-medium text-zinc-500">Dimensions</dt>
-                    <dd className="mt-1 text-zinc-300">{item.details.dimensions}</dd>
-                  </div>
+              )}
+              <div>
+                <dt style={{ fontSize: 10, fontWeight: 600, color: '#3a3a3a', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 4 }}>Period</dt>
+                <dd style={{ fontSize: 15, color: '#888' }}>{item.details.period}</dd>
+              </div>
+              {item.details.condition && (
+                <div>
+                  <dt style={{ fontSize: 10, fontWeight: 600, color: '#3a3a3a', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 4 }}>Condition</dt>
+                  <dd style={{ fontSize: 15, color: '#888' }}>{item.details.condition}</dd>
                 </div>
-              </motion.div>
+              )}
+              {item.details.materials && (
+                <div>
+                  <dt style={{ fontSize: 10, fontWeight: 600, color: '#3a3a3a', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 4 }}>Materials</dt>
+                  <dd style={{ fontSize: 15, color: '#888' }}>{item.details.materials.join(', ')}</dd>
+                </div>
+              )}
+              {item.details.medium && (
+                <div>
+                  <dt style={{ fontSize: 10, fontWeight: 600, color: '#3a3a3a', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 4 }}>Medium</dt>
+                  <dd style={{ fontSize: 15, color: '#888' }}>{item.details.medium}</dd>
+                </div>
+              )}
+              <div>
+                <dt style={{ fontSize: 10, fontWeight: 600, color: '#3a3a3a', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 4 }}>Dimensions</dt>
+                <dd style={{ fontSize: 15, color: '#888' }}>{item.details.dimensions}</dd>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
-} 
+}

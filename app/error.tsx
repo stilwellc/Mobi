@@ -15,31 +15,39 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold text-white mb-4">Something went wrong!</h1>
-        <p className="text-white/80 mb-8">We're sorry, but there was an error loading this page.</p>
-        <div className="space-x-4">
+    <div style={{
+      minHeight: '100vh', background: '#060606', color: '#F0EDE8',
+      fontFamily: "'Syne', sans-serif",
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+    }}>
+      <div style={{ textAlign: 'center' }}>
+        <h1 style={{
+          fontFamily: "'Cormorant Garamond', serif",
+          fontSize: 48, fontWeight: 300, marginBottom: 16,
+        }}>Something went wrong</h1>
+        <p style={{ fontSize: 15, color: '#555', marginBottom: 32 }}>
+          We&apos;re sorry, but there was an error loading this page.
+        </p>
+        <div style={{ display: 'flex', gap: 24, justifyContent: 'center' }}>
           <button
             onClick={reset}
-            className="inline-flex items-center text-mobi-burgundy hover:text-mobi-burgundy/80 transition-colors"
-          >
-            <span className="mr-2">Try again</span>
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-            </svg>
-          </button>
-          <Link 
-            href="/"
-            className="inline-flex items-center text-mobi-burgundy hover:text-mobi-burgundy/80 transition-colors"
-          >
-            <span className="mr-2">Return Home</span>
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </Link>
+            style={{
+              padding: '12px 28px', borderRadius: 60,
+              border: '1px solid rgba(212,184,150,0.3)', background: 'rgba(212,184,150,0.06)',
+              color: '#D4B896', fontSize: 13, fontWeight: 600,
+              letterSpacing: '0.1em', textTransform: 'uppercase',
+              cursor: 'pointer', fontFamily: "'Syne', sans-serif",
+            }}
+          >Try again</button>
+          <Link href="/" style={{
+            padding: '12px 28px', borderRadius: 60,
+            border: '1px solid rgba(255,255,255,0.06)', background: 'transparent',
+            color: '#777', fontSize: 13, fontWeight: 600,
+            letterSpacing: '0.1em', textTransform: 'uppercase',
+            textDecoration: 'none', display: 'inline-block',
+          }}>Return Home</Link>
         </div>
       </div>
     </div>
   );
-} 
+}

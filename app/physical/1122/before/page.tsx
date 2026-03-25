@@ -1,256 +1,219 @@
-'use client'
+'use client';
 
-import React, { useState } from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
-import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowLeft, X, ChevronLeft, ChevronRight } from 'lucide-react'
+import React, { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 
 const roomGroups = {
   kitchen: [
     { src: '/images/1122/before/kitchen1.webp', alt: 'Kitchen 1 Before' },
     { src: '/images/1122/before/kitchen2.webp', alt: 'Kitchen 2 Before' },
     { src: '/images/1122/before/kitchen3.webp', alt: 'Kitchen 3 Before' },
-    { src: '/images/1122/before/kitchen4.webp', alt: 'Kitchen 4 Before' }
+    { src: '/images/1122/before/kitchen4.webp', alt: 'Kitchen 4 Before' },
   ],
   dining: [
     { src: '/images/1122/before/diningroom1.webp', alt: 'Dining Room 1 Before' },
     { src: '/images/1122/before/diningroom2.webp', alt: 'Dining Room 2 Before' },
-    { src: '/images/1122/before/diningroom3.webp', alt: 'Dining Room 3 Before' }
+    { src: '/images/1122/before/diningroom3.webp', alt: 'Dining Room 3 Before' },
   ],
   living: [
     { src: '/images/1122/before/Livingroom1.webp', alt: 'Living Room 1 Before' },
     { src: '/images/1122/before/livingroom2.webp', alt: 'Living Room 2 Before' },
     { src: '/images/1122/before/livingroom3.webp', alt: 'Living Room 3 Before' },
-    { src: '/images/1122/before/livingroom4.webp', alt: 'Living Room 4 Before' }
+    { src: '/images/1122/before/livingroom4.webp', alt: 'Living Room 4 Before' },
   ],
   bedroom: [
     { src: '/images/1122/before/bedroom1.webp', alt: 'Bedroom 1 Before' },
     { src: '/images/1122/before/bedroom2.webp', alt: 'Bedroom 2 Before' },
     { src: '/images/1122/before/bedroom3.webp', alt: 'Bedroom 3 Before' },
-    { src: '/images/1122/before/bedroom4.webp', alt: 'Bedroom 4 Before' }
+    { src: '/images/1122/before/bedroom4.webp', alt: 'Bedroom 4 Before' },
   ],
   office: [
     { src: '/images/1122/before/office1.webp', alt: 'Office 1 Before' },
     { src: '/images/1122/before/office2.webp', alt: 'Office 2 Before' },
-    { src: '/images/1122/before/office3.webp', alt: 'Office 3 Before' }
+    { src: '/images/1122/before/office3.webp', alt: 'Office 3 Before' },
   ],
   bathroom: [
-    { src: '/images/1122/before/bathroom1.webp', alt: 'Bathroom Before' }
-  ]
+    { src: '/images/1122/before/bathroom1.webp', alt: 'Bathroom Before' },
+  ],
 };
 
-const roomTitles = {
+const roomTitles: Record<string, string> = {
   kitchen: 'Kitchen',
   dining: 'Dining Room',
   living: 'Living Room',
   bedroom: 'Bedroom',
   office: 'Office',
-  bathroom: 'Bathroom'
+  bathroom: 'Bathroom',
 };
 
 export default function BeforeGallery() {
   const [selectedImage, setSelectedImage] = useState<{ src: string; alt: string } | null>(null);
   const [carouselIndices, setCarouselIndices] = useState<Record<string, number>>({
-    kitchen: 0,
-    dining: 0,
-    living: 0,
-    bedroom: 0,
-    office: 0,
-    bathroom: 0,
+    kitchen: 0, dining: 0, living: 0, bedroom: 0, office: 0, bathroom: 0,
   });
 
   const handlePrevious = (roomType: string) => {
-    setCarouselIndices(prev => ({
-      ...prev,
-      [roomType]: Math.max(0, prev[roomType] - 1)
-    }));
+    setCarouselIndices(prev => ({ ...prev, [roomType]: Math.max(0, prev[roomType] - 1) }));
   };
 
   const handleNext = (roomType: string, maxIndex: number) => {
-    setCarouselIndices(prev => ({
-      ...prev,
-      [roomType]: Math.min(maxIndex, prev[roomType] + 1)
-    }));
+    setCarouselIndices(prev => ({ ...prev, [roomType]: Math.min(maxIndex, prev[roomType] + 1) }));
   };
 
   return (
-    <div className="min-h-screen bg-black">
-      {/* Hero Section */}
-      <div className="relative">
-        <div className="absolute inset-0">
-          <div className="absolute inset-0" style={{ 
-            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0)`,
-            backgroundSize: '24px 24px'
-          }} />
-        </div>
-        
-        <div className="relative z-10 pt-16 pb-8">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center space-x-4 mb-4">
-              <motion.div
-                className="w-2 h-2 bg-[#4a0011] rounded-full"
-                whileHover={{ scale: [null, 1.5] }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              />
-              <h1 className="text-3xl sm:text-4xl font-medium tracking-tight text-zinc-300">
-                Before Gallery
-              </h1>
-            </div>
-            <p className="text-base sm:text-lg text-zinc-500 max-w-2xl leading-relaxed">
-              Original state of the space before transformation
-            </p>
-          </div>
-        </div>
-      </div>
+    <div style={{ minHeight: '100vh', background: '#060606', color: '#F0EDE8', fontFamily: "'Syne', sans-serif" }}>
+      {/* Nav */}
+      <nav style={{
+        padding: '24px 56px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        borderBottom: '1px solid rgba(255,255,255,0.04)',
+        background: 'rgba(6,6,6,0.85)', backdropFilter: 'blur(30px)',
+        position: 'sticky', top: 0, zIndex: 100,
+      }}>
+        <Link href="/" style={{ textDecoration: 'none', color: '#F0EDE8', fontFamily: "'Syne', sans-serif", fontSize: 26, fontWeight: 700, letterSpacing: '-0.04em' }}>
+          mobi<span style={{ color: '#D4B896' }}>.</span>
+        </Link>
+        <Link href="/physical/1122" style={{
+          textDecoration: 'none', fontSize: 12, color: '#444', fontWeight: 500,
+          letterSpacing: '0.1em', textTransform: 'uppercase',
+        }}>
+          &#8592; Back to Project 1122
+        </Link>
+      </nav>
 
-      {/* Photo Grid */}
-      <section className="py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {Object.entries(roomGroups).map(([roomType, photos], groupIndex) => {
-            const startIdx = carouselIndices[roomType];
-            const visiblePhotos = photos.slice(startIdx, startIdx + 3);
-            const maxIndex = Math.max(0, photos.length - 3);
-            const showNavigation = photos.length > 3;
+      {/* Hero */}
+      <section style={{ padding: '60px 56px 40px', maxWidth: 1100, margin: '0 auto' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 16 }}>
+          <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#D4B896', opacity: 0.6 }} />
+          <span style={{ fontSize: 11, letterSpacing: '0.25em', textTransform: 'uppercase', color: '#3a3a3a', fontWeight: 600 }}>
+            Project 1122
+          </span>
+        </div>
+        <h1 style={{
+          fontFamily: "'Cormorant Garamond', serif",
+          fontSize: 'clamp(36px, 6vw, 72px)', fontWeight: 300, letterSpacing: '-0.03em', lineHeight: 0.95,
+          marginBottom: 16,
+        }}>
+          Before <span style={{ fontStyle: 'italic', color: '#D4B896' }}>Gallery</span>
+        </h1>
+        <p style={{ fontSize: 16, lineHeight: 1.8, color: '#555', fontWeight: 400, maxWidth: 520 }}>
+          Original state of the space before transformation
+        </p>
+      </section>
 
-            return (
-              <div key={roomType} className="mb-16">
-                <motion.h2
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: groupIndex * 0.1 }}
-                  viewport={{ once: true }}
-                  className="text-2xl font-medium text-zinc-300 mb-6"
-                >
-                  {roomTitles[roomType as keyof typeof roomTitles]}
-                </motion.h2>
-                <div className="relative">
-                  {/* Mobile/Tablet: Show all photos, no carousel/arrows */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:hidden">
-                    <AnimatePresence mode="popLayout">
-                      {photos.map((photo, index) => (
-                        <motion.div
-                          key={photo.src}
-                          initial={{ opacity: 0, x: 50 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          exit={{ opacity: 0, x: -50 }}
-                          transition={{ duration: 0.3 }}
-                          className="relative rounded-lg overflow-hidden bg-black border border-zinc-900 hover:border-zinc-800 transition-all duration-300 cursor-pointer"
-                          onClick={() => setSelectedImage(photo)}
-                        >
-                          <div className="relative w-full" style={{ paddingBottom: '75%' }}>
-                            <Image
-                              src={photo.src}
-                              alt={photo.alt}
-                              fill
-                              className="object-contain p-4 rounded-lg"
-                            />
-                          </div>
-                        </motion.div>
-                      ))}
-                    </AnimatePresence>
+      {/* Gallery */}
+      <section style={{ padding: '20px 56px 120px', maxWidth: 1200, margin: '0 auto' }}>
+        {Object.entries(roomGroups).map(([roomType, photos]) => {
+          const startIdx = carouselIndices[roomType];
+          const visiblePhotos = photos.slice(startIdx, startIdx + 3);
+          const maxIndex = Math.max(0, photos.length - 3);
+          const showNavigation = photos.length > 3;
+
+          return (
+            <div key={roomType} style={{ marginBottom: 64 }}>
+              <h2 style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                fontSize: 28, fontWeight: 400, fontStyle: 'italic', color: '#D4B896',
+                marginBottom: 24,
+              }}>
+                {roomTitles[roomType]}
+              </h2>
+
+              <div style={{ position: 'relative' }}>
+                {/* Mobile: all photos */}
+                <div className="block lg:hidden">
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 16 }}>
+                    {photos.map((photo) => (
+                      <div key={photo.src} onClick={() => setSelectedImage(photo)} style={{
+                        position: 'relative', borderRadius: 16, overflow: 'hidden', background: '#0c0c0c',
+                        border: '1px solid rgba(255,255,255,0.04)', cursor: 'pointer',
+                        transition: 'border-color 0.3s ease',
+                      }}>
+                        <div style={{ position: 'relative', width: '100%', paddingBottom: '75%' }}>
+                          <Image src={photo.src} alt={photo.alt} fill style={{ objectFit: 'contain', padding: 12, borderRadius: 16 }} />
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  {/* Desktop: Carousel with arrows */}
-                  <div className="hidden lg:grid lg:grid-cols-3 gap-6">
-                    <AnimatePresence mode="popLayout">
-                      {visiblePhotos.map((photo, index) => (
-                        <motion.div
-                          key={photo.src}
-                          initial={{ opacity: 0, x: 50 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          exit={{ opacity: 0, x: -50 }}
-                          transition={{ duration: 0.3 }}
-                          className="relative rounded-lg overflow-hidden bg-black border border-zinc-900 hover:border-zinc-800 transition-all duration-300 cursor-pointer"
-                          onClick={() => setSelectedImage(photo)}
-                        >
-                          <div className="relative w-full" style={{ paddingBottom: '75%' }}>
-                            <Image
-                              src={photo.src}
-                              alt={photo.alt}
-                              fill
-                              className="object-contain p-4 rounded-lg"
-                            />
-                          </div>
-                        </motion.div>
-                      ))}
-                    </AnimatePresence>
+                </div>
+
+                {/* Desktop: carousel */}
+                <div className="hidden lg:block">
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+                    {visiblePhotos.map((photo) => (
+                      <div key={photo.src} onClick={() => setSelectedImage(photo)} style={{
+                        position: 'relative', borderRadius: 16, overflow: 'hidden', background: '#0c0c0c',
+                        border: '1px solid rgba(255,255,255,0.04)', cursor: 'pointer',
+                        transition: 'border-color 0.3s ease',
+                      }}>
+                        <div style={{ position: 'relative', width: '100%', paddingBottom: '75%' }}>
+                          <Image src={photo.src} alt={photo.alt} fill style={{ objectFit: 'contain', padding: 12, borderRadius: 16 }} />
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  {/* Desktop: Carousel Arrows */}
+
                   {showNavigation && (
                     <>
                       <button
                         onClick={() => handlePrevious(roomType)}
-                        className={`hidden lg:flex absolute -left-12 top-1/2 -translate-y-1/2 p-2 rounded-full bg-[#4a0011]/50 hover:bg-[#4a0011] transition-colors ${
-                          startIdx === 0 ? 'opacity-50 cursor-not-allowed' : 'opacity-100'
-                        }`}
                         disabled={startIdx === 0}
-                      >
-                        <ChevronLeft className="w-6 h-6 text-white" />
-                      </button>
+                        style={{
+                          position: 'absolute', left: -48, top: '50%', transform: 'translateY(-50%)',
+                          width: 36, height: 36, borderRadius: '50%', border: '1px solid rgba(212,184,150,0.3)',
+                          background: startIdx === 0 ? 'transparent' : 'rgba(212,184,150,0.06)',
+                          color: '#D4B896', cursor: startIdx === 0 ? 'not-allowed' : 'pointer',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          opacity: startIdx === 0 ? 0.3 : 1, transition: 'all 0.3s ease',
+                          fontSize: 18,
+                        }}
+                      >&#8249;</button>
                       <button
                         onClick={() => handleNext(roomType, maxIndex)}
-                        className={`hidden lg:flex absolute -right-12 top-1/2 -translate-y-1/2 p-2 rounded-full bg-[#4a0011]/50 hover:bg-[#4a0011] transition-colors ${
-                          startIdx >= maxIndex ? 'opacity-50 cursor-not-allowed' : 'opacity-100'
-                        }`}
                         disabled={startIdx >= maxIndex}
-                      >
-                        <ChevronRight className="w-6 h-6 text-white" />
-                      </button>
+                        style={{
+                          position: 'absolute', right: -48, top: '50%', transform: 'translateY(-50%)',
+                          width: 36, height: 36, borderRadius: '50%', border: '1px solid rgba(212,184,150,0.3)',
+                          background: startIdx >= maxIndex ? 'transparent' : 'rgba(212,184,150,0.06)',
+                          color: '#D4B896', cursor: startIdx >= maxIndex ? 'not-allowed' : 'pointer',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          opacity: startIdx >= maxIndex ? 0.3 : 1, transition: 'all 0.3s ease',
+                          fontSize: 18,
+                        }}
+                      >&#8250;</button>
                     </>
                   )}
                 </div>
               </div>
-            );
-          })}
-
-          <div className="mt-8">
-            <Link 
-              href="/physical/1122"
-              className="inline-flex items-center text-zinc-500 hover:text-zinc-300 transition-colors"
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Project 1122
-            </Link>
-          </div>
-        </div>
+            </div>
+          );
+        })}
       </section>
 
       {/* Modal */}
-      <AnimatePresence>
-        {selectedImage && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
+      {selectedImage && (
+        <div
+          onClick={() => setSelectedImage(null)}
+          style={{
+            position: 'fixed', inset: 0, zIndex: 200,
+            background: 'rgba(6,6,6,0.95)', backdropFilter: 'blur(20px)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            padding: 40, cursor: 'pointer',
+          }}
+        >
+          <button
             onClick={() => setSelectedImage(null)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="relative max-w-5xl w-full max-h-[90vh]"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button
-                className="absolute -top-12 right-0 text-zinc-400 hover:text-white transition-colors"
-                onClick={() => setSelectedImage(null)}
-              >
-                <X className="w-6 h-6" />
-              </button>
-              <div className="relative w-full" style={{ paddingBottom: '75%' }}>
-                <Image
-                  src={selectedImage.src}
-                  alt={selectedImage.alt}
-                  fill
-                  className="object-contain rounded-lg"
-                  priority
-                />
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            style={{
+              position: 'absolute', top: 24, right: 24,
+              background: 'none', border: 'none', color: '#555',
+              fontSize: 24, cursor: 'pointer',
+            }}
+          >&#10005;</button>
+          <div onClick={(e) => e.stopPropagation()} style={{ position: 'relative', maxWidth: 900, width: '100%', aspectRatio: '4/3' }}>
+            <Image src={selectedImage.src} alt={selectedImage.alt} fill style={{ objectFit: 'contain', borderRadius: 12 }} priority />
+          </div>
+        </div>
+      )}
     </div>
   );
-} 
+}

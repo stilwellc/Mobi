@@ -1,67 +1,36 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
 
 export default function Gallery() {
   return (
-    <div className="min-h-screen bg-zinc-950">
-      {/* Header */}
-      <header className="relative h-[60vh] overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/50 to-zinc-950" />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-white text-center px-4">
-            Project 1122 Gallery
-          </h1>
-        </div>
-      </header>
-
-      {/* Back Button */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Link 
-          href="/physical/1122"
-          className="inline-flex items-center text-zinc-400 hover:text-white transition-colors duration-200"
-        >
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Project
+    <div style={{ minHeight: '100vh', background: '#060606', color: '#F0EDE8', fontFamily: "'Syne', sans-serif" }}>
+      <nav style={{
+        padding: '24px 56px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        borderBottom: '1px solid rgba(255,255,255,0.04)',
+        background: 'rgba(6,6,6,0.85)', backdropFilter: 'blur(30px)',
+        position: 'sticky', top: 0, zIndex: 100,
+      }}>
+        <Link href="/" style={{ textDecoration: 'none', color: '#F0EDE8', fontFamily: "'Syne', sans-serif", fontSize: 26, fontWeight: 700, letterSpacing: '-0.04em' }}>
+          mobi<span style={{ color: '#D4B896' }}>.</span>
         </Link>
-      </div>
+        <Link href="/physical/1122" style={{
+          textDecoration: 'none', fontSize: 12, color: '#444', fontWeight: 500,
+          letterSpacing: '0.1em', textTransform: 'uppercase',
+        }}>
+          &#8592; Back to Project 1122
+        </Link>
+      </nav>
 
-      {/* Gallery Content */}
-      <section className="py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-[2000px] mx-auto">
-            <div className="flex flex-col gap-8">
-              {/* Before Section */}
-              <div>
-                <h2 className="text-2xl font-medium text-zinc-300 mb-6">Before</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {/* Placeholder for before photos */}
-                  <div className="relative aspect-[4/3] rounded-lg overflow-hidden bg-black border border-zinc-900">
-                    <div className="absolute inset-0 flex items-center justify-center text-zinc-600">
-                      Coming Soon
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* After Section */}
-              <div>
-                <h2 className="text-2xl font-medium text-zinc-300 mb-6">After</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {/* Placeholder for after photos */}
-                  <div className="relative aspect-[4/3] rounded-lg overflow-hidden bg-black border border-zinc-900">
-                    <div className="absolute inset-0 flex items-center justify-center text-zinc-600">
-                      Coming Soon
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <section style={{ padding: '80px 56px', maxWidth: 900, margin: '0 auto', textAlign: 'center' }}>
+        <h1 style={{
+          fontFamily: "'Cormorant Garamond', serif",
+          fontSize: 60, fontWeight: 300, letterSpacing: '-0.03em', marginBottom: 24,
+        }}>
+          Gallery
+        </h1>
+        <p style={{ fontSize: 16, color: '#555', fontWeight: 400 }}>Coming Soon</p>
       </section>
     </div>
   );
-} 
+}

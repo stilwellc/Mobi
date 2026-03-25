@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
 
@@ -10,7 +9,6 @@ export default function ScreechProject() {
   const [newsFeed, setNewsFeed] = useState<string[]>([]);
 
   useEffect(() => {
-    // Update streak
     const today = new Date().toISOString().split('T')[0];
     const lastVisit = localStorage.getItem('lastVisit') || '';
     const currentStreak = parseInt(localStorage.getItem('streak') || '0', 10);
@@ -33,7 +31,6 @@ export default function ScreechProject() {
       localStorage.setItem('lastVisit', today);
     }
 
-    // Load news feed
     const loadNewsFeed = async () => {
       try {
         const response = await fetch('https://script.google.com/macros/s/AKfycbyWcDyElkuQ44d2AIv9zx4dGLRTOJydzJCNLlu2L8aWVbjoggOHd_HXz9Qh675fIYi3mw/exec');
@@ -50,160 +47,118 @@ export default function ScreechProject() {
   }, []);
 
   const formatMarkdown = (text: string) => {
-    // First, split the text into lines
     let lines = text.split('\n');
-    
-    // Process each line
     lines = lines.map(line => {
-      // Check if this is a category header (contains emojis and no bullet points)
       if (line.match(/^[^•-].*?[🎁✨|🍽️🍹|👨‍👩‍👧‍👦|🏡|🌿🚴|🎶🎭|🎉|🎨|🎭|🎪|🎯|🎮|💻|📚|🎓|🏆|🎪|🎨|🎭]/) && !line.startsWith('•')) {
-        // Remove any markdown headers (###) and style the text
         const cleanLine = line.replace(/^#+\s*/, '');
         return `### ${cleanLine}`;
       }
-      
-      // Convert bullet points with bold text
       if (line.match(/^[-•]\s*\*\*(.*?)\*\*(.*)/)) {
         return line.replace(/^[-•]\s*\*\*(.*?)\*\*(.*)/, '• **$1**$2');
       }
-      
-      // Convert remaining bullet points
       if (line.match(/^[-•]\s*.*/)) {
         return line.replace(/^[-•]\s*(.*)/, '• $1');
       }
-      
       return line;
     });
-    
-    // Join lines back together
     let formatted = lines.join('\n');
-    
-    // Convert URLs to markdown links
-    formatted = formatted.replace(
-      /(https?:\/\/[^\s]+)/g,
-      '[$1]($1)'
-    );
-    
-    // Clean up any duplicate bullet points
+    formatted = formatted.replace(/(https?:\/\/[^\s]+)/g, '[$1]($1)');
     formatted = formatted.replace(/[•-]\s*[•-]\s*/g, '• ');
-    
     return formatted;
   };
 
   return (
-    <div className="min-h-screen bg-black">
-      {/* Hero Section */}
-      <div className="relative">
-        <div className="absolute inset-0">
-          <div className="absolute inset-0" style={{ 
-            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(128,0,32,0.015) 1px, transparent 0)`,
-            backgroundSize: '24px 24px'
-          }} />
-        </div>
-        
-        <div className="relative z-10 pt-16 pb-8">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6">
-            <div className="flex items-center space-x-4 mb-4">
-              <motion.div 
-                className="w-2 h-2 bg-[#4a0011] rounded-full"
-                whileHover={{ scale: [null, 1.5] }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              />
-              <h1 className="text-3xl sm:text-4xl font-medium tracking-tight text-zinc-300">
-                Screech
-              </h1>
-            </div>
-            <p className="text-base sm:text-lg text-zinc-500 max-w-2xl leading-relaxed">
-              Stay in the Know, Powered by AI – Your Smart Guide to Local Events!
-            </p>
-            <div className="mt-6">
-              <Link href="/" className="inline-flex items-center text-zinc-600 hover:text-zinc-400 transition-colors">
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                <span className="text-sm">Back to Home</span>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div style={{ minHeight: '100vh', background: '#060606', color: '#F0EDE8', fontFamily: "'Syne', sans-serif" }}>
+      <style>{`
+        .screech-prose h3 { color: #D4B896; font-size: 18px; font-weight: 600; margin: 24px 0 12px; font-family: 'Cormorant Garamond', serif; font-style: italic; }
+        .screech-prose h3:first-child { margin-top: 0; }
+        .screech-prose p { color: #555; margin: 12px 0; line-height: 1.7; font-size: 14px; }
+        .screech-prose strong { color: #888; font-weight: 500; }
+        .screech-prose a { color: #888; text-decoration: none; transition: color 0.3s; }
+        .screech-prose a:hover { color: #D4B896; text-decoration: underline; }
+        .screech-prose ul { list-style: none; padding: 0; margin: 12px 0; }
+        .screech-prose li { position: relative; padding-left: 20px; color: #555; line-height: 1.7; margin: 8px 0; font-size: 14px; }
+        .screech-prose li::before { content: '•'; position: absolute; left: 0; color: #3a3a3a; }
+      `}</style>
 
-      {/* Streak Tracker */}
-      <section className="relative z-10 py-8">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <div className="relative rounded-lg overflow-hidden bg-zinc-950 border border-zinc-900 p-6 sm:p-8 group md:hover:scale-[1.01] transition-all duration-300">
-            <div className="absolute inset-0 bg-gradient-to-br from-zinc-950/90 to-black/60" />
-            <div className="absolute inset-0" style={{ 
-              backgroundImage: `radial-gradient(circle at 1px 1px, rgba(128,0,32,0.03) 1px, transparent 0)`,
-              backgroundSize: '16px 16px'
-            }} />
-            <div className="relative flex items-center justify-between">
-              <div>
-                <h2 className="text-xl sm:text-2xl font-medium text-zinc-300 mb-2 group-hover:translate-y-[-1px] transition-transform">
-                  Current Streak
-                </h2>
-                <p className="text-base text-zinc-500 md:group-hover:text-zinc-400 transition-colors">
-                  {streak} days of continuous updates
-                </p>
-              </div>
-              <motion.div 
-                className="w-2 h-2 bg-[#4a0011] rounded-full"
-                whileHover={{ scale: [null, 1.5] }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              />
-            </div>
+      {/* Nav */}
+      <nav style={{
+        padding: '24px 56px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        borderBottom: '1px solid rgba(255,255,255,0.04)',
+        background: 'rgba(6,6,6,0.85)', backdropFilter: 'blur(30px)',
+        position: 'sticky', top: 0, zIndex: 100,
+      }}>
+        <Link href="/" style={{ textDecoration: 'none', color: '#F0EDE8', fontFamily: "'Syne', sans-serif", fontSize: 26, fontWeight: 700, letterSpacing: '-0.04em' }}>
+          mobi<span style={{ color: '#D4B896' }}>.</span>
+        </Link>
+        <Link href="/" style={{
+          textDecoration: 'none', fontSize: 12, color: '#444', fontWeight: 500,
+          letterSpacing: '0.1em', textTransform: 'uppercase',
+        }}>
+          &#8592; Back
+        </Link>
+      </nav>
+
+      {/* Hero */}
+      <section style={{ padding: '60px 56px 40px', maxWidth: 900, margin: '0 auto' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 16 }}>
+          <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#96B8D4', opacity: 0.6 }} />
+          <span style={{ fontSize: 11, letterSpacing: '0.25em', textTransform: 'uppercase', color: '#3a3a3a', fontWeight: 600 }}>
+            Digital &mdash; Newsletter
+          </span>
+        </div>
+        <h1 style={{
+          fontFamily: "'Cormorant Garamond', serif",
+          fontSize: 'clamp(36px, 6vw, 72px)', fontWeight: 300, letterSpacing: '-0.03em', lineHeight: 0.95,
+          marginBottom: 16,
+        }}>
+          <span style={{ fontStyle: 'italic', color: '#96B8D4' }}>Screech</span>
+        </h1>
+        <p style={{ fontSize: 16, lineHeight: 1.8, color: '#555', fontWeight: 400, maxWidth: 520 }}>
+          Stay in the Know, Powered by AI — Your Smart Guide to Local Events!
+        </p>
+      </section>
+
+      {/* Streak */}
+      <section style={{ padding: '0 56px 40px', maxWidth: 900, margin: '0 auto' }}>
+        <div style={{
+          padding: '28px 36px', borderRadius: 20, background: '#0c0c0c',
+          border: '1px solid rgba(255,255,255,0.04)',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        }}>
+          <div>
+            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 24, fontWeight: 300, marginBottom: 4 }}>
+              Current Streak
+            </h2>
+            <p style={{ fontSize: 14, color: '#555', fontWeight: 400 }}>
+              {streak} days of continuous updates
+            </p>
           </div>
+          <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#96B8D4', opacity: 0.5 }} />
         </div>
       </section>
 
       {/* News Feed */}
-      <section className="relative z-10 py-8">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <div className="grid gap-6">
-            {[...newsFeed].reverse().map((item, index) => (
-              <div 
-                key={index}
-                className="relative rounded-lg overflow-hidden bg-zinc-950 border border-zinc-900 p-6 sm:p-8 group md:hover:scale-[1.01] transition-all duration-300"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-zinc-950/90 to-black/60" />
-                <div className="absolute inset-0" style={{ 
-                  backgroundImage: `radial-gradient(circle at 1px 1px, rgba(128,0,32,0.03) 1px, transparent 0)`,
-                  backgroundSize: '16px 16px'
-                }} />
-                <div className="relative">
-                  <div className="flex items-center justify-between mb-4">
-                    <time className="text-sm text-zinc-500 md:group-hover:text-zinc-400 transition-colors">
-                      {new Date().toLocaleDateString()}
-                    </time>
-                    <motion.div 
-                      className="w-2 h-2 bg-[#4a0011] rounded-full"
-                      whileHover={{ scale: [null, 1.5] }}
-                      transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                    />
-                  </div>
-                  <div className="prose prose-invert prose-zinc max-w-none md:group-hover:translate-y-[-1px] transition-transform">
-                    <div className="
-                      prose-p:text-zinc-500 prose-p:my-3 prose-p:leading-relaxed
-                      prose-strong:text-zinc-400 prose-strong:font-medium
-                      prose-a:text-zinc-400 hover:prose-a:text-zinc-300 prose-a:no-underline hover:prose-a:underline
-                      prose-ul:my-6 prose-ul:space-y-3 prose-ul:list-none
-                      [&_li]:relative [&_li]:pl-6 [&_li]:text-zinc-500 [&_li]:leading-relaxed
-                      [&_li]:before:content-['•'] [&_li]:before:absolute [&_li]:before:left-0 [&_li]:before:text-zinc-600
-                      [&_li]:before:top-0 [&_li]:before:text-lg
-                      prose-h3:text-[#800020] prose-h3:text-xl prose-h3:font-bold 
-                      prose-h3:block prose-h3:mb-6 prose-h3:mt-8 
-                      prose-h3:first:mt-0
-                      space-y-6
-                    ">
-                      <ReactMarkdown>{formatMarkdown(item)}</ReactMarkdown>
-                    </div>
-                  </div>
-                </div>
+      <section style={{ padding: '0 56px 120px', maxWidth: 900, margin: '0 auto' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+          {[...newsFeed].reverse().map((item, index) => (
+            <div key={index} style={{
+              padding: '28px 36px', borderRadius: 20, background: '#0c0c0c',
+              border: '1px solid rgba(255,255,255,0.04)',
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+                <time style={{ fontSize: 12, color: '#3a3a3a', fontWeight: 500 }}>
+                  {new Date().toLocaleDateString()}
+                </time>
+                <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#96B8D4', opacity: 0.4 }} />
               </div>
-            ))}
-          </div>
+              <div className="screech-prose">
+                <ReactMarkdown>{formatMarkdown(item)}</ReactMarkdown>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
     </div>
   );
-} 
+}

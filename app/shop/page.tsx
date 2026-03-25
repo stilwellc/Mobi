@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -27,121 +26,89 @@ export default function ShopPage() {
         setLoading(false);
       }
     }
-
     fetchItems();
   }, []);
 
   return (
-    <div className="min-h-screen bg-black">
-      {/* Hero Section */}
-      <div className="relative">
-        <div className="absolute inset-0">
-          <div className="absolute inset-0" style={{ 
-            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(128,0,32,0.015) 1px, transparent 0)`,
-            backgroundSize: '24px 24px'
-          }} />
-        </div>
-        
-        <div className="relative z-10 pt-16 pb-8">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6">
-            <div className="flex items-center space-x-4 mb-4">
-              <motion.div 
-                className="w-2 h-2 bg-[#4a0011] rounded-full"
-                whileHover={{ scale: [null, 1.5] }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              />
-              <h1 className="text-3xl sm:text-4xl font-medium tracking-tight text-zinc-300">
-                Shop
-              </h1>
-            </div>
-            <p className="text-base sm:text-lg text-zinc-500 max-w-2xl leading-relaxed">
-              Discover our curated collection of design pieces
-            </p>
-            <div className="mt-6">
-              <Link href="/" className="inline-flex items-center text-zinc-600 hover:text-zinc-400 transition-colors">
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                <span className="text-sm">Back to Home</span>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div style={{ minHeight: '100vh', background: '#060606', color: '#F0EDE8', fontFamily: "'Syne', sans-serif" }}>
+      {/* Nav */}
+      <nav style={{
+        padding: '24px 56px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        borderBottom: '1px solid rgba(255,255,255,0.04)',
+        background: 'rgba(6,6,6,0.85)', backdropFilter: 'blur(30px)',
+        position: 'sticky', top: 0, zIndex: 100,
+      }}>
+        <Link href="/" style={{ textDecoration: 'none', color: '#F0EDE8', fontFamily: "'Syne', sans-serif", fontSize: 26, fontWeight: 700, letterSpacing: '-0.04em' }}>
+          mobi<span style={{ color: '#D4B896' }}>.</span>
+        </Link>
+        <Link href="/" style={{
+          textDecoration: 'none', fontSize: 12, color: '#444', fontWeight: 500,
+          letterSpacing: '0.1em', textTransform: 'uppercase',
+        }}>
+          &#8592; Back
+        </Link>
+      </nav>
 
-      {/* Shop Grid */}
-      <section className="relative z-10 py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          {loading ? (
-            <div className="flex justify-center items-center min-h-[200px]">
-              <div className="w-2 h-2 bg-[#4a0011] rounded-full animate-ping" />
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {items.map((item) => (
-                <motion.div
-                  key={item.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                  viewport={{ once: true }}
-                  className="group relative"
-                >
-                  <Link href={`/shop/${item.id}`} className="block">
-                    <div className="relative aspect-square rounded-lg overflow-hidden bg-zinc-950 border border-zinc-900 transition-all duration-300 md:hover:border-zinc-800 md:hover:scale-[1.02]">
-                      <div className="absolute inset-0 bg-gradient-to-br from-zinc-950/90 to-black/60" />
-                      <div className="absolute inset-0" style={{ 
-                        backgroundImage: `radial-gradient(circle at 1px 1px, rgba(128,0,32,0.03) 1px, transparent 0)`,
-                        backgroundSize: '16px 16px'
-                      }} />
-                      <Image
-                        src={item.imagePath}
-                        alt={item.title}
-                        fill
-                        className="object-cover opacity-80 md:group-hover:opacity-100 transition-opacity duration-300"
-                      />
-                      <div className="absolute bottom-4 right-4">
-                        <div className="px-2 py-1 bg-[#4a0011]/90 backdrop-blur-sm rounded text-xs font-medium tracking-wider text-zinc-200">
-                          SOLD
-                        </div>
-                      </div>
-                      <div className="absolute top-4 right-4">
-                        <motion.div 
-                          className="w-2 h-2 bg-[#4a0011] rounded-full"
-                          whileHover={{ scale: [null, 1.5] }}
-                          transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                        />
-                      </div>
-                    </div>
-                  </Link>
-                  <div className="mt-4 space-y-2">
-                    <Link href={`/shop/${item.id}`}>
-                      <h3 className="text-lg font-medium text-zinc-300 md:group-hover:text-zinc-200 transition-colors md:hover:text-zinc-100">
-                        {item.title}
-                      </h3>
-                    </Link>
-                    <Link 
-                      href={`/shop/${item.id}`}
-                      className="inline-flex items-center text-zinc-500 md:group-hover:text-zinc-400 transition-colors"
-                    >
-                      <motion.div 
-                        className="inline-flex items-center"
-                        whileHover={{ x: [null, 5] }}
-                        transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                      >
-                        <span className="mr-2 text-sm">View Details</span>
-                        <svg className="w-4 h-4 md:group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                        </svg>
-                      </motion.div>
-                    </Link>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          )}
+      {/* Hero */}
+      <section style={{ padding: '60px 56px 40px', maxWidth: 1100, margin: '0 auto' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 16 }}>
+          <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#B8D496', opacity: 0.6 }} />
+          <span style={{ fontSize: 11, letterSpacing: '0.25em', textTransform: 'uppercase', color: '#3a3a3a', fontWeight: 600 }}>
+            Curated Objects
+          </span>
         </div>
+        <h1 style={{
+          fontFamily: "'Cormorant Garamond', serif",
+          fontSize: 'clamp(36px, 6vw, 72px)', fontWeight: 300, letterSpacing: '-0.03em', lineHeight: 0.95,
+          marginBottom: 16,
+        }}>
+          <span style={{ fontStyle: 'italic', color: '#B8D496' }}>Shop</span>
+        </h1>
+        <p style={{ fontSize: 16, lineHeight: 1.8, color: '#555', fontWeight: 400, maxWidth: 520 }}>
+          Discover our curated collection of design pieces
+        </p>
+      </section>
+
+      {/* Grid */}
+      <section style={{ padding: '20px 56px 120px', maxWidth: 1200, margin: '0 auto' }}>
+        {loading ? (
+          <div style={{ display: 'flex', justifyContent: 'center', padding: 80 }}>
+            <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#B8D496', opacity: 0.5 }} />
+          </div>
+        ) : (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 20 }}>
+            {items.map((item) => (
+              <Link key={item.id} href={`/shop/${item.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                <div style={{
+                  position: 'relative', borderRadius: 20, overflow: 'hidden', background: '#0c0c0c',
+                  border: '1px solid rgba(255,255,255,0.04)', transition: 'all 0.4s ease',
+                  cursor: 'pointer',
+                }}>
+                  <div style={{ position: 'relative', width: '100%', paddingBottom: '100%' }}>
+                    <Image src={item.imagePath} alt={item.title} fill style={{ objectFit: 'cover', opacity: 0.8 }} />
+                    <div style={{
+                      position: 'absolute', bottom: 12, right: 12,
+                      padding: '4px 12px', borderRadius: 100,
+                      background: 'rgba(212,184,150,0.1)', border: '1px solid rgba(212,184,150,0.2)',
+                      fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase',
+                      color: '#D4B896', fontWeight: 600,
+                    }}>SOLD</div>
+                  </div>
+                  <div style={{ padding: '16px 20px 20px' }}>
+                    <h3 style={{
+                      fontFamily: "'Cormorant Garamond', serif",
+                      fontSize: 20, fontWeight: 300, marginBottom: 4,
+                    }}>{item.title}</h3>
+                    <span style={{ fontSize: 11, color: '#3a3a3a', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                      View Details &#8594;
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );
-} 
+}

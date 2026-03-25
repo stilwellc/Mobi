@@ -1,172 +1,127 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
-import Image from 'next/image'
-import { ArrowLeft } from 'lucide-react'
+import Image from 'next/image';
 
 export default function Project1122() {
   return (
-    <div className="min-h-screen bg-black">
-      {/* Hero Section */}
-      <div className="relative">
-        <div className="absolute inset-0">
-          <div className="absolute inset-0" style={{ 
-            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0)`,
-            backgroundSize: '24px 24px'
-          }} />
+    <div style={{ minHeight: '100vh', background: '#060606', color: '#F0EDE8', fontFamily: "'Syne', sans-serif" }}>
+      {/* Nav */}
+      <nav style={{
+        padding: '24px 56px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        borderBottom: '1px solid rgba(255,255,255,0.04)',
+        background: 'rgba(6,6,6,0.85)', backdropFilter: 'blur(30px)',
+        position: 'sticky', top: 0, zIndex: 100,
+      }}>
+        <Link href="/" style={{ textDecoration: 'none', color: '#F0EDE8', fontFamily: "'Syne', sans-serif", fontSize: 26, fontWeight: 700, letterSpacing: '-0.04em' }}>
+          mobi<span style={{ color: '#D4B896' }}>.</span>
+        </Link>
+        <Link href="/" style={{
+          textDecoration: 'none', fontSize: 12, color: '#444', fontWeight: 500,
+          letterSpacing: '0.1em', textTransform: 'uppercase',
+        }}>
+          &#8592; Back
+        </Link>
+      </nav>
+
+      {/* Hero */}
+      <section style={{ padding: '80px 56px 40px', maxWidth: 1100, margin: '0 auto' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 16 }}>
+          <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#D4B896', opacity: 0.6 }} />
+          <span style={{ fontSize: 11, letterSpacing: '0.25em', textTransform: 'uppercase', color: '#3a3a3a', fontWeight: 600 }}>
+            Physical &mdash; Installation
+          </span>
         </div>
-        
-        <div className="relative z-10 pt-16 pb-8">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center space-x-4 mb-4">
-              <motion.div
-                className="w-2 h-2 bg-[#4a0011] rounded-full"
-                whileHover={{ scale: [null, 1.5] }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              />
-              <h1 className="text-3xl sm:text-4xl font-medium tracking-tight text-zinc-300">
-                Project 1122
-              </h1>
-            </div>
-            <p className="text-base sm:text-lg text-zinc-500 max-w-2xl leading-relaxed">
-              A groundbreaking exploration of form and function in physical space
-            </p>
-          </div>
-        </div>
-      </div>
 
-      {/* Project Content */}
-      <section className="py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-[2000px] mx-auto">
-            <div className="flex flex-col gap-8">
-              {/* Before Image */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                viewport={{ once: true }}
-                className="relative w-full"
-              >
-                <Link href="/physical/1122/before">
-                  <div className="relative aspect-[3/2] rounded-lg overflow-hidden bg-black border border-zinc-900 hover:border-zinc-800 transition-all duration-300 cursor-pointer">
-                    <Image 
-                      src="/images/1122/1122beforeBP.png" 
-                      alt="Before blueprint"
-                      fill
-                      className="object-contain p-4"
-                    />
-                    <div className="absolute bottom-4 left-4">
-                      <div className="px-3 py-1.5 bg-[#800020] rounded-full">
-                        <span className="text-sm font-medium text-white">Before Gallery</span>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              </motion.div>
+        <h1 style={{
+          fontFamily: "'Cormorant Garamond', serif",
+          fontSize: 'clamp(48px, 8vw, 90px)', fontWeight: 300, letterSpacing: '-0.03em', lineHeight: 0.95,
+          marginBottom: 24,
+        }}>
+          Project <span style={{ fontStyle: 'italic', color: '#D4B896' }}>1122</span>
+        </h1>
 
-              {/* After Image */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                viewport={{ once: true }}
-                className="relative w-full"
-              >
-                <Link href="/physical/1122/after">
-                  <div className="relative aspect-[3/2] rounded-lg overflow-hidden bg-black border border-zinc-900 hover:border-zinc-800 transition-all duration-300 cursor-pointer">
-                    <Image 
-                      src="/images/1122/1122afterBP.png" 
-                      alt="After blueprint"
-                      fill
-                      className="object-contain p-4"
-                    />
-                    <div className="absolute bottom-4 left-4">
-                      <div className="px-3 py-1.5 bg-[#800020] rounded-full">
-                        <span className="text-sm font-medium text-white">After Gallery</span>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              </motion.div>
-            </div>
+        <p style={{ fontSize: 17, lineHeight: 1.8, color: '#555', fontWeight: 400, maxWidth: 520, marginBottom: 48 }}>
+          A groundbreaking exploration of form and function in physical space — the Stilwell residence reimagined from blueprint to lived experience.
+        </p>
 
-            <div className="mt-12 max-w-4xl mx-auto">
-              <h2 className="text-2xl font-medium text-zinc-300 mb-4">Project Details</h2>
-              <p className="text-base text-zinc-500 leading-relaxed mb-8">
-                This project represents a significant transformation in physical space design, 
-                showcasing the evolution from initial concept to final implementation. The 
-                before and after blueprints demonstrate the thoughtful consideration of form, 
-                function, and spatial relationships.
-              </p>
+        <div style={{ width: '100%', height: 1, background: 'linear-gradient(90deg, rgba(255,255,255,0.06), transparent 80%)' }} />
+      </section>
 
-              <div className="space-y-8">
-                {/* Bedroom */}
-                <div>
-                  <h3 className="text-xl font-medium text-zinc-300 mb-2">Bedroom</h3>
-                  <p className="text-base text-zinc-500 leading-relaxed">
-                    The bedroom features a spacious layout with carefully considered proportions, 
-                    maximizing natural light while maintaining privacy. The design incorporates 
-                    built-in storage solutions and a dedicated workspace area.
-                  </p>
-                </div>
-
-                {/* Kitchen */}
-                <div>
-                  <h3 className="text-xl font-medium text-zinc-300 mb-2">Kitchen</h3>
-                  <p className="text-base text-zinc-500 leading-relaxed">
-                    A modern, functional kitchen with an open concept design. The space includes 
-                    high-end appliances, ample counter space, and a central island that serves 
-                    as both a preparation area and casual dining space.
-                  </p>
-                </div>
-
-                {/* Living Room */}
-                <div>
-                  <h3 className="text-xl font-medium text-zinc-300 mb-2">Living Room</h3>
-                  <p className="text-base text-zinc-500 leading-relaxed">
-                    The living room is designed for both comfort and entertainment, featuring 
-                    a flexible layout that can accommodate various furniture arrangements. 
-                    Large windows provide natural light and views of the surrounding area.
-                  </p>
-                </div>
-
-                {/* Bathroom */}
-                <div>
-                  <h3 className="text-xl font-medium text-zinc-300 mb-2">Bathroom</h3>
-                  <p className="text-base text-zinc-500 leading-relaxed">
-                    A luxurious bathroom with a spa-like atmosphere. The design includes 
-                    a walk-in shower, freestanding tub, and double vanity. Premium materials 
-                    and fixtures create a sophisticated yet functional space.
-                  </p>
-                </div>
-
-                {/* Office */}
-                <div>
-                  <h3 className="text-xl font-medium text-zinc-300 mb-2">Office</h3>
-                  <p className="text-base text-zinc-500 leading-relaxed">
-                    A dedicated workspace designed for productivity and comfort. The office 
-                    features built-in shelving, ample desk space, and strategic lighting 
-                    to create an optimal working environment.
-                  </p>
-                </div>
+      {/* Blueprints */}
+      <section style={{ padding: '40px 56px 80px', maxWidth: 1100, margin: '0 auto' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+          <Link href="/physical/1122/before" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <div style={{
+              position: 'relative', borderRadius: 20, overflow: 'hidden', background: '#0c0c0c',
+              border: '1px solid rgba(255,255,255,0.04)', transition: 'all 0.4s ease', cursor: 'pointer',
+            }}>
+              <div style={{ position: 'relative', width: '100%', paddingBottom: '66%' }}>
+                <Image src="/images/1122/1122beforeBP.png" alt="Before blueprint" fill style={{ objectFit: 'contain', padding: 16 }} />
+              </div>
+              <div style={{ padding: '16px 24px 24px' }}>
+                <span style={{
+                  fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase',
+                  color: '#D4B896', fontWeight: 600, background: 'rgba(212,184,150,0.06)',
+                  padding: '6px 16px', borderRadius: 100, border: '1px solid rgba(212,184,150,0.1)',
+                }}>Before Gallery</span>
               </div>
             </div>
+          </Link>
 
-            <div className="mt-8 max-w-4xl mx-auto">
-              <Link 
-                href="/physical"
-                className="inline-flex items-center text-zinc-500 hover:text-zinc-300 transition-colors"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back to Physical Projects
-              </Link>
+          <Link href="/physical/1122/after" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <div style={{
+              position: 'relative', borderRadius: 20, overflow: 'hidden', background: '#0c0c0c',
+              border: '1px solid rgba(255,255,255,0.04)', transition: 'all 0.4s ease', cursor: 'pointer',
+            }}>
+              <div style={{ position: 'relative', width: '100%', paddingBottom: '66%' }}>
+                <Image src="/images/1122/1122afterBP.png" alt="After blueprint" fill style={{ objectFit: 'contain', padding: 16 }} />
+              </div>
+              <div style={{ padding: '16px 24px 24px' }}>
+                <span style={{
+                  fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase',
+                  color: '#96B8D4', fontWeight: 600, background: 'rgba(150,184,212,0.06)',
+                  padding: '6px 16px', borderRadius: 100, border: '1px solid rgba(150,184,212,0.1)',
+                }}>After Gallery</span>
+              </div>
             </div>
-          </div>
+          </Link>
         </div>
+      </section>
+
+      {/* Project Details */}
+      <section style={{ padding: '0 56px 120px', maxWidth: 1100, margin: '0 auto' }}>
+        <div style={{ width: '100%', height: 1, marginBottom: 48, background: 'linear-gradient(90deg, rgba(255,255,255,0.06), transparent 80%)' }} />
+
+        <h2 style={{
+          fontFamily: "'Cormorant Garamond', serif",
+          fontSize: 42, fontWeight: 300, letterSpacing: '-0.02em', marginBottom: 36,
+        }}>
+          Room <span style={{ fontStyle: 'italic', color: '#D4B896' }}>Details</span>
+        </h2>
+
+        {[
+          { title: 'Bedroom', text: 'The bedroom features a spacious layout with carefully considered proportions, maximizing natural light while maintaining privacy. The design incorporates built-in storage solutions and a dedicated workspace area.' },
+          { title: 'Kitchen', text: 'A modern, functional kitchen with an open concept design. The space includes high-end appliances, ample counter space, and a central island that serves as both a preparation area and casual dining space.' },
+          { title: 'Living Room', text: 'The living room is designed for both comfort and entertainment, featuring a flexible layout that can accommodate various furniture arrangements. Large windows provide natural light and views of the surrounding area.' },
+          { title: 'Bathroom', text: 'A luxurious bathroom with a spa-like atmosphere. The design includes a walk-in shower, freestanding tub, and double vanity. Premium materials and fixtures create a sophisticated yet functional space.' },
+          { title: 'Office', text: 'A dedicated workspace designed for productivity and comfort. The office features built-in shelving, ample desk space, and strategic lighting to create an optimal working environment.' },
+        ].map((room, i) => (
+          <div key={i} style={{
+            marginBottom: 32,
+            display: 'grid', gridTemplateColumns: '180px 1fr', gap: 40,
+          }}>
+            <h3 style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontSize: 22, fontWeight: 400, fontStyle: 'italic', color: '#D4B896', lineHeight: 1.3,
+            }}>{room.title}</h3>
+            <p style={{ fontSize: 15, lineHeight: 1.85, color: '#444', fontWeight: 400 }}>
+              {room.text}
+            </p>
+          </div>
+        ))}
       </section>
     </div>
   );
-} 
+}
