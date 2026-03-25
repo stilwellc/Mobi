@@ -40,7 +40,6 @@ const sections: Section[] = [
     description: "Where innovation meets imagination — crafting digital experiences that feel intuitive, alive, and deeply human.",
     items: [
       { name: "3D Prints", tag: "Fabrication", description: "Digital-to-physical explorations through additive manufacturing." },
-      { name: "Screech", tag: "Newsletter", description: "AI-powered local events curation — your smart guide to what's happening.", href: "/digital/screech" },
       { name: "Soirée", tag: "Art", description: "Curated art discovery — filtered, refined, always surprising." },
       { name: "Pricing Simulator", tag: "WIP", description: "Demystifying the vintage and design market.", wip: true },
       { name: "Crawler", tag: "WIP", description: "An intelligent agent tracking what matters to you.", wip: true },
@@ -901,42 +900,23 @@ export default function MobiSite() {
                 </div>
               </div>
 
-              <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1.4fr 0.6fr", gap: mobile ? 16 : 20 }}>
-                <Link href="/physical/1122" style={{ textDecoration: "none", color: "inherit" }}>
-                  <div className="featured-card" style={{ padding: mobile ? 28 : 48 }}>
-                    <div style={{ position: "absolute", top: 0, left: "10%", right: "10%", height: 1, background: "linear-gradient(90deg, transparent, rgba(212,184,150,0.3), transparent)" }} />
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: mobile ? 24 : 36 }}>
-                      <span style={{ fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: "#D4B896", fontWeight: 600, background: "rgba(212,184,150,0.06)", padding: "6px 16px", borderRadius: 100, border: "1px solid rgba(212,184,150,0.1)" }}>Physical</span>
-                      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style={{ opacity: 0.25 }}><path d="M6 14L14 6M14 6H8M14 6V12" stroke="#F0EDE8" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    </div>
-                    <div style={{ background: "#080808", borderRadius: 14, height: mobile ? 140 : 200, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: mobile ? 28 : 40, border: "1px solid rgba(255,255,255,0.03)", position: "relative", overflow: "hidden" }}>
-                      <div style={{ position: "absolute", inset: 0, backgroundImage: "linear-gradient(rgba(212,184,150,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(212,184,150,0.02) 1px, transparent 1px)", backgroundSize: "20px 20px" }} />
-                      <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 50%, rgba(212,184,150,0.04), transparent 60%)" }} />
-                      <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: mobile ? 36 : 56, fontWeight: 300, color: "rgba(255,255,255,0.04)", letterSpacing: "0.1em" }}>1122</span>
-                    </div>
-                    <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: mobile ? 28 : 36, fontWeight: 300, marginBottom: 6 }}>Project 1122</h3>
-                    <div style={{ fontSize: 12, color: "#333", marginBottom: mobile ? 14 : 18, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase" }}>Stilwell</div>
-                    <p style={{ fontSize: mobile ? 13 : 15, lineHeight: 1.75, color: "#555", fontWeight: 400, maxWidth: 480 }}>A complete spatial transformation — reimagining a home from blueprint to lived experience.</p>
+              <Link href="/physical/1122" style={{ textDecoration: "none", color: "inherit" }}>
+                <div className="featured-card" style={{ padding: mobile ? 28 : 48 }}>
+                  <div style={{ position: "absolute", top: 0, left: "10%", right: "10%", height: 1, background: "linear-gradient(90deg, transparent, rgba(212,184,150,0.3), transparent)" }} />
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: mobile ? 24 : 36 }}>
+                    <span style={{ fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: "#D4B896", fontWeight: 600, background: "rgba(212,184,150,0.06)", padding: "6px 16px", borderRadius: 100, border: "1px solid rgba(212,184,150,0.1)" }}>Physical</span>
+                    <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style={{ opacity: 0.25 }}><path d="M6 14L14 6M14 6H8M14 6V12" stroke="#F0EDE8" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                   </div>
-                </Link>
-
-                <Link href="/digital/screech" style={{ textDecoration: "none", color: "inherit" }}>
-                  <div className="featured-card" style={{ padding: mobile ? 28 : 48, display: "flex", flexDirection: "column" }}>
-                    <div style={{ position: "absolute", top: 0, left: "10%", right: "10%", height: 1, background: "linear-gradient(90deg, transparent, rgba(150,184,212,0.3), transparent)" }} />
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: mobile ? 24 : 36 }}>
-                      <span style={{ fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: "#96B8D4", fontWeight: 600, background: "rgba(150,184,212,0.06)", padding: "6px 16px", borderRadius: 100, border: "1px solid rgba(150,184,212,0.1)" }}>Digital</span>
-                      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style={{ opacity: 0.25 }}><path d="M6 14L14 6M14 6H8M14 6V12" stroke="#F0EDE8" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    </div>
-                    <div style={{ background: "#080808", borderRadius: 14, height: mobile ? 140 : 200, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", marginBottom: mobile ? 28 : 40, border: "1px solid rgba(255,255,255,0.03)", position: "relative", overflow: "hidden" }}>
-                      <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 35%, rgba(150,184,212,0.06), transparent 65%)" }} />
-                      <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: mobile ? 24 : 30, fontWeight: 400, fontStyle: "italic", color: "rgba(150,184,212,0.3)" }}>screech</span>
-                    </div>
-                    <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: mobile ? 28 : 36, fontWeight: 300, marginBottom: 6 }}>Screech</h3>
-                    <div style={{ fontSize: 12, color: "#333", marginBottom: mobile ? 14 : 18, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase" }}>AI Newsletter</div>
-                    <p style={{ fontSize: mobile ? 13 : 15, lineHeight: 1.75, color: "#555", fontWeight: 400 }}>AI-powered local events curation — your smart guide to what&apos;s happening.</p>
+                  <div style={{ background: "#080808", borderRadius: 14, height: mobile ? 140 : 200, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: mobile ? 28 : 40, border: "1px solid rgba(255,255,255,0.03)", position: "relative", overflow: "hidden" }}>
+                    <div style={{ position: "absolute", inset: 0, backgroundImage: "linear-gradient(rgba(212,184,150,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(212,184,150,0.02) 1px, transparent 1px)", backgroundSize: "20px 20px" }} />
+                    <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 50%, rgba(212,184,150,0.04), transparent 60%)" }} />
+                    <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: mobile ? 36 : 56, fontWeight: 300, color: "rgba(255,255,255,0.04)", letterSpacing: "0.1em" }}>1122</span>
                   </div>
-                </Link>
-              </div>
+                  <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: mobile ? 28 : 36, fontWeight: 300, marginBottom: 6 }}>Project 1122</h3>
+                  <div style={{ fontSize: 12, color: "#333", marginBottom: mobile ? 14 : 18, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase" }}>Stilwell</div>
+                  <p style={{ fontSize: mobile ? 13 : 15, lineHeight: 1.75, color: "#555", fontWeight: 400, maxWidth: 480 }}>A complete spatial transformation — reimagining a home from blueprint to lived experience.</p>
+                </div>
+              </Link>
             </div>
           </section>
 
