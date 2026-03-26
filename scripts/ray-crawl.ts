@@ -67,157 +67,118 @@ function sleep(ms: number) {
 }
 
 // ── Phillips Crawler ──
-// Phillips embeds lot data as a JSON string inside React hydration props.
+// Phillips embeds lot data as a JSON string in ReactDOM.hydrate props for ArtistLanding.
+// The "maker" prop contains a JSON-encoded string with pastLots.results[].
 
 async function crawlPhillips(): Promise<AuctionLot[]> {
   const lots: AuctionLot[] = [];
-  let page = 1;
-  let hasMore = true;
+  const url = 'https://www.phillips.com/artist/10606/george-condo';
+  console.log('  [Phillips] Fetching artist page...');
 
-  while (hasMore) {
-    const url = `https://www.phillips.com/artist/10606/george-condo?page=${page}`;
-    console.log(`  [Phillips] Fetching page ${page}...`);
+  try {
+    const res = await fetch(url, { headers: { 'User-Agent': UA } });
+    if (!res.ok) {
+      console.log(`  [Phillips] HTTP ${res.status}`);
+      return lots;
+    }
+    const html = await res.text();
+    const $ = cheerio.load(html);
 
-    try {
-      const res = await fetch(url, { headers: { 'User-Agent': UA } });
-      if (!res.ok) {
-        console.log(`  [Phillips] HTTP ${res.status}, stopping pagination.`);
-        break;
-      }
-      const html = await res.text();
-      const $ = cheerio.load(html);
+    // Find the script containing ArtistLanding hydration with the maker prop
+    let makerData: any = null;
+    $('script').each((_, script) => {
+      if (makerData) return;
+      const text = $(script).html() || '';
+      if (!text.includes('ArtistLanding')) return;
 
-      // Phillips injects data via ReactDOM.hydrate with a maker prop containing JSON
-      const scripts = $('script').toArray();
-      let lotData: any[] = [];
-
-      for (const script of scripts) {
-        const text = $(script).html() || '';
-        // Look for the React hydration call with ArtistLanding
-        if (text.includes('ArtistLanding') || text.includes('pastLots')) {
-          // Extract JSON from the maker prop
-          const makerMatch = text.match(/"maker"\s*:\s*"((?:\\"|[^"])*)"/);
-          if (makerMatch) {
-            try {
-              const makerJson = JSON.parse(makerMatch[1].replace(/\\"/g, '"').replace(/\\\\/g, '\\'));
-              const parsed = typeof makerJson === 'string' ? JSON.parse(makerJson) : makerJson;
-              if (parsed.pastLots?.results) {
-                lotData = parsed.pastLots.results;
-              }
-            } catch {
-              // Try alternative parsing
-            }
-          }
+      // The maker prop uses \u0022 unicode escapes for quotes (not \")
+      // Pattern: "maker":"\u0022pastLots\u0022:..."
+      const makerMatch = text.match(/"maker":"([^"]*)"/);
+      if (makerMatch) {
+        try {
+          // The value is a JSON string with \u0022 escapes — JSON.parse handles these natively
+          const innerJson = JSON.parse('"' + makerMatch[1] + '"');
+          makerData = JSON.parse(innerJson);
+          console.log(`  [Phillips] Found maker data with ${makerData?.pastLots?.totalCount || 0} total lots`);
+        } catch (e) {
+          console.log('  [Phillips] Failed to parse maker prop:', (e as Error).message?.substring(0, 100));
         }
       }
+    });
 
-      // Also check for __NEXT_DATA__
-      if (lotData.length === 0) {
-        const nextScript = $('#__NEXT_DATA__').html();
-        if (nextScript) {
-          try {
-            const nextData = JSON.parse(nextScript);
-            const artistData = nextData?.props?.pageProps;
-            if (artistData?.pastLots?.results) {
-              lotData = artistData.pastLots.results;
-            } else if (artistData?.lots) {
-              lotData = artistData.lots;
-            }
-          } catch {
-            console.log('  [Phillips] Could not parse __NEXT_DATA__');
-          }
-        }
-      }
-
-      if (lotData.length === 0) {
-        // Fallback: parse lot cards from HTML
-        $('[class*="lot-card"], [class*="LotCard"], .lot-item, a[href*="/detail/"]').each((_, el) => {
-          const $el = $(el);
-          const title = $el.find('[class*="title"], h3, h4').first().text().trim();
-          const href = $el.attr('href') || $el.find('a').first().attr('href') || '';
-          const img = $el.find('img').first().attr('src') || null;
-          const estText = $el.find('[class*="estimate"], [class*="Estimate"]').text().trim();
-          const priceText = $el.find('[class*="price"], [class*="Price"], [class*="hammer"]').text().trim();
-
-          if (title) {
-            const estMatch = estText.match(/([\d,]+)\s*[-–]\s*([\d,]+)/);
-            const priceMatch = priceText.match(/([\d,]+)/);
-            const currency = detectCurrency(estText || priceText);
-
-            lots.push({
-              id: `phillips-${href.split('/').pop() || `p${page}-${lots.length}`}`,
-              title,
-              year: null,
-              medium: null,
-              dimensions: null,
-              imageUrl: img ? (img.startsWith('http') ? img : `https://www.phillips.com${img}`) : null,
-              auctionHouse: 'Phillips',
-              saleName: '',
-              saleDate: '',
-              lotNumber: null,
-              estimateLow: estMatch ? parseInt(estMatch[1].replace(/,/g, '')) : null,
-              estimateHigh: estMatch ? parseInt(estMatch[2].replace(/,/g, '')) : null,
-              currency,
-              hammerPrice: priceMatch ? parseInt(priceMatch[1].replace(/,/g, '')) : null,
-              premiumPrice: null,
-              priceUsd: priceMatch ? parseInt(priceMatch[1].replace(/,/g, '')) : null,
-              status: priceMatch ? 'sold' : 'upcoming',
-              url: href.startsWith('http') ? href : `https://www.phillips.com${href}`,
-            });
-          }
-        });
-
-        hasMore = false;
-      } else {
-        // Parse structured lot data
-        for (const lot of lotData) {
-          const title = lot.title || lot.lotTitle || lot.description || 'Untitled';
-          const lotUrl = lot.url || lot.detailUrl || `/detail/${lot.saleNumber || ''}/${lot.lotNumber || ''}`;
-          const currency = detectCurrency(lot.currencySign || lot.currency || 'USD');
-          const hammerPrice = lot.hammerPrice ?? lot.hammerPlusCommission ?? null;
-          const isSold = hammerPrice != null && hammerPrice > 0;
-
-          lots.push({
-            id: `phillips-${lot.saleNumber || ''}-${lot.lotNumber || lot.id || lots.length}`,
-            title,
-            year: lot.dates || lot.year || null,
-            medium: lot.medium || null,
-            dimensions: lot.dimensions || null,
-            imageUrl: lot.imagePath
-              ? `https://assets.phillips.com/image/upload/t_Website_LotDetailMainImage/v${lot.cloudinaryVersion || '1'}/${lot.imagePath}`
-              : null,
-            auctionHouse: 'Phillips',
-            saleName: lot.saleTitle || lot.saleName || '',
-            saleDate: lot.saleDate || lot.auctionDate || '',
-            lotNumber: lot.lotNumber ? parseInt(lot.lotNumber) : null,
-            estimateLow: lot.lowEstimate ?? lot.estimateLow ?? null,
-            estimateHigh: lot.highEstimate ?? lot.estimateHigh ?? null,
-            currency,
-            hammerPrice,
-            premiumPrice: lot.hammerPlusCommission ?? null,
-            priceUsd: lot.hammerPlusCommission ?? hammerPrice ?? null,
-            status: lot.isSold === false || lot.status === 'Bought In' ? 'bought_in'
-              : isSold ? 'sold'
-              : 'upcoming',
-            url: lotUrl.startsWith('http') ? lotUrl : `https://www.phillips.com${lotUrl}`,
-          });
-        }
-
-        hasMore = lotData.length >= 24;
-        page++;
-      }
-    } catch (err) {
-      console.error(`  [Phillips] Error on page ${page}:`, err);
-      hasMore = false;
+    if (!makerData?.pastLots?.data) {
+      console.log('  [Phillips] No structured lot data found');
+      return lots;
     }
 
-    if (hasMore) await sleep(DELAY_MS);
+    const lotData = makerData.pastLots.data;
+    console.log(`  [Phillips] Parsing ${lotData.length} lots from page 1...`);
+
+    for (const lot of lotData) {
+      const title = lot.description || lot.title || lot.lotTitle || 'Untitled';
+      const saleNum = lot.saleNumber || '';
+      const lotNum = lot.lotNumber || '';
+      const detailLink = lot.detailLink || lot.url || `/detail/${saleNum}/${lotNum}`;
+      const currency = detectCurrency(lot.currencySign || '');
+      const hammerBP = lot.hammerPlusBP ?? lot.hammerPlusCommission ?? null;
+      const hammer = lot.hammerPrice ?? null;
+      const soldPrice = hammerBP ?? hammer;
+      const isSold = soldPrice != null && soldPrice > 0;
+
+      // Determine if auction is in the past (unsold lots from past auctions = bought_in)
+      let auctionInPast = false;
+      if (lot.auctionStartDateTimeOffset) {
+        const aDate = new Date(lot.auctionStartDateTimeOffset);
+        auctionInPast = !isNaN(aDate.getTime()) && aDate < new Date();
+      }
+
+      // Build image URL from Phillips Cloudinary
+      let imageUrl: string | null = null;
+      if (lot.imagePath) {
+        const ver = lot.cloudinaryVersion || '1';
+        imageUrl = `https://assets.phillips.com/image/upload/t_Website_LotDetailMainImage/v${ver}/${lot.imagePath}`;
+      }
+
+      // Parse the auction date
+      let saleDate = '';
+      if (lot.auctionStartDateTimeOffset) {
+        saleDate = lot.auctionStartDateTimeOffset.split('T')[0];
+      } else if (lot.saleDate) {
+        saleDate = lot.saleDate;
+      }
+
+      lots.push({
+        id: `phillips-${saleNum}-${lotNum}`,
+        title,
+        year: lot.dates || lot.circa || null,
+        medium: lot.medium || null,
+        dimensions: lot.dimensions || null,
+        imageUrl,
+        auctionHouse: 'Phillips',
+        saleName: lot.saleTitle || '',
+        saleDate,
+        lotNumber: lotNum ? parseInt(lotNum) : null,
+        estimateLow: lot.lowEstimate ?? null,
+        estimateHigh: lot.highEstimate ?? null,
+        currency,
+        hammerPrice: hammer,
+        premiumPrice: hammerBP,
+        priceUsd: soldPrice,
+        status: isSold ? 'sold' : auctionInPast ? 'bought_in' : 'upcoming',
+        url: detailLink.startsWith('http') ? detailLink : `https://www.phillips.com${detailLink}`,
+      });
+    }
+  } catch (err) {
+    console.error('  [Phillips] Error:', err);
   }
 
   return lots;
 }
 
 // ── Sotheby's Crawler ──
+// The Sotheby's artist page has distinct "Upcoming Lots" and "Past Lots" sections.
+// We parse lot cards from the HTML, using section context to determine status.
+// Past lots whose sale date is in the past are marked as "sold".
 
 async function crawlSothebys(): Promise<AuctionLot[]> {
   const lots: AuctionLot[] = [];
@@ -233,131 +194,78 @@ async function crawlSothebys(): Promise<AuctionLot[]> {
     const html = await res.text();
     const $ = cheerio.load(html);
 
-    // Try to find embedded JSON data first
-    $('script').each((_, script) => {
-      const text = $(script).html() || '';
-      if (text.includes('__NEXT_DATA__') || text.includes('"lots"') || text.includes('"auctionResults"')) {
-        try {
-          const jsonMatch = text.match(new RegExp('\\{[\\s\\S]*"lots"[\\s\\S]*\\}')) || text.match(new RegExp('\\{[\\s\\S]*"auctionResults"[\\s\\S]*\\}'));
-          if (jsonMatch) {
-            const data = JSON.parse(jsonMatch[0]);
-            // Navigate to lot data
-            const lotArray = data.lots || data.auctionResults || [];
-            for (const lot of lotArray) {
-              lots.push(parseSothebysLot(lot));
-            }
-          }
-        } catch { /* continue */ }
-      }
-    });
+    // Only look at /buy/auction/ links (skip old ecatalogue links which have unusable slugs like "lot.25.html")
+    const allLinks = $('a[href*="/buy/auction/"]').toArray();
+    console.log(`  [Sothebys] Found ${allLinks.length} raw lot links`);
 
-    // Also try __NEXT_DATA__
-    if (lots.length === 0) {
-      const nextScript = $('#__NEXT_DATA__').html();
-      if (nextScript) {
-        try {
-          const nextData = JSON.parse(nextScript);
-          const pageData = nextData?.props?.pageProps;
-          const lotArrays = [
-            pageData?.upcomingLots,
-            pageData?.pastLots,
-            pageData?.lots,
-            pageData?.artist?.lots,
-          ].filter(Boolean);
+    const now = new Date();
+    const seen = new Set<string>();
 
-          for (const arr of lotArrays) {
-            for (const lot of (Array.isArray(arr) ? arr : [])) {
-              lots.push(parseSothebysLot(lot));
-            }
-          }
-        } catch {
-          console.log('  [Sothebys] Could not parse __NEXT_DATA__');
+    for (const el of allLinks) {
+      const $el = $(el);
+      const href = $el.attr('href') || '';
+
+      // Extract the slug (last segment of the URL)
+      const slug = href.split('/').pop() || '';
+      if (!slug || seen.has(slug)) continue;
+      seen.add(slug);
+
+      // Derive title from URL slug — convert slug to title case
+      // e.g. "george-condo-qiao-zhikang-duo-the-boy-with-white" → "The Boy With White"
+      let titleSlug = slug
+        .replace(/^george-condo-qiao-zhi?-?kang-duo-?/i, '')
+        .replace(/^george-condo-?/i, '');
+
+      if (!titleSlug || titleSlug.length < 2) continue;
+      const title = titleSlug
+        .split('-')
+        .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+        .join(' ');
+
+      // Get year from URL: /auction/YYYY/
+      const yearMatch = href.match(/\/auction\/(\d{4})\//);
+      const auctionYear = yearMatch ? parseInt(yearMatch[1]) : null;
+
+      // Determine status: only current/future year lots are upcoming
+      let status: LotStatus = 'sold';
+      let saleDate = '';
+      if (auctionYear) {
+        saleDate = `${auctionYear}-06-01`;
+        if (auctionYear >= now.getFullYear()) {
+          status = 'upcoming';
         }
       }
+
+      const fullUrl = href.startsWith('http') ? href : `https://www.sothebys.com${href}`;
+
+      lots.push({
+        id: `sothebys-${slug}`,
+        title,
+        year: null,
+        medium: null,
+        dimensions: null,
+        imageUrl: null,
+        auctionHouse: "Sotheby's",
+        saleName: '',
+        saleDate,
+        lotNumber: null,
+        estimateLow: null,
+        estimateHigh: null,
+        currency: 'USD',
+        hammerPrice: null,
+        premiumPrice: null,
+        priceUsd: null,
+        status,
+        url: fullUrl,
+      });
     }
 
-    // Fallback: parse HTML lot cards
-    if (lots.length === 0) {
-      const selectors = [
-        '[data-testid="lot-card"]',
-        '[class*="LotCard"]',
-        '[class*="lot-card"]',
-        '.SearchModule-results a',
-        'a[href*="/buy/auction/"]',
-      ];
-
-      for (const selector of selectors) {
-        $(selector).each((_, el) => {
-          const $el = $(el);
-          const title = $el.find('h3, h4, [class*="title"], [class*="Title"]').first().text().trim();
-          const href = $el.attr('href') || $el.find('a').first().attr('href') || '';
-          const img = $el.find('img').first().attr('src') || null;
-          const estText = $el.find('[class*="estimate"], [class*="Estimate"]').text().trim();
-          const dateText = $el.find('[class*="date"], time, [class*="Date"]').text().trim();
-
-          if (title && title.length > 1) {
-            const estMatch = estText.match(/([\d,]+)\s*[-–]\s*([\d,]+)/);
-            const currency = detectCurrency(estText);
-
-            lots.push({
-              id: `sothebys-${href.split('/').pop() || `lot-${lots.length}`}`,
-              title,
-              year: null,
-              medium: null,
-              dimensions: null,
-              imageUrl: img,
-              auctionHouse: "Sotheby's",
-              saleName: '',
-              saleDate: dateText || '',
-              lotNumber: null,
-              estimateLow: estMatch ? parseInt(estMatch[1].replace(/,/g, '')) : null,
-              estimateHigh: estMatch ? parseInt(estMatch[2].replace(/,/g, '')) : null,
-              currency,
-              hammerPrice: null,
-              premiumPrice: null,
-              priceUsd: null,
-              status: 'upcoming',
-              url: href.startsWith('http') ? href : `https://www.sothebys.com${href}`,
-            });
-          }
-        });
-
-        if (lots.length > 0) break;
-      }
-    }
+    console.log(`  [Sothebys] Parsed ${lots.length} unique lots (${lots.filter(l => l.status === 'upcoming').length} upcoming, ${lots.filter(l => l.status === 'sold').length} past)`);
   } catch (err) {
     console.error('  [Sothebys] Error:', err);
   }
 
   return lots;
-}
-
-function parseSothebysLot(lot: any): AuctionLot {
-  const title = lot.title || lot.lotTitle || lot.objectTitle || 'Untitled';
-  const href = lot.url || lot.lotUrl || lot.permalink || '';
-  const currency = detectCurrency(lot.currency || lot.currencyCode || 'USD');
-  const hammerPrice = lot.hammerPrice ?? lot.premiumLotPrice ?? null;
-
-  return {
-    id: `sothebys-${lot.lotId || lot.id || lot.objectId || Math.random().toString(36).slice(2)}`,
-    title,
-    year: lot.year || lot.circa || lot.dateText || null,
-    medium: lot.medium || lot.materials || null,
-    dimensions: lot.dimensions || lot.size || null,
-    imageUrl: lot.image?.url || lot.imageUrl || lot.primaryImage || null,
-    auctionHouse: "Sotheby's",
-    saleName: lot.saleName || lot.saleTitle || lot.auctionTitle || '',
-    saleDate: lot.saleDate || lot.auctionDate || lot.startDate || '',
-    lotNumber: lot.lotNumber ? parseInt(lot.lotNumber) : null,
-    estimateLow: lot.estimateLow ?? lot.lowEstimate ?? null,
-    estimateHigh: lot.estimateHigh ?? lot.highEstimate ?? null,
-    currency,
-    hammerPrice,
-    premiumPrice: lot.premiumLotPrice ?? null,
-    priceUsd: lot.premiumLotPrice ?? hammerPrice ?? null,
-    status: hammerPrice ? 'sold' : 'upcoming',
-    url: href.startsWith('http') ? href : `https://www.sothebys.com${href}`,
-  };
 }
 
 // ── Helpers ──
@@ -486,6 +394,18 @@ async function main() {
   const lotMap = new Map<string, AuctionLot>();
   for (const lot of existingLots) lotMap.set(lot.id, lot);
   for (const lot of [...phillipsLots, ...sothebysLots]) lotMap.set(lot.id, lot);
+
+  // Clean up stale/bad entries
+  const badIds = new Set<string>();
+  for (const [id, lot] of Array.from(lotMap.entries())) {
+    // Remove ecatalogue slug entries (e.g. "Lot.25.html")
+    if (lot.title.match(/^Lot\.\d+/i)) badIds.add(id);
+    // Remove the seed duplicate if we have a crawled version
+    if (id === 'sothebys-upcoming-boy-white-hat' && lotMap.has('sothebys-george-condo-qiao-zhikang-duo-the-boy-with-white')) {
+      badIds.add(id);
+    }
+  }
+  for (const id of Array.from(badIds)) lotMap.delete(id);
 
   const allLots = Array.from(lotMap.values()).sort((a, b) => {
     const da = new Date(a.saleDate).getTime();

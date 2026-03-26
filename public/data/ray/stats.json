@@ -1,14 +1,14 @@
 {
-  "lastUpdated": "2026-03-26T21:26:34.796Z",
+  "lastUpdated": "2026-03-26T21:37:35.904Z",
   "totalLotsTracked": 2180,
-  "avgPriceLast12Months": 270769,
-  "medianPriceLast12Months": 131250,
-  "recordPrice": 12000000,
+  "avgPriceLast12Months": 644677,
+  "medianPriceLast12Months": 61920,
+  "recordPrice": 13760000,
   "recordTitle": "Blues In F",
-  "recordDate": "2020-12-02",
+  "recordDate": "2025-05-27",
   "recordHouse": "Phillips",
   "appreciationRate": 42.5,
-  "totalAuctionRevenue": 38236734,
+  "totalAuctionRevenue": 53476846,
   "priceHistory": [
     {
       "date": "2017-Q4",
@@ -54,36 +54,43 @@
     },
     {
       "date": "2025-Q2",
-      "avgPrice": 900000,
-      "medianPrice": 900000,
-      "totalSales": 1,
-      "highPrice": 900000
+      "avgPrice": 1896254,
+      "medianPrice": 133350,
+      "totalSales": 8,
+      "highPrice": 13760000
+    },
+    {
+      "date": "2025-Q3",
+      "avgPrice": 89010,
+      "medianPrice": 45150,
+      "totalSales": 3,
+      "highPrice": 180600
     },
     {
       "date": "2025-Q4",
-      "avgPrice": 286625,
-      "medianPrice": 131250,
-      "totalSales": 3,
+      "avgPrice": 149068,
+      "medianPrice": 78624,
+      "totalSales": 10,
       "highPrice": 650000
     },
     {
       "date": "2026-Q1",
-      "avgPrice": 101570,
-      "medianPrice": 68750,
-      "totalSales": 4,
+      "avgPrice": 79753,
+      "medianPrice": 52500,
+      "totalSales": 6,
       "highPrice": 243750
     }
   ],
   "houseDistribution": [
     {
+      "house": "Phillips",
+      "count": 46,
+      "totalValue": 33021816
+    },
+    {
       "house": "Christie's",
       "count": 8,
       "totalValue": 9475030
-    },
-    {
-      "house": "Phillips",
-      "count": 27,
-      "totalValue": 17781704
     },
     {
       "house": "Sotheby's",
