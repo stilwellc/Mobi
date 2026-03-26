@@ -114,7 +114,7 @@ export default function RayPage() {
           maxWidth: 560,
         }}>
           George Condo auction intelligence — tracking lots across Phillips, Sotheby&apos;s,
-          and Christie&apos;s with daily automated data collection.
+          Christie&apos;s, and Wright/Rago with daily automated data collection.
         </p>
         {lastCrawl && (
           <span style={{

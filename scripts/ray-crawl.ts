@@ -4,7 +4,7 @@ import * as cheerio from 'cheerio';
 
 // ── Types (mirrored from app/digital/ray/types.ts to avoid import issues in standalone script) ──
 
-type AuctionHouse = 'Phillips' | "Sotheby's" | "Christie's" | 'Rago';
+type AuctionHouse = 'Phillips' | "Sotheby's" | "Christie's" | 'Wright' | 'Rago' | 'Heritage';
 type LotStatus = 'upcoming' | 'sold' | 'bought_in' | 'withdrawn';
 type Currency = 'USD' | 'GBP' | 'EUR' | 'HKD' | 'CNY';
 
@@ -163,7 +163,7 @@ async function crawlPhillips(): Promise<AuctionLot[]> {
         currency,
         hammerPrice: hammer,
         premiumPrice: hammerBP,
-        priceUsd: soldPrice,
+        priceUsd: toUsd(soldPrice, currency),
         status: isSold ? 'sold' : auctionInPast ? 'bought_in' : 'upcoming',
         url: detailLink.startsWith('http') ? detailLink : `https://www.phillips.com${detailLink}`,
       });
@@ -268,6 +268,233 @@ async function crawlSothebys(): Promise<AuctionLot[]> {
   return lots;
 }
 
+// ── Christie's Crawler ──
+// Christie's embeds lot data as JSON in window.chrComponents.configurableSearch.
+// The artist page returns 50 lots per page with full details.
+
+async function crawlChristies(): Promise<AuctionLot[]> {
+  const lots: AuctionLot[] = [];
+  const url = 'https://www.christies.com/en/artists/george-condo?lotavailability=All&sortby=relevance';
+  console.log("  [Christie's] Fetching artist page...");
+
+  try {
+    const res = await fetch(url, { headers: { 'User-Agent': UA } });
+    if (!res.ok) {
+      console.log(`  [Christie's] HTTP ${res.status}`);
+      return lots;
+    }
+    const html = await res.text();
+
+    // Extract the configurableSearch JSON from a <script> tag
+    const searchMatch = html.match(/window\.chrComponents\s*=\s*window\.chrComponents\s*\|\|\s*\{\};\s*window\.chrComponents\.configurableSearch\s*=\s*(\{[\s\S]*?\});\s*<\/script>/);
+    if (!searchMatch) {
+      // Try a simpler pattern
+      const altMatch = html.match(/configurableSearch\s*=\s*(\{[\s\S]*?\});\s*(?:window\.|<\/script>)/);
+      if (!altMatch) {
+        console.log("  [Christie's] Could not find configurableSearch JSON");
+        return lots;
+      }
+      return parseChristiesJson(altMatch[1]);
+    }
+    return parseChristiesJson(searchMatch[1]);
+  } catch (err) {
+    console.error("  [Christie's] Error:", err);
+  }
+
+  return lots;
+}
+
+function parseChristiesJson(jsonStr: string): AuctionLot[] {
+  const lots: AuctionLot[] = [];
+  try {
+    const data = JSON.parse(jsonStr);
+    const lotData = data?.data?.lots || data?.lots || [];
+    console.log(`  [Christie's] Found ${lotData.length} lots`);
+
+    for (const lot of lotData) {
+      const titleSecondary = lot.title_secondary_txt || '';
+      const title = titleSecondary || lot.title_primary_txt || 'Untitled';
+      const lotId = lot.object_id || lot.lot_id_txt || '';
+      const lotUrl = lot.url || `https://www.christies.com/en/lot/lot-${lotId}`;
+
+      // Parse estimate: "HKD 18,000,000 - 28,000,000" or "USD 200,000 - 300,000"
+      const estimateStr = lot.estimate_txt || '';
+      const currency = detectCurrency(estimateStr);
+      let estimateLow: number | null = null;
+      let estimateHigh: number | null = null;
+      const estMatch = estimateStr.match(/([\d,]+)\s*[-–]\s*([\d,]+)/);
+      if (estMatch) {
+        estimateLow = parseInt(estMatch[1].replace(/,/g, ''));
+        estimateHigh = parseInt(estMatch[2].replace(/,/g, ''));
+      }
+
+      // Parse price realized: "HKD 53,150,000" or "USD 1,234,567"
+      const priceStr = lot.price_realised_txt || '';
+      let priceRealized: number | null = null;
+      const priceMatch = priceStr.match(/([\d,]+)/);
+      if (priceMatch) {
+        priceRealized = parseInt(priceMatch[0].replace(/,/g, ''));
+      }
+
+      // Parse dates
+      const saleDate = lot.start_date ? lot.start_date.split('T')[0] : '';
+      const auctionInPast = saleDate ? new Date(saleDate) < new Date() : false;
+      const isSold = priceRealized != null && priceRealized > 0;
+
+      // Image
+      const imageUrl = lot.image?.image_src || null;
+
+      // Sale info
+      const saleNum = lot.sale?.number || '';
+      const lotNum = lot.lot_id_txt || '';
+
+      lots.push({
+        id: `christies-${lotId}`,
+        title: title.replace(/<[^>]*>/g, ''), // strip any HTML tags
+        year: null,
+        medium: null,
+        dimensions: null,
+        imageUrl,
+        auctionHouse: "Christie's",
+        saleName: lot.sale?.location ? `${lot.sale.location} Sale ${saleNum}` : '',
+        saleDate,
+        lotNumber: lotNum ? parseInt(lotNum) : null,
+        estimateLow,
+        estimateHigh,
+        currency,
+        hammerPrice: null, // Christie's provides price_realised (with premium)
+        premiumPrice: priceRealized,
+        priceUsd: toUsd(priceRealized, currency),
+        status: isSold ? 'sold' : auctionInPast ? 'bought_in' : 'upcoming',
+        url: lotUrl.startsWith('http') ? lotUrl : `https://www.christies.com${lotUrl}`,
+      });
+    }
+  } catch (e) {
+    console.log("  [Christie's] JSON parse error:", (e as Error).message?.substring(0, 100));
+  }
+  return lots;
+}
+
+// ── Wright/Rago Crawler ──
+// Wright uses Inertia.js (Laravel + Vue). All lot data is in the #app div's data-page attribute.
+// Covers Wright, Rago, LA Modern Auctions, and Toomey & Co.
+
+async function crawlWright(): Promise<AuctionLot[]> {
+  const lots: AuctionLot[] = [];
+  const url = 'https://www.wright20.com/artists/george-condo';
+  console.log('  [Wright] Fetching artist page...');
+
+  try {
+    const res = await fetch(url, { headers: { 'User-Agent': UA } });
+    if (!res.ok) {
+      console.log(`  [Wright] HTTP ${res.status}`);
+      return lots;
+    }
+    const html = await res.text();
+    const $ = cheerio.load(html);
+
+    // Extract the Inertia.js data-page JSON from #app
+    const dataPage = $('#app').attr('data-page');
+    if (!dataPage) {
+      console.log('  [Wright] No data-page attribute found on #app');
+      return lots;
+    }
+
+    const pageData = JSON.parse(dataPage);
+    const resultsGrouped = pageData?.props?.results_grouped;
+    if (!resultsGrouped || !Array.isArray(resultsGrouped) || resultsGrouped.length === 0) {
+      console.log('  [Wright] No results_grouped in page data');
+      return lots;
+    }
+
+    // Sessions are grouped — iterate through all groups and sessions
+    let totalItems = 0;
+    for (const group of resultsGrouped) {
+      const sessions = group.sessions || {};
+      for (const sessionKey of Object.keys(sessions)) {
+        const session = sessions[sessionKey];
+        const items = session.items || [];
+        for (const item of items) {
+          totalItems++;
+          const title = item.name || 'Untitled';
+          const lotNum = item.lot_number || null;
+          const house = (item.house || 'Wright') as string;
+
+          // Parse result (hammer + premium)
+          const result = item.result || null;
+          const resultSansPremium = item.result_sans_premium || null;
+
+          // Parse estimate from formatted string: "estimate: $30,000–50,000"
+          const estStr = item.estimate_formatted || '';
+          let estimateLow: number | null = null;
+          let estimateHigh: number | null = null;
+          const estMatch = estStr.match(/([\d,]+)\s*[–\-]\s*([\d,]+)/);
+          if (estMatch) {
+            estimateLow = parseInt(estMatch[1].replace(/,/g, ''));
+            estimateHigh = parseInt(estMatch[2].replace(/,/g, ''));
+          }
+
+          // Parse date from session: "28 Jan 2026"
+          const sessionDate = session.date || item.session?.date || '';
+          let saleDate = '';
+          if (sessionDate) {
+            try {
+              const d = new Date(sessionDate);
+              if (!isNaN(d.getTime())) {
+                saleDate = d.toISOString().split('T')[0];
+              }
+            } catch { /* skip */ }
+          }
+
+          const auctionInPast = saleDate ? new Date(saleDate) < new Date() : false;
+          const isSold = result != null && result > 0;
+
+          // Image URL
+          const imageUrl = item.primary_index_image || null;
+
+          // Lot URL from alias: "//www.wright20.com/auctions/2026/01/..."
+          let lotUrl = item.alias || '';
+          if (lotUrl.startsWith('//')) lotUrl = 'https:' + lotUrl;
+          else if (!lotUrl.startsWith('http') && lotUrl) lotUrl = 'https://www.wright20.com' + lotUrl;
+
+          // Map house name to our AuctionHouse type
+          const auctionHouse: AuctionHouse = house.toLowerCase().includes('rago') ? 'Rago' : 'Wright';
+
+          // Dimensions
+          const dims = item.formatted_dimensions || null;
+
+          lots.push({
+            id: `wright-${item.fd_key || `${lotNum}-${sessionKey}`}`,
+            title,
+            year: null,
+            medium: null,
+            dimensions: dims ? dims.replace(/&times;/g, '×').replace(/&ndash;/g, '–') : null,
+            imageUrl,
+            auctionHouse,
+            saleName: session.title || '',
+            saleDate,
+            lotNumber: lotNum,
+            estimateLow,
+            estimateHigh,
+            currency: 'USD',
+            hammerPrice: resultSansPremium,
+            premiumPrice: result,
+            priceUsd: result,
+            status: isSold ? 'sold' : auctionInPast ? 'bought_in' : 'upcoming',
+            url: lotUrl,
+          });
+        }
+      }
+    }
+
+    console.log(`  [Wright] Parsed ${totalItems} lots`);
+  } catch (err) {
+    console.error('  [Wright] Error:', err);
+  }
+
+  return lots;
+}
+
 // ── Helpers ──
 
 function detectCurrency(text: string): Currency {
@@ -277,6 +504,20 @@ function detectCurrency(text: string): Currency {
   if (text.includes('HKD') || text.includes('HK$')) return 'HKD';
   if (text.includes('CNY') || text.includes('¥')) return 'CNY';
   return 'USD';
+}
+
+// Rough static conversion to USD for stats/charts (avoids API dependency)
+const USD_RATES: Record<Currency, number> = {
+  USD: 1,
+  GBP: 1.27,
+  EUR: 1.08,
+  HKD: 0.128,
+  CNY: 0.138,
+};
+
+function toUsd(amount: number | null, currency: Currency): number | null {
+  if (amount == null) return null;
+  return Math.round(amount * (USD_RATES[currency] || 1));
 }
 
 // ── Stats Computation ──
@@ -390,10 +631,22 @@ async function main() {
   const sothebysLots = await crawlSothebys();
   console.log(`[Ray] Sothebys: ${sothebysLots.length} lots`);
 
+  await sleep(DELAY_MS);
+
+  console.log("[Ray] Crawling Christie's...");
+  const christiesLots = await crawlChristies();
+  console.log(`[Ray] Christie's: ${christiesLots.length} lots`);
+
+  await sleep(DELAY_MS);
+
+  console.log('[Ray] Crawling Wright/Rago...');
+  const wrightLots = await crawlWright();
+  console.log(`[Ray] Wright/Rago: ${wrightLots.length} lots`);
+
   // Merge: new data overwrites existing by ID
   const lotMap = new Map<string, AuctionLot>();
   for (const lot of existingLots) lotMap.set(lot.id, lot);
-  for (const lot of [...phillipsLots, ...sothebysLots]) lotMap.set(lot.id, lot);
+  for (const lot of [...phillipsLots, ...sothebysLots, ...christiesLots, ...wrightLots]) lotMap.set(lot.id, lot);
 
   // Clean up stale/bad entries
   const badIds = new Set<string>();
@@ -424,7 +677,7 @@ async function main() {
   fs.writeFileSync(statsPath, JSON.stringify(stats, null, 2));
   fs.writeFileSync(path.join(DATA_DIR, 'meta.json'), JSON.stringify({
     lastCrawl: new Date().toISOString(),
-    sources: ['Phillips', "Sotheby's"],
+    sources: ['Phillips', "Sotheby's", "Christie's", 'Wright/Rago'],
     version: 1,
   }, null, 2));
 
