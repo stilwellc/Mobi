@@ -19,7 +19,7 @@ export const sections: Section[] = [
       { name: '3D Prints', tag: 'Fabrication', description: 'Digital-to-physical explorations through additive manufacturing.', href: '/digital/3d-prints' },
       { name: 'Soirée', tag: 'Art', description: 'Curated art discovery — filtered, refined, always surprising.' },
       { name: 'Pricing Simulator', tag: 'WIP', description: 'Demystifying the vintage and design market.', wip: true },
-      { name: 'Crawler', tag: 'WIP', description: 'An intelligent agent tracking what matters to you.', wip: true },
+      { name: 'Ray', tag: 'Market Intel', description: 'George Condo auction intelligence — automated tracking across major houses.', href: '/digital/ray' },
     ],
   },
   {
