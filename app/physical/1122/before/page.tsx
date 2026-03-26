@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import ThemeToggle from '../../../components/ThemeToggle';
 
 const roomGroups = {
   kitchen: [
@@ -62,30 +63,31 @@ export default function BeforeGallery() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: '#060606', color: '#F0EDE8', fontFamily: "'Syne', sans-serif" }}>
-      {/* Nav */}
+    <div style={{ minHeight: '100vh', background: 'var(--color-bg)', color: 'var(--color-fg)', fontFamily: "'Syne', sans-serif" }}>
       <nav style={{
         padding: '24px 56px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        borderBottom: '1px solid rgba(255,255,255,0.04)',
-        background: 'rgba(6,6,6,0.85)', backdropFilter: 'blur(30px)',
+        borderBottom: '1px solid var(--color-border)',
+        background: 'var(--color-nav-bg)', backdropFilter: 'blur(30px)',
         position: 'sticky', top: 0, zIndex: 100,
       }}>
-        <Link href="/" style={{ textDecoration: 'none', color: '#F0EDE8', fontFamily: "'Syne', sans-serif", fontSize: 26, fontWeight: 700, letterSpacing: '-0.04em' }}>
-          mobi<span style={{ color: '#D4B896' }}>.</span>
+        <Link href="/" style={{ textDecoration: 'none', color: 'var(--color-fg)', fontFamily: "'Syne', sans-serif", fontSize: 26, fontWeight: 700, letterSpacing: '-0.04em' }}>
+          mobi<span style={{ color: 'var(--color-accent-gold)' }}>.</span>
         </Link>
-        <Link href="/physical/1122" style={{
-          textDecoration: 'none', fontSize: 12, color: '#444', fontWeight: 500,
-          letterSpacing: '0.1em', textTransform: 'uppercase',
-        }}>
-          &#8592; Back to Project 1122
-        </Link>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <ThemeToggle />
+          <Link href="/physical/1122" style={{
+            textDecoration: 'none', fontSize: 12, color: 'var(--color-text-subtle)', fontWeight: 500,
+            letterSpacing: '0.1em', textTransform: 'uppercase',
+          }}>
+            &#8592; Back to Project 1122
+          </Link>
+        </div>
       </nav>
 
-      {/* Hero */}
       <section style={{ padding: '60px 56px 40px', maxWidth: 1100, margin: '0 auto' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 16 }}>
-          <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#D4B896', opacity: 0.6 }} />
-          <span style={{ fontSize: 11, letterSpacing: '0.25em', textTransform: 'uppercase', color: '#3a3a3a', fontWeight: 600 }}>
+          <div style={{ width: 10, height: 10, borderRadius: '50%', background: 'var(--color-accent-gold)', opacity: 0.6 }} />
+          <span style={{ fontSize: 11, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'var(--color-text-label)', fontWeight: 600 }}>
             Project 1122
           </span>
         </div>
@@ -94,14 +96,13 @@ export default function BeforeGallery() {
           fontSize: 'clamp(36px, 6vw, 72px)', fontWeight: 300, letterSpacing: '-0.03em', lineHeight: 0.95,
           marginBottom: 16,
         }}>
-          Before <span style={{ fontStyle: 'italic', color: '#D4B896' }}>Gallery</span>
+          Before <span style={{ fontStyle: 'italic', color: 'var(--color-accent-gold)' }}>Gallery</span>
         </h1>
-        <p style={{ fontSize: 16, lineHeight: 1.8, color: '#555', fontWeight: 400, maxWidth: 520 }}>
+        <p style={{ fontSize: 16, lineHeight: 1.8, color: 'var(--color-text-muted)', fontWeight: 400, maxWidth: 520 }}>
           Original state of the space before transformation
         </p>
       </section>
 
-      {/* Gallery */}
       <section style={{ padding: '20px 56px 120px', maxWidth: 1200, margin: '0 auto' }}>
         {Object.entries(roomGroups).map(([roomType, photos]) => {
           const startIdx = carouselIndices[roomType];
@@ -113,20 +114,19 @@ export default function BeforeGallery() {
             <div key={roomType} style={{ marginBottom: 64 }}>
               <h2 style={{
                 fontFamily: "'Cormorant Garamond', serif",
-                fontSize: 28, fontWeight: 400, fontStyle: 'italic', color: '#D4B896',
+                fontSize: 28, fontWeight: 400, fontStyle: 'italic', color: 'var(--color-accent-gold)',
                 marginBottom: 24,
               }}>
                 {roomTitles[roomType]}
               </h2>
 
               <div style={{ position: 'relative' }}>
-                {/* Mobile: all photos */}
                 <div className="block lg:hidden">
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 16 }}>
                     {photos.map((photo) => (
                       <div key={photo.src} onClick={() => setSelectedImage(photo)} style={{
-                        position: 'relative', borderRadius: 16, overflow: 'hidden', background: '#0c0c0c',
-                        border: '1px solid rgba(255,255,255,0.04)', cursor: 'pointer',
+                        position: 'relative', borderRadius: 16, overflow: 'hidden', background: 'var(--color-bg-card)',
+                        border: '1px solid var(--color-border)', cursor: 'pointer',
                         transition: 'border-color 0.3s ease',
                       }}>
                         <div style={{ position: 'relative', width: '100%', paddingBottom: '75%' }}>
@@ -137,13 +137,12 @@ export default function BeforeGallery() {
                   </div>
                 </div>
 
-                {/* Desktop: carousel */}
                 <div className="hidden lg:block">
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
                     {visiblePhotos.map((photo) => (
                       <div key={photo.src} onClick={() => setSelectedImage(photo)} style={{
-                        position: 'relative', borderRadius: 16, overflow: 'hidden', background: '#0c0c0c',
-                        border: '1px solid rgba(255,255,255,0.04)', cursor: 'pointer',
+                        position: 'relative', borderRadius: 16, overflow: 'hidden', background: 'var(--color-bg-card)',
+                        border: '1px solid var(--color-border)', cursor: 'pointer',
                         transition: 'border-color 0.3s ease',
                       }}>
                         <div style={{ position: 'relative', width: '100%', paddingBottom: '75%' }}>
@@ -162,7 +161,7 @@ export default function BeforeGallery() {
                           position: 'absolute', left: -48, top: '50%', transform: 'translateY(-50%)',
                           width: 36, height: 36, borderRadius: '50%', border: '1px solid rgba(212,184,150,0.3)',
                           background: startIdx === 0 ? 'transparent' : 'rgba(212,184,150,0.06)',
-                          color: '#D4B896', cursor: startIdx === 0 ? 'not-allowed' : 'pointer',
+                          color: 'var(--color-accent-gold)', cursor: startIdx === 0 ? 'not-allowed' : 'pointer',
                           display: 'flex', alignItems: 'center', justifyContent: 'center',
                           opacity: startIdx === 0 ? 0.3 : 1, transition: 'all 0.3s ease',
                           fontSize: 18,
@@ -175,7 +174,7 @@ export default function BeforeGallery() {
                           position: 'absolute', right: -48, top: '50%', transform: 'translateY(-50%)',
                           width: 36, height: 36, borderRadius: '50%', border: '1px solid rgba(212,184,150,0.3)',
                           background: startIdx >= maxIndex ? 'transparent' : 'rgba(212,184,150,0.06)',
-                          color: '#D4B896', cursor: startIdx >= maxIndex ? 'not-allowed' : 'pointer',
+                          color: 'var(--color-accent-gold)', cursor: startIdx >= maxIndex ? 'not-allowed' : 'pointer',
                           display: 'flex', alignItems: 'center', justifyContent: 'center',
                           opacity: startIdx >= maxIndex ? 0.3 : 1, transition: 'all 0.3s ease',
                           fontSize: 18,
@@ -190,13 +189,12 @@ export default function BeforeGallery() {
         })}
       </section>
 
-      {/* Modal */}
       {selectedImage && (
         <div
           onClick={() => setSelectedImage(null)}
           style={{
             position: 'fixed', inset: 0, zIndex: 200,
-            background: 'rgba(6,6,6,0.95)', backdropFilter: 'blur(20px)',
+            background: 'var(--color-modal-bg)', backdropFilter: 'blur(20px)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             padding: 40, cursor: 'pointer',
           }}
@@ -205,7 +203,7 @@ export default function BeforeGallery() {
             onClick={() => setSelectedImage(null)}
             style={{
               position: 'absolute', top: 24, right: 24,
-              background: 'none', border: 'none', color: '#555',
+              background: 'none', border: 'none', color: 'var(--color-text-muted)',
               fontSize: 24, cursor: 'pointer',
             }}
           >&#10005;</button>

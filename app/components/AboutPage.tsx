@@ -12,7 +12,7 @@ export default function AboutPage({ mobile, tablet, navigate }: {
       <section style={{ padding: `0 ${px}px 80px`, maxWidth: 900, margin: '0 auto' }}>
         <div style={{ marginBottom: 20 }}>
           <span className="back-link" onClick={() => navigate('home')} style={{
-            fontSize: 12, color: '#444', cursor: 'pointer', fontWeight: 500,
+            fontSize: 12, color: 'var(--color-text-subtle)', cursor: 'pointer', fontWeight: 500,
             letterSpacing: '0.1em', textTransform: 'uppercase',
           }}>&#8592; Back</span>
         </div>
@@ -23,11 +23,11 @@ export default function AboutPage({ mobile, tablet, navigate }: {
           fontWeight: 300, letterSpacing: '-0.03em', lineHeight: 0.95,
           marginBottom: mobile ? 32 : 48,
         }}>
-          About <span style={{ fontStyle: 'italic', color: '#D4B896' }}>mobi</span>
+          About <span style={{ fontStyle: 'italic', color: 'var(--color-accent-gold)' }}>mobi</span>
         </h1>
 
         <div style={{
-          fontSize: mobile ? 15 : 18, lineHeight: 2, color: '#555',
+          fontSize: mobile ? 15 : 18, lineHeight: 2, color: 'var(--color-text-muted)',
           fontWeight: 400, marginBottom: 48,
         }}>
           <p style={{ marginBottom: 28 }}>
@@ -40,7 +40,7 @@ export default function AboutPage({ mobile, tablet, navigate }: {
 
         <div style={{
           width: '100%', height: 1, marginBottom: 48,
-          background: 'linear-gradient(90deg, rgba(255,255,255,0.06), transparent 80%)',
+          background: 'linear-gradient(90deg, var(--color-border-mid), transparent 80%)',
         }} />
 
         {[
@@ -57,9 +57,9 @@ export default function AboutPage({ mobile, tablet, navigate }: {
             <h3 style={{
               fontFamily: "'Cormorant Garamond', serif",
               fontSize: mobile ? 22 : 24, fontWeight: 400, fontStyle: 'italic',
-              color: '#D4B896', lineHeight: 1.3,
+              color: 'var(--color-accent-gold)', lineHeight: 1.3,
             }}>{block.title}</h3>
-            <p style={{ fontSize: mobile ? 14 : 16, lineHeight: 1.85, color: '#444', fontWeight: 400 }}>
+            <p style={{ fontSize: mobile ? 14 : 16, lineHeight: 1.85, color: 'var(--color-text-subtle)', fontWeight: 400 }}>
               {block.text}
             </p>
           </div>
@@ -67,7 +67,7 @@ export default function AboutPage({ mobile, tablet, navigate }: {
 
         <div style={{
           width: '100%', height: 1, marginBottom: 48,
-          background: 'linear-gradient(90deg, rgba(255,255,255,0.06), transparent 80%)',
+          background: 'linear-gradient(90deg, var(--color-border-mid), transparent 80%)',
         }} />
 
         <div style={{ marginBottom: 48 }}>
@@ -76,7 +76,7 @@ export default function AboutPage({ mobile, tablet, navigate }: {
             fontSize: mobile ? 32 : 42, fontWeight: 300, letterSpacing: '-0.02em',
             marginBottom: 24,
           }}>
-            How We <span style={{ fontStyle: 'italic', color: '#D4B896' }}>Help</span>
+            How We <span style={{ fontStyle: 'italic', color: 'var(--color-accent-gold)' }}>Help</span>
           </h2>
           {[
             { title: 'Augmenting Everyday Life', text: 'Mobi creates designs that amplify human potential. From smart homes to collaborative workspaces, our design solutions support and enhance the way you live, work, and connect with others.' },
@@ -93,9 +93,9 @@ export default function AboutPage({ mobile, tablet, navigate }: {
               <h3 style={{
                 fontFamily: "'Cormorant Garamond', serif",
                 fontSize: mobile ? 18 : 20, fontWeight: 400, fontStyle: 'italic',
-                color: '#D4B896', lineHeight: 1.3,
+                color: 'var(--color-accent-gold)', lineHeight: 1.3,
               }}>{block.title}</h3>
-              <p style={{ fontSize: mobile ? 14 : 15, lineHeight: 1.85, color: '#444', fontWeight: 400 }}>
+              <p style={{ fontSize: mobile ? 14 : 15, lineHeight: 1.85, color: 'var(--color-text-subtle)', fontWeight: 400 }}>
                 {block.text}
               </p>
             </div>
@@ -104,14 +104,14 @@ export default function AboutPage({ mobile, tablet, navigate }: {
 
         <div style={{
           padding: mobile ? 28 : 48,
-          borderRadius: 20, background: '#0c0c0c',
-          border: '1px solid rgba(255,255,255,0.04)',
+          borderRadius: 20, background: 'var(--color-bg-card)',
+          border: '1px solid var(--color-border)',
         }}>
           <h3 style={{
             fontFamily: "'Cormorant Garamond', serif",
             fontSize: mobile ? 24 : 30, fontWeight: 300, marginBottom: 16,
-          }}>Our <span style={{ fontStyle: 'italic', color: '#D4B896' }}>Vision</span></h3>
-          <p style={{ fontSize: mobile ? 14 : 16, lineHeight: 1.85, color: '#444', fontWeight: 400 }}>
+          }}>Our <span style={{ fontStyle: 'italic', color: 'var(--color-accent-gold)' }}>Vision</span></h3>
+          <p style={{ fontSize: mobile ? 14 : 16, lineHeight: 1.85, color: 'var(--color-text-subtle)', fontWeight: 400 }}>
             To redefine the way we experience design by weaving together sustainability, modern aesthetics, and cutting-edge technology in a way that enhances life at every level. Like the Möbius strip, our designs aim to create a seamless, continuous flow, augmenting the spaces where we live, work, and play.
           </p>
         </div>

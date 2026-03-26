@@ -33,7 +33,7 @@ function createMobiusGeometry(segments = 200, width = 0.35) {
   return geo;
 }
 
-export default function MobiusStrip({ mobile }: { mobile: boolean }) {
+export default function MobiusStrip({ mobile, theme }: { mobile: boolean; theme: 'dark' | 'light' }) {
   const mountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -49,19 +49,22 @@ export default function MobiusStrip({ mobile }: { mobile: boolean }) {
     renderer.setClearColor(0x000000, 0);
     container.appendChild(renderer.domElement);
 
-    scene.add(new THREE.AmbientLight(0xffffff, 0.15));
-    const kl = new THREE.DirectionalLight(0xd4b896, 0.6); kl.position.set(3, 4, 5); scene.add(kl);
-    const fl = new THREE.DirectionalLight(0x96b8d4, 0.25); fl.position.set(-3, -1, 3); scene.add(fl);
-    const rl = new THREE.DirectionalLight(0xd4b896, 0.35); rl.position.set(-2, 3, -4); scene.add(rl);
-    const pl = new THREE.PointLight(0xd4b896, 0.4, 10); pl.position.set(0, 0, 3); scene.add(pl);
+    const isLight = theme === 'light';
+    scene.add(new THREE.AmbientLight(0xffffff, isLight ? 0.3 : 0.15));
+    const kl = new THREE.DirectionalLight(0xd4b896, isLight ? 0.8 : 0.6); kl.position.set(3, 4, 5); scene.add(kl);
+    const fl = new THREE.DirectionalLight(0x96b8d4, isLight ? 0.4 : 0.25); fl.position.set(-3, -1, 3); scene.add(fl);
+    const rl = new THREE.DirectionalLight(0xd4b896, isLight ? 0.5 : 0.35); rl.position.set(-2, 3, -4); scene.add(rl);
+    const pl = new THREE.PointLight(0xd4b896, isLight ? 0.6 : 0.4, 10); pl.position.set(0, 0, 3); scene.add(pl);
 
     const geo = createMobiusGeometry(240, 0.4);
     const surf = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({
-      color: 0x0c0c0c, metalness: 0.85, roughness: 0.3,
-      transparent: true, opacity: 0.55, side: THREE.DoubleSide,
+      color: isLight ? 0xe8e4df : 0x0c0c0c,
+      metalness: isLight ? 0.7 : 0.85,
+      roughness: isLight ? 0.4 : 0.3,
+      transparent: true, opacity: isLight ? 0.4 : 0.55, side: THREE.DoubleSide,
     }));
     const wire = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({
-      color: 0xd4b896, wireframe: true, transparent: true, opacity: 0.07, side: THREE.DoubleSide,
+      color: 0xd4b896, wireframe: true, transparent: true, opacity: isLight ? 0.05 : 0.07, side: THREE.DoubleSide,
     }));
 
     const makeEdge = (v: number, color: number, op: number) => {
@@ -78,8 +81,8 @@ export default function MobiusStrip({ mobile }: { mobile: boolean }) {
         new THREE.LineBasicMaterial({ color, transparent: true, opacity: op }),
       );
     };
-    const e1 = makeEdge(0.2, 0xd4b896, 0.35);
-    const e2 = makeEdge(-0.2, 0x96b8d4, 0.18);
+    const e1 = makeEdge(0.2, 0xd4b896, isLight ? 0.25 : 0.35);
+    const e2 = makeEdge(-0.2, 0x96b8d4, isLight ? 0.12 : 0.18);
 
     const pCount = 120, pPos = new Float32Array(pCount * 3);
     for (let i = 0; i < pCount; i++) {
@@ -90,7 +93,7 @@ export default function MobiusStrip({ mobile }: { mobile: boolean }) {
     const pGeo = new THREE.BufferGeometry();
     pGeo.setAttribute('position', new THREE.Float32BufferAttribute(pPos, 3));
     const particles = new THREE.Points(pGeo, new THREE.PointsMaterial({
-      color: 0xd4b896, size: 0.012, transparent: true, opacity: 0.4, sizeAttenuation: true,
+      color: 0xd4b896, size: 0.012, transparent: true, opacity: isLight ? 0.3 : 0.4, sizeAttenuation: true,
     }));
 
     const group = new THREE.Group();
@@ -122,7 +125,7 @@ export default function MobiusStrip({ mobile }: { mobile: boolean }) {
       if (container.contains(renderer.domElement)) container.removeChild(renderer.domElement);
       renderer.dispose();
     };
-  }, [mobile]);
+  }, [mobile, theme]);
 
   return <div ref={mountRef} style={{
     position: 'absolute', right: mobile ? '50%' : '2%', top: '50%',

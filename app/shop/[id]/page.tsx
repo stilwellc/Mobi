@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import ThemeToggle from '../../components/ThemeToggle';
 
 interface ShopItem {
   id: string;
@@ -44,17 +45,17 @@ export default function ShopItemPage() {
 
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', background: '#060606', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#D4B896', opacity: 0.5 }} />
+      <div style={{ minHeight: '100vh', background: 'var(--color-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--color-accent-gold)', opacity: 0.5 }} />
       </div>
     );
   }
 
   if (!item) {
     return (
-      <div style={{ minHeight: '100vh', background: '#060606', color: '#F0EDE8', fontFamily: "'Syne', sans-serif", padding: 56 }}>
+      <div style={{ minHeight: '100vh', background: 'var(--color-bg)', color: 'var(--color-fg)', fontFamily: "'Syne', sans-serif", padding: 56 }}>
         <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 36, fontWeight: 300 }}>Item not found</h1>
-        <Link href="/shop" style={{ color: '#555', fontSize: 14, marginTop: 16, display: 'inline-block' }}>
+        <Link href="/shop" style={{ color: 'var(--color-text-muted)', fontSize: 14, marginTop: 16, display: 'inline-block' }}>
           &#8592; Back to Shop
         </Link>
       </div>
@@ -62,23 +63,26 @@ export default function ShopItemPage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#060606', color: '#F0EDE8', fontFamily: "'Syne', sans-serif" }}>
+    <div style={{ minHeight: '100vh', background: 'var(--color-bg)', color: 'var(--color-fg)', fontFamily: "'Syne', sans-serif" }}>
       {/* Nav */}
       <nav style={{
         padding: '24px 56px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        borderBottom: '1px solid rgba(255,255,255,0.04)',
-        background: 'rgba(6,6,6,0.85)', backdropFilter: 'blur(30px)',
+        borderBottom: '1px solid var(--color-border)',
+        background: 'var(--color-nav-bg)', backdropFilter: 'blur(30px)',
         position: 'sticky', top: 0, zIndex: 100,
       }}>
-        <Link href="/" style={{ textDecoration: 'none', color: '#F0EDE8', fontFamily: "'Syne', sans-serif", fontSize: 26, fontWeight: 700, letterSpacing: '-0.04em' }}>
-          mobi<span style={{ color: '#D4B896' }}>.</span>
+        <Link href="/" style={{ textDecoration: 'none', color: 'var(--color-fg)', fontFamily: "'Syne', sans-serif", fontSize: 26, fontWeight: 700, letterSpacing: '-0.04em' }}>
+          mobi<span style={{ color: 'var(--color-accent-gold)' }}>.</span>
         </Link>
-        <Link href="/shop" style={{
-          textDecoration: 'none', fontSize: 12, color: '#444', fontWeight: 500,
-          letterSpacing: '0.1em', textTransform: 'uppercase',
-        }}>
-          &#8592; Back to Shop
-        </Link>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <ThemeToggle />
+          <Link href="/shop" style={{
+            textDecoration: 'none', fontSize: 12, color: 'var(--color-text-subtle)', fontWeight: 500,
+            letterSpacing: '0.1em', textTransform: 'uppercase',
+          }}>
+            &#8592; Back to Shop
+          </Link>
+        </div>
       </nav>
 
       {/* Content */}
@@ -86,8 +90,8 @@ export default function ShopItemPage() {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 60 }}>
           {/* Image */}
           <div style={{
-            position: 'relative', borderRadius: 20, overflow: 'hidden', background: '#0c0c0c',
-            border: '1px solid rgba(255,255,255,0.04)', aspectRatio: '1',
+            position: 'relative', borderRadius: 20, overflow: 'hidden', background: 'var(--color-bg-card)',
+            border: '1px solid var(--color-border)', aspectRatio: '1',
           }}>
             <Image src={item.imagePath} alt={item.title} fill style={{ objectFit: 'cover' }} />
             <div style={{
@@ -95,7 +99,7 @@ export default function ShopItemPage() {
               padding: '4px 12px', borderRadius: 100,
               background: 'rgba(212,184,150,0.1)', border: '1px solid rgba(212,184,150,0.2)',
               fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase',
-              color: '#D4B896', fontWeight: 600,
+              color: 'var(--color-accent-gold)', fontWeight: 600,
             }}>SOLD</div>
           </div>
 
@@ -107,48 +111,48 @@ export default function ShopItemPage() {
               marginBottom: 24,
             }}>{item.title}</h1>
 
-            <p style={{ fontSize: 15, lineHeight: 1.85, color: '#555', fontWeight: 400, marginBottom: 36 }}>
+            <p style={{ fontSize: 15, lineHeight: 1.85, color: 'var(--color-text-muted)', fontWeight: 400, marginBottom: 36 }}>
               {item.description}
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
               {item.details.designer && (
                 <div>
-                  <dt style={{ fontSize: 10, fontWeight: 600, color: '#3a3a3a', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 4 }}>Designer</dt>
-                  <dd style={{ fontSize: 15, color: '#888' }}>{item.details.designer}</dd>
+                  <dt style={{ fontSize: 10, fontWeight: 600, color: 'var(--color-text-label)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 4 }}>Designer</dt>
+                  <dd style={{ fontSize: 15, color: 'var(--color-text-detail)' }}>{item.details.designer}</dd>
                 </div>
               )}
               {item.details.artist && (
                 <div>
-                  <dt style={{ fontSize: 10, fontWeight: 600, color: '#3a3a3a', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 4 }}>Artist</dt>
-                  <dd style={{ fontSize: 15, color: '#888' }}>{item.details.artist}</dd>
+                  <dt style={{ fontSize: 10, fontWeight: 600, color: 'var(--color-text-label)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 4 }}>Artist</dt>
+                  <dd style={{ fontSize: 15, color: 'var(--color-text-detail)' }}>{item.details.artist}</dd>
                 </div>
               )}
               <div>
-                <dt style={{ fontSize: 10, fontWeight: 600, color: '#3a3a3a', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 4 }}>Period</dt>
-                <dd style={{ fontSize: 15, color: '#888' }}>{item.details.period}</dd>
+                <dt style={{ fontSize: 10, fontWeight: 600, color: 'var(--color-text-label)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 4 }}>Period</dt>
+                <dd style={{ fontSize: 15, color: 'var(--color-text-detail)' }}>{item.details.period}</dd>
               </div>
               {item.details.condition && (
                 <div>
-                  <dt style={{ fontSize: 10, fontWeight: 600, color: '#3a3a3a', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 4 }}>Condition</dt>
-                  <dd style={{ fontSize: 15, color: '#888' }}>{item.details.condition}</dd>
+                  <dt style={{ fontSize: 10, fontWeight: 600, color: 'var(--color-text-label)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 4 }}>Condition</dt>
+                  <dd style={{ fontSize: 15, color: 'var(--color-text-detail)' }}>{item.details.condition}</dd>
                 </div>
               )}
               {item.details.materials && (
                 <div>
-                  <dt style={{ fontSize: 10, fontWeight: 600, color: '#3a3a3a', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 4 }}>Materials</dt>
-                  <dd style={{ fontSize: 15, color: '#888' }}>{item.details.materials.join(', ')}</dd>
+                  <dt style={{ fontSize: 10, fontWeight: 600, color: 'var(--color-text-label)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 4 }}>Materials</dt>
+                  <dd style={{ fontSize: 15, color: 'var(--color-text-detail)' }}>{item.details.materials.join(', ')}</dd>
                 </div>
               )}
               {item.details.medium && (
                 <div>
-                  <dt style={{ fontSize: 10, fontWeight: 600, color: '#3a3a3a', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 4 }}>Medium</dt>
-                  <dd style={{ fontSize: 15, color: '#888' }}>{item.details.medium}</dd>
+                  <dt style={{ fontSize: 10, fontWeight: 600, color: 'var(--color-text-label)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 4 }}>Medium</dt>
+                  <dd style={{ fontSize: 15, color: 'var(--color-text-detail)' }}>{item.details.medium}</dd>
                 </div>
               )}
               <div>
-                <dt style={{ fontSize: 10, fontWeight: 600, color: '#3a3a3a', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 4 }}>Dimensions</dt>
-                <dd style={{ fontSize: 15, color: '#888' }}>{item.details.dimensions}</dd>
+                <dt style={{ fontSize: 10, fontWeight: 600, color: 'var(--color-text-label)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 4 }}>Dimensions</dt>
+                <dd style={{ fontSize: 15, color: 'var(--color-text-detail)' }}>{item.details.dimensions}</dd>
               </div>
             </div>
           </div>

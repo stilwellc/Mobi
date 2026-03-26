@@ -3,13 +3,114 @@
 @tailwind utilities;
 
 :root {
+  /* Core surfaces */
+  --color-bg: #060606;
+  --color-bg-card: #0c0c0c;
+  --color-fg: #F0EDE8;
+
+  /* Text scale */
+  --color-text-primary: #F0EDE8;
+  --color-text-secondary: #777;
+  --color-text-muted: #555;
+  --color-text-subtle: #444;
+  --color-text-faint: #333;
+  --color-text-ghost: #2a2a2a;
+  --color-text-label: #3a3a3a;
+  --color-text-detail: #888;
+
+  /* Borders & dividers */
+  --color-border: rgba(255,255,255,0.04);
+  --color-border-mid: rgba(255,255,255,0.06);
+  --color-border-strong: rgba(255,255,255,0.08);
+  --color-divider: #222;
+  --color-chip-border: #1a1a1a;
+
+  /* Overlays & hover */
+  --color-overlay-light: rgba(255,255,255,0.03);
+  --color-overlay-lighter: rgba(255,255,255,0.05);
+  --color-hover-surface: rgba(255,255,255,0.008);
+  --color-hover-item: rgba(255,255,255,0.015);
+
+  /* Nav & modal backdrops */
+  --color-nav-bg: rgba(6,6,6,0.85);
+  --color-modal-bg: rgba(6,6,6,0.95);
+  --color-modal-bg-deep: rgba(6,6,6,0.97);
+
+  /* Image overlay */
+  --color-image-overlay: rgba(12,12,12,0.8);
+
+  /* Foreground variants */
+  --color-fg-half: rgba(240,237,232,0.5);
+  --color-fg-soft: rgba(240,237,232,0.65);
+  --color-fg-dim: rgba(240,237,232,0.7);
+
+  /* Scrollbar */
+  --color-scrollbar-track: #060606;
+  --color-scrollbar-thumb: #222;
+
+  /* Accent colors (same in both themes) */
+  --color-accent-gold: #D4B896;
+  --color-accent-blue: #96B8D4;
+  --color-accent-green: #B8D496;
+  --color-accent-pink: #D496B8;
+
+  /* Misc */
+  --color-wip: #444;
+  --grain-opacity: 0.03;
+
+  /* RGB triplets */
   --foreground-rgb: 240, 237, 232;
   --background-rgb: 6, 6, 6;
 }
 
+[data-theme="light"] {
+  --color-bg: #F5F3EF;
+  --color-bg-card: #FFFFFF;
+  --color-fg: #1a1a1a;
+
+  --color-text-primary: #1a1a1a;
+  --color-text-secondary: #555;
+  --color-text-muted: #666;
+  --color-text-subtle: #777;
+  --color-text-faint: #999;
+  --color-text-ghost: #bbb;
+  --color-text-label: #888;
+  --color-text-detail: #666;
+
+  --color-border: rgba(0,0,0,0.06);
+  --color-border-mid: rgba(0,0,0,0.08);
+  --color-border-strong: rgba(0,0,0,0.12);
+  --color-divider: #ddd;
+  --color-chip-border: #ddd;
+
+  --color-overlay-light: rgba(0,0,0,0.02);
+  --color-overlay-lighter: rgba(0,0,0,0.04);
+  --color-hover-surface: rgba(0,0,0,0.015);
+  --color-hover-item: rgba(0,0,0,0.025);
+
+  --color-nav-bg: rgba(245,243,239,0.88);
+  --color-modal-bg: rgba(245,243,239,0.95);
+  --color-modal-bg-deep: rgba(245,243,239,0.97);
+
+  --color-image-overlay: rgba(255,255,255,0.6);
+
+  --color-fg-half: rgba(26,26,26,0.5);
+  --color-fg-soft: rgba(26,26,26,0.65);
+  --color-fg-dim: rgba(26,26,26,0.7);
+
+  --color-scrollbar-track: #F5F3EF;
+  --color-scrollbar-thumb: #ccc;
+
+  --color-wip: #bbb;
+  --grain-opacity: 0.015;
+
+  --foreground-rgb: 26, 26, 26;
+  --background-rgb: 245, 243, 239;
+}
+
 body {
-  color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-rgb));
+  color: var(--color-fg);
+  background: var(--color-bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
@@ -25,21 +126,25 @@ html {
   color: #fff;
 }
 
+[data-theme="light"] ::selection {
+  color: #1a1a1a;
+}
+
 ::-webkit-scrollbar {
   width: 3px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #060606;
+  background: var(--color-scrollbar-track);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #222;
+  background: var(--color-scrollbar-thumb);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #D4B896;
+  background: var(--color-accent-gold);
 }
 
 @layer utilities {

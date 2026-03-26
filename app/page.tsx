@@ -6,6 +6,8 @@ import MobiusStrip from './components/MobiusStrip';
 import SectionPage from './components/SectionPage';
 import AboutPage from './components/AboutPage';
 import ItemWrapper from './components/ItemWrapper';
+import ThemeToggle from './components/ThemeToggle';
+import { useTheme } from './components/ThemeProvider';
 import { useWindowSize } from './components/hooks';
 import { sections } from './components/sections';
 
@@ -27,6 +29,7 @@ export default function MobiSite() {
   const [hoveredSection, setHoveredSection] = useState<string | null>(null);
   const [scrollY, setScrollY] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { theme } = useTheme();
   const w = useWindowSize();
   const mobile = w < 768;
   const tablet = w < 1024;
@@ -63,8 +66,8 @@ export default function MobiSite() {
   return (
     <div style={{
       fontFamily: "'Syne', sans-serif",
-      background: '#060606',
-      color: '#F0EDE8',
+      background: 'var(--color-bg)',
+      color: 'var(--color-fg)',
       minHeight: '100vh',
       position: 'relative',
       overflowX: 'hidden',
@@ -76,48 +79,48 @@ export default function MobiSite() {
         @keyframes menuReveal{from{opacity:0;transform:translateY(20px) scale(0.95)}to{opacity:1;transform:translateY(0) scale(1)}}
         @keyframes pageIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
 
-        .grain-overlay{position:fixed;top:-50%;left:-50%;width:200%;height:200%;pointer-events:none;z-index:9999;opacity:0.03;animation:grainShift 0.5s steps(5) infinite;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")}
+        .grain-overlay{position:fixed;top:-50%;left:-50%;width:200%;height:200%;pointer-events:none;z-index:9999;opacity:var(--grain-opacity);animation:grainShift 0.5s steps(5) infinite;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")}
 
-        .nav-item{color:#555;text-decoration:none;font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;position:relative;padding:6px 0;transition:color 0.4s ease;-webkit-tap-highlight-color:transparent}
-        .nav-item:hover{color:#F0EDE8}
-        .nav-item::after{content:'';position:absolute;bottom:0;left:0;width:0%;height:1px;background:#D4B896;transition:width 0.5s cubic-bezier(0.23,1,0.32,1)}
+        .nav-item{color:var(--color-text-muted);text-decoration:none;font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;position:relative;padding:6px 0;transition:color 0.4s ease;-webkit-tap-highlight-color:transparent}
+        .nav-item:hover{color:var(--color-text-primary)}
+        .nav-item::after{content:'';position:absolute;bottom:0;left:0;width:0%;height:1px;background:var(--color-accent-gold);transition:width 0.5s cubic-bezier(0.23,1,0.32,1)}
         .nav-item:hover::after{width:100%}
-        .nav-item-active{color:#F0EDE8!important}
-        .nav-item-active::after{width:100%!important;background:#D4B896!important}
+        .nav-item-active{color:var(--color-text-primary)!important}
+        .nav-item-active::after{width:100%!important;background:var(--color-accent-gold)!important}
 
         .back-link{transition:color 0.3s ease}
-        .back-link:hover{color:#D4B896!important}
+        .back-link:hover{color:var(--color-accent-gold)!important}
 
         .section-trigger{cursor:pointer;transition:all 0.4s cubic-bezier(0.23,1,0.32,1);-webkit-tap-highlight-color:transparent;position:relative}
-        .section-trigger::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.04),transparent)}
+        .section-trigger::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--color-border),transparent)}
 
         .item-entry{cursor:pointer;transition:all 0.4s cubic-bezier(0.23,1,0.32,1);-webkit-tap-highlight-color:transparent;position:relative}
         .item-entry::before{content:'';position:absolute;left:0;top:0;bottom:0;width:0px;background:var(--accent);transition:width 0.4s cubic-bezier(0.23,1,0.32,1);border-radius:0 2px 2px 0}
         .item-entry:hover::before{width:2px}
-        .item-entry:hover{background:rgba(255,255,255,0.015)}
+        .item-entry:hover{background:var(--color-hover-item)}
 
-        .wip-dot{width:6px;height:6px;border-radius:50%;background:#444;animation:wipPulse 2.5s ease-in-out infinite}
+        .wip-dot{width:6px;height:6px;border-radius:50%;background:var(--color-wip);animation:wipPulse 2.5s ease-in-out infinite}
 
-        .featured-card{position:relative;overflow:hidden;border-radius:20px;cursor:pointer;transition:all 0.6s cubic-bezier(0.23,1,0.32,1);background:#0c0c0c}
+        .featured-card{position:relative;overflow:hidden;border-radius:20px;cursor:pointer;transition:all 0.6s cubic-bezier(0.23,1,0.32,1);background:var(--color-bg-card)}
         .featured-card:hover{transform:translateY(-4px)}
-        .featured-card::before{content:'';position:absolute;inset:0;border-radius:20px;padding:1px;background:linear-gradient(135deg,rgba(255,255,255,0.06),transparent 40%,transparent 60%,rgba(255,255,255,0.03));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+        .featured-card::before{content:'';position:absolute;inset:0;border-radius:20px;padding:1px;background:linear-gradient(135deg,var(--color-border-mid),transparent 40%,transparent 60%,var(--color-overlay-light));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
 
-        .hero-cta{display:inline-flex;align-items:center;gap:14px;padding:18px 36px;border-radius:60px;border:1px solid rgba(212,184,150,0.3);background:rgba(212,184,150,0.06);color:#D4B896;font-family:'Syne',sans-serif;font-size:13px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;transition:all 0.5s cubic-bezier(0.23,1,0.32,1);backdrop-filter:blur(10px);-webkit-tap-highlight-color:transparent}
-        .hero-cta:hover{background:#D4B896;border-color:#D4B896;color:#060606;box-shadow:0 8px 40px rgba(212,184,150,0.2),0 0 80px rgba(212,184,150,0.08);transform:translateY(-2px)}
+        .hero-cta{display:inline-flex;align-items:center;gap:14px;padding:18px 36px;border-radius:60px;border:1px solid rgba(212,184,150,0.3);background:rgba(212,184,150,0.06);color:var(--color-accent-gold);font-family:'Syne',sans-serif;font-size:13px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;transition:all 0.5s cubic-bezier(0.23,1,0.32,1);backdrop-filter:blur(10px);-webkit-tap-highlight-color:transparent}
+        .hero-cta:hover{background:var(--color-accent-gold);border-color:var(--color-accent-gold);color:#060606;box-shadow:0 8px 40px rgba(212,184,150,0.2),0 0 80px rgba(212,184,150,0.08);transform:translateY(-2px)}
         .hero-cta:active{transform:scale(0.97)}
         .hero-cta svg{transition:transform 0.4s ease}
         .hero-cta:hover svg{transform:translateX(4px)}
 
-        .hamburger-bar{display:block;width:24px;height:1.5px;background:#F0EDE8;transition:all 0.4s cubic-bezier(0.23,1,0.32,1);border-radius:1px}
+        .hamburger-bar{display:block;width:24px;height:1.5px;background:var(--color-text-primary);transition:all 0.4s cubic-bezier(0.23,1,0.32,1);border-radius:1px}
 
-        .view-link{font-size:11px;color:#333;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:color 0.3s ease;padding:4px 0}
+        .view-link{font-size:11px;color:var(--color-text-faint);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:color 0.3s ease;padding:4px 0}
         .view-link:hover{color:var(--accent)!important}
 
-        .footer-link{font-size:11px;color:#333;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;transition:color 0.3s ease}
-        .footer-link:hover{color:#D4B896}
+        .footer-link{font-size:11px;color:var(--color-text-faint);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;transition:color 0.3s ease}
+        .footer-link:hover{color:var(--color-accent-gold)}
 
-        .section-label-sm{font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:#3a3a3a;font-weight:600}
-        .tag-chip{display:inline-block;padding:4px 14px;border-radius:100px;border:1px solid #1a1a1a;font-size:10px;color:#555;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;transition:all 0.4s ease;white-space:nowrap;backdrop-filter:blur(4px)}
+        .section-label-sm{font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--color-text-label);font-weight:600}
+        .tag-chip{display:inline-block;padding:4px 14px;border-radius:100px;border:1px solid var(--color-chip-border);font-size:10px;color:var(--color-text-muted);letter-spacing:0.1em;text-transform:uppercase;font-weight:600;transition:all 0.4s ease;white-space:nowrap;backdrop-filter:blur(4px)}
 
         .page-transition{animation:pageIn 0.6s cubic-bezier(0.23,1,0.32,1) both}
       `}</style>
@@ -138,9 +141,9 @@ export default function MobiSite() {
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
         padding: mobile ? '18px 20px' : '24px 56px',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        background: scrollY > 80 || menuOpen || page !== 'home' ? 'rgba(6,6,6,0.85)' : 'transparent',
+        background: scrollY > 80 || menuOpen || page !== 'home' ? 'var(--color-nav-bg)' : 'transparent',
         backdropFilter: scrollY > 80 || menuOpen || page !== 'home' ? 'blur(30px) saturate(1.2)' : 'none',
-        borderBottom: scrollY > 80 || page !== 'home' ? '1px solid rgba(255,255,255,0.04)' : '1px solid transparent',
+        borderBottom: scrollY > 80 || page !== 'home' ? '1px solid var(--color-border)' : '1px solid transparent',
         transition: 'all 0.5s ease',
         opacity: loaded ? 1 : 0,
       }}>
@@ -148,9 +151,9 @@ export default function MobiSite() {
           cursor: 'pointer', zIndex: 101,
           fontFamily: "'Syne', sans-serif",
           fontSize: mobile ? 22 : 26, fontWeight: 700,
-          color: '#F0EDE8', letterSpacing: '-0.04em', lineHeight: 1,
+          color: 'var(--color-fg)', letterSpacing: '-0.04em', lineHeight: 1,
         }}>
-          mobi<span style={{ color: '#D4B896' }}>.</span>
+          mobi<span style={{ color: 'var(--color-accent-gold)' }}>.</span>
         </div>
 
         {!mobile && (
@@ -162,25 +165,29 @@ export default function MobiSite() {
                 onClick={() => navigate(s.id)}
               >{s.label}</span>
             ))}
-            <div style={{ width: 1, height: 12, background: '#222', margin: '0 4px' }} />
+            <div style={{ width: 1, height: 12, background: 'var(--color-divider)', margin: '0 4px' }} />
             <span
               className={`nav-item ${page === 'about' ? 'nav-item-active' : ''}`}
-              style={{ color: page === 'about' ? '#F0EDE8' : '#D4B896' }}
+              style={{ color: page === 'about' ? 'var(--color-text-primary)' : 'var(--color-accent-gold)' }}
               onClick={() => navigate('about')}
             >about</span>
+            <ThemeToggle />
           </div>
         )}
 
         {mobile && (
-          <button onClick={() => setMenuOpen(!menuOpen)} style={{
-            background: 'none', border: 'none', cursor: 'pointer',
-            padding: 10, display: 'flex', flexDirection: 'column', gap: 6,
-            zIndex: 101, WebkitTapHighlightColor: 'transparent',
-          }}>
-            <span className="hamburger-bar" style={{ transform: menuOpen ? 'rotate(45deg) translate(5px, 5px)' : 'none' }} />
-            <span className="hamburger-bar" style={{ opacity: menuOpen ? 0 : 1, width: 16 }} />
-            <span className="hamburger-bar" style={{ transform: menuOpen ? 'rotate(-45deg) translate(5px, -5px)' : 'none' }} />
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, zIndex: 101 }}>
+            <ThemeToggle />
+            <button onClick={() => setMenuOpen(!menuOpen)} style={{
+              background: 'none', border: 'none', cursor: 'pointer',
+              padding: 10, display: 'flex', flexDirection: 'column', gap: 6,
+              WebkitTapHighlightColor: 'transparent',
+            }}>
+              <span className="hamburger-bar" style={{ transform: menuOpen ? 'rotate(45deg) translate(5px, 5px)' : 'none' }} />
+              <span className="hamburger-bar" style={{ opacity: menuOpen ? 0 : 1, width: 16 }} />
+              <span className="hamburger-bar" style={{ transform: menuOpen ? 'rotate(-45deg) translate(5px, -5px)' : 'none' }} />
+            </button>
+          </div>
         )}
       </nav>
 
@@ -188,14 +195,14 @@ export default function MobiSite() {
       {mobile && (
         <div style={{
           position: 'fixed', inset: 0, zIndex: 99,
-          background: 'rgba(6,6,6,0.97)', backdropFilter: 'blur(40px)',
+          background: 'var(--color-modal-bg-deep)', backdropFilter: 'blur(40px)',
           display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 6,
           opacity: menuOpen ? 1 : 0, pointerEvents: menuOpen ? 'auto' : 'none', transition: 'opacity 0.5s ease',
         }}>
           {[...sections.map(s => ({ label: s.label, id: s.id })), { label: 'About', id: 'about' }].map((item, i) => (
             <div key={item.id} onClick={() => navigate(item.id)} style={{
               fontFamily: "'Cormorant Garamond', serif", fontSize: 40, fontWeight: 300,
-              color: page === item.id ? '#F0EDE8' : (item.id === 'about' ? '#D4B896' : '#777'),
+              color: page === item.id ? 'var(--color-text-primary)' : (item.id === 'about' ? 'var(--color-accent-gold)' : 'var(--color-text-secondary)'),
               padding: '14px 0', cursor: 'pointer', textAlign: 'center',
               animation: menuOpen ? `menuReveal 0.5s ease ${i * 0.08}s both` : 'none',
             }}>{item.label}</div>
@@ -225,11 +232,11 @@ export default function MobiSite() {
             position: 'relative', padding: mobile ? '120px 20px 80px' : '140px 56px 100px',
             overflow: 'hidden',
           }}>
-            <MobiusStrip mobile={mobile} />
+            <MobiusStrip mobile={mobile} theme={theme} />
 
             <div style={{
               position: 'absolute', top: mobile ? '18%' : '15%', left: mobile ? '5%' : '8%',
-              width: phase >= 1 ? (mobile ? 40 : 80) : 0, height: 1, background: '#D4B896',
+              width: phase >= 1 ? (mobile ? 40 : 80) : 0, height: 1, background: 'var(--color-accent-gold)',
               transition: 'width 1.2s cubic-bezier(0.23, 1, 0.32, 1) 0.5s', opacity: 0.4,
             }} />
 
@@ -239,7 +246,7 @@ export default function MobiSite() {
               marginBottom: mobile ? 24 : 36, display: 'flex', alignItems: 'center', gap: 16,
               position: 'relative', zIndex: 2,
             }}>
-              <div style={{ width: 8, height: 8, borderRadius: '50%', border: '1px solid #D4B896', opacity: 0.5 }} />
+              <div style={{ width: 8, height: 8, borderRadius: '50%', border: '1px solid var(--color-accent-gold)', opacity: 0.5 }} />
               <span className="section-label-sm">Design Studio &mdash; Est. 2024</span>
             </div>
 
@@ -258,7 +265,7 @@ export default function MobiSite() {
                 background: 'linear-gradient(135deg, #D4B896 0%, #E8D5BC 40%, #D4B896 70%, #C4A886 100%)',
                 WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
               }}>transcends</span>
-              <span style={{ display: 'block', color: 'rgba(240,237,232,0.5)' }}>boundaries</span>
+              <span style={{ display: 'block', color: 'var(--color-fg-half)' }}>boundaries</span>
             </h1>
 
             <div style={{
@@ -269,7 +276,7 @@ export default function MobiSite() {
               transition: 'all 1s cubic-bezier(0.23, 1, 0.32, 1)',
               position: 'relative', zIndex: 2,
             }}>
-              <p style={{ maxWidth: mobile ? '100%' : 380, fontSize: mobile ? 14 : 15, lineHeight: 1.85, color: '#555', fontWeight: 400 }}>
+              <p style={{ maxWidth: mobile ? '100%' : 380, fontSize: mobile ? 14 : 15, lineHeight: 1.85, color: 'var(--color-text-muted)', fontWeight: 400 }}>
                 Physical spaces, digital products, and cultural connections — designed with intention, built with craft, refined through obsession.
               </p>
               <button className="hero-cta" onClick={() => { const el = document.getElementById('directory'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }}>
@@ -286,8 +293,8 @@ export default function MobiSite() {
                 display: 'flex', alignItems: 'center', gap: 24,
                 opacity: phase >= 3 ? 0.4 : 0, transition: 'opacity 1.5s ease',
               }}>
-                <div style={{ flex: 1, height: 1, background: 'linear-gradient(90deg, rgba(255,255,255,0.08), transparent)' }} />
-                <span style={{ fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase', color: '#333', fontWeight: 600 }}>Scroll to explore</span>
+                <div style={{ flex: 1, height: 1, background: 'linear-gradient(90deg, var(--color-border-strong), transparent)' }} />
+                <span style={{ fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--color-text-faint)', fontWeight: 600 }}>Scroll to explore</span>
               </div>
             )}
           </section>
@@ -307,17 +314,17 @@ export default function MobiSite() {
                     fontSize: mobile ? 36 : tablet ? 48 : 60,
                     fontWeight: 300, letterSpacing: '-0.03em', lineHeight: 1,
                   }}>
-                    Everything we{' '}<span style={{ fontStyle: 'italic', fontWeight: 400, color: '#D4B896' }}>make</span>
+                    Everything we{' '}<span style={{ fontStyle: 'italic', fontWeight: 400, color: 'var(--color-accent-gold)' }}>make</span>
                   </h2>
                 </div>
                 {!mobile && (
-                  <span style={{ fontSize: 11, color: '#2a2a2a', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 600 }}>
+                  <span style={{ fontSize: 11, color: 'var(--color-text-ghost)', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 600 }}>
                     {sections.reduce((a, s) => a + s.items.length, 0)} Projects
                   </span>
                 )}
               </div>
 
-              <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+              <div style={{ borderTop: '1px solid var(--color-border-mid)' }}>
                 {sections.map((section, si) => {
                   const isExpanded = expandedSection === section.id;
                   const isHovS = hoveredSection === section.id;
@@ -330,13 +337,13 @@ export default function MobiSite() {
                         style={{
                           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                           padding: mobile ? '24px 0' : '32px 0',
-                          background: isHovS && !mobile ? 'rgba(255,255,255,0.008)' : 'transparent',
+                          background: isHovS && !mobile ? 'var(--color-hover-surface)' : 'transparent',
                         }}
                       >
                         <div style={{ display: 'flex', alignItems: 'baseline', gap: mobile ? 16 : 28 }}>
                           <span style={{
                             fontFamily: "'Cormorant Garamond', serif", fontSize: mobile ? 13 : 15,
-                            color: isExpanded ? section.accent : '#2a2a2a', fontWeight: 400,
+                            color: isExpanded ? section.accent : 'var(--color-text-ghost)', fontWeight: 400,
                             minWidth: mobile ? 24 : 32, transition: 'color 0.4s ease',
                           }}>{String(si + 1).padStart(2, '0')}</span>
                           <span style={{
@@ -344,7 +351,7 @@ export default function MobiSite() {
                             fontSize: mobile ? 32 : tablet ? 40 : 52, fontWeight: 300,
                             letterSpacing: '-0.02em',
                             transition: 'all 0.5s cubic-bezier(0.23, 1, 0.32, 1)',
-                            color: isExpanded ? section.accent : (isHovS ? '#F0EDE8' : 'rgba(240,237,232,0.7)'),
+                            color: isExpanded ? section.accent : (isHovS ? 'var(--color-text-primary)' : 'var(--color-fg-dim)'),
                             transform: isHovS && !mobile ? 'translateX(8px)' : 'none',
                           }}>{section.label}</span>
                         </div>
@@ -356,14 +363,14 @@ export default function MobiSite() {
                           >View &#8594;</span>
                           <div style={{
                             width: 32, height: 32, borderRadius: '50%',
-                            border: `1px solid ${isExpanded ? section.accent + '44' : '#1a1a1a'}`,
+                            border: `1px solid ${isExpanded ? section.accent + '44' : 'var(--color-chip-border)'}`,
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
                             transition: 'all 0.5s cubic-bezier(0.23, 1, 0.32, 1)',
                             background: isExpanded ? section.accent + '0a' : 'transparent',
                             transform: isExpanded ? 'rotate(45deg)' : 'rotate(0deg)',
                           }}>
                             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                              <path d="M7 2v10M2 7h10" stroke={isExpanded ? section.accent : '#444'} strokeWidth="1" strokeLinecap="round" />
+                              <path d="M7 2v10M2 7h10" stroke={isExpanded ? section.accent : 'var(--color-text-subtle)'} strokeWidth="1" strokeLinecap="round" />
                             </svg>
                           </div>
                         </div>
@@ -393,35 +400,35 @@ export default function MobiSite() {
                                     <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 4, flexWrap: 'wrap' }}>
                                       <span style={{
                                         fontSize: mobile ? 16 : 18, fontWeight: 500, letterSpacing: '-0.01em',
-                                        transition: 'all 0.4s ease', color: isHov ? '#F0EDE8' : '#777',
+                                        transition: 'all 0.4s ease', color: isHov ? 'var(--color-text-primary)' : 'var(--color-text-secondary)',
                                       }}>{item.name}</span>
                                       {item.wip && (
                                         <div style={{
                                           display: 'inline-flex', alignItems: 'center', gap: 6,
                                           padding: '3px 12px', borderRadius: 100,
-                                          background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)',
+                                          background: 'var(--color-overlay-light)', border: '1px solid var(--color-overlay-lighter)',
                                         }}>
                                           <div className="wip-dot" />
-                                          <span style={{ fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#444', fontWeight: 600 }}>WIP</span>
+                                          <span style={{ fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--color-text-subtle)', fontWeight: 600 }}>WIP</span>
                                         </div>
                                       )}
                                       {!linked && !item.wip && (
                                         <span style={{
                                           fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase',
-                                          color: '#333', fontWeight: 600, padding: '3px 12px', borderRadius: 100,
-                                          border: '1px solid rgba(255,255,255,0.05)', background: 'rgba(255,255,255,0.02)',
+                                          color: 'var(--color-text-faint)', fontWeight: 600, padding: '3px 12px', borderRadius: 100,
+                                          border: '1px solid var(--color-overlay-lighter)', background: 'var(--color-overlay-light)',
                                         }}>Coming Soon</span>
                                       )}
-                                      {item.handle && <span style={{ fontSize: 12, color: '#333' }}>{item.handle}</span>}
+                                      {item.handle && <span style={{ fontSize: 12, color: 'var(--color-text-faint)' }}>{item.handle}</span>}
                                     </div>
-                                    <span style={{ fontSize: mobile ? 12 : 13, color: '#3a3a3a', fontWeight: 400, lineHeight: 1.6 }}>
+                                    <span style={{ fontSize: mobile ? 12 : 13, color: 'var(--color-text-label)', fontWeight: 400, lineHeight: 1.6 }}>
                                       {item.description}
                                     </span>
                                   </div>
                                   <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
                                     <span className="tag-chip" style={{
-                                      borderColor: isHov ? section.accent + '33' : '#1a1a1a',
-                                      color: isHov ? section.accent : '#444',
+                                      borderColor: isHov ? section.accent + '33' : 'var(--color-chip-border)',
+                                      color: isHov ? section.accent : 'var(--color-text-subtle)',
                                     }}>{item.tag}</span>
                                     {linked && (
                                       <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{
@@ -461,7 +468,7 @@ export default function MobiSite() {
                     fontSize: mobile ? 36 : tablet ? 48 : 60,
                     fontWeight: 300, letterSpacing: '-0.03em', lineHeight: 1,
                   }}>
-                    Featured <span style={{ fontStyle: 'italic', fontWeight: 400, color: '#D4B896' }}>projects</span>
+                    Featured <span style={{ fontStyle: 'italic', fontWeight: 400, color: 'var(--color-accent-gold)' }}>projects</span>
                   </h2>
                 </div>
               </div>
@@ -470,12 +477,12 @@ export default function MobiSite() {
                 <div className="featured-card" style={{ padding: mobile ? 28 : 48 }}>
                   <div style={{ position: 'absolute', top: 0, left: '10%', right: '10%', height: 1, background: 'linear-gradient(90deg, transparent, rgba(212,184,150,0.3), transparent)' }} />
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: mobile ? 24 : 36 }}>
-                    <span style={{ fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#D4B896', fontWeight: 600, background: 'rgba(212,184,150,0.06)', padding: '6px 16px', borderRadius: 100, border: '1px solid rgba(212,184,150,0.1)' }}>Physical</span>
-                    <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style={{ opacity: 0.25 }}><path d="M6 14L14 6M14 6H8M14 6V12" stroke="#F0EDE8" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                    <span style={{ fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--color-accent-gold)', fontWeight: 600, background: 'rgba(212,184,150,0.06)', padding: '6px 16px', borderRadius: 100, border: '1px solid rgba(212,184,150,0.1)' }}>Physical</span>
+                    <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style={{ opacity: 0.25 }}><path d="M6 14L14 6M14 6H8M14 6V12" stroke="var(--color-fg)" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
                   </div>
                   <div style={{
                     borderRadius: 14, height: mobile ? 200 : 320, marginBottom: mobile ? 28 : 40,
-                    border: '1px solid rgba(255,255,255,0.03)', position: 'relative', overflow: 'hidden',
+                    border: '1px solid var(--color-overlay-light)', position: 'relative', overflow: 'hidden',
                   }}>
                     <img
                       src="/images/1122/before/kitchen1.webp"
@@ -488,7 +495,7 @@ export default function MobiSite() {
                     />
                     <div style={{
                       position: 'absolute', inset: 0,
-                      background: 'linear-gradient(to top, rgba(12,12,12,0.8) 0%, transparent 60%)',
+                      background: `linear-gradient(to top, var(--color-image-overlay) 0%, transparent 60%)`,
                     }} />
                     <span style={{
                       position: 'absolute', bottom: mobile ? 16 : 24, left: mobile ? 16 : 24,
@@ -498,8 +505,8 @@ export default function MobiSite() {
                     }}>1122</span>
                   </div>
                   <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: mobile ? 28 : 36, fontWeight: 300, marginBottom: 6 }}>Project 1122</h3>
-                  <div style={{ fontSize: 12, color: '#333', marginBottom: mobile ? 14 : 18, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Stilwell</div>
-                  <p style={{ fontSize: mobile ? 13 : 15, lineHeight: 1.75, color: '#555', fontWeight: 400, maxWidth: 480 }}>A complete spatial transformation — reimagining a home from blueprint to lived experience.</p>
+                  <div style={{ fontSize: 12, color: 'var(--color-text-faint)', marginBottom: mobile ? 14 : 18, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Stilwell</div>
+                  <p style={{ fontSize: mobile ? 13 : 15, lineHeight: 1.75, color: 'var(--color-text-muted)', fontWeight: 400, maxWidth: 480 }}>A complete spatial transformation — reimagining a home from blueprint to lived experience.</p>
                 </div>
               </Link>
             </div>
@@ -517,9 +524,9 @@ export default function MobiSite() {
                     fontWeight: 300, letterSpacing: '-0.03em', lineHeight: 1,
                     marginBottom: mobile ? 24 : 36,
                   }}>
-                    The infinite<br /><span style={{ fontStyle: 'italic', fontWeight: 400, color: '#D4B896' }}>loop</span>
+                    The infinite<br /><span style={{ fontStyle: 'italic', fontWeight: 400, color: 'var(--color-accent-gold)' }}>loop</span>
                   </h2>
-                  <p style={{ fontSize: mobile ? 14 : 16, lineHeight: 1.85, color: '#444', fontWeight: 400, marginBottom: 24 }}>
+                  <p style={{ fontSize: mobile ? 14 : 16, lineHeight: 1.85, color: 'var(--color-text-subtle)', fontWeight: 400, marginBottom: 24 }}>
                     Named after the Möbius strip — a surface with only one side and one boundary. It represents our belief that great design has no beginning or end, no separation between form and function, no divide between physical and digital.
                   </p>
                   <button className="hero-cta" onClick={() => navigate('about')} style={{ marginTop: 8 }}>
@@ -538,13 +545,13 @@ export default function MobiSite() {
                   ].map((p) => (
                     <div key={p.num} style={{
                       padding: mobile ? 20 : 28, borderRadius: 16,
-                      background: '#0c0c0c', border: '1px solid rgba(255,255,255,0.04)',
+                      background: 'var(--color-bg-card)', border: '1px solid var(--color-border)',
                     }}>
                       <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, marginBottom: 10 }}>
-                        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 14, color: '#D4B896', fontWeight: 400 }}>{p.num}</span>
+                        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 14, color: 'var(--color-accent-gold)', fontWeight: 400 }}>{p.num}</span>
                         <span style={{ fontSize: mobile ? 16 : 18, fontWeight: 600, letterSpacing: '-0.01em' }}>{p.title}</span>
                       </div>
-                      <p style={{ fontSize: mobile ? 13 : 14, color: '#3a3a3a', fontWeight: 400, lineHeight: 1.7 }}>{p.desc}</p>
+                      <p style={{ fontSize: mobile ? 13 : 14, color: 'var(--color-text-label)', fontWeight: 400, lineHeight: 1.7 }}>{p.desc}</p>
                     </div>
                   ))}
                 </div>
@@ -555,7 +562,7 @@ export default function MobiSite() {
           {/* FOOTER */}
           <footer style={{
             padding: mobile ? '40px 20px' : '60px 56px',
-            borderTop: '1px solid rgba(255,255,255,0.04)',
+            borderTop: '1px solid var(--color-border)',
           }}>
             <div style={{ maxWidth: 1100, margin: '0 auto' }}>
               <div style={{
@@ -568,9 +575,9 @@ export default function MobiSite() {
                     fontFamily: "'Syne', sans-serif", fontSize: 22, fontWeight: 700,
                     letterSpacing: '-0.04em', marginBottom: 8,
                   }}>
-                    mobi<span style={{ color: '#D4B896' }}>.</span>
+                    mobi<span style={{ color: 'var(--color-accent-gold)' }}>.</span>
                   </div>
-                  <p style={{ fontSize: 12, color: '#333', fontWeight: 400 }}>Design studio &mdash; Est. 2024</p>
+                  <p style={{ fontSize: 12, color: 'var(--color-text-faint)', fontWeight: 400 }}>Design studio &mdash; Est. 2024</p>
                 </div>
                 <div style={{ display: 'flex', gap: 28 }}>
                   {sections.filter(s => s.id === 'social').flatMap(s => s.items).map(item => (

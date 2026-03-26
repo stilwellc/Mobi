@@ -19,7 +19,7 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
       <section style={{ padding: `0 ${px}px 80px`, maxWidth: 1100, margin: '0 auto' }}>
         <div style={{ marginBottom: 20 }}>
           <span className="back-link" onClick={() => navigate('home')} style={{
-            fontSize: 12, color: '#444', cursor: 'pointer', fontWeight: 500,
+            fontSize: 12, color: 'var(--color-text-subtle)', cursor: 'pointer', fontWeight: 500,
             letterSpacing: '0.1em', textTransform: 'uppercase',
           }}>&#8592; Back</span>
         </div>
@@ -31,7 +31,7 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
           }} />
           <span style={{
             fontSize: 11, letterSpacing: '0.25em', textTransform: 'uppercase',
-            color: '#3a3a3a', fontWeight: 600,
+            color: 'var(--color-text-label)', fontWeight: 600,
           }}>{section.tagline}</span>
         </div>
 
@@ -43,13 +43,13 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
         }}>{section.label}</h1>
 
         <p style={{
-          fontSize: mobile ? 15 : 17, lineHeight: 1.8, color: '#555',
+          fontSize: mobile ? 15 : 17, lineHeight: 1.8, color: 'var(--color-text-muted)',
           fontWeight: 400, maxWidth: 520,
         }}>{section.description}</p>
 
         <div style={{
           width: '100%', height: 1, marginTop: mobile ? 40 : 64,
-          background: 'linear-gradient(90deg, rgba(255,255,255,0.06), transparent 80%)',
+          background: 'linear-gradient(90deg, var(--color-border-mid), transparent 80%)',
         }} />
       </section>
 
@@ -57,7 +57,7 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
         <div style={{ marginBottom: 40 }}>
           <span style={{
             fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase',
-            color: '#3a3a3a', fontWeight: 600,
+            color: 'var(--color-text-label)', fontWeight: 600,
           }}>Projects &mdash; {section.items.length}</span>
         </div>
 
@@ -76,7 +76,7 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
                   justifyContent: 'space-between',
                   gap: mobile ? 12 : 24,
                   padding: mobile ? '24px 0' : '32px 0',
-                  borderBottom: '1px solid rgba(255,255,255,0.04)',
+                  borderBottom: '1px solid var(--color-border)',
                   cursor: linked ? 'pointer' : 'default',
                   transition: 'all 0.4s ease',
                 }}
@@ -84,7 +84,7 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: mobile ? 16 : 28, flex: 1 }}>
                   <span style={{
                     fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: mobile ? 14 : 16, color: isHov ? section.accent : '#2a2a2a',
+                    fontSize: mobile ? 14 : 16, color: isHov ? section.accent : 'var(--color-text-ghost)',
                     fontWeight: 400, minWidth: 32, transition: 'color 0.4s ease',
                   }}>{String(i + 1).padStart(2, '0')}</span>
                   <div>
@@ -93,30 +93,30 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
                         fontFamily: "'Cormorant Garamond', serif",
                         fontSize: mobile ? 28 : 36, fontWeight: 300, letterSpacing: '-0.02em',
                         transition: 'color 0.4s ease',
-                        color: isHov ? '#F0EDE8' : 'rgba(240,237,232,0.65)',
+                        color: isHov ? 'var(--color-text-primary)' : 'var(--color-fg-soft)',
                       }}>{item.name}</span>
                       {item.wip && (
                         <div style={{
                           display: 'inline-flex', alignItems: 'center', gap: 6,
                           padding: '4px 14px', borderRadius: 100,
-                          background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)',
+                          background: 'var(--color-overlay-light)', border: '1px solid var(--color-overlay-lighter)',
                         }}>
                           <div className="wip-dot" />
-                          <span style={{ fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#444', fontWeight: 600 }}>WIP</span>
+                          <span style={{ fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--color-text-subtle)', fontWeight: 600 }}>WIP</span>
                         </div>
                       )}
                       {!linked && !item.wip && (
                         <span style={{
                           fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase',
-                          color: '#333', fontWeight: 600, padding: '4px 14px', borderRadius: 100,
-                          border: '1px solid rgba(255,255,255,0.05)', background: 'rgba(255,255,255,0.02)',
+                          color: 'var(--color-text-faint)', fontWeight: 600, padding: '4px 14px', borderRadius: 100,
+                          border: '1px solid var(--color-overlay-lighter)', background: 'var(--color-overlay-light)',
                         }}>Coming Soon</span>
                       )}
                       {item.handle && (
-                        <span style={{ fontSize: 13, color: '#444', fontWeight: 400 }}>{item.handle}</span>
+                        <span style={{ fontSize: 13, color: 'var(--color-text-subtle)', fontWeight: 400 }}>{item.handle}</span>
                       )}
                     </div>
-                    <p style={{ fontSize: mobile ? 13 : 15, color: '#3a3a3a', fontWeight: 400, lineHeight: 1.6 }}>
+                    <p style={{ fontSize: mobile ? 13 : 15, color: 'var(--color-text-label)', fontWeight: 400, lineHeight: 1.6 }}>
                       {item.description}
                     </p>
                   </div>
@@ -125,9 +125,9 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
                 <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexShrink: 0 }}>
                   <span style={{
                     padding: '5px 16px', borderRadius: 100,
-                    border: `1px solid ${isHov ? section.accent + '33' : '#1a1a1a'}`,
+                    border: `1px solid ${isHov ? section.accent + '33' : 'var(--color-chip-border)'}`,
                     fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase',
-                    fontWeight: 600, color: isHov ? section.accent : '#444',
+                    fontWeight: 600, color: isHov ? section.accent : 'var(--color-text-subtle)',
                     transition: 'all 0.4s ease',
                   }}>{item.tag}</span>
                   {linked && (
