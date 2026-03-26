@@ -1,45 +1,94 @@
 {
-  "lastUpdated": "2026-03-26T08:00:00.000Z",
+  "lastUpdated": "2026-03-26T21:26:34.796Z",
   "totalLotsTracked": 2180,
-  "avgPriceLast12Months": 579574,
-  "medianPriceLast12Months": 331250,
-  "recordPrice": 6857530,
-  "recordTitle": "Force Field",
+  "avgPriceLast12Months": 270769,
+  "medianPriceLast12Months": 131250,
+  "recordPrice": 12000000,
+  "recordTitle": "Blues In F",
   "recordDate": "2020-12-02",
-  "recordHouse": "Christie's",
+  "recordHouse": "Phillips",
   "appreciationRate": 42.5,
-  "totalAuctionRevenue": 187000000,
+  "totalAuctionRevenue": 38236734,
   "priceHistory": [
-    { "date": "2017-Q4", "avgPrice": 1140000, "medianPrice": 950000, "totalSales": 3, "highPrice": 1140000 },
-    { "date": "2018-Q1", "avgPrice": 485000, "medianPrice": 420000, "totalSales": 4, "highPrice": 680000 },
-    { "date": "2018-Q2", "avgPrice": 390000, "medianPrice": 350000, "totalSales": 5, "highPrice": 620000 },
-    { "date": "2018-Q4", "avgPrice": 510000, "medianPrice": 440000, "totalSales": 4, "highPrice": 780000 },
-    { "date": "2019-Q1", "avgPrice": 425000, "medianPrice": 380000, "totalSales": 3, "highPrice": 560000 },
-    { "date": "2019-Q2", "avgPrice": 620000, "medianPrice": 520000, "totalSales": 6, "highPrice": 1200000 },
-    { "date": "2019-Q4", "avgPrice": 550000, "medianPrice": 470000, "totalSales": 5, "highPrice": 890000 },
-    { "date": "2020-Q1", "avgPrice": 380000, "medianPrice": 320000, "totalSales": 2, "highPrice": 440000 },
-    { "date": "2020-Q4", "avgPrice": 5041265, "medianPrice": 3225000, "totalSales": 3, "highPrice": 6857530 },
-    { "date": "2021-Q1", "avgPrice": 710000, "medianPrice": 650000, "totalSales": 4, "highPrice": 980000 },
-    { "date": "2021-Q2", "avgPrice": 3480000, "medianPrice": 2200000, "totalSales": 3, "highPrice": 3480000 },
-    { "date": "2021-Q4", "avgPrice": 2900000, "medianPrice": 1800000, "totalSales": 4, "highPrice": 2900000 },
-    { "date": "2022-Q1", "avgPrice": 510488, "medianPrice": 420000, "totalSales": 6, "highPrice": 920000 },
-    { "date": "2022-Q2", "avgPrice": 620000, "medianPrice": 510000, "totalSales": 5, "highPrice": 1100000 },
-    { "date": "2022-Q4", "avgPrice": 580000, "medianPrice": 490000, "totalSales": 4, "highPrice": 850000 },
-    { "date": "2023-Q1", "avgPrice": 800642, "medianPrice": 680000, "totalSales": 7, "highPrice": 1450000 },
-    { "date": "2023-Q2", "avgPrice": 720000, "medianPrice": 600000, "totalSales": 5, "highPrice": 1280000 },
-    { "date": "2023-Q4", "avgPrice": 650000, "medianPrice": 540000, "totalSales": 6, "highPrice": 1100000 },
-    { "date": "2024-Q1", "avgPrice": 590000, "medianPrice": 480000, "totalSales": 4, "highPrice": 870000 },
-    { "date": "2024-Q2", "avgPrice": 680000, "medianPrice": 560000, "totalSales": 5, "highPrice": 1050000 },
-    { "date": "2024-Q4", "avgPrice": 475000, "medianPrice": 380000, "totalSales": 4, "highPrice": 650000 },
-    { "date": "2025-Q1", "avgPrice": 1763000, "medianPrice": 900000, "totalSales": 3, "highPrice": 1763000 },
-    { "date": "2025-Q2", "avgPrice": 900000, "medianPrice": 720000, "totalSales": 2, "highPrice": 900000 },
-    { "date": "2025-Q4", "avgPrice": 390625, "medianPrice": 131250, "totalSales": 4, "highPrice": 650000 },
-    { "date": "2026-Q1", "avgPrice": 101620, "medianPrice": 68750, "totalSales": 3, "highPrice": 243750 }
+    {
+      "date": "2017-Q4",
+      "avgPrice": 1140000,
+      "medianPrice": 1140000,
+      "totalSales": 1,
+      "highPrice": 1140000
+    },
+    {
+      "date": "2020-Q4",
+      "avgPrice": 5041265,
+      "medianPrice": 6857530,
+      "totalSales": 2,
+      "highPrice": 6857530
+    },
+    {
+      "date": "2021-Q2",
+      "avgPrice": 3480000,
+      "medianPrice": 3480000,
+      "totalSales": 1,
+      "highPrice": 3480000
+    },
+    {
+      "date": "2021-Q4",
+      "avgPrice": 2900000,
+      "medianPrice": 2900000,
+      "totalSales": 1,
+      "highPrice": 2900000
+    },
+    {
+      "date": "2024-Q4",
+      "avgPrice": 403125,
+      "medianPrice": 475000,
+      "totalSales": 2,
+      "highPrice": 475000
+    },
+    {
+      "date": "2025-Q1",
+      "avgPrice": 1763000,
+      "medianPrice": 1763000,
+      "totalSales": 1,
+      "highPrice": 1763000
+    },
+    {
+      "date": "2025-Q2",
+      "avgPrice": 900000,
+      "medianPrice": 900000,
+      "totalSales": 1,
+      "highPrice": 900000
+    },
+    {
+      "date": "2025-Q4",
+      "avgPrice": 286625,
+      "medianPrice": 131250,
+      "totalSales": 3,
+      "highPrice": 650000
+    },
+    {
+      "date": "2026-Q1",
+      "avgPrice": 101570,
+      "medianPrice": 68750,
+      "totalSales": 4,
+      "highPrice": 243750
+    }
   ],
   "houseDistribution": [
-    { "house": "Christie's", "count": 820, "totalValue": 72000000 },
-    { "house": "Sotheby's", "count": 680, "totalValue": 58000000 },
-    { "house": "Phillips", "count": 420, "totalValue": 35000000 },
-    { "house": "Rago", "count": 260, "totalValue": 22000000 }
+    {
+      "house": "Christie's",
+      "count": 8,
+      "totalValue": 9475030
+    },
+    {
+      "house": "Phillips",
+      "count": 27,
+      "totalValue": 17781704
+    },
+    {
+      "house": "Sotheby's",
+      "count": 5,
+      "totalValue": 10980000
+    }
   ]
 }
