@@ -16,7 +16,7 @@ export const sections: Section[] = [
     tagline: 'Products & Platforms',
     description: 'Where innovation meets imagination — crafting digital experiences that feel intuitive, alive, and deeply human.',
     items: [
-      { name: '3D Prints', tag: 'Fabrication', description: 'Digital-to-physical explorations through additive manufacturing.' },
+      { name: '3D Prints', tag: 'Fabrication', description: 'Digital-to-physical explorations through additive manufacturing.', href: '/digital/3d-prints' },
       { name: 'Soirée', tag: 'Art', description: 'Curated art discovery — filtered, refined, always surprising.' },
       { name: 'Pricing Simulator', tag: 'WIP', description: 'Demystifying the vintage and design market.', wip: true },
       { name: 'Crawler', tag: 'WIP', description: 'An intelligent agent tracking what matters to you.', wip: true },
