@@ -1,5 +1,5 @@
 {
-  "lastCrawl": "2026-03-27T02:40:16.934Z",
+  "lastCrawl": "2026-03-27T02:59:22.938Z",
   "artists": [
     {
       "slug": "george-condo",
@@ -8,6 +8,30 @@
     {
       "slug": "futura-2000",
       "displayName": "Futura 2000"
+    },
+    {
+      "slug": "kaws",
+      "displayName": "KAWS"
+    },
+    {
+      "slug": "george-nakashima",
+      "displayName": "George Nakashima"
+    },
+    {
+      "slug": "charles-eames",
+      "displayName": "Charles & Ray Eames"
+    },
+    {
+      "slug": "andy-warhol",
+      "displayName": "Andy Warhol"
+    },
+    {
+      "slug": "tom-sachs",
+      "displayName": "Tom Sachs"
+    },
+    {
+      "slug": "barry-mcgee",
+      "displayName": "Barry McGee"
     }
   ],
   "sources": [

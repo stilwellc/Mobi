@@ -86,6 +86,51 @@ const ARTISTS: ArtistConfig[] = [
     christies: 'futura',
     wright: 'futura-lenny-mcgurr',
   },
+  {
+    slug: 'kaws',
+    displayName: 'KAWS',
+    phillips: { id: '4271', slug: 'kaws' },
+    sothebys: 'kaws',
+    christies: 'kaws',
+    wright: 'kaws-brian-donnelly',
+  },
+  {
+    slug: 'george-nakashima',
+    displayName: 'George Nakashima',
+    phillips: { id: '379', slug: 'george-nakashima' },
+    sothebys: 'george-nakashima',
+    christies: 'george-nakashima',
+    wright: 'george-nakashima',
+  },
+  {
+    slug: 'charles-eames',
+    displayName: 'Charles & Ray Eames',
+    phillips: { id: '10514', slug: 'charles-eames-and-ray-eames' },
+    wright: 'charles-and-ray-eames',
+  },
+  {
+    slug: 'andy-warhol',
+    displayName: 'Andy Warhol',
+    phillips: { id: '10449', slug: 'andy-warhol' },
+    sothebys: 'andy-warhol',
+    christies: 'andy-warhol',
+    wright: 'andy-warhol',
+  },
+  {
+    slug: 'tom-sachs',
+    displayName: 'Tom Sachs',
+    phillips: { id: '7698', slug: 'tom-sachs' },
+    sothebys: 'tom-sachs',
+    christies: 'tom-sachs',
+    wright: 'tom-sachs',
+  },
+  {
+    slug: 'barry-mcgee',
+    displayName: 'Barry McGee',
+    phillips: { id: '3470', slug: 'barry-mcgee' },
+    christies: 'barry-mcgee',
+    wright: 'barry-mcgee',
+  },
 ];
 
 const DATA_DIR = path.join(process.cwd(), 'public', 'data', 'ray');
@@ -393,6 +438,7 @@ function parseChristiesJson(jsonStr: string, artistSlug: string): AuctionLot[] {
 
 // ── Wright/Rago Crawler ──
 // Wright uses Inertia.js (Laravel + Vue). All lot data is in the #app div's data-page attribute.
+// Basic artist pages use results_grouped; advanced/custom pages use results.primary_results.paginator.
 
 async function crawlWright(artist: ArtistConfig): Promise<AuctionLot[]> {
   if (!artist.wright) return [];
@@ -417,88 +463,153 @@ async function crawlWright(artist: ArtistConfig): Promise<AuctionLot[]> {
 
     const pageData = JSON.parse(dataPage);
     const resultsGrouped = pageData?.props?.results_grouped;
-    if (!resultsGrouped || !Array.isArray(resultsGrouped) || resultsGrouped.length === 0) {
-      console.log('  [Wright] No results_grouped in page data');
+
+    // Try basic page format (results_grouped)
+    if (resultsGrouped && Array.isArray(resultsGrouped) && resultsGrouped.length > 0) {
+      let totalItems = 0;
+      for (const group of resultsGrouped) {
+        const sessions = group.sessions || {};
+        for (const sessionKey of Object.keys(sessions)) {
+          const session = sessions[sessionKey];
+          const items = session.items || [];
+          for (const item of items) {
+            totalItems++;
+            lots.push(parseWrightBasicItem(item, session, sessionKey, artist.slug));
+          }
+        }
+      }
+      console.log(`  [Wright] Parsed ${totalItems} lots (basic page)`);
       return lots;
     }
 
-    let totalItems = 0;
-    for (const group of resultsGrouped) {
-      const sessions = group.sessions || {};
-      for (const sessionKey of Object.keys(sessions)) {
-        const session = sessions[sessionKey];
-        const items = session.items || [];
-        for (const item of items) {
-          totalItems++;
-          const title = item.name || 'Untitled';
-          const lotNum = item.lot_number || null;
-          const house = (item.house || 'Wright') as string;
-
-          const result = item.result || null;
-          const resultSansPremium = item.result_sans_premium || null;
-
-          const estStr = item.estimate_formatted || '';
-          let estimateLow: number | null = null;
-          let estimateHigh: number | null = null;
-          const estMatch = estStr.match(/([\d,]+)\s*[–\-]\s*([\d,]+)/);
-          if (estMatch) {
-            estimateLow = parseInt(estMatch[1].replace(/,/g, ''));
-            estimateHigh = parseInt(estMatch[2].replace(/,/g, ''));
-          }
-
-          const sessionDate = session.date || item.session?.date || '';
-          let saleDate = '';
-          if (sessionDate) {
-            try {
-              const d = new Date(sessionDate);
-              if (!isNaN(d.getTime())) {
-                saleDate = d.toISOString().split('T')[0];
-              }
-            } catch { /* skip */ }
-          }
-
-          const auctionInPast = saleDate ? new Date(saleDate) < new Date() : false;
-          const isSold = result != null && result > 0;
-          const imageUrl = item.primary_index_image || null;
-
-          let lotUrl = item.alias || '';
-          if (lotUrl.startsWith('//')) lotUrl = 'https:' + lotUrl;
-          else if (!lotUrl.startsWith('http') && lotUrl) lotUrl = 'https://www.wright20.com' + lotUrl;
-
-          const auctionHouse: AuctionHouse = house.toLowerCase().includes('rago') ? 'Rago' : 'Wright';
-          const dims = item.formatted_dimensions || null;
-
-          lots.push({
-            id: `wright-${item.fd_key || `${lotNum}-${sessionKey}`}`,
-            artist: artist.slug,
-            title,
-            year: null,
-            medium: null,
-            dimensions: dims ? dims.replace(/&times;/g, '×').replace(/&ndash;/g, '–') : null,
-            imageUrl,
-            auctionHouse,
-            saleName: session.title || '',
-            saleDate,
-            lotNumber: lotNum,
-            estimateLow,
-            estimateHigh,
-            currency: 'USD',
-            hammerPrice: resultSansPremium,
-            premiumPrice: result,
-            priceUsd: result,
-            status: isSold ? 'sold' : auctionInPast ? 'bought_in' : 'upcoming',
-            url: lotUrl,
-          });
-        }
+    // Try advanced/custom page format (paginator)
+    const paginator = pageData?.props?.results?.primary_results?.paginator?.items
+      || pageData?.props?.results?.primary_results?.sorted_items?.results;
+    if (paginator?.data && Array.isArray(paginator.data)) {
+      const items = paginator.data;
+      console.log(`  [Wright] Found ${items.length} lots on page 1 of ${paginator.last_page || 1} (${paginator.total || items.length} total, advanced page)`);
+      for (const item of items) {
+        lots.push(parseWrightAdvancedItem(item, artist.slug));
       }
+      return lots;
     }
 
-    console.log(`  [Wright] Parsed ${totalItems} lots`);
+    console.log('  [Wright] No lot data found in page data');
   } catch (err) {
     console.error('  [Wright] Error:', err);
   }
 
   return lots;
+}
+
+function parseWrightBasicItem(item: any, session: any, sessionKey: string, artistSlug: string): AuctionLot {
+  const title = item.name || 'Untitled';
+  const lotNum = item.lot_number || null;
+  const house = (item.house || 'Wright') as string;
+  const result = item.result || null;
+  const resultSansPremium = item.result_sans_premium || null;
+
+  const estStr = item.estimate_formatted || '';
+  let estimateLow: number | null = null;
+  let estimateHigh: number | null = null;
+  const estMatch = estStr.match(/([\d,]+)\s*[–\-]\s*([\d,]+)/);
+  if (estMatch) {
+    estimateLow = parseInt(estMatch[1].replace(/,/g, ''));
+    estimateHigh = parseInt(estMatch[2].replace(/,/g, ''));
+  }
+
+  const sessionDate = session.date || item.session?.date || '';
+  let saleDate = '';
+  if (sessionDate) {
+    try {
+      const d = new Date(sessionDate);
+      if (!isNaN(d.getTime())) saleDate = d.toISOString().split('T')[0];
+    } catch { /* skip */ }
+  }
+
+  const auctionInPast = saleDate ? new Date(saleDate) < new Date() : false;
+  const isSold = result != null && result > 0;
+  const imageUrl = item.primary_index_image || null;
+
+  let lotUrl = item.alias || '';
+  if (lotUrl.startsWith('//')) lotUrl = 'https:' + lotUrl;
+  else if (!lotUrl.startsWith('http') && lotUrl) lotUrl = 'https://www.wright20.com' + lotUrl;
+
+  const auctionHouse: AuctionHouse = house.toLowerCase().includes('rago') ? 'Rago' : 'Wright';
+  const dims = item.formatted_dimensions || null;
+
+  return {
+    id: `wright-${item.fd_key || `${lotNum}-${sessionKey}`}`,
+    artist: artistSlug,
+    title,
+    year: null,
+    medium: null,
+    dimensions: dims ? dims.replace(/&times;/g, '×').replace(/&ndash;/g, '–') : null,
+    imageUrl,
+    auctionHouse,
+    saleName: session.title || '',
+    saleDate,
+    lotNumber: lotNum,
+    estimateLow,
+    estimateHigh,
+    currency: 'USD',
+    hammerPrice: resultSansPremium,
+    premiumPrice: result,
+    priceUsd: result,
+    status: isSold ? 'sold' : auctionInPast ? 'bought_in' : 'upcoming',
+    url: lotUrl,
+  };
+}
+
+function parseWrightAdvancedItem(item: any, artistSlug: string): AuctionLot {
+  const title = item.name || 'Untitled';
+  const lotNum = item.lot_number || null;
+  const result = item.result_premium_amount || null;
+  const hammer = item.result_amount || null;
+  const isSold = item.item_status === 'Sold' || (result != null && result > 0);
+
+  let saleDate = '';
+  if (item.session?.start_date) {
+    saleDate = item.session.start_date.split('T')[0];
+  }
+
+  const auctionInPast = saleDate ? new Date(saleDate) < new Date() : false;
+
+  // Build image URL
+  let imageUrl: string | null = null;
+  if (item.primary_index_image?.filename) {
+    const img = item.primary_index_image;
+    imageUrl = `https://www.wright20.com/items/index/220/${img.seo_filename || img.filename}`;
+  }
+
+  let lotUrl = item.alias || '';
+  if (lotUrl.startsWith('//')) lotUrl = 'https:' + lotUrl;
+  else if (!lotUrl.startsWith('http') && lotUrl) lotUrl = 'https://www.wright20.com/' + lotUrl;
+
+  const houseName = item.session?.auction?.auction_house?.name || item.auction?.auction_house?.name || 'Wright';
+  const auctionHouse: AuctionHouse = houseName.toLowerCase().includes('rago') ? 'Rago' : 'Wright';
+
+  return {
+    id: `wright-${item.fd_key || item.id || `${lotNum}`}`,
+    artist: artistSlug,
+    title,
+    year: item.year_designed || null,
+    medium: item.material || null,
+    dimensions: null,
+    imageUrl,
+    auctionHouse,
+    saleName: item.session?.title || '',
+    saleDate,
+    lotNumber: lotNum,
+    estimateLow: item.estimate_low || null,
+    estimateHigh: item.estimate_high || null,
+    currency: 'USD',
+    hammerPrice: hammer,
+    premiumPrice: result,
+    priceUsd: result,
+    status: isSold ? 'sold' : auctionInPast ? 'bought_in' : 'upcoming',
+    url: lotUrl,
+  };
 }
 
 // ── Helpers ──

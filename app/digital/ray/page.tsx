@@ -14,6 +14,12 @@ const PriceChart = dynamic(() => import('./components/PriceChart'), { ssr: false
 const ARTISTS = [
   { slug: 'george-condo', label: 'George Condo' },
   { slug: 'futura-2000', label: 'Futura 2000' },
+  { slug: 'kaws', label: 'KAWS' },
+  { slug: 'george-nakashima', label: 'George Nakashima' },
+  { slug: 'charles-eames', label: 'Charles & Ray Eames' },
+  { slug: 'andy-warhol', label: 'Andy Warhol' },
+  { slug: 'tom-sachs', label: 'Tom Sachs' },
+  { slug: 'barry-mcgee', label: 'Barry McGee' },
 ];
 
 export default function RayPage() {
@@ -130,7 +136,7 @@ export default function RayPage() {
           Christie&apos;s, and Wright/Rago with daily automated data collection.
         </p>
 
-        <div style={{ display: 'flex', gap: 8, marginTop: 20 }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 20 }}>
           {ARTISTS.map(a => (
             <button
               key={a.slug}
