@@ -84,7 +84,7 @@ const ARTISTS: ArtistConfig[] = [
     displayName: 'Futura 2000',
     phillips: { id: '4001', slug: 'futura-2000' },
     christies: 'futura',
-    // No Sotheby's or Wright artist page for Futura
+    wright: 'futura-lenny-mcgurr',
   },
 ];
 
