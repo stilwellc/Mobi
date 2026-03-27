@@ -1,10 +1,20 @@
 {
-  "lastCrawl": "2026-03-26T21:57:10.879Z",
+  "lastCrawl": "2026-03-27T02:34:13.467Z",
+  "artists": [
+    {
+      "slug": "george-condo",
+      "displayName": "George Condo"
+    },
+    {
+      "slug": "futura-2000",
+      "displayName": "Futura 2000"
+    }
+  ],
   "sources": [
     "Phillips",
     "Sotheby's",
     "Christie's",
     "Wright/Rago"
   ],
-  "version": 1
+  "version": 2
 }

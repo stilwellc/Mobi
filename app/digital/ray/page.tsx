@@ -11,11 +11,17 @@ import { AuctionLot, MarketStats } from './types';
 
 const PriceChart = dynamic(() => import('./components/PriceChart'), { ssr: false });
 
+const ARTISTS = [
+  { slug: 'george-condo', label: 'George Condo' },
+  { slug: 'futura-2000', label: 'Futura 2000' },
+];
+
 export default function RayPage() {
-  const [stats, setStats] = useState<MarketStats | null>(null);
-  const [lots, setLots] = useState<AuctionLot[]>([]);
+  const [statsByArtist, setStatsByArtist] = useState<Record<string, MarketStats>>({});
+  const [allLots, setAllLots] = useState<AuctionLot[]>([]);
   const [loading, setLoading] = useState(true);
   const [lastCrawl, setLastCrawl] = useState('');
+  const [selectedArtist, setSelectedArtist] = useState('george-condo');
 
   useEffect(() => {
     Promise.all([
@@ -23,13 +29,20 @@ export default function RayPage() {
       fetch('/data/ray/lots.json').then(r => r.json()),
       fetch('/data/ray/meta.json').then(r => r.json()),
     ]).then(([statsData, lotsData, metaData]) => {
-      setStats(statsData);
-      setLots(lotsData);
+      // Handle both old format (single MarketStats) and new format (keyed by artist)
+      if (statsData.lastUpdated) {
+        setStatsByArtist({ 'george-condo': statsData });
+      } else {
+        setStatsByArtist(statsData);
+      }
+      setAllLots(lotsData);
       setLastCrawl(metaData.lastCrawl);
     }).catch(console.error)
       .finally(() => setLoading(false));
   }, []);
 
+  const stats = statsByArtist[selectedArtist] || null;
+  const lots = allLots.filter(l => !l.artist || l.artist === selectedArtist);
   const upcoming = lots.filter(l => l.status === 'upcoming');
   const sold = lots.filter(l => l.status === 'sold');
 
@@ -113,9 +126,35 @@ export default function RayPage() {
           fontWeight: 400,
           maxWidth: 560,
         }}>
-          George Condo auction intelligence — tracking lots across Phillips, Sotheby&apos;s,
+          Auction intelligence — tracking lots across Phillips, Sotheby&apos;s,
           Christie&apos;s, and Wright/Rago with daily automated data collection.
         </p>
+
+        <div style={{ display: 'flex', gap: 8, marginTop: 20 }}>
+          {ARTISTS.map(a => (
+            <button
+              key={a.slug}
+              onClick={() => setSelectedArtist(a.slug)}
+              style={{
+                padding: '8px 20px',
+                fontSize: 13,
+                fontFamily: "'Syne', sans-serif",
+                fontWeight: 500,
+                letterSpacing: '0.02em',
+                border: '1px solid',
+                borderColor: selectedArtist === a.slug ? 'var(--color-accent-blue)' : 'var(--color-border)',
+                borderRadius: 24,
+                background: selectedArtist === a.slug ? 'var(--color-accent-blue)' : 'transparent',
+                color: selectedArtist === a.slug ? '#060606' : 'var(--color-text-muted)',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              {a.label}
+            </button>
+          ))}
+        </div>
+
         {lastCrawl && (
           <span style={{
             display: 'inline-block',

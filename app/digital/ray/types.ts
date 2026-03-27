@@ -4,6 +4,7 @@ export type Currency = 'USD' | 'GBP' | 'EUR' | 'HKD' | 'CNY';
 
 export interface AuctionLot {
   id: string;
+  artist: string;
   title: string;
   year: string | null;
   medium: string | null;

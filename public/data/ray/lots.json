@@ -1,6 +1,7 @@
 [
   {
     "id": "sothebys-george-condo-qiao-zhikang-duo-the-boy-with-white",
+    "artist": "george-condo",
     "title": "The Boy With White",
     "year": null,
     "medium": null,
@@ -21,6 +22,7 @@
   },
   {
     "id": "sothebys-infiltration",
+    "artist": "george-condo",
     "title": "Infiltration",
     "year": null,
     "medium": null,
@@ -41,6 +43,7 @@
   },
   {
     "id": "phillips-NY010126-124",
+    "artist": "george-condo",
     "title": "Untitled",
     "year": null,
     "medium": null,
@@ -61,6 +64,7 @@
   },
   {
     "id": "phillips-NY010226-36",
+    "artist": "george-condo",
     "title": "Untitled",
     "year": null,
     "medium": null,
@@ -97,7 +101,8 @@
     "premiumPrice": 243750,
     "priceUsd": 243750,
     "status": "sold",
-    "url": "https://www.christies.com/en/results?query=george+condo"
+    "url": "https://www.christies.com/en/results?query=george+condo",
+    "artist": "george-condo"
   },
   {
     "id": "christies-feb26-standing-female",
@@ -117,7 +122,8 @@
     "premiumPrice": 52500,
     "priceUsd": 52500,
     "status": "sold",
-    "url": "https://www.christies.com/en/results?query=george+condo"
+    "url": "https://www.christies.com/en/results?query=george+condo",
+    "artist": "george-condo"
   },
   {
     "id": "christies-feb26-edwardian-man",
@@ -137,7 +143,8 @@
     "premiumPrice": 68750,
     "priceUsd": 68750,
     "status": "sold",
-    "url": "https://www.christies.com/en/results?query=george+condo"
+    "url": "https://www.christies.com/en/results?query=george+condo",
+    "artist": "george-condo"
   },
   {
     "id": "phillips-feb26-untitled",
@@ -157,10 +164,12 @@
     "premiumPrice": 41280,
     "priceUsd": 41280,
     "status": "sold",
-    "url": "https://www.phillips.com/artist/10606/george-condo"
+    "url": "https://www.phillips.com/artist/10606/george-condo",
+    "artist": "george-condo"
   },
   {
     "id": "wright-389382",
+    "artist": "george-condo",
     "title": "Orange Couple",
     "year": null,
     "medium": null,
@@ -181,6 +190,7 @@
   },
   {
     "id": "phillips-HK030225-65",
+    "artist": "george-condo",
     "title": "Drawing Paintings",
     "year": "2011",
     "medium": null,
@@ -201,6 +211,7 @@
   },
   {
     "id": "phillips-NY011125-329",
+    "artist": "george-condo",
     "title": "Untitled",
     "year": null,
     "medium": null,
@@ -221,6 +232,7 @@
   },
   {
     "id": "phillips-NY011125-366",
+    "artist": "george-condo",
     "title": "Untitled",
     "year": null,
     "medium": null,
@@ -241,6 +253,7 @@
   },
   {
     "id": "phillips-NY011125-370",
+    "artist": "george-condo",
     "title": "ARP",
     "year": null,
     "medium": null,
@@ -261,6 +274,7 @@
   },
   {
     "id": "phillips-NY011125-371",
+    "artist": "george-condo",
     "title": "The Queen",
     "year": null,
     "medium": null,
@@ -281,6 +295,7 @@
   },
   {
     "id": "phillips-NY011125-372",
+    "artist": "george-condo",
     "title": "The Captain's Wife",
     "year": null,
     "medium": null,
@@ -300,7 +315,29 @@
     "url": "https://www.phillips.com/detail/george-condo/226287"
   },
   {
+    "id": "christies-6559860",
+    "artist": "futura-2000",
+    "title": "General Reflection",
+    "year": null,
+    "medium": null,
+    "dimensions": null,
+    "imageUrl": "https://www.christies.com/img/lotimages/2025/NYR/2025_NYR_23486_0799_000(futura_2000_general_reflection041059).jpg?mode=max",
+    "auctionHouse": "Christie's",
+    "saleName": "New York Sale 23486",
+    "saleDate": "2025-11-20",
+    "lotNumber": 799,
+    "estimateLow": 80000,
+    "estimateHigh": 120000,
+    "currency": "USD",
+    "hammerPrice": null,
+    "premiumPrice": 82550,
+    "priceUsd": 82550,
+    "status": "sold",
+    "url": "https://www.christies.com/en/lot/lot-6559860"
+  },
+  {
     "id": "christies-6559567",
+    "artist": "george-condo",
     "title": "Abstract Conversation",
     "year": null,
     "medium": null,
@@ -337,7 +374,8 @@
     "premiumPrice": 131250,
     "priceUsd": 131250,
     "status": "sold",
-    "url": "https://www.christies.com/en/results?query=george+condo"
+    "url": "https://www.christies.com/en/results?query=george+condo",
+    "artist": "george-condo"
   },
   {
     "id": "christies-nov25-abstract-conversation",
@@ -357,10 +395,12 @@
     "premiumPrice": 650000,
     "priceUsd": 650000,
     "status": "sold",
-    "url": "https://www.christies.com/en/results?query=george+condo"
+    "url": "https://www.christies.com/en/results?query=george+condo",
+    "artist": "george-condo"
   },
   {
     "id": "phillips-NY030525-401",
+    "artist": "george-condo",
     "title": "Invocations of Miles",
     "year": "2000",
     "medium": null,
@@ -381,6 +421,7 @@
   },
   {
     "id": "phillips-UK010625-10",
+    "artist": "george-condo",
     "title": "Portrait Composition",
     "year": null,
     "medium": null,
@@ -401,6 +442,7 @@
   },
   {
     "id": "phillips-UK010625-7",
+    "artist": "george-condo",
     "title": "Untitled no. 3",
     "year": null,
     "medium": null,
@@ -437,10 +479,12 @@
     "premiumPrice": 61920,
     "priceUsd": 78624,
     "status": "sold",
-    "url": "https://www.phillips.com/artist/10606/george-condo"
+    "url": "https://www.phillips.com/artist/10606/george-condo",
+    "artist": "george-condo"
   },
   {
     "id": "christies-6553063",
+    "artist": "george-condo",
     "title": "The Banker's Wife",
     "year": null,
     "medium": null,
@@ -461,6 +505,7 @@
   },
   {
     "id": "christies-6549112",
+    "artist": "george-condo",
     "title": "The Showgirl",
     "year": null,
     "medium": null,
@@ -481,6 +526,7 @@
   },
   {
     "id": "christies-6549266",
+    "artist": "george-condo",
     "title": "Reclining Blue Form",
     "year": null,
     "medium": null,
@@ -501,6 +547,7 @@
   },
   {
     "id": "phillips-NY011425-104",
+    "artist": "george-condo",
     "title": "Figures at a Bar",
     "year": null,
     "medium": null,
@@ -521,6 +568,7 @@
   },
   {
     "id": "phillips-NY011425-91",
+    "artist": "george-condo",
     "title": "Untitled",
     "year": null,
     "medium": null,
@@ -541,6 +589,7 @@
   },
   {
     "id": "phillips-NY010325-151",
+    "artist": "george-condo",
     "title": "Untitled",
     "year": null,
     "medium": null,
@@ -561,6 +610,7 @@
   },
   {
     "id": "phillips-NY011225-21",
+    "artist": "george-condo",
     "title": "Untitled",
     "year": null,
     "medium": null,
@@ -580,7 +630,29 @@
     "url": "https://www.phillips.com/detail/george-condo/219423"
   },
   {
+    "id": "christies-6543305",
+    "artist": "futura-2000",
+    "title": "Futura Meets Kano",
+    "year": null,
+    "medium": null,
+    "dimensions": null,
+    "imageUrl": "https://www.christies.com/img/lotimages/2025/CKS/2025_CKS_23332_0032_000(futura_2000_futura_meets_kano074813).jpg?mode=max",
+    "auctionHouse": "Christie's",
+    "saleName": "London Sale 23332",
+    "saleDate": "2025-06-26",
+    "lotNumber": 32,
+    "estimateLow": 50000,
+    "estimateHigh": 70000,
+    "currency": "GBP",
+    "hammerPrice": null,
+    "premiumPrice": 81900,
+    "priceUsd": 104013,
+    "status": "sold",
+    "url": "https://www.christies.com/en/lot/lot-6543305"
+  },
+  {
     "id": "phillips-NY030325-229",
+    "artist": "george-condo",
     "title": "Untitled",
     "year": "1989",
     "medium": null,
@@ -601,6 +673,7 @@
   },
   {
     "id": "phillips-NY030325-230",
+    "artist": "george-condo",
     "title": "Untitled; and Untitled",
     "year": "1989",
     "medium": null,
@@ -621,6 +694,7 @@
   },
   {
     "id": "phillips-NY010225-30",
+    "artist": "george-condo",
     "title": "Untitled",
     "year": null,
     "medium": null,
@@ -641,6 +715,7 @@
   },
   {
     "id": "phillips-HK010225-60",
+    "artist": "george-condo",
     "title": "Cartoon Study",
     "year": null,
     "medium": null,
@@ -661,6 +736,7 @@
   },
   {
     "id": "phillips-HK010225-9",
+    "artist": "george-condo",
     "title": "Blues In F",
     "year": null,
     "medium": null,
@@ -697,10 +773,12 @@
     "premiumPrice": 900000,
     "priceUsd": 900000,
     "status": "sold",
-    "url": "https://www.sothebys.com/en/artists/george-condo"
+    "url": "https://www.sothebys.com/en/artists/george-condo",
+    "artist": "george-condo"
   },
   {
     "id": "phillips-NY010525-337",
+    "artist": "george-condo",
     "title": "Untitled",
     "year": null,
     "medium": null,
@@ -721,6 +799,7 @@
   },
   {
     "id": "phillips-NY010525-338",
+    "artist": "george-condo",
     "title": "Grace",
     "year": null,
     "medium": null,
@@ -741,6 +820,7 @@
   },
   {
     "id": "phillips-NY010525-403",
+    "artist": "george-condo",
     "title": "Untitled",
     "year": null,
     "medium": null,
@@ -761,6 +841,7 @@
   },
   {
     "id": "christies-6534771",
+    "artist": "george-condo",
     "title": "Pink and Yellow Sweep",
     "year": null,
     "medium": null,
@@ -781,6 +862,7 @@
   },
   {
     "id": "phillips-NY010825-12",
+    "artist": "george-condo",
     "title": "Social Media",
     "year": null,
     "medium": null,
@@ -801,6 +883,7 @@
   },
   {
     "id": "wright-293329",
+    "artist": "george-condo",
     "title": "Full Sweep",
     "year": null,
     "medium": null,
@@ -837,10 +920,33 @@
     "premiumPrice": 13760000,
     "priceUsd": 1763000,
     "status": "sold",
-    "url": "https://www.phillips.com/artist/10606/george-condo"
+    "url": "https://www.phillips.com/artist/10606/george-condo",
+    "artist": "george-condo"
+  },
+  {
+    "id": "christies-23978.31",
+    "artist": "futura-2000",
+    "title": "Sushi",
+    "year": null,
+    "medium": null,
+    "dimensions": null,
+    "imageUrl": "https://www.christies.com/img/lotimages/2025/NYR/2025_NYR_23978_0031_000(futura_2000_sushi095124).jpg?mode=max",
+    "auctionHouse": "Christie's",
+    "saleName": "New York Sale 23978",
+    "saleDate": "2025-02-14",
+    "lotNumber": 31,
+    "estimateLow": 35000,
+    "estimateHigh": 45000,
+    "currency": "USD",
+    "hammerPrice": null,
+    "premiumPrice": null,
+    "priceUsd": null,
+    "status": "bought_in",
+    "url": "https://onlineonly.christies.com/sso?ObjectID=23978.31&LotNumber=31"
   },
   {
     "id": "christies-6508425",
+    "artist": "george-condo",
     "title": "The Executives and Their Wives",
     "year": null,
     "medium": null,
@@ -877,10 +983,12 @@
     "premiumPrice": 475000,
     "priceUsd": 475000,
     "status": "sold",
-    "url": "https://www.sothebys.com/en/artists/george-condo"
+    "url": "https://www.sothebys.com/en/artists/george-condo",
+    "artist": "george-condo"
   },
   {
     "id": "wright-273942",
+    "artist": "george-condo",
     "title": "Untitled (seven works)",
     "year": null,
     "medium": null,
@@ -901,6 +1009,7 @@
   },
   {
     "id": "wright-268090",
+    "artist": "george-condo",
     "title": "Plate 13, Compression IV (from the Drawings Paintings portfolio)",
     "year": null,
     "medium": null,
@@ -937,10 +1046,12 @@
     "premiumPrice": 331250,
     "priceUsd": 331250,
     "status": "sold",
-    "url": "https://www.christies.com/en/results?query=george+condo"
+    "url": "https://www.christies.com/en/results?query=george+condo",
+    "artist": "george-condo"
   },
   {
     "id": "christies-6497834",
+    "artist": "george-condo",
     "title": "Prescription for the Clinically Normal",
     "year": null,
     "medium": null,
@@ -961,6 +1072,7 @@
   },
   {
     "id": "sothebys-conversations",
+    "artist": "george-condo",
     "title": "Conversations",
     "year": null,
     "medium": null,
@@ -981,6 +1093,7 @@
   },
   {
     "id": "christies-6486276",
+    "artist": "george-condo",
     "title": "Transmutation 2",
     "year": null,
     "medium": null,
@@ -1001,6 +1114,7 @@
   },
   {
     "id": "christies-6482323",
+    "artist": "george-condo",
     "title": "Shimmering Forms",
     "year": null,
     "medium": null,
@@ -1020,7 +1134,50 @@
     "url": "https://www.christies.com/en/lot/lot-6482323"
   },
   {
+    "id": "christies-20088.56",
+    "artist": "futura-2000",
+    "title": "Sans titre",
+    "year": null,
+    "medium": null,
+    "dimensions": null,
+    "imageUrl": "https://www.christies.com/img/lotimages/2024/PAR/2024_PAR_20088_0056_000(futura_2000_sans_titre062426).jpg?mode=max",
+    "auctionHouse": "Christie's",
+    "saleName": "Paris Sale 20088",
+    "saleDate": "2024-04-18",
+    "lotNumber": 56,
+    "estimateLow": 10000,
+    "estimateHigh": 15000,
+    "currency": "EUR",
+    "hammerPrice": null,
+    "premiumPrice": 7560,
+    "priceUsd": 8165,
+    "status": "sold",
+    "url": "https://onlineonly.christies.com/sso?ObjectID=20088.56&LotNumber=56"
+  },
+  {
+    "id": "christies-22821.2",
+    "artist": "futura-2000",
+    "title": "Indian Summer",
+    "year": null,
+    "medium": null,
+    "dimensions": null,
+    "imageUrl": "https://www.christies.com/img/lotimages/2024/AMS/2024_AMS_22821_0002_000(futura_2000_indian_summer071404).jpg?mode=max",
+    "auctionHouse": "Christie's",
+    "saleName": "Amsterdam Sale 22821",
+    "saleDate": "2024-04-09",
+    "lotNumber": 2,
+    "estimateLow": 40000,
+    "estimateHigh": 60000,
+    "currency": "EUR",
+    "hammerPrice": null,
+    "premiumPrice": 107100,
+    "priceUsd": 115668,
+    "status": "sold",
+    "url": "https://onlineonly.christies.com/sso?ObjectID=22821.2&LotNumber=2"
+  },
+  {
     "id": "wright-248390",
+    "artist": "george-condo",
     "title": "Blue Expanding Figures (from the 2006: Trance/Borders portfolio)",
     "year": null,
     "medium": null,
@@ -1041,6 +1198,7 @@
   },
   {
     "id": "wright-226425",
+    "artist": "george-condo",
     "title": "Drawing Paintings",
     "year": null,
     "medium": null,
@@ -1061,6 +1219,7 @@
   },
   {
     "id": "christies-6459059",
+    "artist": "george-condo",
     "title": "The Stockbroker",
     "year": null,
     "medium": null,
@@ -1081,6 +1240,7 @@
   },
   {
     "id": "christies-6459162",
+    "artist": "george-condo",
     "title": "Red Screaming Woman",
     "year": null,
     "medium": null,
@@ -1101,6 +1261,7 @@
   },
   {
     "id": "christies-6452997",
+    "artist": "george-condo",
     "title": "The Psychoanalytic Puppeteer Losing His Mind",
     "year": null,
     "medium": null,
@@ -1121,6 +1282,7 @@
   },
   {
     "id": "christies-6452779",
+    "artist": "george-condo",
     "title": "Monumental Abstract Self-Portrait",
     "year": null,
     "medium": null,
@@ -1141,6 +1303,7 @@
   },
   {
     "id": "christies-6447221",
+    "artist": "george-condo",
     "title": "In the Brothel",
     "year": null,
     "medium": null,
@@ -1161,6 +1324,7 @@
   },
   {
     "id": "sothebys-untitled",
+    "artist": "george-condo",
     "title": "Untitled",
     "year": null,
     "medium": null,
@@ -1181,6 +1345,7 @@
   },
   {
     "id": "sothebys-blue-monumental-head",
+    "artist": "george-condo",
     "title": "Blue Monumental Head",
     "year": null,
     "medium": null,
@@ -1201,6 +1366,7 @@
   },
   {
     "id": "sothebys-george-condo-qiao-zhi-kang-duo-inside-the-west",
+    "artist": "george-condo",
     "title": "Inside The West",
     "year": null,
     "medium": null,
@@ -1221,6 +1387,7 @@
   },
   {
     "id": "wright-226395",
+    "artist": "george-condo",
     "title": "More Sketches of Spain - for Miles Davis #9",
     "year": null,
     "medium": null,
@@ -1240,7 +1407,29 @@
     "url": "https://www.ragoarts.com/auctions/2023/06/prints-multiples/427"
   },
   {
+    "id": "phillips-NY010423-153",
+    "artist": "futura-2000",
+    "title": "Self-Portrait of Picasso 1969",
+    "year": null,
+    "medium": null,
+    "dimensions": null,
+    "imageUrl": "https://assets.phillips.com/image/upload/t_Website_LotDetailMainImage/v1682011701//auctions/NY010423/184722_001.jpg",
+    "auctionHouse": "Phillips",
+    "saleName": "",
+    "saleDate": "2023-05-16",
+    "lotNumber": 153,
+    "estimateLow": 30000,
+    "estimateHigh": 50000,
+    "currency": "USD",
+    "hammerPrice": null,
+    "premiumPrice": 114300,
+    "priceUsd": 114300,
+    "status": "sold",
+    "url": "https://www.phillips.com/detail/futura-2000/184722"
+  },
+  {
     "id": "christies-6425052",
+    "artist": "george-condo",
     "title": "Untitled (Painting Drawing 6)",
     "year": null,
     "medium": null,
@@ -1261,6 +1450,7 @@
   },
   {
     "id": "christies-6425058",
+    "artist": "george-condo",
     "title": "Confrontation",
     "year": null,
     "medium": null,
@@ -1280,7 +1470,29 @@
     "url": "https://www.christies.com/en/lot/lot-6425058"
   },
   {
+    "id": "christies-6425075",
+    "artist": "futura-2000",
+    "title": "Codename Aerosol",
+    "year": null,
+    "medium": null,
+    "dimensions": null,
+    "imageUrl": "https://www.christies.com/img/lotimages/2023/NYR/2023_NYR_22044_0268_000(futura_2000_codename_aerosol030538).jpg?mode=max",
+    "auctionHouse": "Christie's",
+    "saleName": "New York Sale 22044",
+    "saleDate": "2023-05-12",
+    "lotNumber": 268,
+    "estimateLow": 50000,
+    "estimateHigh": 70000,
+    "currency": "USD",
+    "hammerPrice": null,
+    "premiumPrice": 94500,
+    "priceUsd": 94500,
+    "status": "sold",
+    "url": "https://www.christies.com/en/lot/lot-6425075"
+  },
+  {
     "id": "christies-6424291",
+    "artist": "george-condo",
     "title": "Portrait Composition in Blue and Grey",
     "year": null,
     "medium": null,
@@ -1300,7 +1512,29 @@
     "url": "https://www.christies.com/en/lot/lot-6424291"
   },
   {
+    "id": "christies-21694.41",
+    "artist": "futura-2000",
+    "title": "Sans titre",
+    "year": null,
+    "medium": null,
+    "dimensions": null,
+    "imageUrl": "https://www.christies.com/img/lotimages/2023/PAR/2023_PAR_21694_0041_000(futura_2000_sans_titre124517).jpg?mode=max",
+    "auctionHouse": "Christie's",
+    "saleName": "Paris Sale 21694",
+    "saleDate": "2023-04-25",
+    "lotNumber": 41,
+    "estimateLow": 15000,
+    "estimateHigh": 20000,
+    "currency": "EUR",
+    "hammerPrice": null,
+    "premiumPrice": null,
+    "priceUsd": null,
+    "status": "bought_in",
+    "url": "https://onlineonly.christies.com/sso?ObjectID=21694.41&LotNumber=41"
+  },
+  {
     "id": "christies-6414693",
+    "artist": "george-condo",
     "title": "Easter Sunday",
     "year": null,
     "medium": null,
@@ -1321,6 +1555,7 @@
   },
   {
     "id": "wright-216265",
+    "artist": "george-condo",
     "title": "Renaissance Musicians",
     "year": null,
     "medium": null,
@@ -1340,7 +1575,50 @@
     "url": "https://www.ragoarts.com/auctions/2023/02/prints-multiples/289"
   },
   {
+    "id": "christies-6398190",
+    "artist": "futura-2000",
+    "title": "Untitled",
+    "year": null,
+    "medium": null,
+    "dimensions": null,
+    "imageUrl": "https://www.christies.com/img/lotimages/2022/NYR/2022_NYR_20985_0401_000(futura_2000_untitled014944).jpg?mode=max",
+    "auctionHouse": "Christie's",
+    "saleName": "New York Sale 20985",
+    "saleDate": "2022-11-18",
+    "lotNumber": 401,
+    "estimateLow": 70000,
+    "estimateHigh": 100000,
+    "currency": "USD",
+    "hammerPrice": null,
+    "premiumPrice": 302400,
+    "priceUsd": 302400,
+    "status": "sold",
+    "url": "https://www.christies.com/en/lot/lot-6398190"
+  },
+  {
+    "id": "christies-6385789",
+    "artist": "futura-2000",
+    "title": "Erector vs Lego",
+    "year": null,
+    "medium": null,
+    "dimensions": null,
+    "imageUrl": "https://www.christies.com/img/lotimages/2022/PAR/2022_PAR_21686_0033_000(futura_2000_erector_vs_lego104852).jpg?mode=max",
+    "auctionHouse": "Christie's",
+    "saleName": "Paris Sale 21686",
+    "saleDate": "2022-09-21",
+    "lotNumber": 33,
+    "estimateLow": 40000,
+    "estimateHigh": 60000,
+    "currency": "EUR",
+    "hammerPrice": null,
+    "premiumPrice": 55440,
+    "priceUsd": 59875,
+    "status": "sold",
+    "url": "https://www.christies.com/en/lot/lot-6385789"
+  },
+  {
     "id": "wright-184875",
+    "artist": "george-condo",
     "title": "Plate 13, Compression IV (from Drawing Paintings)",
     "year": null,
     "medium": null,
@@ -1360,7 +1638,29 @@
     "url": "https://www.lamodern.com/auctions/2022/07/art-design-online/268"
   },
   {
+    "id": "phillips-UK010522-138",
+    "artist": "futura-2000",
+    "title": "Broken Clock",
+    "year": null,
+    "medium": null,
+    "dimensions": null,
+    "imageUrl": "https://assets.phillips.com/image/upload/t_Website_LotDetailMainImage/v1655228490//auctions/UK010522/172223_001.jpg",
+    "auctionHouse": "Phillips",
+    "saleName": "",
+    "saleDate": "2022-06-29",
+    "lotNumber": 138,
+    "estimateLow": 15000,
+    "estimateHigh": 25000,
+    "currency": "GBP",
+    "hammerPrice": null,
+    "premiumPrice": 15120,
+    "priceUsd": 19202,
+    "status": "sold",
+    "url": "https://www.phillips.com/detail/futura-2000/172223"
+  },
+  {
     "id": "christies-6380430",
+    "artist": "george-condo",
     "title": "Linear Composition",
     "year": null,
     "medium": null,
@@ -1381,6 +1681,7 @@
   },
   {
     "id": "wright-179847",
+    "artist": "george-condo",
     "title": "Plate 17, Purple Compression (from the Drawing Paintings portfolio)",
     "year": null,
     "medium": null,
@@ -1401,6 +1702,7 @@
   },
   {
     "id": "sothebys-green-head-composition",
+    "artist": "george-condo",
     "title": "Green Head Composition",
     "year": null,
     "medium": null,
@@ -1421,6 +1723,7 @@
   },
   {
     "id": "christies-6369475",
+    "artist": "george-condo",
     "title": "Tumbling Forms",
     "year": null,
     "medium": null,
@@ -1441,6 +1744,7 @@
   },
   {
     "id": "wright-181932",
+    "artist": "george-condo",
     "title": "Plate 17, Purple Compression (from Drawing Paintings)",
     "year": null,
     "medium": null,
@@ -1461,6 +1765,7 @@
   },
   {
     "id": "wright-181721",
+    "artist": "george-condo",
     "title": "More Sketches of Spain – for Miles Davis #11",
     "year": null,
     "medium": null,
@@ -1481,6 +1786,7 @@
   },
   {
     "id": "wright-180436",
+    "artist": "george-condo",
     "title": "Comic Relief",
     "year": null,
     "medium": null,
@@ -1501,6 +1807,7 @@
   },
   {
     "id": "wright-180435",
+    "artist": "george-condo",
     "title": "Full Sweep",
     "year": null,
     "medium": null,
@@ -1521,6 +1828,7 @@
   },
   {
     "id": "christies-6348912",
+    "artist": "george-condo",
     "title": "Blue Expanding Orgy",
     "year": null,
     "medium": null,
@@ -1541,6 +1849,7 @@
   },
   {
     "id": "christies-6348910",
+    "artist": "george-condo",
     "title": "Rodrigo and His Muse",
     "year": null,
     "medium": null,
@@ -1561,6 +1870,7 @@
   },
   {
     "id": "christies-6348848",
+    "artist": "george-condo",
     "title": "Staring into Space",
     "year": null,
     "medium": null,
@@ -1581,6 +1891,7 @@
   },
   {
     "id": "christies-6348890",
+    "artist": "george-condo",
     "title": "Red and Black Diagonal Portrait",
     "year": null,
     "medium": null,
@@ -1617,10 +1928,12 @@
     "premiumPrice": 2900000,
     "priceUsd": 2900000,
     "status": "sold",
-    "url": "https://www.sothebys.com/en/artists/george-condo"
+    "url": "https://www.sothebys.com/en/artists/george-condo",
+    "artist": "george-condo"
   },
   {
     "id": "christies-6342938",
+    "artist": "george-condo",
     "title": "Rodrigo at his Wedding",
     "year": null,
     "medium": null,
@@ -1641,6 +1954,7 @@
   },
   {
     "id": "christies-6343227",
+    "artist": "george-condo",
     "title": "Linear Connection",
     "year": null,
     "medium": null,
@@ -1661,6 +1975,7 @@
   },
   {
     "id": "christies-6339105",
+    "artist": "george-condo",
     "title": "Heads and Toes",
     "year": null,
     "medium": null,
@@ -1681,6 +1996,7 @@
   },
   {
     "id": "christies-20909.3",
+    "artist": "george-condo",
     "title": "Nun and Priest",
     "year": null,
     "medium": null,
@@ -1700,7 +2016,29 @@
     "url": "https://onlineonly.christies.com/sso?ObjectID=20909.3&LotNumber=3"
   },
   {
+    "id": "christies-19886.6",
+    "artist": "futura-2000",
+    "title": "Untitled",
+    "year": null,
+    "medium": null,
+    "dimensions": null,
+    "imageUrl": "https://www.christies.com/img/lotimages/2021/NYR/2021_NYR_19886_0006_000(futura_2000_untitled101411).jpg?mode=max",
+    "auctionHouse": "Christie's",
+    "saleName": "New York Sale 19886",
+    "saleDate": "2021-07-09",
+    "lotNumber": 6,
+    "estimateLow": 60000,
+    "estimateHigh": 80000,
+    "currency": "USD",
+    "hammerPrice": null,
+    "premiumPrice": 150000,
+    "priceUsd": 150000,
+    "status": "sold",
+    "url": "https://onlineonly.christies.com/sso?ObjectID=19886.6&LotNumber=6"
+  },
+  {
     "id": "christies-6328197",
+    "artist": "george-condo",
     "title": "Untitled",
     "year": null,
     "medium": null,
@@ -1721,6 +2059,7 @@
   },
   {
     "id": "sothebys-reclining-blue-form-2",
+    "artist": "george-condo",
     "title": "Reclining Blue Form 2",
     "year": null,
     "medium": null,
@@ -1741,6 +2080,7 @@
   },
   {
     "id": "sothebys-lion-man",
+    "artist": "george-condo",
     "title": "Lion Man",
     "year": null,
     "medium": null,
@@ -1761,6 +2101,7 @@
   },
   {
     "id": "christies-6321216",
+    "artist": "george-condo",
     "title": "Multicolored Portrait",
     "year": null,
     "medium": null,
@@ -1781,6 +2122,7 @@
   },
   {
     "id": "christies-6321171",
+    "artist": "george-condo",
     "title": "Blue and White Improvisation",
     "year": null,
     "medium": null,
@@ -1801,6 +2143,7 @@
   },
   {
     "id": "wright-142900",
+    "artist": "george-condo",
     "title": "Standing Female Form",
     "year": null,
     "medium": null,
@@ -1837,10 +2180,12 @@
     "premiumPrice": 3480000,
     "priceUsd": 3480000,
     "status": "sold",
-    "url": "https://www.sothebys.com/en/artists/george-condo"
+    "url": "https://www.sothebys.com/en/artists/george-condo",
+    "artist": "george-condo"
   },
   {
     "id": "wright-138787",
+    "artist": "george-condo",
     "title": "Untitled from More Sketches of Spain for Miles Davis",
     "year": null,
     "medium": null,
@@ -1877,10 +2222,12 @@
     "premiumPrice": 53200000,
     "priceUsd": 6857530,
     "status": "sold",
-    "url": "https://www.christies.com/en/results?query=george+condo"
+    "url": "https://www.christies.com/en/results?query=george+condo",
+    "artist": "george-condo"
   },
   {
     "id": "christies-6300963",
+    "artist": "george-condo",
     "title": "Dancing Figures",
     "year": null,
     "medium": null,
@@ -1901,6 +2248,7 @@
   },
   {
     "id": "christies-6296702",
+    "artist": "george-condo",
     "title": "The Smoking Sailor",
     "year": null,
     "medium": null,
@@ -1921,6 +2269,7 @@
   },
   {
     "id": "wright-167481",
+    "artist": "george-condo",
     "title": "The Jungle Man",
     "year": null,
     "medium": null,
@@ -1957,10 +2306,12 @@
     "premiumPrice": 25000000,
     "priceUsd": 3225000,
     "status": "sold",
-    "url": "https://www.sothebys.com/en/artists/george-condo"
+    "url": "https://www.sothebys.com/en/artists/george-condo",
+    "artist": "george-condo"
   },
   {
     "id": "christies-6283815",
+    "artist": "george-condo",
     "title": "Lost at Sea",
     "year": null,
     "medium": null,
@@ -1980,7 +2331,29 @@
     "url": "https://www.christies.com/en/lot/lot-6283815"
   },
   {
+    "id": "christies-18988.64",
+    "artist": "futura-2000",
+    "title": "Kawasaki ZX-10",
+    "year": null,
+    "medium": null,
+    "dimensions": null,
+    "imageUrl": "https://www.christies.com/img/lotimages/2020/NYR/2020_NYR_18988_0064_000(futura_2000_kawasaki_zx-10052609).jpg?mode=max",
+    "auctionHouse": "Christie's",
+    "saleName": "New York Sale 18988",
+    "saleDate": "2020-08-05",
+    "lotNumber": 64,
+    "estimateLow": 10000,
+    "estimateHigh": 15000,
+    "currency": "USD",
+    "hammerPrice": null,
+    "premiumPrice": 62500,
+    "priceUsd": 62500,
+    "status": "sold",
+    "url": "https://onlineonly.christies.com/sso?ObjectID=18988.64&LotNumber=64"
+  },
+  {
     "id": "christies-6269961",
+    "artist": "george-condo",
     "title": "Force Field",
     "year": null,
     "medium": null,
@@ -2001,6 +2374,7 @@
   },
   {
     "id": "christies-6269847",
+    "artist": "george-condo",
     "title": "The Chef",
     "year": null,
     "medium": null,
@@ -2021,6 +2395,7 @@
   },
   {
     "id": "sothebys-george-condo-qiao-zhi-kang-duo-purple-and-yellow",
+    "artist": "george-condo",
     "title": "Purple And Yellow",
     "year": null,
     "medium": null,
@@ -2041,6 +2416,7 @@
   },
   {
     "id": "sothebys-george-condo-population-of-forms",
+    "artist": "george-condo",
     "title": "Population Of Forms",
     "year": null,
     "medium": null,
@@ -2061,6 +2437,7 @@
   },
   {
     "id": "christies-6235937",
+    "artist": "george-condo",
     "title": "DAY OF THE IDOL",
     "year": null,
     "medium": null,
@@ -2081,6 +2458,7 @@
   },
   {
     "id": "christies-6236067",
+    "artist": "george-condo",
     "title": "Silver and Yellow Double Head Composition",
     "year": null,
     "medium": null,
@@ -2101,6 +2479,7 @@
   },
   {
     "id": "wright-124429",
+    "artist": "george-condo",
     "title": "Untitled",
     "year": null,
     "medium": null,
@@ -2121,6 +2500,7 @@
   },
   {
     "id": "wright-124430",
+    "artist": "george-condo",
     "title": "Untitled",
     "year": null,
     "medium": null,
@@ -2141,6 +2521,7 @@
   },
   {
     "id": "christies-6216781",
+    "artist": "george-condo",
     "title": "Diagonal Portrait",
     "year": null,
     "medium": null,
@@ -2161,6 +2542,7 @@
   },
   {
     "id": "christies-6204880",
+    "artist": "george-condo",
     "title": "The Drifters",
     "year": null,
     "medium": null,
@@ -2180,7 +2562,29 @@
     "url": "https://www.christies.com/en/lot/lot-6204880"
   },
   {
+    "id": "phillips-UK010319-152",
+    "artist": "futura-2000",
+    "title": "Untitled",
+    "year": null,
+    "medium": null,
+    "dimensions": null,
+    "imageUrl": "https://assets.phillips.com/image/upload/t_Website_LotDetailMainImage/v1//auctions/UK010319/152_001.jpg",
+    "auctionHouse": "Phillips",
+    "saleName": "",
+    "saleDate": "2019-04-11",
+    "lotNumber": 152,
+    "estimateLow": 12000,
+    "estimateHigh": 18000,
+    "currency": "GBP",
+    "hammerPrice": null,
+    "premiumPrice": 48750,
+    "priceUsd": 61913,
+    "status": "sold",
+    "url": "https://www.phillips.com/detail/futura-2000/125045"
+  },
+  {
     "id": "christies-6191964",
+    "artist": "george-condo",
     "title": "Untitled",
     "year": null,
     "medium": null,
@@ -2201,6 +2605,7 @@
   },
   {
     "id": "christies-6173364",
+    "artist": "george-condo",
     "title": "Hemazoids",
     "year": null,
     "medium": null,
@@ -2221,6 +2626,7 @@
   },
   {
     "id": "christies-6171896",
+    "artist": "george-condo",
     "title": "Washington Square Park",
     "year": null,
     "medium": null,
@@ -2241,6 +2647,7 @@
   },
   {
     "id": "christies-6162454",
+    "artist": "george-condo",
     "title": "Noble Woman",
     "year": null,
     "medium": null,
@@ -2261,6 +2668,7 @@
   },
   {
     "id": "christies-6162418",
+    "artist": "george-condo",
     "title": "Red and Black Diagonal Portrait",
     "year": null,
     "medium": null,
@@ -2281,6 +2689,7 @@
   },
   {
     "id": "christies-6146944",
+    "artist": "george-condo",
     "title": "Abstract Figure Composition",
     "year": null,
     "medium": null,
@@ -2301,6 +2710,7 @@
   },
   {
     "id": "christies-6141755",
+    "artist": "george-condo",
     "title": "Nude and Forms",
     "year": null,
     "medium": null,
@@ -2321,6 +2731,7 @@
   },
   {
     "id": "christies-6128571",
+    "artist": "george-condo",
     "title": "Figures in Motion",
     "year": null,
     "medium": null,
@@ -2357,10 +2768,12 @@
     "premiumPrice": 1140000,
     "priceUsd": 1140000,
     "status": "sold",
-    "url": "https://www.christies.com/en/results?query=george+condo"
+    "url": "https://www.christies.com/en/results?query=george+condo",
+    "artist": "george-condo"
   },
   {
     "id": "wright-103233",
+    "artist": "george-condo",
     "title": "More Sketches Of Spain-For Miles Davis 2",
     "year": null,
     "medium": null,
@@ -2381,6 +2794,7 @@
   },
   {
     "id": "christies-5995089",
+    "artist": "george-condo",
     "title": "Showgirls",
     "year": null,
     "medium": null,
@@ -2401,6 +2815,7 @@
   },
   {
     "id": "wright-162304",
+    "artist": "george-condo",
     "title": "Line of Figures",
     "year": null,
     "medium": null,
@@ -2421,6 +2836,7 @@
   },
   {
     "id": "wright-161421",
+    "artist": "george-condo",
     "title": "Untitled (Surreal Graffiti Painting)",
     "year": null,
     "medium": null,
@@ -2440,7 +2856,71 @@
     "url": "https://www.lamodern.com/auctions/2015/03/modern-art-design/112"
   },
   {
+    "id": "phillips-NY010614-176",
+    "artist": "futura-2000",
+    "title": "Two works: Untitled",
+    "year": "1981",
+    "medium": null,
+    "dimensions": null,
+    "imageUrl": "https://assets.phillips.com/image/upload/t_Website_LotDetailMainImage/v1//auctions/NY010614/176_001.jpg",
+    "auctionHouse": "Phillips",
+    "saleName": "",
+    "saleDate": "2014-09-16",
+    "lotNumber": 176,
+    "estimateLow": 4000,
+    "estimateHigh": 6000,
+    "currency": "USD",
+    "hammerPrice": null,
+    "premiumPrice": 11250,
+    "priceUsd": 11250,
+    "status": "sold",
+    "url": "https://www.phillips.com/detail/futura-2000/82425"
+  },
+  {
+    "id": "phillips-NY010614-29",
+    "artist": "futura-2000",
+    "title": "Untitled",
+    "year": "1993",
+    "medium": null,
+    "dimensions": null,
+    "imageUrl": "https://assets.phillips.com/image/upload/t_Website_LotDetailMainImage/v1//auctions/NY010614/29_001.jpg",
+    "auctionHouse": "Phillips",
+    "saleName": "",
+    "saleDate": "2014-09-16",
+    "lotNumber": 29,
+    "estimateLow": 8000,
+    "estimateHigh": 12000,
+    "currency": "USD",
+    "hammerPrice": null,
+    "premiumPrice": 8750,
+    "priceUsd": 8750,
+    "status": "sold",
+    "url": "https://www.phillips.com/detail/futura-2000/82302"
+  },
+  {
+    "id": "phillips-NY010114-302",
+    "artist": "futura-2000",
+    "title": "Bermuda Triangle",
+    "year": "1983",
+    "medium": null,
+    "dimensions": null,
+    "imageUrl": "https://assets.phillips.com/image/upload/t_Website_LotDetailMainImage/v1//auctions/NY010114/302_001.jpg",
+    "auctionHouse": "Phillips",
+    "saleName": "",
+    "saleDate": "2014-03-07",
+    "lotNumber": 302,
+    "estimateLow": 10000,
+    "estimateHigh": 15000,
+    "currency": "USD",
+    "hammerPrice": null,
+    "premiumPrice": 0,
+    "priceUsd": 0,
+    "status": "bought_in",
+    "url": "https://www.phillips.com/detail/futura-2000/76404"
+  },
+  {
     "id": "wright-45678",
+    "artist": "george-condo",
     "title": "untitled",
     "year": null,
     "medium": null,
@@ -2460,7 +2940,50 @@
     "url": "https://www.wright20.com/auctions/2013/09/living-contemporary/131"
   },
   {
+    "id": "phillips-NY010113-124",
+    "artist": "futura-2000",
+    "title": "Untitled",
+    "year": "1992",
+    "medium": null,
+    "dimensions": null,
+    "imageUrl": "https://assets.phillips.com/image/upload/t_Website_LotDetailMainImage/v1//auctions/NY010113/124_001.jpg",
+    "auctionHouse": "Phillips",
+    "saleName": "",
+    "saleDate": "2013-03-08",
+    "lotNumber": 124,
+    "estimateLow": 12000,
+    "estimateHigh": 18000,
+    "currency": "USD",
+    "hammerPrice": null,
+    "premiumPrice": 21250,
+    "priceUsd": 21250,
+    "status": "sold",
+    "url": "https://www.phillips.com/detail/futura-2000/72073"
+  },
+  {
+    "id": "phillips-NY010113-125",
+    "artist": "futura-2000",
+    "title": "Untitled",
+    "year": "1988",
+    "medium": null,
+    "dimensions": null,
+    "imageUrl": "https://assets.phillips.com/image/upload/t_Website_LotDetailMainImage/v1//auctions/NY010113/125_001.jpg",
+    "auctionHouse": "Phillips",
+    "saleName": "",
+    "saleDate": "2013-03-08",
+    "lotNumber": 125,
+    "estimateLow": 10000,
+    "estimateHigh": 15000,
+    "currency": "USD",
+    "hammerPrice": null,
+    "premiumPrice": 20000,
+    "priceUsd": 20000,
+    "status": "sold",
+    "url": "https://www.phillips.com/detail/futura-2000/71876"
+  },
+  {
     "id": "christies-5621951",
+    "artist": "george-condo",
     "title": "The Manhattan Strip Club",
     "year": null,
     "medium": null,
@@ -2481,6 +3004,7 @@
   },
   {
     "id": "wright-158456",
+    "artist": "george-condo",
     "title": "Untitled",
     "year": null,
     "medium": null,
@@ -2501,6 +3025,7 @@
   },
   {
     "id": "wright-39524",
+    "artist": "george-condo",
     "title": "Friend of Mine",
     "year": null,
     "medium": null,
@@ -2521,6 +3046,7 @@
   },
   {
     "id": "wright-37934",
+    "artist": "george-condo",
     "title": "Portrait with Yellow",
     "year": null,
     "medium": null,
@@ -2541,6 +3067,7 @@
   },
   {
     "id": "wright-17560",
+    "artist": "george-condo",
     "title": "We Are Waiting! in Room 26",
     "year": null,
     "medium": null,
@@ -2561,6 +3088,7 @@
   },
   {
     "id": "wright-17561",
+    "artist": "george-condo",
     "title": "Toodles...(Nancy Davidson's Black Baby Poodle)",
     "year": null,
     "medium": null,
@@ -2581,6 +3109,7 @@
   },
   {
     "id": "wright-16754",
+    "artist": "george-condo",
     "title": "Line of Figures",
     "year": null,
     "medium": null,
@@ -2601,6 +3130,7 @@
   },
   {
     "id": "wright-16755",
+    "artist": "george-condo",
     "title": "Reclining Nude Forms (State II)",
     "year": null,
     "medium": null,
@@ -2621,6 +3151,7 @@
   },
   {
     "id": "wright-154376",
+    "artist": "george-condo",
     "title": "Portrait of Mabebe",
     "year": null,
     "medium": null,
@@ -2657,7 +3188,8 @@
     "premiumPrice": null,
     "priceUsd": 40000,
     "status": "sold",
-    "url": "https://www.phillips.com/detail/george-condo/228349"
+    "url": "https://www.phillips.com/detail/george-condo/228349",
+    "artist": "george-condo"
   },
   {
     "id": "phillips-231381",
@@ -2677,7 +3209,8 @@
     "premiumPrice": null,
     "priceUsd": 18000,
     "status": "sold",
-    "url": "https://www.phillips.com/detail/george-condo/231381"
+    "url": "https://www.phillips.com/detail/george-condo/231381",
+    "artist": "george-condo"
   },
   {
     "id": "phillips-218717",
@@ -2697,7 +3230,8 @@
     "premiumPrice": null,
     "priceUsd": 50000,
     "status": "sold",
-    "url": "https://www.phillips.com/detail/george-condo/218717"
+    "url": "https://www.phillips.com/detail/george-condo/218717",
+    "artist": "george-condo"
   },
   {
     "id": "phillips-226838",
@@ -2717,7 +3251,8 @@
     "premiumPrice": null,
     "priceUsd": 250000,
     "status": "sold",
-    "url": "https://www.phillips.com/detail/george-condo/226838"
+    "url": "https://www.phillips.com/detail/george-condo/226838",
+    "artist": "george-condo"
   },
   {
     "id": "phillips-224040",
@@ -2737,7 +3272,8 @@
     "premiumPrice": null,
     "priceUsd": 30000,
     "status": "sold",
-    "url": "https://www.phillips.com/detail/george-condo/224040"
+    "url": "https://www.phillips.com/detail/george-condo/224040",
+    "artist": "george-condo"
   },
   {
     "id": "phillips-218825",
@@ -2757,7 +3293,8 @@
     "premiumPrice": null,
     "priceUsd": 120000,
     "status": "sold",
-    "url": "https://www.phillips.com/detail/george-condo/218825"
+    "url": "https://www.phillips.com/detail/george-condo/218825",
+    "artist": "george-condo"
   },
   {
     "id": "phillips-226412",
@@ -2777,7 +3314,8 @@
     "premiumPrice": null,
     "priceUsd": 20000,
     "status": "sold",
-    "url": "https://www.phillips.com/detail/george-condo/226412"
+    "url": "https://www.phillips.com/detail/george-condo/226412",
+    "artist": "george-condo"
   },
   {
     "id": "phillips-226287",
@@ -2797,7 +3335,8 @@
     "premiumPrice": null,
     "priceUsd": 15000,
     "status": "sold",
-    "url": "https://www.phillips.com/detail/george-condo/226287"
+    "url": "https://www.phillips.com/detail/george-condo/226287",
+    "artist": "george-condo"
   },
   {
     "id": "phillips-221972",
@@ -2817,7 +3356,8 @@
     "premiumPrice": null,
     "priceUsd": 3000,
     "status": "sold",
-    "url": "https://www.phillips.com/detail/george-condo/221972"
+    "url": "https://www.phillips.com/detail/george-condo/221972",
+    "artist": "george-condo"
   },
   {
     "id": "phillips-225570",
@@ -2837,7 +3377,8 @@
     "premiumPrice": null,
     "priceUsd": 80000,
     "status": "sold",
-    "url": "https://www.phillips.com/detail/george-condo/225570"
+    "url": "https://www.phillips.com/detail/george-condo/225570",
+    "artist": "george-condo"
   },
   {
     "id": "phillips-225574",
@@ -2857,7 +3398,8 @@
     "premiumPrice": null,
     "priceUsd": 30000,
     "status": "sold",
-    "url": "https://www.phillips.com/detail/george-condo/225574"
+    "url": "https://www.phillips.com/detail/george-condo/225574",
+    "artist": "george-condo"
   },
   {
     "id": "phillips-223447",
@@ -2877,7 +3419,8 @@
     "premiumPrice": null,
     "priceUsd": 50000,
     "status": "sold",
-    "url": "https://www.phillips.com/detail/george-condo/223447"
+    "url": "https://www.phillips.com/detail/george-condo/223447",
+    "artist": "george-condo"
   },
   {
     "id": "phillips-223448",
@@ -2897,7 +3440,8 @@
     "premiumPrice": null,
     "priceUsd": 100000,
     "status": "sold",
-    "url": "https://www.phillips.com/detail/george-condo/223448"
+    "url": "https://www.phillips.com/detail/george-condo/223448",
+    "artist": "george-condo"
   },
   {
     "id": "phillips-224009",
@@ -2917,7 +3461,8 @@
     "premiumPrice": null,
     "priceUsd": 7000,
     "status": "sold",
-    "url": "https://www.phillips.com/detail/george-condo/224009"
+    "url": "https://www.phillips.com/detail/george-condo/224009",
+    "artist": "george-condo"
   },
   {
     "id": "phillips-219423",
@@ -2937,7 +3482,8 @@
     "premiumPrice": null,
     "priceUsd": 50000,
     "status": "sold",
-    "url": "https://www.phillips.com/detail/george-condo/219423"
+    "url": "https://www.phillips.com/detail/george-condo/219423",
+    "artist": "george-condo"
   },
   {
     "id": "phillips-215479",
@@ -2957,7 +3503,8 @@
     "premiumPrice": null,
     "priceUsd": 800,
     "status": "sold",
-    "url": "https://www.phillips.com/detail/george-condo/215479"
+    "url": "https://www.phillips.com/detail/george-condo/215479",
+    "artist": "george-condo"
   },
   {
     "id": "phillips-215481",
@@ -2977,7 +3524,8 @@
     "premiumPrice": null,
     "priceUsd": 3000,
     "status": "sold",
-    "url": "https://www.phillips.com/detail/george-condo/215481"
+    "url": "https://www.phillips.com/detail/george-condo/215481",
+    "artist": "george-condo"
   },
   {
     "id": "phillips-220892",
@@ -2997,7 +3545,8 @@
     "premiumPrice": null,
     "priceUsd": 50000,
     "status": "sold",
-    "url": "https://www.phillips.com/detail/george-condo/220892"
+    "url": "https://www.phillips.com/detail/george-condo/220892",
+    "artist": "george-condo"
   },
   {
     "id": "phillips-218890",
@@ -3017,7 +3566,8 @@
     "premiumPrice": null,
     "priceUsd": 220000,
     "status": "sold",
-    "url": "https://www.phillips.com/detail/george-condo/218890"
+    "url": "https://www.phillips.com/detail/george-condo/218890",
+    "artist": "george-condo"
   },
   {
     "id": "phillips-212123",
@@ -3037,7 +3587,8 @@
     "premiumPrice": null,
     "priceUsd": 12000000,
     "status": "sold",
-    "url": "https://www.phillips.com/detail/george-condo/212123"
+    "url": "https://www.phillips.com/detail/george-condo/212123",
+    "artist": "george-condo"
   },
   {
     "id": "phillips-213784",
@@ -3057,7 +3608,8 @@
     "premiumPrice": null,
     "priceUsd": 200000,
     "status": "sold",
-    "url": "https://www.phillips.com/detail/george-condo/213784"
+    "url": "https://www.phillips.com/detail/george-condo/213784",
+    "artist": "george-condo"
   },
   {
     "id": "phillips-213879",
@@ -3077,7 +3629,8 @@
     "premiumPrice": null,
     "priceUsd": 50000,
     "status": "sold",
-    "url": "https://www.phillips.com/detail/george-condo/213879"
+    "url": "https://www.phillips.com/detail/george-condo/213879",
+    "artist": "george-condo"
   },
   {
     "id": "phillips-217207",
@@ -3097,7 +3650,8 @@
     "premiumPrice": null,
     "priceUsd": 12000,
     "status": "sold",
-    "url": "https://www.phillips.com/detail/george-condo/217207"
+    "url": "https://www.phillips.com/detail/george-condo/217207",
+    "artist": "george-condo"
   },
   {
     "id": "phillips-218533",
@@ -3117,6 +3671,7 @@
     "premiumPrice": null,
     "priceUsd": 2500000,
     "status": "sold",
-    "url": "https://www.phillips.com/detail/george-condo/218533"
+    "url": "https://www.phillips.com/detail/george-condo/218533",
+    "artist": "george-condo"
   }
 ]

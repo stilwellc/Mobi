@@ -10,6 +10,7 @@ type Currency = 'USD' | 'GBP' | 'EUR' | 'HKD' | 'CNY';
 
 interface AuctionLot {
   id: string;
+  artist: string;
   title: string;
   year: string | null;
   medium: string | null;
@@ -58,6 +59,35 @@ interface MarketStats {
   houseDistribution: HouseCount[];
 }
 
+// ── Artist Configuration ──
+
+interface ArtistConfig {
+  slug: string;
+  displayName: string;
+  phillips?: { id: string; slug: string };
+  sothebys?: string;
+  christies?: string;
+  wright?: string;
+}
+
+const ARTISTS: ArtistConfig[] = [
+  {
+    slug: 'george-condo',
+    displayName: 'George Condo',
+    phillips: { id: '10606', slug: 'george-condo' },
+    sothebys: 'george-condo',
+    christies: 'george-condo',
+    wright: 'george-condo',
+  },
+  {
+    slug: 'futura-2000',
+    displayName: 'Futura 2000',
+    phillips: { id: '4001', slug: 'futura-2000' },
+    christies: 'futura',
+    // No Sotheby's or Wright artist page for Futura
+  },
+];
+
 const DATA_DIR = path.join(process.cwd(), 'public', 'data', 'ray');
 const DELAY_MS = 1500;
 const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36';
@@ -68,12 +98,13 @@ function sleep(ms: number) {
 
 // ── Phillips Crawler ──
 // Phillips embeds lot data as a JSON string in ReactDOM.hydrate props for ArtistLanding.
-// The "maker" prop contains a JSON-encoded string with pastLots.results[].
+// The "maker" prop contains a JSON-encoded string with pastLots.data[].
 
-async function crawlPhillips(): Promise<AuctionLot[]> {
+async function crawlPhillips(artist: ArtistConfig): Promise<AuctionLot[]> {
+  if (!artist.phillips) return [];
   const lots: AuctionLot[] = [];
-  const url = 'https://www.phillips.com/artist/10606/george-condo';
-  console.log('  [Phillips] Fetching artist page...');
+  const url = `https://www.phillips.com/artist/${artist.phillips.id}/${artist.phillips.slug}`;
+  console.log(`  [Phillips] Fetching ${artist.displayName}...`);
 
   try {
     const res = await fetch(url, { headers: { 'User-Agent': UA } });
@@ -92,11 +123,9 @@ async function crawlPhillips(): Promise<AuctionLot[]> {
       if (!text.includes('ArtistLanding')) return;
 
       // The maker prop uses \u0022 unicode escapes for quotes (not \")
-      // Pattern: "maker":"\u0022pastLots\u0022:..."
       const makerMatch = text.match(/"maker":"([^"]*)"/);
       if (makerMatch) {
         try {
-          // The value is a JSON string with \u0022 escapes — JSON.parse handles these natively
           const innerJson = JSON.parse('"' + makerMatch[1] + '"');
           makerData = JSON.parse(innerJson);
           console.log(`  [Phillips] Found maker data with ${makerData?.pastLots?.totalCount || 0} total lots`);
@@ -125,21 +154,18 @@ async function crawlPhillips(): Promise<AuctionLot[]> {
       const soldPrice = hammerBP ?? hammer;
       const isSold = soldPrice != null && soldPrice > 0;
 
-      // Determine if auction is in the past (unsold lots from past auctions = bought_in)
       let auctionInPast = false;
       if (lot.auctionStartDateTimeOffset) {
         const aDate = new Date(lot.auctionStartDateTimeOffset);
         auctionInPast = !isNaN(aDate.getTime()) && aDate < new Date();
       }
 
-      // Build image URL from Phillips Cloudinary
       let imageUrl: string | null = null;
       if (lot.imagePath) {
         const ver = lot.cloudinaryVersion || '1';
         imageUrl = `https://assets.phillips.com/image/upload/t_Website_LotDetailMainImage/v${ver}/${lot.imagePath}`;
       }
 
-      // Parse the auction date
       let saleDate = '';
       if (lot.auctionStartDateTimeOffset) {
         saleDate = lot.auctionStartDateTimeOffset.split('T')[0];
@@ -149,6 +175,7 @@ async function crawlPhillips(): Promise<AuctionLot[]> {
 
       lots.push({
         id: `phillips-${saleNum}-${lotNum}`,
+        artist: artist.slug,
         title,
         year: lot.dates || lot.circa || null,
         medium: lot.medium || null,
@@ -176,14 +203,13 @@ async function crawlPhillips(): Promise<AuctionLot[]> {
 }
 
 // ── Sotheby's Crawler ──
-// The Sotheby's artist page has distinct "Upcoming Lots" and "Past Lots" sections.
-// We parse lot cards from the HTML, using section context to determine status.
-// Past lots whose sale date is in the past are marked as "sold".
+// Parses lot links from the artist page HTML.
 
-async function crawlSothebys(): Promise<AuctionLot[]> {
+async function crawlSothebys(artist: ArtistConfig): Promise<AuctionLot[]> {
+  if (!artist.sothebys) return [];
   const lots: AuctionLot[] = [];
-  const url = 'https://www.sothebys.com/en/artists/george-condo';
-  console.log('  [Sothebys] Fetching artist page...');
+  const url = `https://www.sothebys.com/en/artists/${artist.sothebys}`;
+  console.log(`  [Sothebys] Fetching ${artist.displayName}...`);
 
   try {
     const res = await fetch(url, { headers: { 'User-Agent': UA } });
@@ -194,27 +220,27 @@ async function crawlSothebys(): Promise<AuctionLot[]> {
     const html = await res.text();
     const $ = cheerio.load(html);
 
-    // Only look at /buy/auction/ links (skip old ecatalogue links which have unusable slugs like "lot.25.html")
     const allLinks = $('a[href*="/buy/auction/"]').toArray();
     console.log(`  [Sothebys] Found ${allLinks.length} raw lot links`);
 
     const now = new Date();
     const seen = new Set<string>();
+    // Build regex to strip artist name prefix from slugs
+    const artistSlugParts = artist.sothebys.split('-');
+    const stripPrefix = new RegExp(`^${artistSlugParts.join('-?')}-?`, 'i');
 
     for (const el of allLinks) {
       const $el = $(el);
       const href = $el.attr('href') || '';
 
-      // Extract the slug (last segment of the URL)
       const slug = href.split('/').pop() || '';
       if (!slug || seen.has(slug)) continue;
       seen.add(slug);
 
-      // Derive title from URL slug — convert slug to title case
-      // e.g. "george-condo-qiao-zhikang-duo-the-boy-with-white" → "The Boy With White"
-      let titleSlug = slug
-        .replace(/^george-condo-qiao-zhi?-?kang-duo-?/i, '')
-        .replace(/^george-condo-?/i, '');
+      // Strip artist name prefix and any co-artist prefixes
+      let titleSlug = slug.replace(stripPrefix, '');
+      // Also strip common Sotheby's co-artist prefixes
+      titleSlug = titleSlug.replace(/^qiao-zhi?-?kang-duo-?/i, '');
 
       if (!titleSlug || titleSlug.length < 2) continue;
       const title = titleSlug
@@ -222,11 +248,9 @@ async function crawlSothebys(): Promise<AuctionLot[]> {
         .map(w => w.charAt(0).toUpperCase() + w.slice(1))
         .join(' ');
 
-      // Get year from URL: /auction/YYYY/
       const yearMatch = href.match(/\/auction\/(\d{4})\//);
       const auctionYear = yearMatch ? parseInt(yearMatch[1]) : null;
 
-      // Determine status: only current/future year lots are upcoming
       let status: LotStatus = 'sold';
       let saleDate = '';
       if (auctionYear) {
@@ -240,6 +264,7 @@ async function crawlSothebys(): Promise<AuctionLot[]> {
 
       lots.push({
         id: `sothebys-${slug}`,
+        artist: artist.slug,
         title,
         year: null,
         medium: null,
@@ -270,41 +295,38 @@ async function crawlSothebys(): Promise<AuctionLot[]> {
 
 // ── Christie's Crawler ──
 // Christie's embeds lot data as JSON in window.chrComponents.configurableSearch.
-// The artist page returns 50 lots per page with full details.
 
-async function crawlChristies(): Promise<AuctionLot[]> {
-  const lots: AuctionLot[] = [];
-  const url = 'https://www.christies.com/en/artists/george-condo?lotavailability=All&sortby=relevance';
-  console.log("  [Christie's] Fetching artist page...");
+async function crawlChristies(artist: ArtistConfig): Promise<AuctionLot[]> {
+  if (!artist.christies) return [];
+  const url = `https://www.christies.com/en/artists/${artist.christies}?lotavailability=All&sortby=relevance`;
+  console.log(`  [Christie's] Fetching ${artist.displayName}...`);
 
   try {
     const res = await fetch(url, { headers: { 'User-Agent': UA } });
     if (!res.ok) {
       console.log(`  [Christie's] HTTP ${res.status}`);
-      return lots;
+      return [];
     }
     const html = await res.text();
 
-    // Extract the configurableSearch JSON from a <script> tag
     const searchMatch = html.match(/window\.chrComponents\s*=\s*window\.chrComponents\s*\|\|\s*\{\};\s*window\.chrComponents\.configurableSearch\s*=\s*(\{[\s\S]*?\});\s*<\/script>/);
     if (!searchMatch) {
-      // Try a simpler pattern
       const altMatch = html.match(/configurableSearch\s*=\s*(\{[\s\S]*?\});\s*(?:window\.|<\/script>)/);
       if (!altMatch) {
         console.log("  [Christie's] Could not find configurableSearch JSON");
-        return lots;
+        return [];
       }
-      return parseChristiesJson(altMatch[1]);
+      return parseChristiesJson(altMatch[1], artist.slug);
     }
-    return parseChristiesJson(searchMatch[1]);
+    return parseChristiesJson(searchMatch[1], artist.slug);
   } catch (err) {
     console.error("  [Christie's] Error:", err);
   }
 
-  return lots;
+  return [];
 }
 
-function parseChristiesJson(jsonStr: string): AuctionLot[] {
+function parseChristiesJson(jsonStr: string, artistSlug: string): AuctionLot[] {
   const lots: AuctionLot[] = [];
   try {
     const data = JSON.parse(jsonStr);
@@ -317,7 +339,6 @@ function parseChristiesJson(jsonStr: string): AuctionLot[] {
       const lotId = lot.object_id || lot.lot_id_txt || '';
       const lotUrl = lot.url || `https://www.christies.com/en/lot/lot-${lotId}`;
 
-      // Parse estimate: "HKD 18,000,000 - 28,000,000" or "USD 200,000 - 300,000"
       const estimateStr = lot.estimate_txt || '';
       const currency = detectCurrency(estimateStr);
       let estimateLow: number | null = null;
@@ -328,7 +349,6 @@ function parseChristiesJson(jsonStr: string): AuctionLot[] {
         estimateHigh = parseInt(estMatch[2].replace(/,/g, ''));
       }
 
-      // Parse price realized: "HKD 53,150,000" or "USD 1,234,567"
       const priceStr = lot.price_realised_txt || '';
       let priceRealized: number | null = null;
       const priceMatch = priceStr.match(/([\d,]+)/);
@@ -336,21 +356,17 @@ function parseChristiesJson(jsonStr: string): AuctionLot[] {
         priceRealized = parseInt(priceMatch[0].replace(/,/g, ''));
       }
 
-      // Parse dates
       const saleDate = lot.start_date ? lot.start_date.split('T')[0] : '';
       const auctionInPast = saleDate ? new Date(saleDate) < new Date() : false;
       const isSold = priceRealized != null && priceRealized > 0;
-
-      // Image
       const imageUrl = lot.image?.image_src || null;
-
-      // Sale info
       const saleNum = lot.sale?.number || '';
       const lotNum = lot.lot_id_txt || '';
 
       lots.push({
         id: `christies-${lotId}`,
-        title: title.replace(/<[^>]*>/g, ''), // strip any HTML tags
+        artist: artistSlug,
+        title: title.replace(/<[^>]*>/g, ''),
         year: null,
         medium: null,
         dimensions: null,
@@ -362,7 +378,7 @@ function parseChristiesJson(jsonStr: string): AuctionLot[] {
         estimateLow,
         estimateHigh,
         currency,
-        hammerPrice: null, // Christie's provides price_realised (with premium)
+        hammerPrice: null,
         premiumPrice: priceRealized,
         priceUsd: toUsd(priceRealized, currency),
         status: isSold ? 'sold' : auctionInPast ? 'bought_in' : 'upcoming',
@@ -377,12 +393,12 @@ function parseChristiesJson(jsonStr: string): AuctionLot[] {
 
 // ── Wright/Rago Crawler ──
 // Wright uses Inertia.js (Laravel + Vue). All lot data is in the #app div's data-page attribute.
-// Covers Wright, Rago, LA Modern Auctions, and Toomey & Co.
 
-async function crawlWright(): Promise<AuctionLot[]> {
+async function crawlWright(artist: ArtistConfig): Promise<AuctionLot[]> {
+  if (!artist.wright) return [];
   const lots: AuctionLot[] = [];
-  const url = 'https://www.wright20.com/artists/george-condo';
-  console.log('  [Wright] Fetching artist page...');
+  const url = `https://www.wright20.com/artists/${artist.wright}`;
+  console.log(`  [Wright] Fetching ${artist.displayName}...`);
 
   try {
     const res = await fetch(url, { headers: { 'User-Agent': UA } });
@@ -393,7 +409,6 @@ async function crawlWright(): Promise<AuctionLot[]> {
     const html = await res.text();
     const $ = cheerio.load(html);
 
-    // Extract the Inertia.js data-page JSON from #app
     const dataPage = $('#app').attr('data-page');
     if (!dataPage) {
       console.log('  [Wright] No data-page attribute found on #app');
@@ -407,7 +422,6 @@ async function crawlWright(): Promise<AuctionLot[]> {
       return lots;
     }
 
-    // Sessions are grouped — iterate through all groups and sessions
     let totalItems = 0;
     for (const group of resultsGrouped) {
       const sessions = group.sessions || {};
@@ -420,11 +434,9 @@ async function crawlWright(): Promise<AuctionLot[]> {
           const lotNum = item.lot_number || null;
           const house = (item.house || 'Wright') as string;
 
-          // Parse result (hammer + premium)
           const result = item.result || null;
           const resultSansPremium = item.result_sans_premium || null;
 
-          // Parse estimate from formatted string: "estimate: $30,000–50,000"
           const estStr = item.estimate_formatted || '';
           let estimateLow: number | null = null;
           let estimateHigh: number | null = null;
@@ -434,7 +446,6 @@ async function crawlWright(): Promise<AuctionLot[]> {
             estimateHigh = parseInt(estMatch[2].replace(/,/g, ''));
           }
 
-          // Parse date from session: "28 Jan 2026"
           const sessionDate = session.date || item.session?.date || '';
           let saleDate = '';
           if (sessionDate) {
@@ -448,23 +459,18 @@ async function crawlWright(): Promise<AuctionLot[]> {
 
           const auctionInPast = saleDate ? new Date(saleDate) < new Date() : false;
           const isSold = result != null && result > 0;
-
-          // Image URL
           const imageUrl = item.primary_index_image || null;
 
-          // Lot URL from alias: "//www.wright20.com/auctions/2026/01/..."
           let lotUrl = item.alias || '';
           if (lotUrl.startsWith('//')) lotUrl = 'https:' + lotUrl;
           else if (!lotUrl.startsWith('http') && lotUrl) lotUrl = 'https://www.wright20.com' + lotUrl;
 
-          // Map house name to our AuctionHouse type
           const auctionHouse: AuctionHouse = house.toLowerCase().includes('rago') ? 'Rago' : 'Wright';
-
-          // Dimensions
           const dims = item.formatted_dimensions || null;
 
           lots.push({
             id: `wright-${item.fd_key || `${lotNum}-${sessionKey}`}`,
+            artist: artist.slug,
             title,
             year: null,
             medium: null,
@@ -575,7 +581,6 @@ function computeStats(lots: AuctionLot[], existingStats: MarketStats | null): Ma
     totalValue: data.totalValue,
   }));
 
-  // If we have fewer lots than the known total, preserve the existing total
   const totalLotsTracked = Math.max(lots.length, existingStats?.totalLotsTracked || 0);
 
   return {
@@ -587,11 +592,47 @@ function computeStats(lots: AuctionLot[], existingStats: MarketStats | null): Ma
     recordTitle: record?.title || existingStats?.recordTitle || '',
     recordDate: record?.saleDate || existingStats?.recordDate || '',
     recordHouse: record?.auctionHouse || existingStats?.recordHouse || 'Phillips',
-    appreciationRate: existingStats?.appreciationRate || 42.5,
+    appreciationRate: existingStats?.appreciationRate || 0,
     totalAuctionRevenue: sold.reduce((sum, l) => sum + (l.priceUsd || 0), 0),
     priceHistory: priceHistory.length > 0 ? priceHistory : existingStats?.priceHistory || [],
     houseDistribution: houseDistribution.length > 0 ? houseDistribution : existingStats?.houseDistribution || [],
   };
+}
+
+// ── Crawl a single artist across all houses ──
+
+async function crawlArtist(artist: ArtistConfig): Promise<AuctionLot[]> {
+  const allLots: AuctionLot[] = [];
+
+  console.log(`\n[Ray] === ${artist.displayName} ===`);
+
+  console.log(`[Ray] Crawling Phillips...`);
+  const phillipsLots = await crawlPhillips(artist);
+  console.log(`[Ray] Phillips: ${phillipsLots.length} lots`);
+  allLots.push(...phillipsLots);
+
+  await sleep(DELAY_MS);
+
+  console.log(`[Ray] Crawling Sothebys...`);
+  const sothebysLots = await crawlSothebys(artist);
+  console.log(`[Ray] Sothebys: ${sothebysLots.length} lots`);
+  allLots.push(...sothebysLots);
+
+  await sleep(DELAY_MS);
+
+  console.log(`[Ray] Crawling Christie's...`);
+  const christiesLots = await crawlChristies(artist);
+  console.log(`[Ray] Christie's: ${christiesLots.length} lots`);
+  allLots.push(...christiesLots);
+
+  await sleep(DELAY_MS);
+
+  console.log(`[Ray] Crawling Wright/Rago...`);
+  const wrightLots = await crawlWright(artist);
+  console.log(`[Ray] Wright/Rago: ${wrightLots.length} lots`);
+  allLots.push(...wrightLots);
+
+  return allLots;
 }
 
 // ── Main ──
@@ -599,61 +640,56 @@ function computeStats(lots: AuctionLot[], existingStats: MarketStats | null): Ma
 async function main() {
   console.log('[Ray] Starting auction crawl...');
   console.log(`[Ray] Data directory: ${DATA_DIR}`);
+  console.log(`[Ray] Artists: ${ARTISTS.map(a => a.displayName).join(', ')}`);
 
   fs.mkdirSync(DATA_DIR, { recursive: true });
 
   // Load existing data
   let existingLots: AuctionLot[] = [];
-  let existingStats: MarketStats | null = null;
+  const existingStatsByArtist: Record<string, MarketStats> = {};
   const lotsPath = path.join(DATA_DIR, 'lots.json');
   const statsPath = path.join(DATA_DIR, 'stats.json');
 
   if (fs.existsSync(lotsPath)) {
     try {
       existingLots = JSON.parse(fs.readFileSync(lotsPath, 'utf-8'));
+      // Backfill artist field for legacy lots without one
+      for (const lot of existingLots) {
+        if (!lot.artist) lot.artist = 'george-condo';
+      }
       console.log(`[Ray] Loaded ${existingLots.length} existing lots.`);
     } catch { console.log('[Ray] Could not parse existing lots.json'); }
   }
   if (fs.existsSync(statsPath)) {
     try {
-      existingStats = JSON.parse(fs.readFileSync(statsPath, 'utf-8'));
+      const raw = JSON.parse(fs.readFileSync(statsPath, 'utf-8'));
+      // Handle both old format (single MarketStats) and new format (keyed by artist)
+      if (raw.lastUpdated) {
+        // Old format — assign to george-condo
+        existingStatsByArtist['george-condo'] = raw;
+      } else {
+        Object.assign(existingStatsByArtist, raw);
+      }
     } catch { /* ignore */ }
   }
 
-  // Crawl sources
-  console.log('[Ray] Crawling Phillips...');
-  const phillipsLots = await crawlPhillips();
-  console.log(`[Ray] Phillips: ${phillipsLots.length} lots`);
-
-  await sleep(DELAY_MS);
-
-  console.log('[Ray] Crawling Sothebys...');
-  const sothebysLots = await crawlSothebys();
-  console.log(`[Ray] Sothebys: ${sothebysLots.length} lots`);
-
-  await sleep(DELAY_MS);
-
-  console.log("[Ray] Crawling Christie's...");
-  const christiesLots = await crawlChristies();
-  console.log(`[Ray] Christie's: ${christiesLots.length} lots`);
-
-  await sleep(DELAY_MS);
-
-  console.log('[Ray] Crawling Wright/Rago...');
-  const wrightLots = await crawlWright();
-  console.log(`[Ray] Wright/Rago: ${wrightLots.length} lots`);
+  // Crawl all artists
+  const freshLots: AuctionLot[] = [];
+  for (const artist of ARTISTS) {
+    const lots = await crawlArtist(artist);
+    freshLots.push(...lots);
+    if (artist !== ARTISTS[ARTISTS.length - 1]) await sleep(DELAY_MS);
+  }
 
   // Merge: new data overwrites existing by ID
   const lotMap = new Map<string, AuctionLot>();
   for (const lot of existingLots) lotMap.set(lot.id, lot);
-  for (const lot of [...phillipsLots, ...sothebysLots, ...christiesLots, ...wrightLots]) lotMap.set(lot.id, lot);
+  for (const lot of freshLots) lotMap.set(lot.id, lot);
 
   // Clean up stale/bad entries
   const badIds = new Set<string>();
   for (const [id, lot] of Array.from(lotMap.entries())) {
-    // Remove ecatalogue slug entries (e.g. "Lot.25.html")
     if (lot.title.match(/^Lot\.\d+/i)) badIds.add(id);
-    // Remove the seed duplicate if we have a crawled version
     if (id === 'sothebys-upcoming-boy-white-hat' && lotMap.has('sothebys-george-condo-qiao-zhikang-duo-the-boy-with-white')) {
       badIds.add(id);
     }
@@ -669,19 +705,25 @@ async function main() {
     return db - da;
   });
 
-  // Compute stats
-  const stats = computeStats(allLots, existingStats);
+  // Compute per-artist stats
+  const statsByArtist: Record<string, MarketStats> = {};
+  for (const artist of ARTISTS) {
+    const artistLots = allLots.filter(l => l.artist === artist.slug);
+    statsByArtist[artist.slug] = computeStats(artistLots, existingStatsByArtist[artist.slug] || null);
+    console.log(`[Ray] ${artist.displayName}: ${artistLots.length} lots, ${artistLots.filter(l => l.status === 'sold').length} sold`);
+  }
 
   // Write output
   fs.writeFileSync(lotsPath, JSON.stringify(allLots, null, 2));
-  fs.writeFileSync(statsPath, JSON.stringify(stats, null, 2));
+  fs.writeFileSync(statsPath, JSON.stringify(statsByArtist, null, 2));
   fs.writeFileSync(path.join(DATA_DIR, 'meta.json'), JSON.stringify({
     lastCrawl: new Date().toISOString(),
+    artists: ARTISTS.map(a => ({ slug: a.slug, displayName: a.displayName })),
     sources: ['Phillips', "Sotheby's", "Christie's", 'Wright/Rago'],
-    version: 1,
+    version: 2,
   }, null, 2));
 
-  console.log(`[Ray] Done. ${allLots.length} total lots written.`);
+  console.log(`\n[Ray] Done. ${allLots.length} total lots written.`);
 }
 
 main().catch(err => {
