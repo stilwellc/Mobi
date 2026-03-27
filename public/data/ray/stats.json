@@ -1,6 +1,6 @@
 {
   "george-condo": {
-    "lastUpdated": "2026-03-27T03:05:07.636Z",
+    "lastUpdated": "2026-03-27T08:44:30.879Z",
     "totalLotsTracked": 2180,
     "avgPriceLast12Months": 493618,
     "medianPriceLast12Months": 69850,
@@ -293,7 +293,7 @@
     ]
   },
   "futura-2000": {
-    "lastUpdated": "2026-03-27T03:05:07.642Z",
+    "lastUpdated": "2026-03-27T08:44:30.887Z",
     "totalLotsTracked": 36,
     "avgPriceLast12Months": 62823,
     "medianPriceLast12Months": 82550,
@@ -464,7 +464,7 @@
     ]
   },
   "kaws": {
-    "lastUpdated": "2026-03-27T03:05:07.642Z",
+    "lastUpdated": "2026-03-27T08:44:30.887Z",
     "totalLotsTracked": 327,
     "avgPriceLast12Months": 28776,
     "medianPriceLast12Months": 2032,
@@ -659,17 +659,17 @@
       },
       {
         "date": "2024-Q3",
-        "avgPrice": 16461,
-        "medianPrice": 1260,
-        "totalSales": 28,
-        "highPrice": 327600
+        "avgPrice": 4938,
+        "medianPrice": 839,
+        "totalSales": 27,
+        "highPrice": 44100
       },
       {
         "date": "2024-Q4",
-        "avgPrice": 2052,
+        "avgPrice": 23756,
         "medianPrice": 819,
-        "totalSales": 14,
-        "highPrice": 5670
+        "totalSales": 15,
+        "highPrice": 327600
       },
       {
         "date": "2025-Q1",
@@ -680,16 +680,16 @@
       },
       {
         "date": "2025-Q2",
-        "avgPrice": 90978,
-        "medianPrice": 17780,
-        "totalSales": 10,
+        "avgPrice": 113246,
+        "medianPrice": 27940,
+        "totalSales": 8,
         "highPrice": 720090
       },
       {
         "date": "2025-Q3",
-        "avgPrice": 35684,
+        "avgPrice": 32982,
         "medianPrice": 2413,
-        "totalSales": 23,
+        "totalSales": 25,
         "highPrice": 508000
       },
       {
@@ -731,7 +731,7 @@
     ]
   },
   "george-nakashima": {
-    "lastUpdated": "2026-03-27T03:05:07.643Z",
+    "lastUpdated": "2026-03-27T08:44:30.888Z",
     "totalLotsTracked": 327,
     "avgPriceLast12Months": 26434,
     "medianPriceLast12Months": 20320,
@@ -951,7 +951,7 @@
     ]
   },
   "charles-eames": {
-    "lastUpdated": "2026-03-27T03:05:07.643Z",
+    "lastUpdated": "2026-03-27T08:44:30.889Z",
     "totalLotsTracked": 255,
     "avgPriceLast12Months": 2165,
     "medianPriceLast12Months": 1016,
@@ -1040,7 +1040,7 @@
     ]
   },
   "andy-warhol": {
-    "lastUpdated": "2026-03-27T03:05:07.643Z",
+    "lastUpdated": "2026-03-27T08:44:30.890Z",
     "totalLotsTracked": 330,
     "avgPriceLast12Months": 58775,
     "medianPriceLast12Months": 10560,
@@ -1123,10 +1123,17 @@
       },
       {
         "date": "2014-Q2",
-        "avgPrice": 30617304,
+        "avgPrice": 38133000,
         "medianPrice": 41045000,
-        "totalSales": 4,
+        "totalSales": 3,
         "highPrice": 62885000
+      },
+      {
+        "date": "2014-Q3",
+        "avgPrice": 8070215,
+        "medianPrice": 8070215,
+        "totalSales": 1,
+        "highPrice": 8070215
       },
       {
         "date": "2014-Q4",
@@ -1302,7 +1309,7 @@
     ]
   },
   "tom-sachs": {
-    "lastUpdated": "2026-03-27T03:05:07.643Z",
+    "lastUpdated": "2026-03-27T08:44:30.890Z",
     "totalLotsTracked": 91,
     "avgPriceLast12Months": 17477,
     "medianPriceLast12Months": 8890,
@@ -1322,16 +1329,16 @@
       },
       {
         "date": "2008-Q1",
-        "avgPrice": 16350,
-        "medianPrice": 20000,
-        "totalSales": 2,
-        "highPrice": 20000
+        "avgPrice": 12700,
+        "medianPrice": 12700,
+        "totalSales": 1,
+        "highPrice": 12700
       },
       {
         "date": "2008-Q2",
-        "avgPrice": 49000,
+        "avgPrice": 34500,
         "medianPrice": 49000,
-        "totalSales": 1,
+        "totalSales": 2,
         "highPrice": 49000
       },
       {
@@ -1342,7 +1349,7 @@
         "highPrice": 6250
       },
       {
-        "date": "2009-Q2",
+        "date": "2009-Q3",
         "avgPrice": 15875,
         "medianPrice": 15875,
         "totalSales": 1,
@@ -1618,7 +1625,7 @@
     ]
   },
   "barry-mcgee": {
-    "lastUpdated": "2026-03-27T03:05:07.644Z",
+    "lastUpdated": "2026-03-27T08:44:30.891Z",
     "totalLotsTracked": 88,
     "avgPriceLast12Months": 4748,
     "medianPriceLast12Months": 2540,
@@ -1934,7 +1941,7 @@
     ]
   },
   "keith-haring": {
-    "lastUpdated": "2026-03-27T03:05:07.644Z",
+    "lastUpdated": "2026-03-27T08:44:30.891Z",
     "totalLotsTracked": 330,
     "avgPriceLast12Months": 42798,
     "medianPriceLast12Months": 6985,
@@ -1996,9 +2003,16 @@
       },
       {
         "date": "2014-Q2",
-        "avgPrice": 1315448,
+        "avgPrice": 677000,
+        "medianPrice": 677000,
+        "totalSales": 1,
+        "highPrice": 677000
+      },
+      {
+        "date": "2014-Q3",
+        "avgPrice": 1953895,
         "medianPrice": 1953895,
-        "totalSales": 2,
+        "totalSales": 1,
         "highPrice": 1953895
       },
       {
@@ -2206,16 +2220,16 @@
       },
       {
         "date": "2025-Q2",
-        "avgPrice": 128906,
-        "medianPrice": 22581,
-        "totalSales": 11,
+        "avgPrice": 141518,
+        "medianPrice": 32258,
+        "totalSales": 10,
         "highPrice": 630000
       },
       {
         "date": "2025-Q3",
-        "avgPrice": 11383,
-        "medianPrice": 6985,
-        "totalSales": 20,
+        "avgPrice": 10974,
+        "medianPrice": 4064,
+        "totalSales": 21,
         "highPrice": 36043
       },
       {
