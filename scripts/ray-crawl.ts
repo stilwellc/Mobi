@@ -131,6 +131,14 @@ const ARTISTS: ArtistConfig[] = [
     christies: 'barry-mcgee',
     wright: 'barry-mcgee',
   },
+  {
+    slug: 'keith-haring',
+    displayName: 'Keith Haring',
+    phillips: { id: '11032', slug: 'keith-haring' },
+    sothebys: 'keith-haring',
+    christies: 'keith-haring',
+    wright: 'keith-haring',
+  },
 ];
 
 const DATA_DIR = path.join(process.cwd(), 'public', 'data', 'ray');
