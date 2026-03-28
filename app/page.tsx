@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import MobiusStrip from './components/MobiusStrip';
 import SectionPage from './components/SectionPage';
@@ -25,8 +25,12 @@ export default function MobiSite() {
   const [phase, setPhase] = useState(0);
   const [page, setPage] = useState('home');
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const [hoveredSection, setHoveredSection] = useState<string | null>(null);
+  const [expandedSection, setExpandedSection] = useState<string | null>(null);
   const [scrollY, setScrollY] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
+  const sectionContentRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const [sectionHeights, setSectionHeights] = useState<Record<string, number>>({});
   const { theme } = useTheme();
   const w = useWindowSize();
   const mobile = w < 768;
@@ -50,6 +54,28 @@ export default function MobiSite() {
   useEffect(() => {
     document.title = PAGE_TITLES[page] || 'Mobi — Design Studio';
   }, [page]);
+
+  // Measure section content heights for smooth collapse animation
+  const measureHeights = useCallback(() => {
+    const heights: Record<string, number> = {};
+    for (const id of Object.keys(sectionContentRefs.current)) {
+      const el = sectionContentRefs.current[id];
+      if (el) heights[id] = el.scrollHeight;
+    }
+    setSectionHeights(heights);
+  }, []);
+
+  useEffect(() => {
+    measureHeights();
+    window.addEventListener('resize', measureHeights);
+    return () => window.removeEventListener('resize', measureHeights);
+  }, [measureHeights]);
+
+  const toggleSection = (id: string) => {
+    setExpandedSection(prev => prev === id ? null : id);
+    // Re-measure after a frame so the DOM is updated
+    requestAnimationFrame(() => measureHeights());
+  };
 
   const navigate = (target: string) => {
     setPage(target);
@@ -75,6 +101,9 @@ export default function MobiSite() {
         @keyframes wipPulse{0%,100%{opacity:0.3}50%{opacity:0.8}}
         @keyframes menuReveal{from{opacity:0;transform:translateY(20px) scale(0.95)}to{opacity:1;transform:translateY(0) scale(1)}}
         @keyframes pageIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes cardReveal{from{opacity:0;transform:translateY(24px) scale(0.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+        @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+        @keyframes expandLine{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 
         .grain-overlay{position:fixed;top:-50%;left:-50%;width:200%;height:200%;pointer-events:none;z-index:9999;opacity:var(--grain-opacity);animation:grainShift 0.5s steps(5) infinite;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")}
 
@@ -107,6 +136,19 @@ export default function MobiSite() {
         .tag-chip{display:inline-block;padding:4px 14px;border-radius:100px;border:1px solid var(--color-chip-border);font-size:10px;color:var(--color-text-muted);letter-spacing:0.1em;text-transform:uppercase;font-weight:600;transition:all 0.4s ease;white-space:nowrap;backdrop-filter:blur(4px)}
 
         .page-transition{animation:pageIn 0.6s cubic-bezier(0.23,1,0.32,1) both}
+
+        .section-toggle{cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;transition:all 0.4s cubic-bezier(0.23,1,0.32,1)}
+        .section-toggle:hover .section-name{color:var(--color-text-primary)!important}
+        .section-toggle:hover .toggle-icon{opacity:0.8!important}
+
+        .section-content-wrap{overflow:hidden;transition:max-height 0.7s cubic-bezier(0.23,1,0.32,1),opacity 0.5s ease}
+
+        .card-stagger{animation:cardReveal 0.55s cubic-bezier(0.23,1,0.32,1) both}
+
+        .project-card{transition:all 0.5s cubic-bezier(0.23,1,0.32,1)}
+        .project-card:hover{box-shadow:0 20px 60px rgba(0,0,0,0.25),0 0 0 1px rgba(255,255,255,0.05)}
+
+        .section-count{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;border-radius:11px;font-size:10px;font-weight:700;letter-spacing:0.04em;transition:all 0.4s ease}
       `}</style>
 
       <div className="grain-overlay" />
@@ -286,7 +328,11 @@ export default function MobiSite() {
           {/* PROJECTS */}
           <section id="directory" style={{ padding: mobile ? '40px 0 20px' : '80px 0 40px', position: 'relative', zIndex: 1, scrollMarginTop: 80 }}>
             {sections.map((section, si) => {
-              const renderCard = (item: typeof section.items[0], opts?: { tall?: boolean; wide?: boolean; fontSize?: number }) => {
+              const isExpanded = expandedSection === section.id;
+              const isSectionHov = hoveredSection === section.id;
+              const contentHeight = sectionHeights[section.id] || 0;
+
+              const renderCard = (item: typeof section.items[0], idx: number, opts?: { tall?: boolean; wide?: boolean; fontSize?: number }) => {
                 const linked = hasLink(item);
                 const cardId = `${section.id}-${item.name}`;
                 const isHov = hoveredItem === cardId;
@@ -295,7 +341,7 @@ export default function MobiSite() {
                 const card = (
                   <div
                     key={cardId}
-                    className="project-card"
+                    className="project-card card-stagger"
                     onMouseEnter={() => setHoveredItem(cardId)}
                     onMouseLeave={() => setHoveredItem(null)}
                     style={{
@@ -310,40 +356,57 @@ export default function MobiSite() {
                       flexDirection: 'column',
                       justifyContent: 'space-between',
                       cursor: linked ? 'pointer' : 'default',
-                      transition: 'all 0.5s cubic-bezier(0.23, 1, 0.32, 1)',
-                      transform: isHov ? 'translateY(-4px)' : 'none',
+                      transform: isHov ? 'translateY(-6px) scale(1.01)' : 'none',
                       gridColumn: opts?.wide && !mobile ? 'span 2' : undefined,
                       gridRow: tall && !mobile ? 'span 2' : undefined,
+                      animationDelay: `${idx * 0.08}s`,
                     }}
                   >
+                    {/* Accent glow */}
                     <div style={{
                       position: 'absolute', top: -80, right: -80,
-                      width: tall ? 240 : 160, height: tall ? 240 : 160,
+                      width: tall ? 280 : 200, height: tall ? 280 : 200,
                       borderRadius: '50%',
-                      background: `radial-gradient(circle, ${section.accent}${isHov ? '18' : '08'} 0%, transparent 70%)`,
-                      transition: 'all 0.6s ease', pointerEvents: 'none',
+                      background: `radial-gradient(circle, ${section.accent}${isHov ? '1a' : '08'} 0%, transparent 70%)`,
+                      transition: 'all 0.8s ease', pointerEvents: 'none',
+                    }} />
+                    {/* Bottom accent line on hover */}
+                    <div style={{
+                      position: 'absolute', bottom: 0, left: '10%', right: '10%', height: 1,
+                      background: `linear-gradient(90deg, transparent, ${section.accent}${isHov ? '40' : '00'}, transparent)`,
+                      transition: 'all 0.5s ease', pointerEvents: 'none',
                     }} />
 
                     <div>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', marginBottom: mobile ? 20 : tall ? 40 : 28, minHeight: 20 }}>
-                        {item.wip && (
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                            <div className="wip-dot" />
-                            <span style={{ fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--color-text-subtle)', fontWeight: 600 }}>WIP</span>
-                          </div>
-                        )}
-                        {!linked && !item.wip && (
-                          <span style={{ fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--color-text-faint)', fontWeight: 600 }}>Soon</span>
-                        )}
-                        {linked && (
-                          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{
-                            opacity: isHov ? 0.6 : 0.15,
-                            transform: isHov ? 'translate(2px,-2px)' : 'none',
-                            transition: 'all 0.4s ease',
-                          }}>
-                            <path d="M4 12L12 4M12 4H7M12 4V9" stroke={section.accent} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-                          </svg>
-                        )}
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: mobile ? 20 : tall ? 40 : 28, minHeight: 20 }}>
+                        <span style={{
+                          fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase',
+                          color: isHov ? section.accent : 'var(--color-text-ghost)',
+                          fontWeight: 600, transition: 'color 0.4s ease',
+                          fontFamily: "'Syne', sans-serif",
+                        }}>
+                          {String(idx + 1).padStart(2, '0')}
+                        </span>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                          {item.wip && (
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                              <div className="wip-dot" />
+                              <span style={{ fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--color-text-subtle)', fontWeight: 600 }}>WIP</span>
+                            </div>
+                          )}
+                          {!linked && !item.wip && (
+                            <span style={{ fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--color-text-faint)', fontWeight: 600 }}>Soon</span>
+                          )}
+                          {linked && (
+                            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{
+                              opacity: isHov ? 0.7 : 0.12,
+                              transform: isHov ? 'translate(3px,-3px)' : 'none',
+                              transition: 'all 0.5s cubic-bezier(0.23,1,0.32,1)',
+                            }}>
+                              <path d="M4 12L12 4M12 4H7M12 4V9" stroke={section.accent} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                          )}
+                        </div>
                       </div>
 
                       <div style={{
@@ -361,21 +424,22 @@ export default function MobiSite() {
                     </div>
 
                     <div style={{ marginTop: mobile ? 20 : 24 }}>
-                      <p style={{ fontSize: 12, lineHeight: 1.6, color: 'var(--color-text-label)', fontWeight: 400, marginBottom: 14 }}>
+                      <p style={{ fontSize: 12, lineHeight: 1.7, color: 'var(--color-text-label)', fontWeight: 400, marginBottom: 14, maxWidth: 320 }}>
                         {item.description}
                       </p>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
                         <span style={{
                           fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', fontWeight: 600,
                           color: isHov ? section.accent : 'var(--color-text-subtle)',
-                          padding: '4px 12px', borderRadius: 100,
+                          padding: '5px 14px', borderRadius: 100,
                           border: `1px solid ${isHov ? section.accent + '33' : 'var(--color-chip-border)'}`,
+                          background: isHov ? section.accent + '0a' : 'transparent',
                           transition: 'all 0.4s ease',
                         }}>
                           {item.tag}
                         </span>
                         {item.handle && (
-                          <span style={{ fontSize: 11, color: 'var(--color-text-faint)' }}>{item.handle}</span>
+                          <span style={{ fontSize: 11, color: 'var(--color-text-faint)', fontWeight: 400 }}>{item.handle}</span>
                         )}
                       </div>
                     </div>
@@ -386,63 +450,151 @@ export default function MobiSite() {
               };
 
               return (
-                <div key={section.id} style={{ marginBottom: mobile ? 8 : 24 }}>
-                  {/* Section header */}
+                <div key={section.id}>
+                  {/* Section header — clickable toggle */}
                   <div style={{ padding: mobile ? '0 20px' : '0 56px', maxWidth: 1200, margin: '0 auto' }}>
-                    <div style={{
-                      display: 'flex', alignItems: 'center', gap: mobile ? 14 : 20,
-                      padding: mobile ? '28px 0 20px' : '48px 0 32px',
-                      borderTop: si === 0 ? 'none' : '1px solid var(--color-border)',
-                    }}>
-                      <div style={{ width: 8, height: 8, borderRadius: '50%', background: section.accent, opacity: 0.6, flexShrink: 0 }} />
-                      <span style={{
+                    <div
+                      className="section-toggle"
+                      onClick={() => toggleSection(section.id)}
+                      onMouseEnter={() => setHoveredSection(section.id)}
+                      onMouseLeave={() => setHoveredSection(null)}
+                      style={{
+                        display: 'flex', alignItems: 'center', gap: mobile ? 14 : 20,
+                        padding: mobile ? '28px 0' : '40px 0',
+                        borderTop: si === 0 ? 'none' : `1px solid ${isSectionHov ? 'var(--color-border-mid)' : 'var(--color-border)'}`,
+                        transition: 'border-color 0.4s ease',
+                      }}
+                    >
+                      {/* Accent dot — pulses when expanded */}
+                      <div style={{
+                        width: isExpanded ? 10 : 8,
+                        height: isExpanded ? 10 : 8,
+                        borderRadius: '50%',
+                        background: isExpanded ? section.accent : (isSectionHov ? section.accent : 'var(--color-text-ghost)'),
+                        opacity: isExpanded ? 0.9 : (isSectionHov ? 0.7 : 0.4),
+                        flexShrink: 0,
+                        transition: 'all 0.5s cubic-bezier(0.23,1,0.32,1)',
+                        boxShadow: isExpanded ? `0 0 16px ${section.accent}40` : 'none',
+                      }} />
+
+                      {/* Section name */}
+                      <span className="section-name" style={{
                         fontFamily: "'Cormorant Garamond', serif",
                         fontSize: mobile ? 28 : tablet ? 36 : 44,
-                        fontWeight: 300, letterSpacing: '-0.02em', color: 'var(--color-fg-dim)',
+                        fontWeight: 300, letterSpacing: '-0.02em',
+                        color: isExpanded ? 'var(--color-text-primary)' : (isSectionHov ? 'var(--color-fg-dim)' : 'var(--color-text-secondary)'),
+                        transition: 'color 0.4s ease',
                       }}>
                         {section.label}
                       </span>
-                      <div style={{ flex: 1, height: 1, background: `linear-gradient(90deg, ${section.accent}20, transparent 60%)` }} />
-                      <span style={{ fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--color-text-ghost)', fontWeight: 600, flexShrink: 0 }}>
-                        {section.tagline}
+
+                      {/* Project count pill */}
+                      <span className="section-count" style={{
+                        color: isExpanded ? section.accent : 'var(--color-text-ghost)',
+                        background: isExpanded ? section.accent + '12' : 'var(--color-overlay-light)',
+                        border: `1px solid ${isExpanded ? section.accent + '25' : 'var(--color-border)'}`,
+                        padding: '2px 10px',
+                      }}>
+                        {section.items.length}
                       </span>
+
+                      {/* Gradient line */}
+                      <div style={{
+                        flex: 1, height: 1,
+                        background: isExpanded
+                          ? `linear-gradient(90deg, ${section.accent}30, ${section.accent}08, transparent 80%)`
+                          : `linear-gradient(90deg, var(--color-border-mid), transparent 60%)`,
+                        transition: 'all 0.5s ease',
+                      }} />
+
+                      {/* Tagline — only visible on desktop */}
+                      {!mobile && (
+                        <span style={{
+                          fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase',
+                          color: isExpanded ? section.accent + 'aa' : 'var(--color-text-ghost)',
+                          fontWeight: 600, flexShrink: 0,
+                          opacity: isExpanded || isSectionHov ? 1 : 0.6,
+                          transition: 'all 0.4s ease',
+                        }}>
+                          {section.tagline}
+                        </span>
+                      )}
+
+                      {/* Toggle icon */}
+                      <div className="toggle-icon" style={{
+                        width: mobile ? 28 : 32, height: mobile ? 28 : 32,
+                        borderRadius: '50%',
+                        border: `1px solid ${isExpanded ? section.accent + '40' : 'var(--color-border-mid)'}`,
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        flexShrink: 0,
+                        background: isExpanded ? section.accent + '0c' : 'transparent',
+                        transition: 'all 0.5s cubic-bezier(0.23,1,0.32,1)',
+                        opacity: isSectionHov || isExpanded ? 0.9 : 0.3,
+                      }}>
+                        <svg
+                          width="12" height="12" viewBox="0 0 12 12" fill="none"
+                          style={{
+                            transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
+                            transition: 'transform 0.5s cubic-bezier(0.23,1,0.32,1)',
+                          }}
+                        >
+                          <path d="M2.5 4.5L6 8L9.5 4.5" stroke={isExpanded ? section.accent : 'var(--color-text-subtle)'} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Per-section editorial layouts */}
-                  <div style={{ padding: mobile ? '0 20px' : '0 56px', maxWidth: 1200, margin: '0 auto' }}>
-                    {section.id === 'physical' && !mobile ? (
-                      /* Physical: hero left (tall) + 2 stacked right */
-                      <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gridTemplateRows: 'auto auto', gap: 18 }}>
-                        <div style={{ gridRow: 'span 2' }}>
-                          {renderCard(section.items[0], { tall: true, fontSize: 42 })}
+                  {/* Collapsible content */}
+                  <div
+                    className="section-content-wrap"
+                    style={{
+                      maxHeight: isExpanded ? (contentHeight || 2000) : 0,
+                      opacity: isExpanded ? 1 : 0,
+                      pointerEvents: isExpanded ? 'auto' : 'none',
+                    }}
+                  >
+                    <div
+                      ref={el => { sectionContentRefs.current[section.id] = el; }}
+                      style={{ padding: mobile ? '0 20px 32px' : '0 56px 48px', maxWidth: 1200, margin: '0 auto' }}
+                    >
+                      {/* Section description */}
+                      <p style={{
+                        fontSize: mobile ? 13 : 15, lineHeight: 1.8,
+                        color: 'var(--color-text-muted)', fontWeight: 400,
+                        maxWidth: 480, marginBottom: mobile ? 24 : 32,
+                      }}>
+                        {section.description}
+                      </p>
+
+                      {/* Editorial card layouts */}
+                      {section.id === 'physical' && !mobile ? (
+                        <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gridTemplateRows: 'auto auto', gap: 18 }}>
+                          <div style={{ gridRow: 'span 2' }}>
+                            {renderCard(section.items[0], 0, { tall: true, fontSize: 42 })}
+                          </div>
+                          {section.items.slice(1).map((item, i) => renderCard(item, i + 1))}
                         </div>
-                        {section.items.slice(1).map(item => renderCard(item))}
-                      </div>
-                    ) : section.id === 'digital' && !mobile ? (
-                      /* Digital: 2 wide top, 2 below — Ray is wide */
-                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 18 }}>
-                        {renderCard(section.items[3], { wide: false, fontSize: 38 })}
-                        {renderCard(section.items[0], { wide: false, fontSize: 38 })}
-                        {renderCard(section.items[1])}
-                        {renderCard(section.items[2])}
-                      </div>
-                    ) : section.id === 'shop' && !mobile ? (
-                      /* Shop: single full-width card, more horizontal */
-                      <div>
-                        {renderCard(section.items[0], { wide: false, fontSize: 48 })}
-                      </div>
-                    ) : section.id === 'social' && !mobile ? (
-                      /* Social: 3 equal columns */
-                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 18 }}>
-                        {section.items.map(item => renderCard(item))}
-                      </div>
-                    ) : (
-                      /* Mobile: stack everything */
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-                        {section.items.map(item => renderCard(item))}
-                      </div>
-                    )}
+                      ) : section.id === 'digital' && !mobile ? (
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 18 }}>
+                          {renderCard(section.items[3], 0, { wide: false, fontSize: 38 })}
+                          {renderCard(section.items[0], 1, { wide: false, fontSize: 38 })}
+                          {renderCard(section.items[1], 2)}
+                          {renderCard(section.items[2], 3)}
+                        </div>
+                      ) : section.id === 'shop' && !mobile ? (
+                        <div>
+                          {renderCard(section.items[0], 0, { wide: false, fontSize: 48 })}
+                        </div>
+                      ) : section.id === 'social' && !mobile ? (
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 18 }}>
+                          {section.items.map((item, i) => renderCard(item, i))}
+                        </div>
+                      ) : (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                          {section.items.map((item, i) => renderCard(item, i))}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               );
