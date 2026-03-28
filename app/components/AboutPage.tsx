@@ -1,22 +1,7 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
-
-function useScrollReveal(threshold = 0.15) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setVisible(true); obs.disconnect(); } },
-      { threshold }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [threshold]);
-  return { ref, visible };
-}
+import { useState, useEffect } from 'react';
+import { useScrollReveal } from './hooks';
 
 const PRINCIPLES = [
   {
@@ -89,7 +74,7 @@ export default function AboutPage({ mobile, tablet, navigate }: {
         @keyframes aboutHeroIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
         @keyframes svgDraw{from{stroke-dashoffset:300}to{stroke-dashoffset:0}}
         .about-principle{position:relative;border-radius:20px;overflow:hidden;background:var(--color-bg-card);border:1px solid var(--color-border);transition:all 0.5s cubic-bezier(0.23,1,0.32,1)}
-        .about-principle:hover{border-color:rgba(255,255,255,0.08);box-shadow:0 20px 60px rgba(0,0,0,0.15);transform:translateY(-4px)}
+        .about-principle:hover{border-color:var(--color-border-strong);box-shadow:var(--shadow-card-hover);transform:translateY(-4px)}
         .about-principle::before{content:'';position:absolute;inset:0;border-radius:20px;padding:1px;background:linear-gradient(135deg,var(--color-border-mid),transparent 40%,transparent 60%,var(--color-overlay-light));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
         .about-help-item{transition:all 0.4s cubic-bezier(0.23,1,0.32,1)}
         .about-help-item:hover{padding-left:${mobile ? 0 : 12}px}
@@ -238,7 +223,7 @@ export default function AboutPage({ mobile, tablet, navigate }: {
       >
         <div style={{
           marginBottom: mobile ? 32 : 48,
-          opacity: principlesReveal.visible ? 1 : 0,
+          opacity: principlesReveal.isVisible ? 1 : 0,
           transition: 'opacity 0.6s ease',
         }}>
           <span style={{
@@ -264,8 +249,8 @@ export default function AboutPage({ mobile, tablet, navigate }: {
                   padding: mobile ? '28px 24px' : '36px 32px',
                   minHeight: mobile ? 200 : 260,
                   display: 'flex', flexDirection: 'column',
-                  opacity: principlesReveal.visible ? 1 : 0,
-                  transform: principlesReveal.visible ? 'translateY(0)' : 'translateY(20px)',
+                  opacity: principlesReveal.isVisible ? 1 : 0,
+                  transform: principlesReveal.isVisible ? 'translateY(0)' : 'translateY(20px)',
                   transition: `all 0.6s cubic-bezier(0.23,1,0.32,1) ${i * 0.1}s`,
                 }}
               >
@@ -351,8 +336,8 @@ export default function AboutPage({ mobile, tablet, navigate }: {
           display: 'grid',
           gridTemplateColumns: mobile ? '1fr' : '300px 1fr',
           gap: mobile ? 32 : 80,
-          opacity: helpReveal.visible ? 1 : 0,
-          transform: helpReveal.visible ? 'translateY(0)' : 'translateY(20px)',
+          opacity: helpReveal.isVisible ? 1 : 0,
+          transform: helpReveal.isVisible ? 'translateY(0)' : 'translateY(20px)',
           transition: 'all 0.8s cubic-bezier(0.23,1,0.32,1)',
         }}>
           {/* Left heading */}
@@ -386,8 +371,8 @@ export default function AboutPage({ mobile, tablet, navigate }: {
                     paddingBottom: mobile ? 28 : 36,
                     marginBottom: mobile ? 28 : 36,
                     borderBottom: i < HELPS.length - 1 ? '1px solid var(--color-border)' : 'none',
-                    opacity: helpReveal.visible ? 1 : 0,
-                    transform: helpReveal.visible ? 'translateY(0)' : 'translateY(16px)',
+                    opacity: helpReveal.isVisible ? 1 : 0,
+                    transform: helpReveal.isVisible ? 'translateY(0)' : 'translateY(16px)',
                     transition: `all 0.6s cubic-bezier(0.23,1,0.32,1) ${i * 0.08 + 0.1}s`,
                   }}
                 >
@@ -431,8 +416,8 @@ export default function AboutPage({ mobile, tablet, navigate }: {
           borderRadius: 24,
           background: 'var(--color-bg-card)',
           border: '1px solid var(--color-border)',
-          opacity: visionReveal.visible ? 1 : 0,
-          transform: visionReveal.visible ? 'translateY(0)' : 'translateY(20px)',
+          opacity: visionReveal.isVisible ? 1 : 0,
+          transform: visionReveal.isVisible ? 'translateY(0)' : 'translateY(20px)',
           transition: 'all 0.8s cubic-bezier(0.23,1,0.32,1)',
         }}>
           {/* Gradient border effect */}

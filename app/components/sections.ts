@@ -38,6 +38,7 @@ export const sections: Section[] = [
       {
         name: 'Soirée', tag: 'Art',
         description: 'Curated art discovery — filtered, refined, always surprising.',
+        url: 'https://soiree.today/',
         logoStyle: { fontFamily: "'Playfair Display', serif", fontStyle: 'italic', fontWeight: 400, letterSpacing: '0.02em' },
       },
       {

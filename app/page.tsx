@@ -8,23 +8,10 @@ import AboutPage from './components/AboutPage';
 import ItemWrapper from './components/ItemWrapper';
 import ThemeToggle from './components/ThemeToggle';
 import { useTheme } from './components/ThemeProvider';
-import { useWindowSize } from './components/hooks';
+import { useWindowSize, useScrollReveal } from './components/hooks';
 import { sections } from './components/sections';
+import { CARD_GRADIENTS } from './components/cardStyles';
 
-// Per-card generative gradient backgrounds keyed by project name
-const CARD_GRADIENTS: Record<string, string> = {
-  'Project 1122': 'linear-gradient(135deg, #D4B89615 0%, #D4B89608 40%, transparent 70%)',
-  'Curation Archive': 'linear-gradient(160deg, #D4B89610 0%, #C4A88608 30%, transparent 60%)',
-  'Restoration Projects': 'linear-gradient(145deg, #D4B89612 0%, #E8D5BC08 35%, transparent 65%)',
-  '3D Prints': 'linear-gradient(135deg, #96B8D418 0%, #96B8D408 40%, transparent 70%)',
-  'Soirée': 'linear-gradient(160deg, #96B8D412 0%, #B8D0E808 30%, transparent 60%)',
-  'Pricing Simulator': 'linear-gradient(145deg, #96B8D410 0%, #96B8D406 35%, transparent 65%)',
-  'Ray': 'linear-gradient(135deg, #96B8D418 0%, #7AA8CC08 40%, transparent 70%)',
-  'For Sale': 'linear-gradient(135deg, #B8D49618 0%, #B8D49608 40%, transparent 70%)',
-  'TikTok': 'linear-gradient(135deg, #D496B815 0%, #D496B808 40%, transparent 70%)',
-  'Instagram': 'linear-gradient(160deg, #D496B812 0%, #E8B0D008 30%, transparent 60%)',
-  'X': 'linear-gradient(145deg, #D496B810 0%, #D496B806 35%, transparent 65%)',
-};
 
 // Abstract SVG pattern per section for visual texture
 const SECTION_PATTERNS: Record<string, (accent: string, opacity: number) => React.ReactNode> = {
@@ -64,24 +51,6 @@ const SECTION_PATTERNS: Record<string, (accent: string, opacity: number) => Reac
   ),
 };
 
-// Hook for IntersectionObserver scroll reveals
-function useScrollReveal(threshold = 0.15) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setIsVisible(true); observer.disconnect(); } },
-      { threshold }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [threshold]);
-
-  return { ref, isVisible };
-}
 
 const PAGE_TITLES: Record<string, string> = {
   home: 'Mobi — Design Studio',
@@ -206,7 +175,7 @@ export default function MobiSite() {
         .project-card::before{content:'';position:absolute;inset:0;border-radius:20px;padding:1px;background:linear-gradient(135deg,var(--color-border-mid),transparent 40%,transparent 60%,var(--color-overlay-light));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
 
         .hero-cta{display:inline-flex;align-items:center;gap:14px;padding:18px 36px;border-radius:60px;border:1px solid rgba(212,184,150,0.3);background:rgba(212,184,150,0.06);color:var(--color-accent-gold);font-family:'Syne',sans-serif;font-size:13px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;transition:all 0.5s cubic-bezier(0.23,1,0.32,1);backdrop-filter:blur(10px);-webkit-tap-highlight-color:transparent}
-        .hero-cta:hover{background:var(--color-accent-gold);border-color:var(--color-accent-gold);color:#060606;box-shadow:0 8px 40px rgba(212,184,150,0.2),0 0 80px rgba(212,184,150,0.08);transform:translateY(-2px)}
+        .hero-cta:hover{background:var(--color-accent-gold);border-color:var(--color-accent-gold);color:var(--color-bg);box-shadow:var(--shadow-btn-hover);transform:translateY(-2px)}
         .hero-cta:active{transform:scale(0.97)}
         .hero-cta svg{transition:transform 0.4s ease}
         .hero-cta:hover svg{transform:translateX(4px)}
@@ -230,7 +199,7 @@ export default function MobiSite() {
         .card-stagger{animation:cardReveal 0.55s cubic-bezier(0.23,1,0.32,1) both}
 
         .project-card{transition:all 0.5s cubic-bezier(0.23,1,0.32,1)}
-        .project-card:hover{box-shadow:0 20px 60px rgba(0,0,0,0.25),0 0 0 1px rgba(255,255,255,0.05)}
+        .project-card:hover{box-shadow:var(--shadow-card-hover)}
 
         .section-count{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;border-radius:11px;font-size:10px;font-weight:700;letter-spacing:0.04em;transition:all 0.4s ease}
 
@@ -243,7 +212,7 @@ export default function MobiSite() {
         .page-fade-out{animation:fadeOut 0.3s cubic-bezier(0.23,1,0.32,1) forwards}
 
         .magnetic-btn{transition:all 0.4s cubic-bezier(0.23,1,0.32,1)}
-        .magnetic-btn:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(212,184,150,0.15)}
+        .magnetic-btn:hover{transform:translateY(-3px);box-shadow:var(--shadow-btn-hover)}
 
         .footer-col-title{font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--color-text-ghost);font-weight:700;margin-bottom:16px}
 

@@ -4,8 +4,26 @@ import './globals.css'
 import ThemeProvider from './components/ThemeProvider'
 
 export const metadata: Metadata = {
-  title: 'Mobi - Design Studio',
-  description: 'A design studio creating physical, digital, and social experiences',
+  title: 'Mobi — Design Studio',
+  description: 'Where design transcends boundaries — physical spaces, digital products, cultural connections.',
+  openGraph: {
+    title: 'Mobi — Design Studio',
+    description: 'Where design transcends boundaries — physical spaces, digital products, cultural connections.',
+    siteName: 'Mobi',
+    type: 'website',
+    locale: 'en_US',
+    images: [{ url: '/images/mobi-logo.png', width: 512, height: 512, alt: 'Mobi Design Studio' }],
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Mobi — Design Studio',
+    description: 'Where design transcends boundaries — physical spaces, digital products, cultural connections.',
+    images: ['/images/mobi-logo.png'],
+  },
+  icons: {
+    icon: '/images/mobi-logo.png',
+    apple: '/images/mobi-logo.png',
+  },
 }
 
 export default function RootLayout({

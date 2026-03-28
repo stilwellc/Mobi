@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Section } from './types';
 import ItemWrapper from './ItemWrapper';
+import { CARD_GRADIENTS } from './cardStyles';
 
 // Reuse the same SVG patterns from the homepage
 const SECTION_HEROES: Record<string, (accent: string) => React.ReactNode> = {
@@ -60,19 +61,6 @@ const SECTION_HEROES: Record<string, (accent: string) => React.ReactNode> = {
   ),
 };
 
-const CARD_GRADIENTS: Record<string, string> = {
-  'Project 1122': 'linear-gradient(135deg, #D4B89618 0%, #D4B89608 40%, transparent 70%)',
-  'Curation Archive': 'linear-gradient(160deg, #D4B89612 0%, #C4A88608 30%, transparent 60%)',
-  'Restoration Projects': 'linear-gradient(145deg, #D4B89614 0%, #E8D5BC08 35%, transparent 65%)',
-  '3D Prints': 'linear-gradient(135deg, #96B8D41a 0%, #96B8D408 40%, transparent 70%)',
-  'Soirée': 'linear-gradient(160deg, #96B8D414 0%, #B8D0E808 30%, transparent 60%)',
-  'Pricing Simulator': 'linear-gradient(145deg, #96B8D412 0%, #96B8D406 35%, transparent 65%)',
-  'Ray': 'linear-gradient(135deg, #96B8D41a 0%, #7AA8CC08 40%, transparent 70%)',
-  'For Sale': 'linear-gradient(135deg, #B8D4961a 0%, #B8D49608 40%, transparent 70%)',
-  'TikTok': 'linear-gradient(135deg, #D496B818 0%, #D496B808 40%, transparent 70%)',
-  'Instagram': 'linear-gradient(160deg, #D496B814 0%, #E8B0D008 30%, transparent 60%)',
-  'X': 'linear-gradient(145deg, #D496B812 0%, #D496B806 35%, transparent 65%)',
-};
 
 export default function SectionPage({ section, mobile, tablet, navigate }: {
   section: Section;
@@ -110,7 +98,7 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
         @keyframes heroPatternFade{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
         @keyframes itemSlideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
         .section-card{position:relative;border-radius:20px;overflow:hidden;background:var(--color-bg-card);border:1px solid var(--color-border);transition:all 0.5s cubic-bezier(0.23,1,0.32,1)}
-        .section-card:hover{border-color:rgba(255,255,255,0.08);box-shadow:0 20px 60px rgba(0,0,0,0.2),0 0 0 1px rgba(255,255,255,0.04);transform:translateY(-4px)}
+        .section-card:hover{border-color:var(--color-border-strong);box-shadow:var(--shadow-card-hover);transform:translateY(-4px)}
         .section-card::before{content:'';position:absolute;inset:0;border-radius:20px;padding:1px;background:linear-gradient(135deg,var(--color-border-mid),transparent 40%,transparent 60%,var(--color-overlay-light));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
       `}</style>
 
