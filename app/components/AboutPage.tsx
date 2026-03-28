@@ -56,7 +56,7 @@ export default function AboutPage({ mobile, tablet, navigate }: {
   tablet: boolean;
   navigate: (t: string) => void;
 }) {
-  const [loaded, setLoaded] = useState(false);
+  const [phase, setPhase] = useState(0);
   const [hoveredPrinciple, setHoveredPrinciple] = useState<number | null>(null);
   const [hoveredHelp, setHoveredHelp] = useState<number | null>(null);
   const principlesReveal = useScrollReveal(0.1);
@@ -64,14 +64,19 @@ export default function AboutPage({ mobile, tablet, navigate }: {
   const visionReveal = useScrollReveal(0.15);
   const px = mobile ? 20 : tablet ? 36 : 56;
 
+  // Phased entrance — matches homepage cadence
   useEffect(() => {
-    requestAnimationFrame(() => setLoaded(true));
+    const t1 = setTimeout(() => setPhase(1), 100);
+    const t2 = setTimeout(() => setPhase(2), 400);
+    const t3 = setTimeout(() => setPhase(3), 700);
+    const t4 = setTimeout(() => setPhase(4), 1000);
+    const t5 = setTimeout(() => setPhase(5), 1300);
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4); clearTimeout(t5); };
   }, []);
 
   return (
     <div style={{ minHeight: '100vh', position: 'relative', overflow: 'hidden' }}>
       <style>{`
-        @keyframes aboutHeroIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
         @keyframes svgDraw{from{stroke-dashoffset:300}to{stroke-dashoffset:0}}
         .about-principle{position:relative;border-radius:20px;overflow:hidden;background:var(--color-bg-card);border:1px solid var(--color-border);transition:all 0.5s cubic-bezier(0.23,1,0.32,1)}
         .about-principle:hover{border-color:var(--color-border-strong);box-shadow:var(--shadow-card-hover);transform:translateY(-4px)}
@@ -92,9 +97,9 @@ export default function AboutPage({ mobile, tablet, navigate }: {
         {!mobile && (
           <div style={{
             position: 'absolute', top: 100, right: 40, width: '45%', height: '80%',
-            opacity: loaded ? 0.5 : 0,
-            transform: loaded ? 'scale(1)' : 'scale(0.95)',
-            transition: 'all 1.2s cubic-bezier(0.23,1,0.32,1) 0.3s',
+            opacity: phase >= 2 ? 0.5 : 0,
+            transform: phase >= 2 ? 'scale(1)' : 'scale(0.92)',
+            transition: 'all 1.4s cubic-bezier(0.23,1,0.32,1)',
             pointerEvents: 'none',
           }}>
             <svg viewBox="0 0 400 300" fill="none" style={{ width: '100%', height: '100%' }}>
@@ -102,7 +107,7 @@ export default function AboutPage({ mobile, tablet, navigate }: {
                 d="M100 150C100 100 140 70 180 90C220 110 240 80 280 80C320 80 350 110 350 150C350 190 320 220 280 220C240 220 220 190 180 210C140 230 100 200 100 150Z"
                 stroke="var(--color-accent-gold)" strokeWidth="0.6" opacity="0.2"
                 strokeDasharray="300" strokeDashoffset="0"
-                style={{ animation: 'svgDraw 3s ease forwards' }}
+                style={{ animation: phase >= 2 ? 'svgDraw 3s ease forwards' : 'none' }}
               />
               <path
                 d="M120 150C120 115 150 90 180 105C210 120 230 95 260 95C290 95 310 115 310 150C310 185 290 205 260 205C230 205 210 180 180 195C150 210 120 185 120 150Z"
@@ -126,21 +131,31 @@ export default function AboutPage({ mobile, tablet, navigate }: {
           background: 'radial-gradient(circle, rgba(212,184,150,0.05) 0%, transparent 60%)',
           filter: 'blur(60px)',
           pointerEvents: 'none',
+          opacity: phase >= 1 ? 1 : 0,
+          transition: 'opacity 1.5s ease',
+        }} />
+
+        {/* Accent line drawing in */}
+        <div style={{
+          position: 'absolute', top: mobile ? '18%' : '15%', left: mobile ? '5%' : `${px}px`,
+          width: phase >= 1 ? (mobile ? 40 : 80) : 0, height: 1,
+          background: 'var(--color-accent-gold)', opacity: 0.4,
+          transition: 'width 1.2s cubic-bezier(0.23,1,0.32,1)',
         }} />
 
         {/* Back */}
         <div style={{
           marginBottom: mobile ? 36 : 56,
-          opacity: loaded ? 1 : 0,
-          transform: loaded ? 'translateY(0)' : 'translateY(10px)',
-          transition: 'all 0.6s ease',
+          opacity: phase >= 1 ? 1 : 0,
+          transform: phase >= 1 ? 'translateY(0)' : 'translateY(15px)',
+          transition: 'all 0.8s cubic-bezier(0.23,1,0.32,1)',
         }}>
           <span onClick={() => navigate('home')} style={{
             fontSize: 11, color: 'var(--color-text-subtle)', cursor: 'pointer', fontWeight: 600,
             letterSpacing: '0.15em', textTransform: 'uppercase',
             display: 'inline-flex', alignItems: 'center', gap: 8,
           }}>
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
               <path d="M10 4L6 8L10 12" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
             Back
@@ -150,20 +165,24 @@ export default function AboutPage({ mobile, tablet, navigate }: {
         {/* Accent label */}
         <div style={{
           display: 'flex', alignItems: 'center', gap: 14, marginBottom: mobile ? 16 : 24,
-          opacity: loaded ? 1 : 0,
-          transform: loaded ? 'translateY(0)' : 'translateY(20px)',
-          transition: 'all 0.7s cubic-bezier(0.23,1,0.32,1) 0.1s',
+          opacity: phase >= 2 ? 1 : 0,
+          transform: phase >= 2 ? 'translateY(0)' : 'translateY(20px)',
+          transition: 'all 0.8s cubic-bezier(0.23,1,0.32,1)',
         }}>
           <div style={{
-            width: 10, height: 10, borderRadius: '50%',
+            width: phase >= 2 ? 10 : 0, height: phase >= 2 ? 10 : 0, borderRadius: '50%',
             background: 'var(--color-accent-gold)', opacity: 0.7,
-            boxShadow: '0 0 12px rgba(212,184,150,0.25)',
+            boxShadow: phase >= 2 ? '0 0 12px rgba(212,184,150,0.25)' : 'none',
+            transition: 'all 0.6s cubic-bezier(0.23,1,0.32,1)',
           }} />
           <span style={{
             fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase',
             color: 'var(--color-accent-gold)', fontWeight: 700, opacity: 0.8,
           }}>Philosophy & Vision</span>
-          <div style={{ width: 40, height: 1, background: 'var(--color-accent-gold)', opacity: 0.2 }} />
+          <div style={{
+            width: phase >= 2 ? 40 : 0, height: 1, background: 'var(--color-accent-gold)', opacity: 0.2,
+            transition: 'width 0.8s cubic-bezier(0.23,1,0.32,1) 0.1s',
+          }} />
         </div>
 
         {/* Title */}
@@ -172,9 +191,9 @@ export default function AboutPage({ mobile, tablet, navigate }: {
           fontSize: mobile ? 56 : tablet ? 80 : 110,
           fontWeight: 300, letterSpacing: '-0.04em', lineHeight: 0.9,
           marginBottom: mobile ? 24 : 36,
-          opacity: loaded ? 1 : 0,
-          transform: loaded ? 'translateY(0)' : 'translateY(30px)',
-          transition: 'all 0.8s cubic-bezier(0.23,1,0.32,1) 0.15s',
+          opacity: phase >= 2 ? 1 : 0,
+          transform: phase >= 2 ? 'translateY(0)' : 'translateY(40px)',
+          transition: 'all 1s cubic-bezier(0.23,1,0.32,1) 0.1s',
           position: 'relative', zIndex: 1,
         }}>
           About <span style={{ fontStyle: 'italic', color: 'var(--color-accent-gold)' }}>mobi</span>
@@ -186,9 +205,9 @@ export default function AboutPage({ mobile, tablet, navigate }: {
           gridTemplateColumns: mobile ? '1fr' : '1fr 1fr',
           gap: mobile ? 20 : 48,
           maxWidth: 900,
-          opacity: loaded ? 1 : 0,
-          transform: loaded ? 'translateY(0)' : 'translateY(20px)',
-          transition: 'all 0.8s cubic-bezier(0.23,1,0.32,1) 0.25s',
+          opacity: phase >= 3 ? 1 : 0,
+          transform: phase >= 3 ? 'translateY(0)' : 'translateY(25px)',
+          transition: 'all 0.9s cubic-bezier(0.23,1,0.32,1)',
           position: 'relative', zIndex: 1,
         }}>
           <p style={{ fontSize: mobile ? 15 : 17, lineHeight: 1.9, color: 'var(--color-text-muted)', fontWeight: 400 }}>
@@ -204,11 +223,18 @@ export default function AboutPage({ mobile, tablet, navigate }: {
       <div style={{ padding: `0 ${px}px`, maxWidth: 1200, margin: '0 auto' }}>
         <div style={{
           display: 'flex', alignItems: 'center', gap: 16,
-          opacity: loaded ? 1 : 0,
-          transition: 'opacity 0.8s ease 0.4s',
+          opacity: phase >= 5 ? 1 : 0,
+          transition: 'opacity 1s ease',
         }}>
-          <div style={{ width: 32, height: 1, background: 'var(--color-accent-gold)', opacity: 0.3 }} />
-          <div style={{ width: 4, height: 4, borderRadius: '50%', background: 'var(--color-accent-gold)', opacity: 0.4 }} />
+          <div style={{
+            width: phase >= 5 ? 32 : 0, height: 1, background: 'var(--color-accent-gold)', opacity: 0.3,
+            transition: 'width 0.8s cubic-bezier(0.23,1,0.32,1)',
+          }} />
+          <div style={{
+            width: phase >= 5 ? 4 : 0, height: phase >= 5 ? 4 : 0, borderRadius: '50%',
+            background: 'var(--color-accent-gold)', opacity: 0.4,
+            transition: 'all 0.5s cubic-bezier(0.23,1,0.32,1) 0.2s',
+          }} />
           <div style={{ flex: 1, height: 1, background: 'linear-gradient(90deg, var(--color-border-mid), transparent 80%)' }} />
         </div>
       </div>
@@ -224,7 +250,8 @@ export default function AboutPage({ mobile, tablet, navigate }: {
         <div style={{
           marginBottom: mobile ? 32 : 48,
           opacity: principlesReveal.isVisible ? 1 : 0,
-          transition: 'opacity 0.6s ease',
+          transform: principlesReveal.isVisible ? 'translateY(0)' : 'translateY(12px)',
+          transition: 'all 0.6s ease',
         }}>
           <span style={{
             fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase',
@@ -250,8 +277,8 @@ export default function AboutPage({ mobile, tablet, navigate }: {
                   minHeight: mobile ? 200 : 260,
                   display: 'flex', flexDirection: 'column',
                   opacity: principlesReveal.isVisible ? 1 : 0,
-                  transform: principlesReveal.isVisible ? 'translateY(0)' : 'translateY(20px)',
-                  transition: `all 0.6s cubic-bezier(0.23,1,0.32,1) ${i * 0.1}s`,
+                  transform: principlesReveal.isVisible ? 'translateY(0)' : 'translateY(24px) scale(0.97)',
+                  transition: `all 0.7s cubic-bezier(0.23,1,0.32,1) ${i * 0.12}s`,
                 }}
               >
                 {/* Gradient bg */}
@@ -417,7 +444,7 @@ export default function AboutPage({ mobile, tablet, navigate }: {
           background: 'var(--color-bg-card)',
           border: '1px solid var(--color-border)',
           opacity: visionReveal.isVisible ? 1 : 0,
-          transform: visionReveal.isVisible ? 'translateY(0)' : 'translateY(20px)',
+          transform: visionReveal.isVisible ? 'translateY(0)' : 'translateY(24px) scale(0.98)',
           transition: 'all 0.8s cubic-bezier(0.23,1,0.32,1)',
         }}>
           {/* Gradient border effect */}

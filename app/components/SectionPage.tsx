@@ -69,15 +69,21 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
   navigate: (t: string) => void;
 }) {
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
-  const [loaded, setLoaded] = useState(false);
+  const [phase, setPhase] = useState(0);
   const [itemsVisible, setItemsVisible] = useState(false);
   const itemsRef = useRef<HTMLDivElement>(null);
   const px = mobile ? 20 : tablet ? 36 : 56;
   const hasLink = (item: { href?: string; url?: string }) => !!(item.href || item.url);
   const heroFn = SECTION_HEROES[section.id];
 
+  // Phased entrance — matches homepage cadence
   useEffect(() => {
-    requestAnimationFrame(() => setLoaded(true));
+    const t1 = setTimeout(() => setPhase(1), 100);
+    const t2 = setTimeout(() => setPhase(2), 400);
+    const t3 = setTimeout(() => setPhase(3), 700);
+    const t4 = setTimeout(() => setPhase(4), 1000);
+    const t5 = setTimeout(() => setPhase(5), 1300);
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4); clearTimeout(t5); };
   }, []);
 
   useEffect(() => {
@@ -94,9 +100,6 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
   return (
     <div style={{ minHeight: '100vh', position: 'relative', overflow: 'hidden' }}>
       <style>{`
-        @keyframes heroSlideIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-        @keyframes heroPatternFade{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
-        @keyframes itemSlideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
         .section-card{position:relative;border-radius:20px;overflow:hidden;background:var(--color-bg-card);border:1px solid var(--color-border);transition:all 0.5s cubic-bezier(0.23,1,0.32,1)}
         .section-card:hover{border-color:var(--color-border-strong);box-shadow:var(--shadow-card-hover);transform:translateY(-4px)}
         .section-card::before{content:'';position:absolute;inset:0;border-radius:20px;padding:1px;background:linear-gradient(135deg,var(--color-border-mid),transparent 40%,transparent 60%,var(--color-overlay-light));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
@@ -116,9 +119,9 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
         {!mobile && heroFn && (
           <div style={{
             position: 'absolute', top: 100, right: 0, width: '50%', height: '80%',
-            opacity: loaded ? 0.6 : 0,
-            transform: loaded ? 'scale(1)' : 'scale(0.95)',
-            transition: 'all 1.2s cubic-bezier(0.23,1,0.32,1) 0.3s',
+            opacity: phase >= 2 ? 0.6 : 0,
+            transform: phase >= 2 ? 'scale(1)' : 'scale(0.92)',
+            transition: 'all 1.4s cubic-bezier(0.23,1,0.32,1)',
             pointerEvents: 'none',
           }}>
             {heroFn(section.accent)}
@@ -135,21 +138,31 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
           background: `radial-gradient(circle, ${section.accent}0c 0%, transparent 60%)`,
           filter: 'blur(60px)',
           pointerEvents: 'none',
+          opacity: phase >= 1 ? 1 : 0,
+          transition: 'opacity 1.5s ease',
+        }} />
+
+        {/* Accent line drawing in */}
+        <div style={{
+          position: 'absolute', top: mobile ? '18%' : '15%', left: mobile ? '5%' : `${px}px`,
+          width: phase >= 1 ? (mobile ? 40 : 80) : 0, height: 1,
+          background: section.accent, opacity: 0.4,
+          transition: 'width 1.2s cubic-bezier(0.23,1,0.32,1)',
         }} />
 
         {/* Back */}
         <div style={{
           marginBottom: mobile ? 36 : 56,
-          opacity: loaded ? 1 : 0,
-          transform: loaded ? 'translateY(0)' : 'translateY(10px)',
-          transition: 'all 0.6s ease',
+          opacity: phase >= 1 ? 1 : 0,
+          transform: phase >= 1 ? 'translateY(0)' : 'translateY(15px)',
+          transition: 'all 0.8s cubic-bezier(0.23,1,0.32,1)',
         }}>
           <span className="back-link" onClick={() => navigate('home')} style={{
             fontSize: 11, color: 'var(--color-text-subtle)', cursor: 'pointer', fontWeight: 600,
             letterSpacing: '0.15em', textTransform: 'uppercase',
             display: 'inline-flex', alignItems: 'center', gap: 8,
           }}>
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
               <path d="M10 4L6 8L10 12" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
             Back
@@ -159,20 +172,24 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
         {/* Category label */}
         <div style={{
           display: 'flex', alignItems: 'center', gap: 14, marginBottom: mobile ? 16 : 24,
-          opacity: loaded ? 1 : 0,
-          transform: loaded ? 'translateY(0)' : 'translateY(20px)',
-          transition: 'all 0.7s cubic-bezier(0.23,1,0.32,1) 0.1s',
+          opacity: phase >= 2 ? 1 : 0,
+          transform: phase >= 2 ? 'translateY(0)' : 'translateY(20px)',
+          transition: 'all 0.8s cubic-bezier(0.23,1,0.32,1)',
         }}>
           <div style={{
-            width: 10, height: 10, borderRadius: '50%',
+            width: phase >= 2 ? 10 : 0, height: phase >= 2 ? 10 : 0, borderRadius: '50%',
             background: section.accent, opacity: 0.7,
-            boxShadow: `0 0 12px ${section.accent}40`,
+            boxShadow: phase >= 2 ? `0 0 12px ${section.accent}40` : 'none',
+            transition: 'all 0.6s cubic-bezier(0.23,1,0.32,1)',
           }} />
           <span style={{
             fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase',
             color: section.accent, fontWeight: 700, opacity: 0.8,
           }}>{section.tagline}</span>
-          <div style={{ width: 40, height: 1, background: section.accent, opacity: 0.2 }} />
+          <div style={{
+            width: phase >= 2 ? 40 : 0, height: 1, background: section.accent, opacity: 0.2,
+            transition: 'width 0.8s cubic-bezier(0.23,1,0.32,1) 0.1s',
+          }} />
         </div>
 
         {/* Title */}
@@ -181,9 +198,9 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
           fontSize: mobile ? 56 : tablet ? 80 : 110,
           fontWeight: 300, letterSpacing: '-0.04em', lineHeight: 0.9,
           marginBottom: mobile ? 24 : 36,
-          opacity: loaded ? 1 : 0,
-          transform: loaded ? 'translateY(0)' : 'translateY(30px)',
-          transition: 'all 0.8s cubic-bezier(0.23,1,0.32,1) 0.15s',
+          opacity: phase >= 2 ? 1 : 0,
+          transform: phase >= 2 ? 'translateY(0)' : 'translateY(40px)',
+          transition: 'all 1s cubic-bezier(0.23,1,0.32,1) 0.1s',
           position: 'relative', zIndex: 1,
         }}>{section.label}</h1>
 
@@ -191,9 +208,9 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
         <p style={{
           fontSize: mobile ? 15 : 18, lineHeight: 1.8, color: 'var(--color-text-muted)',
           fontWeight: 400, maxWidth: 560,
-          opacity: loaded ? 1 : 0,
-          transform: loaded ? 'translateY(0)' : 'translateY(20px)',
-          transition: 'all 0.8s cubic-bezier(0.23,1,0.32,1) 0.25s',
+          opacity: phase >= 3 ? 1 : 0,
+          transform: phase >= 3 ? 'translateY(0)' : 'translateY(25px)',
+          transition: 'all 0.9s cubic-bezier(0.23,1,0.32,1)',
           position: 'relative', zIndex: 1,
         }}>{section.description}</p>
 
@@ -201,9 +218,9 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
         <div style={{
           display: 'flex', alignItems: 'center', gap: mobile ? 24 : 40,
           marginTop: mobile ? 32 : 48,
-          opacity: loaded ? 1 : 0,
-          transform: loaded ? 'translateY(0)' : 'translateY(20px)',
-          transition: 'all 0.8s cubic-bezier(0.23,1,0.32,1) 0.35s',
+          opacity: phase >= 4 ? 1 : 0,
+          transform: phase >= 4 ? 'translateY(0)' : 'translateY(20px)',
+          transition: 'all 0.8s cubic-bezier(0.23,1,0.32,1)',
           position: 'relative', zIndex: 1,
         }}>
           <div>
@@ -217,7 +234,10 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
               color: 'var(--color-text-ghost)', fontWeight: 600, marginTop: 4,
             }}>Projects</div>
           </div>
-          <div style={{ width: 1, height: 36, background: 'var(--color-border-mid)' }} />
+          <div style={{
+            width: 1, height: phase >= 4 ? 36 : 0, background: 'var(--color-border-mid)',
+            transition: 'height 0.6s cubic-bezier(0.23,1,0.32,1) 0.1s',
+          }} />
           <div>
             <div style={{
               fontFamily: "'Cormorant Garamond', serif",
@@ -236,11 +256,18 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
       <div style={{ padding: `0 ${px}px`, maxWidth: 1200, margin: '0 auto' }}>
         <div style={{
           display: 'flex', alignItems: 'center', gap: 16,
-          opacity: loaded ? 1 : 0,
-          transition: 'opacity 0.8s ease 0.4s',
+          opacity: phase >= 5 ? 1 : 0,
+          transition: 'opacity 1s ease',
         }}>
-          <div style={{ width: 32, height: 1, background: section.accent, opacity: 0.3 }} />
-          <div style={{ width: 4, height: 4, borderRadius: '50%', background: section.accent, opacity: 0.4 }} />
+          <div style={{
+            width: phase >= 5 ? 32 : 0, height: 1, background: section.accent, opacity: 0.3,
+            transition: 'width 0.8s cubic-bezier(0.23,1,0.32,1)',
+          }} />
+          <div style={{
+            width: phase >= 5 ? 4 : 0, height: phase >= 5 ? 4 : 0, borderRadius: '50%',
+            background: section.accent, opacity: 0.4,
+            transition: 'all 0.5s cubic-bezier(0.23,1,0.32,1) 0.2s',
+          }} />
           <div style={{ flex: 1, height: 1, background: 'linear-gradient(90deg, var(--color-border-mid), transparent 80%)' }} />
         </div>
       </div>
@@ -256,7 +283,8 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
         <div style={{
           marginBottom: mobile ? 32 : 48,
           opacity: itemsVisible ? 1 : 0,
-          transition: 'opacity 0.6s ease',
+          transform: itemsVisible ? 'translateY(0)' : 'translateY(12px)',
+          transition: 'all 0.6s ease',
         }}>
           <span style={{
             fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase',
@@ -286,8 +314,8 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
                     display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
                     cursor: linked ? 'pointer' : 'default',
                     opacity: itemsVisible ? 1 : 0,
-                    transform: itemsVisible ? 'translateY(0)' : 'translateY(20px)',
-                    transition: `all 0.6s cubic-bezier(0.23,1,0.32,1) ${i * 0.08}s`,
+                    transform: itemsVisible ? 'translateY(0)' : 'translateY(24px) scale(0.97)',
+                    transition: `all 0.7s cubic-bezier(0.23,1,0.32,1) ${i * 0.1}s`,
                     // Make first card span full width if more than 2 items and not on mobile
                     gridColumn: i === 0 && section.items.length > 2 && !mobile ? 'span 2' : undefined,
                   }}
@@ -339,7 +367,7 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
                           <span style={{ fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--color-text-faint)', fontWeight: 600 }}>Coming Soon</span>
                         )}
                         {linked && (
-                          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{
+                          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{
                             opacity: isHov ? 0.7 : 0.12,
                             transform: isHov ? 'translate(3px,-3px)' : 'none',
                             transition: 'all 0.5s cubic-bezier(0.23,1,0.32,1)',
