@@ -11,6 +11,78 @@ import { useTheme } from './components/ThemeProvider';
 import { useWindowSize } from './components/hooks';
 import { sections } from './components/sections';
 
+// Per-card generative gradient backgrounds keyed by project name
+const CARD_GRADIENTS: Record<string, string> = {
+  'Project 1122': 'linear-gradient(135deg, #D4B89615 0%, #D4B89608 40%, transparent 70%)',
+  'Curation Archive': 'linear-gradient(160deg, #D4B89610 0%, #C4A88608 30%, transparent 60%)',
+  'Restoration Projects': 'linear-gradient(145deg, #D4B89612 0%, #E8D5BC08 35%, transparent 65%)',
+  '3D Prints': 'linear-gradient(135deg, #96B8D418 0%, #96B8D408 40%, transparent 70%)',
+  'Soirée': 'linear-gradient(160deg, #96B8D412 0%, #B8D0E808 30%, transparent 60%)',
+  'Pricing Simulator': 'linear-gradient(145deg, #96B8D410 0%, #96B8D406 35%, transparent 65%)',
+  'Ray': 'linear-gradient(135deg, #96B8D418 0%, #7AA8CC08 40%, transparent 70%)',
+  'For Sale': 'linear-gradient(135deg, #B8D49618 0%, #B8D49608 40%, transparent 70%)',
+  'TikTok': 'linear-gradient(135deg, #D496B815 0%, #D496B808 40%, transparent 70%)',
+  'Instagram': 'linear-gradient(160deg, #D496B812 0%, #E8B0D008 30%, transparent 60%)',
+  'X': 'linear-gradient(145deg, #D496B810 0%, #D496B806 35%, transparent 65%)',
+};
+
+// Abstract SVG pattern per section for visual texture
+const SECTION_PATTERNS: Record<string, (accent: string, opacity: number) => React.ReactNode> = {
+  physical: (accent, opacity) => (
+    <svg width="100%" height="100%" viewBox="0 0 200 200" style={{ position: 'absolute', top: 0, right: 0, width: '45%', height: '100%', opacity, pointerEvents: 'none' }}>
+      <defs><linearGradient id="pg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor={accent} stopOpacity="0.12" /><stop offset="100%" stopColor={accent} stopOpacity="0" /></linearGradient></defs>
+      <rect x="120" y="20" width="60" height="60" fill="none" stroke={accent} strokeWidth="0.5" opacity="0.15" transform="rotate(12 150 50)" />
+      <rect x="130" y="30" width="40" height="40" fill="none" stroke={accent} strokeWidth="0.3" opacity="0.1" transform="rotate(12 150 50)" />
+      <line x1="80" y1="140" x2="180" y2="140" stroke={accent} strokeWidth="0.4" opacity="0.08" />
+      <line x1="80" y1="148" x2="160" y2="148" stroke={accent} strokeWidth="0.3" opacity="0.06" />
+    </svg>
+  ),
+  digital: (accent, opacity) => (
+    <svg width="100%" height="100%" viewBox="0 0 200 200" style={{ position: 'absolute', top: 0, right: 0, width: '45%', height: '100%', opacity, pointerEvents: 'none' }}>
+      <circle cx="150" cy="60" r="30" fill="none" stroke={accent} strokeWidth="0.5" opacity="0.12" />
+      <circle cx="150" cy="60" r="18" fill="none" stroke={accent} strokeWidth="0.3" opacity="0.08" />
+      <circle cx="150" cy="60" r="6" fill={accent} opacity="0.06" />
+      <path d="M100 140 L160 140 L160 180 L100 180 Z" fill="none" stroke={accent} strokeWidth="0.4" opacity="0.08" strokeDasharray="4 4" />
+    </svg>
+  ),
+  shop: (accent, opacity) => (
+    <svg width="100%" height="100%" viewBox="0 0 200 200" style={{ position: 'absolute', top: 0, right: 0, width: '45%', height: '100%', opacity, pointerEvents: 'none' }}>
+      <path d="M130 40 L170 40 L180 80 L120 80 Z" fill="none" stroke={accent} strokeWidth="0.5" opacity="0.12" />
+      <line x1="150" y1="80" x2="150" y2="120" stroke={accent} strokeWidth="0.3" opacity="0.08" />
+      <circle cx="150" cy="130" r="8" fill="none" stroke={accent} strokeWidth="0.4" opacity="0.1" />
+    </svg>
+  ),
+  social: (accent, opacity) => (
+    <svg width="100%" height="100%" viewBox="0 0 200 200" style={{ position: 'absolute', top: 0, right: 0, width: '45%', height: '100%', opacity, pointerEvents: 'none' }}>
+      <circle cx="130" cy="60" r="10" fill="none" stroke={accent} strokeWidth="0.5" opacity="0.12" />
+      <circle cx="170" cy="80" r="10" fill="none" stroke={accent} strokeWidth="0.5" opacity="0.12" />
+      <circle cx="145" cy="120" r="10" fill="none" stroke={accent} strokeWidth="0.5" opacity="0.12" />
+      <line x1="138" y1="66" x2="163" y2="74" stroke={accent} strokeWidth="0.3" opacity="0.08" />
+      <line x1="164" y1="88" x2="151" y2="112" stroke={accent} strokeWidth="0.3" opacity="0.08" />
+      <line x1="136" y1="115" x2="133" y2="70" stroke={accent} strokeWidth="0.3" opacity="0.08" />
+    </svg>
+  ),
+};
+
+// Hook for IntersectionObserver scroll reveals
+function useScrollReveal(threshold = 0.15) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setIsVisible(true); observer.disconnect(); } },
+      { threshold }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [threshold]);
+
+  return { ref, isVisible };
+}
+
 const PAGE_TITLES: Record<string, string> = {
   home: 'Mobi — Design Studio',
   physical: 'Physical — Mobi',
@@ -31,10 +103,14 @@ export default function MobiSite() {
   const [menuOpen, setMenuOpen] = useState(false);
   const sectionContentRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const [sectionHeights, setSectionHeights] = useState<Record<string, number>>({});
+  const [pageTransition, setPageTransition] = useState(false);
   const { theme } = useTheme();
   const w = useWindowSize();
   const mobile = w < 768;
   const tablet = w < 1024;
+  const directoryReveal = useScrollReveal(0.08);
+  const philosophyReveal = useScrollReveal(0.15);
+  const footerReveal = useScrollReveal(0.2);
 
   useEffect(() => {
     setTimeout(() => setLoaded(true), 200);
@@ -78,9 +154,14 @@ export default function MobiSite() {
   };
 
   const navigate = (target: string) => {
-    setPage(target);
-    setMenuOpen(false);
-    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+    if (target === page) return;
+    setPageTransition(true);
+    setTimeout(() => {
+      setPage(target);
+      setMenuOpen(false);
+      window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+      setTimeout(() => setPageTransition(false), 50);
+    }, 300);
   };
 
   const currentSection = sections.find(s => s.id === page);
@@ -104,6 +185,9 @@ export default function MobiSite() {
         @keyframes cardReveal{from{opacity:0;transform:translateY(24px) scale(0.97)}to{opacity:1;transform:translateY(0) scale(1)}}
         @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
         @keyframes expandLine{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+        @keyframes scrollReveal{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes fadeOut{to{opacity:0;transform:scale(0.98) translateY(-10px)}}
+        @keyframes pulseGlow{0%,100%{opacity:0.4}50%{opacity:0.8}}
 
         .grain-overlay{position:fixed;top:-50%;left:-50%;width:200%;height:200%;pointer-events:none;z-index:9999;opacity:var(--grain-opacity);animation:grainShift 0.5s steps(5) infinite;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")}
 
@@ -149,6 +233,22 @@ export default function MobiSite() {
         .project-card:hover{box-shadow:0 20px 60px rgba(0,0,0,0.25),0 0 0 1px rgba(255,255,255,0.05)}
 
         .section-count{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;border-radius:11px;font-size:10px;font-weight:700;letter-spacing:0.04em;transition:all 0.4s ease}
+
+        .scroll-reveal{opacity:0;transform:translateY(40px);transition:opacity 0.8s cubic-bezier(0.23,1,0.32,1),transform 0.8s cubic-bezier(0.23,1,0.32,1)}
+        .scroll-reveal.visible{opacity:1;transform:translateY(0)}
+        .scroll-reveal-delay-1{transition-delay:0.1s}
+        .scroll-reveal-delay-2{transition-delay:0.2s}
+        .scroll-reveal-delay-3{transition-delay:0.3s}
+
+        .page-fade-out{animation:fadeOut 0.3s cubic-bezier(0.23,1,0.32,1) forwards}
+
+        .magnetic-btn{transition:all 0.4s cubic-bezier(0.23,1,0.32,1)}
+        .magnetic-btn:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(212,184,150,0.15)}
+
+        .footer-col-title{font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--color-text-ghost);font-weight:700;margin-bottom:16px}
+
+        .card-pattern{position:absolute;inset:0;pointer-events:none;overflow:hidden;border-radius:20px;opacity:0;transition:opacity 0.6s ease}
+        .project-card:hover .card-pattern{opacity:1}
       `}</style>
 
       <div className="grain-overlay" />
@@ -159,6 +259,19 @@ export default function MobiSite() {
           position: 'absolute', width: mobile ? 200 : 450, height: mobile ? 200 : 450, borderRadius: '50%',
           background: 'radial-gradient(circle, rgba(150,184,212,0.05) 0%, transparent 60%)',
           bottom: '10%', left: '-5%', animation: 'floatSlow 20s ease-in-out infinite', filter: 'blur(60px)',
+          transform: `translateY(${scrollY * 0.03}px)`,
+        }} />
+        <div style={{
+          position: 'absolute', width: mobile ? 150 : 350, height: mobile ? 150 : 350, borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(212,184,150,0.04) 0%, transparent 60%)',
+          top: '20%', right: '-8%', animation: 'floatSlow 25s ease-in-out infinite reverse', filter: 'blur(80px)',
+          transform: `translateY(${scrollY * -0.02}px)`,
+        }} />
+        <div style={{
+          position: 'absolute', width: mobile ? 100 : 250, height: mobile ? 100 : 250, borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(212,148,184,0.03) 0%, transparent 60%)',
+          top: '60%', left: '30%', animation: 'floatSlow 30s ease-in-out infinite', filter: 'blur(70px)',
+          transform: `translateY(${scrollY * 0.015}px)`,
         }} />
       </div>
 
@@ -236,6 +349,15 @@ export default function MobiSite() {
         </div>
       )}
 
+      {/* Page transition overlay */}
+      <div style={{
+        position: 'fixed', inset: 0, zIndex: 98,
+        background: 'var(--color-bg)',
+        opacity: pageTransition ? 1 : 0,
+        pointerEvents: pageTransition ? 'all' : 'none',
+        transition: 'opacity 0.3s cubic-bezier(0.23,1,0.32,1)',
+      }} />
+
       {/* PAGES */}
       {currentSection && (
         <div key={page} className="page-transition">
@@ -305,7 +427,7 @@ export default function MobiSite() {
               <p style={{ maxWidth: mobile ? '100%' : 380, fontSize: mobile ? 14 : 15, lineHeight: 1.85, color: 'var(--color-text-muted)', fontWeight: 400 }}>
                 Physical spaces, digital products, and cultural connections — designed with intention, built with craft, refined through obsession.
               </p>
-              <button className="hero-cta" onClick={() => { const el = document.getElementById('directory'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }}>
+              <button className="hero-cta magnetic-btn" onClick={() => { const el = document.getElementById('directory'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }}>
                 Explore
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                   <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -326,7 +448,11 @@ export default function MobiSite() {
           </section>
 
           {/* PROJECTS */}
-          <section id="directory" style={{ padding: mobile ? '40px 0 20px' : '80px 0 40px', position: 'relative', zIndex: 1, scrollMarginTop: 80 }}>
+          <section
+            id="directory"
+            ref={directoryReveal.ref}
+            style={{ padding: mobile ? '40px 0 20px' : '80px 0 40px', position: 'relative', zIndex: 1, scrollMarginTop: 80 }}
+          >
             {sections.map((section, si) => {
               const isExpanded = expandedSection === section.id;
               const isSectionHov = hoveredSection === section.id;
@@ -338,6 +464,8 @@ export default function MobiSite() {
                 const isHov = hoveredItem === cardId;
                 const tall = opts?.tall;
                 const nameSize = opts?.fontSize || (mobile ? 26 : 32);
+                const cardGradient = CARD_GRADIENTS[item.name] || '';
+                const patternFn = SECTION_PATTERNS[section.id];
                 const card = (
                   <div
                     key={cardId}
@@ -362,6 +490,22 @@ export default function MobiSite() {
                       animationDelay: `${idx * 0.08}s`,
                     }}
                   >
+                    {/* Gradient thumbnail background */}
+                    {cardGradient && (
+                      <div style={{
+                        position: 'absolute', inset: 0,
+                        background: cardGradient,
+                        opacity: isHov ? 1.8 : 1,
+                        transition: 'opacity 0.6s ease',
+                        pointerEvents: 'none',
+                      }} />
+                    )}
+                    {/* Abstract SVG pattern overlay on hover */}
+                    {!mobile && patternFn && (
+                      <div className="card-pattern" style={{ opacity: isHov ? 0.7 : 0 }}>
+                        {patternFn(section.accent, 1)}
+                      </div>
+                    )}
                     {/* Accent glow */}
                     <div style={{
                       position: 'absolute', top: -80, right: -80,
@@ -377,7 +521,7 @@ export default function MobiSite() {
                       transition: 'all 0.5s ease', pointerEvents: 'none',
                     }} />
 
-                    <div>
+                    <div style={{ position: 'relative', zIndex: 1 }}>
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: mobile ? 20 : tall ? 40 : 28, minHeight: 20 }}>
                         <span style={{
                           fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase',
@@ -423,7 +567,7 @@ export default function MobiSite() {
                       </div>
                     </div>
 
-                    <div style={{ marginTop: mobile ? 20 : 24 }}>
+                    <div style={{ marginTop: mobile ? 20 : 24, position: 'relative', zIndex: 1 }}>
                       <p style={{ fontSize: 12, lineHeight: 1.7, color: 'var(--color-text-label)', fontWeight: 400, marginBottom: 14, maxWidth: 320 }}>
                         {item.description}
                       </p>
@@ -450,8 +594,12 @@ export default function MobiSite() {
               };
 
               return (
-                <div key={section.id}>
-                  {/* Section header — clickable toggle */}
+                <div key={section.id} style={{
+                  opacity: directoryReveal.isVisible ? 1 : 0,
+                  transform: directoryReveal.isVisible ? 'translateY(0)' : 'translateY(30px)',
+                  transition: `all 0.7s cubic-bezier(0.23,1,0.32,1) ${si * 0.1}s`,
+                }}>
+                  {/* Section header ��� clickable toggle */}
                   <div style={{ padding: mobile ? '0 20px' : '0 56px', maxWidth: 1200, margin: '0 auto' }}>
                     <div
                       className="section-toggle"
@@ -602,10 +750,33 @@ export default function MobiSite() {
           </section>
 
           {/* PHILOSOPHY */}
-          <section style={{ padding: mobile ? '60px 20px 80px' : '100px 56px 160px', position: 'relative', zIndex: 1 }}>
+          <section
+            ref={philosophyReveal.ref}
+            style={{
+              padding: mobile ? '60px 20px 80px' : '100px 56px 160px',
+              position: 'relative', zIndex: 1,
+            }}
+          >
+            {/* Decorative divider */}
+            <div style={{ maxWidth: 1100, margin: '0 auto 0', paddingBottom: mobile ? 40 : 64 }}>
+              <div style={{
+                display: 'flex', alignItems: 'center', gap: 20,
+                opacity: philosophyReveal.isVisible ? 1 : 0,
+                transition: 'opacity 1s ease 0.2s',
+              }}>
+                <div style={{ width: 40, height: 1, background: 'var(--color-accent-gold)', opacity: 0.3 }} />
+                <div style={{ width: 4, height: 4, borderRadius: '50%', background: 'var(--color-accent-gold)', opacity: 0.4 }} />
+                <div style={{ flex: 1, height: 1, background: 'linear-gradient(90deg, var(--color-border-mid), transparent 80%)' }} />
+              </div>
+            </div>
+
             <div style={{ maxWidth: 1100, margin: '0 auto' }}>
               <div style={{ display: 'grid', gridTemplateColumns: mobile ? '1fr' : '1fr 1fr', gap: mobile ? 40 : 80 }}>
-                <div>
+                <div style={{
+                  opacity: philosophyReveal.isVisible ? 1 : 0,
+                  transform: philosophyReveal.isVisible ? 'translateY(0)' : 'translateY(40px)',
+                  transition: 'all 0.8s cubic-bezier(0.23,1,0.32,1)',
+                }}>
                   <div className="section-label-sm" style={{ marginBottom: 16 }}>Philosophy</div>
                   <h2 style={{
                     fontFamily: "'Cormorant Garamond', serif",
@@ -618,7 +789,7 @@ export default function MobiSite() {
                   <p style={{ fontSize: mobile ? 14 : 16, lineHeight: 1.85, color: 'var(--color-text-subtle)', fontWeight: 400, marginBottom: 24 }}>
                     Named after the Möbius strip — a surface with only one side and one boundary. It represents our belief that great design has no beginning or end, no separation between form and function, no divide between physical and digital.
                   </p>
-                  <button className="hero-cta" onClick={() => navigate('about')} style={{ marginTop: 8 }}>
+                  <button className="hero-cta magnetic-btn" onClick={() => navigate('about')} style={{ marginTop: 8 }}>
                     Learn More
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                       <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -631,10 +802,13 @@ export default function MobiSite() {
                     { num: '01', title: 'Seamless', desc: 'Design that flows naturally between physical spaces and digital experiences.' },
                     { num: '02', title: 'Continuous', desc: 'Every project builds on the last — an evolving body of interconnected work.' },
                     { num: '03', title: 'Infinite', desc: 'No boundaries between disciplines. Architecture informs software. Software reshapes space.' },
-                  ].map((p) => (
+                  ].map((p, pi) => (
                     <div key={p.num} style={{
                       padding: mobile ? 20 : 28, borderRadius: 16,
                       background: 'var(--color-bg-card)', border: '1px solid var(--color-border)',
+                      opacity: philosophyReveal.isVisible ? 1 : 0,
+                      transform: philosophyReveal.isVisible ? 'translateY(0)' : 'translateY(30px)',
+                      transition: `all 0.7s cubic-bezier(0.23,1,0.32,1) ${0.15 + pi * 0.12}s`,
                     }}>
                       <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, marginBottom: 10 }}>
                         <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 14, color: 'var(--color-accent-gold)', fontWeight: 400 }}>{p.num}</span>
@@ -649,31 +823,105 @@ export default function MobiSite() {
           </section>
 
           {/* FOOTER */}
-          <footer style={{
-            padding: mobile ? '40px 20px' : '60px 56px',
-            borderTop: '1px solid var(--color-border)',
-          }}>
+          <footer
+            ref={footerReveal.ref}
+            style={{
+              padding: mobile ? '48px 20px 32px' : '80px 56px 40px',
+              borderTop: '1px solid var(--color-border)',
+              position: 'relative',
+            }}
+          >
+            {/* Subtle gradient glow above footer */}
+            <div style={{
+              position: 'absolute', top: -60, left: '50%', transform: 'translateX(-50%)',
+              width: '60%', height: 120,
+              background: 'radial-gradient(ellipse, rgba(212,184,150,0.03) 0%, transparent 70%)',
+              pointerEvents: 'none',
+            }} />
+
             <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+              {/* Top row: brand + columns */}
               <div style={{
-                display: 'flex', flexDirection: mobile ? 'column' : 'row',
-                justifyContent: 'space-between', alignItems: mobile ? 'flex-start' : 'center',
-                gap: mobile ? 24 : 0,
+                display: 'grid',
+                gridTemplateColumns: mobile ? '1fr' : '1.5fr 1fr 1fr 1fr',
+                gap: mobile ? 36 : 40,
+                marginBottom: mobile ? 40 : 56,
+                opacity: footerReveal.isVisible ? 1 : 0,
+                transform: footerReveal.isVisible ? 'translateY(0)' : 'translateY(30px)',
+                transition: 'all 0.8s cubic-bezier(0.23,1,0.32,1)',
               }}>
+                {/* Brand column */}
                 <div>
                   <div style={{
-                    fontFamily: "'Syne', sans-serif", fontSize: 22, fontWeight: 700,
-                    letterSpacing: '-0.04em', marginBottom: 8,
+                    fontFamily: "'Syne', sans-serif", fontSize: 28, fontWeight: 700,
+                    letterSpacing: '-0.04em', marginBottom: 12,
                   }}>
                     mobi<span style={{ color: 'var(--color-accent-gold)' }}>.</span>
                   </div>
-                  <p style={{ fontSize: 12, color: 'var(--color-text-faint)', fontWeight: 400 }}>Design studio &mdash; Est. 2024</p>
+                  <p style={{ fontSize: 13, color: 'var(--color-text-muted)', fontWeight: 400, lineHeight: 1.7, maxWidth: 260 }}>
+                    Where design transcends boundaries — physical spaces, digital products, cultural connections.
+                  </p>
                 </div>
-                <div style={{ display: 'flex', gap: 28 }}>
-                  {sections.filter(s => s.id === 'social').flatMap(s => s.items).map(item => (
-                    <a key={item.name} href={item.url} target="_blank" rel="noopener noreferrer" className="footer-link">
-                      {item.name}
-                    </a>
-                  ))}
+
+                {/* Studio column */}
+                <div>
+                  <div className="footer-col-title">Studio</div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                    {sections.filter(s => s.id !== 'social').map(s => (
+                      <span key={s.id} className="footer-link" onClick={() => navigate(s.id)} style={{ cursor: 'pointer' }}>
+                        {s.label}
+                      </span>
+                    ))}
+                    <span className="footer-link" onClick={() => navigate('about')} style={{ cursor: 'pointer' }}>
+                      About
+                    </span>
+                  </div>
+                </div>
+
+                {/* Social column */}
+                <div>
+                  <div className="footer-col-title">Social</div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                    {sections.filter(s => s.id === 'social').flatMap(s => s.items).map(item => (
+                      <a key={item.name} href={item.url} target="_blank" rel="noopener noreferrer" className="footer-link">
+                        {item.name}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Info column */}
+                <div>
+                  <div className="footer-col-title">Info</div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                    <span style={{ fontSize: 11, color: 'var(--color-text-faint)', fontWeight: 400, lineHeight: 1.6 }}>
+                      Kansas City, MO
+                    </span>
+                    <span style={{ fontSize: 11, color: 'var(--color-text-faint)', fontWeight: 400, lineHeight: 1.6 }}>
+                      Est. 2024
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom bar */}
+              <div style={{
+                display: 'flex', flexDirection: mobile ? 'column' : 'row',
+                justifyContent: 'space-between', alignItems: mobile ? 'flex-start' : 'center',
+                gap: mobile ? 12 : 0,
+                paddingTop: mobile ? 24 : 32,
+                borderTop: '1px solid var(--color-border)',
+                opacity: footerReveal.isVisible ? 1 : 0,
+                transition: 'opacity 0.8s ease 0.3s',
+              }}>
+                <span style={{ fontSize: 10, color: 'var(--color-text-ghost)', fontWeight: 500, letterSpacing: '0.1em' }}>
+                  &copy; {new Date().getFullYear()} MOBI DESIGN STUDIO
+                </span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                  <div style={{ width: 3, height: 3, borderRadius: '50%', background: 'var(--color-accent-gold)', opacity: 0.4 }} />
+                  <span style={{ fontSize: 10, color: 'var(--color-text-ghost)', fontWeight: 400, letterSpacing: '0.05em' }}>
+                    Designed with obsession
+                  </span>
                 </div>
               </div>
             </div>
