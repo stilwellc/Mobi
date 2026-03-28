@@ -24,9 +24,7 @@ export default function MobiSite() {
   const [loaded, setLoaded] = useState(false);
   const [phase, setPhase] = useState(0);
   const [page, setPage] = useState('home');
-  const [expandedSection, setExpandedSection] = useState<string | null>(null);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
-  const [hoveredSection, setHoveredSection] = useState<string | null>(null);
   const [scrollY, setScrollY] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
   const { theme } = useTheme();
@@ -59,7 +57,6 @@ export default function MobiSite() {
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
   };
 
-  const px = mobile ? 20 : tablet ? 36 : 56;
   const currentSection = sections.find(s => s.id === page);
   const hasLink = (item: { href?: string; url?: string }) => !!(item.href || item.url);
 
@@ -91,19 +88,9 @@ export default function MobiSite() {
         .back-link{transition:color 0.3s ease}
         .back-link:hover{color:var(--color-accent-gold)!important}
 
-        .section-trigger{cursor:pointer;transition:all 0.4s cubic-bezier(0.23,1,0.32,1);-webkit-tap-highlight-color:transparent;position:relative}
-        .section-trigger::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--color-border),transparent)}
-
-        .item-entry{cursor:pointer;transition:all 0.4s cubic-bezier(0.23,1,0.32,1);-webkit-tap-highlight-color:transparent;position:relative}
-        .item-entry::before{content:'';position:absolute;left:0;top:0;bottom:0;width:0px;background:var(--accent);transition:width 0.4s cubic-bezier(0.23,1,0.32,1);border-radius:0 2px 2px 0}
-        .item-entry:hover::before{width:2px}
-        .item-entry:hover{background:var(--color-hover-item)}
-
         .wip-dot{width:6px;height:6px;border-radius:50%;background:var(--color-wip);animation:wipPulse 2.5s ease-in-out infinite}
 
-        .featured-card{position:relative;overflow:hidden;border-radius:20px;cursor:pointer;transition:all 0.6s cubic-bezier(0.23,1,0.32,1);background:var(--color-bg-card)}
-        .featured-card:hover{transform:translateY(-4px)}
-        .featured-card::before{content:'';position:absolute;inset:0;border-radius:20px;padding:1px;background:linear-gradient(135deg,var(--color-border-mid),transparent 40%,transparent 60%,var(--color-overlay-light));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+        .project-card::before{content:'';position:absolute;inset:0;border-radius:20px;padding:1px;background:linear-gradient(135deg,var(--color-border-mid),transparent 40%,transparent 60%,var(--color-overlay-light));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
 
         .hero-cta{display:inline-flex;align-items:center;gap:14px;padding:18px 36px;border-radius:60px;border:1px solid rgba(212,184,150,0.3);background:rgba(212,184,150,0.06);color:var(--color-accent-gold);font-family:'Syne',sans-serif;font-size:13px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;transition:all 0.5s cubic-bezier(0.23,1,0.32,1);backdrop-filter:blur(10px);-webkit-tap-highlight-color:transparent}
         .hero-cta:hover{background:var(--color-accent-gold);border-color:var(--color-accent-gold);color:#060606;box-shadow:0 8px 40px rgba(212,184,150,0.2),0 0 80px rgba(212,184,150,0.08);transform:translateY(-2px)}
@@ -112,9 +99,6 @@ export default function MobiSite() {
         .hero-cta:hover svg{transform:translateX(4px)}
 
         .hamburger-bar{display:block;width:24px;height:1.5px;background:var(--color-text-primary);transition:all 0.4s cubic-bezier(0.23,1,0.32,1);border-radius:1px}
-
-        .view-link{font-size:11px;color:var(--color-text-faint);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:color 0.3s ease;padding:4px 0}
-        .view-link:hover{color:var(--accent)!important}
 
         .footer-link{font-size:11px;color:var(--color-text-faint);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;transition:color 0.3s ease}
         .footer-link:hover{color:var(--color-accent-gold)}
@@ -299,9 +283,9 @@ export default function MobiSite() {
             )}
           </section>
 
-          {/* DIRECTORY */}
-          <section id="directory" style={{ padding: mobile ? '40px 0 80px' : '80px 0 140px', position: 'relative', zIndex: 1, scrollMarginTop: 80 }}>
-            <div style={{ maxWidth: 1100, margin: '0 auto', padding: `0 ${px}px` }}>
+          {/* PROJECTS */}
+          <section id="directory" style={{ padding: mobile ? '40px 20px 80px' : '80px 56px 140px', position: 'relative', zIndex: 1, scrollMarginTop: 80 }}>
+            <div style={{ maxWidth: 1200, margin: '0 auto' }}>
               <div style={{
                 display: 'flex', flexDirection: mobile ? 'column' : 'row',
                 justifyContent: 'space-between', alignItems: mobile ? 'flex-start' : 'flex-end',
@@ -324,192 +308,146 @@ export default function MobiSite() {
                 )}
               </div>
 
-              <div style={{ borderTop: '1px solid var(--color-border-mid)' }}>
-                {sections.map((section, si) => {
-                  const isExpanded = expandedSection === section.id;
-                  const isHovS = hoveredSection === section.id;
-                  return (
-                    <div key={section.id}>
-                      <div className="section-trigger"
-                        onClick={() => setExpandedSection(isExpanded ? null : section.id)}
-                        onMouseEnter={() => setHoveredSection(section.id)}
-                        onMouseLeave={() => setHoveredSection(null)}
+              <div className="project-grid" style={{
+                display: 'grid',
+                gridTemplateColumns: mobile ? '1fr' : 'repeat(3, 1fr)',
+                gap: mobile ? 14 : 18,
+              }}>
+                {sections.flatMap((section) =>
+                  section.items.map((item) => {
+                    const linked = hasLink(item);
+                    const cardId = `${section.id}-${item.name}`;
+                    const isHov = hoveredItem === cardId;
+                    const card = (
+                      <div
+                        key={cardId}
+                        className="project-card"
+                        onMouseEnter={() => setHoveredItem(cardId)}
+                        onMouseLeave={() => setHoveredItem(null)}
                         style={{
-                          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                          padding: mobile ? '24px 0' : '32px 0',
-                          background: isHovS && !mobile ? 'var(--color-hover-surface)' : 'transparent',
+                          position: 'relative',
+                          borderRadius: 20,
+                          overflow: 'hidden',
+                          background: 'var(--color-bg-card)',
+                          border: `1px solid ${isHov ? section.accent + '44' : 'var(--color-border)'}`,
+                          padding: mobile ? '28px 24px' : '36px 32px',
+                          minHeight: mobile ? 160 : 200,
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'space-between',
+                          cursor: linked ? 'pointer' : 'default',
+                          transition: 'all 0.5s cubic-bezier(0.23, 1, 0.32, 1)',
+                          transform: isHov ? 'translateY(-4px)' : 'none',
                         }}
                       >
-                        <div style={{ display: 'flex', alignItems: 'baseline', gap: mobile ? 16 : 28 }}>
-                          <span style={{
-                            fontFamily: "'Cormorant Garamond', serif", fontSize: mobile ? 13 : 15,
-                            color: isExpanded ? section.accent : 'var(--color-text-ghost)', fontWeight: 400,
-                            minWidth: mobile ? 24 : 32, transition: 'color 0.4s ease',
-                          }}>{String(si + 1).padStart(2, '0')}</span>
-                          <span style={{
-                            fontFamily: "'Cormorant Garamond', serif",
-                            fontSize: mobile ? 32 : tablet ? 40 : 52, fontWeight: 300,
-                            letterSpacing: '-0.02em',
-                            transition: 'all 0.5s cubic-bezier(0.23, 1, 0.32, 1)',
-                            color: isExpanded ? section.accent : (isHovS ? 'var(--color-text-primary)' : 'var(--color-fg-dim)'),
-                            transform: isHovS && !mobile ? 'translateX(8px)' : 'none',
-                          }}>{section.label}</span>
-                        </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: mobile ? 16 : 24 }}>
-                          <span
-                            className="view-link"
-                            style={{ '--accent': section.accent } as React.CSSProperties}
-                            onClick={(e) => { e.stopPropagation(); navigate(section.id); }}
-                          >View &#8594;</span>
+                        {/* Accent glow */}
+                        <div style={{
+                          position: 'absolute',
+                          top: -60,
+                          right: -60,
+                          width: 160,
+                          height: 160,
+                          borderRadius: '50%',
+                          background: `radial-gradient(circle, ${section.accent}${isHov ? '18' : '08'} 0%, transparent 70%)`,
+                          transition: 'all 0.6s ease',
+                          pointerEvents: 'none',
+                        }} />
+
+                        {/* Top row: category + status */}
+                        <div>
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: mobile ? 20 : 28 }}>
+                            <span style={{
+                              fontSize: 9,
+                              letterSpacing: '0.2em',
+                              textTransform: 'uppercase',
+                              color: section.accent,
+                              fontWeight: 600,
+                              background: `${section.accent}0a`,
+                              padding: '4px 12px',
+                              borderRadius: 100,
+                              border: `1px solid ${section.accent}18`,
+                            }}>
+                              {section.label}
+                            </span>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                              {item.wip && (
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                                  <div className="wip-dot" />
+                                  <span style={{ fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--color-text-subtle)', fontWeight: 600 }}>WIP</span>
+                                </div>
+                              )}
+                              {!linked && !item.wip && (
+                                <span style={{ fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--color-text-faint)', fontWeight: 600 }}>Soon</span>
+                              )}
+                              {linked && (
+                                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{
+                                  opacity: isHov ? 0.6 : 0.15,
+                                  transform: isHov ? 'translate(2px,-2px)' : 'none',
+                                  transition: 'all 0.4s ease',
+                                }}>
+                                  <path d="M4 12L12 4M12 4H7M12 4V9" stroke={section.accent} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Logo-style project name */}
                           <div style={{
-                            width: 32, height: 32, borderRadius: '50%',
-                            border: `1px solid ${isExpanded ? section.accent + '44' : 'var(--color-chip-border)'}`,
-                            display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            transition: 'all 0.5s cubic-bezier(0.23, 1, 0.32, 1)',
-                            background: isExpanded ? section.accent + '0a' : 'transparent',
-                            transform: isExpanded ? 'rotate(45deg)' : 'rotate(0deg)',
+                            fontSize: mobile ? 26 : 32,
+                            fontWeight: 300,
+                            fontFamily: "'Cormorant Garamond', serif",
+                            letterSpacing: '-0.02em',
+                            lineHeight: 1.1,
+                            color: isHov ? 'var(--color-text-primary)' : 'var(--color-fg-soft)',
+                            transition: 'color 0.4s ease',
+                            ...item.logoStyle,
                           }}>
-                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                              <path d="M7 2v10M2 7h10" stroke={isExpanded ? section.accent : 'var(--color-text-subtle)'} strokeWidth="1" strokeLinecap="round" />
-                            </svg>
+                            {item.name}
                           </div>
                         </div>
-                      </div>
 
-                      <div style={{ maxHeight: isExpanded ? 800 : 0, overflow: 'hidden', transition: 'max-height 0.7s cubic-bezier(0.23, 1, 0.32, 1)' }}>
-                        <div style={{ padding: mobile ? '0 0 12px 0' : '0 0 16px 60px' }}>
-                          {section.items.map((item, ii) => {
-                            const isHov = hoveredItem === `${section.id}-${ii}`;
-                            const linked = hasLink(item);
-                            return (
-                              <ItemWrapper key={item.name} item={item}>
-                                <div className="item-entry" style={{
-                                  '--accent': section.accent,
-                                  display: 'flex', alignItems: mobile ? 'flex-start' : 'center',
-                                  flexDirection: mobile ? 'column' : 'row',
-                                  justifyContent: 'space-between', gap: mobile ? 10 : 20,
-                                  padding: mobile ? '16px 12px' : '20px 24px', borderRadius: 10,
-                                  opacity: isExpanded ? 1 : 0, transform: isExpanded ? 'translateY(0)' : 'translateY(-12px)',
-                                  transition: `all 0.5s cubic-bezier(0.23, 1, 0.32, 1) ${ii * 0.07}s`,
-                                  cursor: linked ? 'pointer' : 'default',
-                                } as React.CSSProperties}
-                                  onMouseEnter={() => setHoveredItem(`${section.id}-${ii}`)}
-                                  onMouseLeave={() => setHoveredItem(null)}
-                                >
-                                  <div style={{ flex: 1, minWidth: 0 }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 4, flexWrap: 'wrap' }}>
-                                      <span style={{
-                                        fontSize: mobile ? 16 : 18, fontWeight: 500, letterSpacing: '-0.01em',
-                                        transition: 'all 0.4s ease', color: isHov ? 'var(--color-text-primary)' : 'var(--color-text-secondary)',
-                                        ...item.logoStyle,
-                                      }}>{item.name}</span>
-                                      {item.wip && (
-                                        <div style={{
-                                          display: 'inline-flex', alignItems: 'center', gap: 6,
-                                          padding: '3px 12px', borderRadius: 100,
-                                          background: 'var(--color-overlay-light)', border: '1px solid var(--color-overlay-lighter)',
-                                        }}>
-                                          <div className="wip-dot" />
-                                          <span style={{ fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--color-text-subtle)', fontWeight: 600 }}>WIP</span>
-                                        </div>
-                                      )}
-                                      {!linked && !item.wip && (
-                                        <span style={{
-                                          fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase',
-                                          color: 'var(--color-text-faint)', fontWeight: 600, padding: '3px 12px', borderRadius: 100,
-                                          border: '1px solid var(--color-overlay-lighter)', background: 'var(--color-overlay-light)',
-                                        }}>Coming Soon</span>
-                                      )}
-                                      {item.handle && <span style={{ fontSize: 12, color: 'var(--color-text-faint)' }}>{item.handle}</span>}
-                                    </div>
-                                    <span style={{ fontSize: mobile ? 12 : 13, color: 'var(--color-text-label)', fontWeight: 400, lineHeight: 1.6 }}>
-                                      {item.description}
-                                    </span>
-                                  </div>
-                                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
-                                    <span className="tag-chip" style={{
-                                      borderColor: isHov ? section.accent + '33' : 'var(--color-chip-border)',
-                                      color: isHov ? section.accent : 'var(--color-text-subtle)',
-                                    }}>{item.tag}</span>
-                                    {linked && (
-                                      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{
-                                        opacity: isHov ? 0.7 : 0.1, transform: isHov ? 'translate(2px,-2px)' : 'none',
-                                        transition: 'all 0.4s ease',
-                                      }}>
-                                        <path d="M4 12L12 4M12 4H7M12 4V9" stroke={section.accent} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-                                      </svg>
-                                    )}
-                                  </div>
-                                </div>
-                              </ItemWrapper>
-                            );
-                          })}
+                        {/* Bottom: description + tag */}
+                        <div style={{ marginTop: mobile ? 20 : 24 }}>
+                          <p style={{
+                            fontSize: 12,
+                            lineHeight: 1.6,
+                            color: 'var(--color-text-label)',
+                            fontWeight: 400,
+                            marginBottom: 14,
+                          }}>
+                            {item.description}
+                          </p>
+                          <span style={{
+                            fontSize: 9,
+                            letterSpacing: '0.12em',
+                            textTransform: 'uppercase',
+                            fontWeight: 600,
+                            color: isHov ? section.accent : 'var(--color-text-subtle)',
+                            padding: '4px 12px',
+                            borderRadius: 100,
+                            border: `1px solid ${isHov ? section.accent + '33' : 'var(--color-chip-border)'}`,
+                            transition: 'all 0.4s ease',
+                          }}>
+                            {item.tag}
+                          </span>
+                          {item.handle && (
+                            <span style={{ fontSize: 11, color: 'var(--color-text-faint)', marginLeft: 10 }}>{item.handle}</span>
+                          )}
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </section>
+                    );
 
-          {/* FEATURED */}
-          <section style={{ padding: mobile ? '40px 20px 80px' : '60px 56px 140px', position: 'relative', zIndex: 1 }}>
-            <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-              <div style={{
-                display: 'flex', justifyContent: 'space-between',
-                alignItems: mobile ? 'flex-start' : 'flex-end',
-                flexDirection: mobile ? 'column' : 'row',
-                marginBottom: mobile ? 32 : 64, gap: mobile ? 12 : 0,
-              }}>
-                <div>
-                  <div className="section-label-sm" style={{ marginBottom: 16 }}>Selected Work</div>
-                  <h2 style={{
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: mobile ? 36 : tablet ? 48 : 60,
-                    fontWeight: 300, letterSpacing: '-0.03em', lineHeight: 1,
-                  }}>
-                    Featured <span style={{ fontStyle: 'italic', fontWeight: 400, color: 'var(--color-accent-gold)' }}>projects</span>
-                  </h2>
-                </div>
+                    if (linked) {
+                      return (
+                        <ItemWrapper key={cardId} item={item}>
+                          {card}
+                        </ItemWrapper>
+                      );
+                    }
+                    return card;
+                  })
+                )}
               </div>
-
-              <Link href="/physical/1122" style={{ textDecoration: 'none', color: 'inherit' }}>
-                <div className="featured-card" style={{ padding: mobile ? 28 : 48 }}>
-                  <div style={{ position: 'absolute', top: 0, left: '10%', right: '10%', height: 1, background: 'linear-gradient(90deg, transparent, rgba(212,184,150,0.3), transparent)' }} />
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: mobile ? 24 : 36 }}>
-                    <span style={{ fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--color-accent-gold)', fontWeight: 600, background: 'rgba(212,184,150,0.06)', padding: '6px 16px', borderRadius: 100, border: '1px solid rgba(212,184,150,0.1)' }}>Physical</span>
-                    <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style={{ opacity: 0.25 }}><path d="M6 14L14 6M14 6H8M14 6V12" stroke="var(--color-fg)" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                  </div>
-                  <div style={{
-                    borderRadius: 14, height: mobile ? 200 : 320, marginBottom: mobile ? 28 : 40,
-                    border: '1px solid var(--color-overlay-light)', position: 'relative', overflow: 'hidden',
-                  }}>
-                    <img
-                      src="/images/1122/before/kitchen1.webp"
-                      alt="Project 1122 — Kitchen"
-                      style={{
-                        width: '100%', height: '100%', objectFit: 'cover',
-                        filter: 'brightness(0.6) saturate(0.8)',
-                        transition: 'filter 0.6s ease, transform 0.6s ease',
-                      }}
-                    />
-                    <div style={{
-                      position: 'absolute', inset: 0,
-                      background: `linear-gradient(to top, var(--color-image-overlay) 0%, transparent 60%)`,
-                    }} />
-                    <span style={{
-                      position: 'absolute', bottom: mobile ? 16 : 24, left: mobile ? 16 : 24,
-                      fontFamily: "'Cormorant Garamond', serif",
-                      fontSize: mobile ? 24 : 36, fontWeight: 300,
-                      color: 'rgba(255,255,255,0.15)', letterSpacing: '0.05em',
-                    }}>1122</span>
-                  </div>
-                  <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: mobile ? 28 : 36, fontWeight: 300, marginBottom: 6 }}>Project 1122</h3>
-                  <div style={{ fontSize: 12, color: 'var(--color-text-faint)', marginBottom: mobile ? 14 : 18, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Stilwell</div>
-                  <p style={{ fontSize: mobile ? 13 : 15, lineHeight: 1.75, color: 'var(--color-text-muted)', fontWeight: 400, maxWidth: 480 }}>A complete spatial transformation — reimagining a home from blueprint to lived experience.</p>
-                </div>
-              </Link>
             </div>
           </section>
 
