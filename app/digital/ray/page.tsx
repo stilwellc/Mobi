@@ -60,8 +60,23 @@ export default function RayPage() {
       color: 'var(--color-fg)',
       fontFamily: "'Syne', sans-serif",
     }}>
-      <nav style={{
-        padding: '24px 56px',
+      <style>{`
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        .ray-nav { padding: 24px 56px; }
+        .ray-hero { padding: 60px 56px 40px; }
+        .ray-divider-wrap { padding: 0 56px; }
+        .ray-pills { gap: 8px; }
+        .ray-pills button { padding: 8px 20px; font-size: 13px; }
+        @media (max-width: 768px) {
+          .ray-nav { padding: 16px 20px; }
+          .ray-hero { padding: 40px 20px 32px; }
+          .ray-divider-wrap { padding: 0 20px; }
+          .ray-pills { gap: 6px; }
+          .ray-pills button { padding: 7px 14px; font-size: 12px; }
+        }
+      `}</style>
+
+      <nav className="ray-nav" style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -97,7 +112,7 @@ export default function RayPage() {
         </div>
       </nav>
 
-      <section style={{ padding: '60px 56px 40px', maxWidth: 1100, margin: '0 auto' }}>
+      <section className="ray-hero" style={{ maxWidth: 1100, margin: '0 auto' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 16 }}>
           <div style={{
             width: 10,
@@ -105,6 +120,7 @@ export default function RayPage() {
             borderRadius: '50%',
             background: 'var(--color-accent-blue)',
             opacity: 0.6,
+            flexShrink: 0,
           }} />
           <span style={{
             fontSize: 11,
@@ -127,8 +143,8 @@ export default function RayPage() {
           <span style={{ fontStyle: 'italic', color: 'var(--color-accent-blue)' }}>Ray</span>
         </h1>
         <p style={{
-          fontSize: 16,
-          lineHeight: 1.8,
+          fontSize: 15,
+          lineHeight: 1.7,
           color: 'var(--color-text-muted)',
           fontWeight: 400,
           maxWidth: 560,
@@ -137,14 +153,12 @@ export default function RayPage() {
           Christie&apos;s, and Wright/Rago with daily automated data collection.
         </p>
 
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 20 }}>
+        <div className="ray-pills" style={{ display: 'flex', flexWrap: 'wrap', marginTop: 20 }}>
           {ARTISTS.map(a => (
             <button
               key={a.slug}
               onClick={() => setSelectedArtist(a.slug)}
               style={{
-                padding: '8px 20px',
-                fontSize: 13,
                 fontFamily: "'Syne', sans-serif",
                 fontWeight: 500,
                 letterSpacing: '0.02em',
@@ -179,7 +193,7 @@ export default function RayPage() {
         )}
       </section>
 
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 56px' }}>
+      <div className="ray-divider-wrap" style={{ maxWidth: 1100, margin: '0 auto' }}>
         <div style={{
           width: '100%',
           height: 1,
@@ -197,7 +211,6 @@ export default function RayPage() {
             opacity: 0.5,
             animation: 'pulse 2s infinite',
           }} />
-          <style>{`@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }`}</style>
         </div>
       ) : (
         <>

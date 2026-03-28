@@ -23,7 +23,39 @@ export default function PastResults({ lots }: { lots: AuctionLot[] }) {
   const shown = lots.slice(0, visible);
 
   return (
-    <section style={{ padding: '40px 56px 120px', maxWidth: 1100, margin: '0 auto' }}>
+    <section className="ray-results" style={{ maxWidth: 1100, margin: '0 auto' }}>
+      <style>{`
+        .ray-results { padding: 40px 56px 120px; }
+        .ray-result-row {
+          display: grid;
+          grid-template-columns: 1fr auto auto;
+          align-items: center;
+          gap: 16px;
+          padding: 16px 24px;
+          text-decoration: none;
+          color: inherit;
+          transition: background 0.2s;
+        }
+        .ray-result-row:hover { background: var(--color-hover-item); }
+        .ray-result-price-col { text-align: right; flex-shrink: 0; }
+        .ray-result-meta-row { display: flex; align-items: center; gap: 8px; }
+        @media (max-width: 768px) {
+          .ray-results { padding: 32px 20px 80px; }
+          .ray-result-row {
+            grid-template-columns: 1fr;
+            gap: 8px;
+            padding: 16px 16px;
+          }
+          .ray-result-price-col {
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+          }
+          .ray-result-meta-row { flex-wrap: wrap; }
+        }
+      `}</style>
+
       <div style={{ marginBottom: 32 }}>
         <h2 style={{
           fontFamily: "'Cormorant Garamond', serif",
@@ -52,19 +84,10 @@ export default function PastResults({ lots }: { lots: AuctionLot[] }) {
               href={lot.url}
               target="_blank"
               rel="noopener noreferrer"
+              className="ray-result-row"
               style={{
-                display: 'grid',
-                gridTemplateColumns: '1fr auto auto',
-                alignItems: 'center',
-                gap: 16,
-                padding: '16px 24px',
-                textDecoration: 'none',
-                color: 'inherit',
                 borderBottom: i < shown.length - 1 ? '1px solid var(--color-border)' : 'none',
-                transition: 'background 0.2s',
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--color-hover-item)')}
-              onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
             >
               <div style={{ minWidth: 0 }}>
                 <div style={{
@@ -78,10 +101,7 @@ export default function PastResults({ lots }: { lots: AuctionLot[] }) {
                 }}>
                   {lot.title}
                 </div>
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 8,
+                <div className="ray-result-meta-row" style={{
                   fontSize: 11,
                   color: 'var(--color-text-label)',
                 }}>
@@ -95,16 +115,15 @@ export default function PastResults({ lots }: { lots: AuctionLot[] }) {
                 </div>
               </div>
 
-              <div style={{ textAlign: 'right', flexShrink: 0 }}>
+              <div className="ray-result-price-col">
                 <div style={{
                   fontSize: 15,
                   fontWeight: 500,
                   color: 'var(--color-accent-blue)',
-                  marginBottom: 4,
                 }}>
                   {lot.priceUsd ? formatPrice(lot.priceUsd) : '—'}
                 </div>
-                <div style={{ fontSize: 10, color: 'var(--color-text-ghost)' }}>
+                <div style={{ fontSize: 10, color: 'var(--color-text-ghost)', marginTop: 2 }}>
                   {new Date(lot.saleDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
                 </div>
               </div>

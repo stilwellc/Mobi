@@ -33,14 +33,27 @@ export default function StatsGrid({ stats }: { stats: MarketStats }) {
   ];
 
   return (
-    <section style={{ padding: '40px 56px', maxWidth: 1100, margin: '0 auto' }}>
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
-        gap: 16,
-      }}>
+    <section className="ray-stats" style={{ maxWidth: 1100, margin: '0 auto' }}>
+      <style>{`
+        .ray-stats { padding: 40px 56px; }
+        .ray-stats-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+          gap: 16px;
+        }
+        @media (max-width: 768px) {
+          .ray-stats { padding: 32px 20px; }
+          .ray-stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+          }
+          .ray-stat-card { padding: 20px 16px !important; }
+          .ray-stat-value { font-size: 28px !important; }
+        }
+      `}</style>
+      <div className="ray-stats-grid">
         {cards.map((card) => (
-          <div key={card.label} style={{
+          <div key={card.label} className="ray-stat-card" style={{
             background: 'var(--color-bg-card)',
             border: '1px solid var(--color-border)',
             borderRadius: 16,
@@ -56,7 +69,7 @@ export default function StatsGrid({ stats }: { stats: MarketStats }) {
             }}>
               {card.label}
             </div>
-            <div style={{
+            <div className="ray-stat-value" style={{
               fontFamily: "'Cormorant Garamond', serif",
               fontSize: 36,
               fontWeight: 300,

@@ -33,7 +33,7 @@ export default function LotCard({ lot }: { lot: AuctionLot }) {
       rel="noopener noreferrer"
       style={{ textDecoration: 'none', color: 'inherit' }}
     >
-      <div style={{
+      <div className="ray-lot-card" style={{
         position: 'relative',
         borderRadius: 20,
         overflow: 'hidden',
@@ -42,10 +42,15 @@ export default function LotCard({ lot }: { lot: AuctionLot }) {
         transition: 'all 0.4s ease',
         cursor: 'pointer',
       }}>
-        <div style={{
+        <style>{`
+          .ray-lot-img { height: 220px; }
+          @media (max-width: 768px) {
+            .ray-lot-img { height: 180px; }
+          }
+        `}</style>
+        <div className="ray-lot-img" style={{
           position: 'relative',
           width: '100%',
-          height: 220,
           background: `linear-gradient(135deg, var(--color-bg-card) 0%, var(--color-bg) 100%)`,
           display: 'flex',
           alignItems: 'center',

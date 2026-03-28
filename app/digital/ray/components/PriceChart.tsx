@@ -33,9 +33,18 @@ function CustomTooltip({ active, payload, label }: { active?: boolean; payload?:
 
 export default function PriceChart({ data }: { data: PricePoint[] }) {
   return (
-    <section style={{ padding: '40px 56px 60px', maxWidth: 1100, margin: '0 auto' }}>
+    <section className="ray-chart" style={{ maxWidth: 1100, margin: '0 auto' }}>
+      <style>{`
+        .ray-chart { padding: 40px 56px 60px; }
+        .ray-chart-container { height: 360px; }
+        @media (max-width: 768px) {
+          .ray-chart { padding: 32px 20px 40px; }
+          .ray-chart-container { height: 240px; }
+          .ray-chart-title { font-size: 26px !important; }
+        }
+      `}</style>
       <div style={{ marginBottom: 32 }}>
-        <h2 style={{
+        <h2 className="ray-chart-title" style={{
           fontFamily: "'Cormorant Garamond', serif",
           fontSize: 32,
           fontWeight: 300,
@@ -53,56 +62,58 @@ export default function PriceChart({ data }: { data: PricePoint[] }) {
         background: 'var(--color-bg-card)',
         border: '1px solid var(--color-border)',
         borderRadius: 20,
-        padding: '24px 16px 16px 0',
+        padding: '24px 8px 16px 0',
       }}>
-        <ResponsiveContainer width="100%" height={360}>
-          <AreaChart data={data} margin={{ top: 10, right: 20, left: 20, bottom: 0 }}>
-            <defs>
-              <linearGradient id="blueGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#96B8D4" stopOpacity={0.25} />
-                <stop offset="100%" stopColor="#96B8D4" stopOpacity={0.02} />
-              </linearGradient>
-              <linearGradient id="goldGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#D4B896" stopOpacity={0.15} />
-                <stop offset="100%" stopColor="#D4B896" stopOpacity={0.01} />
-              </linearGradient>
-            </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
-            <XAxis
-              dataKey="date"
-              tick={{ fontSize: 10, fill: 'var(--color-text-ghost)', fontFamily: "'Syne', sans-serif" }}
-              axisLine={{ stroke: 'var(--color-border)' }}
-              tickLine={false}
-              interval="preserveStartEnd"
-            />
-            <YAxis
-              tickFormatter={formatAxis}
-              tick={{ fontSize: 10, fill: 'var(--color-text-ghost)', fontFamily: "'Syne', sans-serif" }}
-              axisLine={false}
-              tickLine={false}
-              width={60}
-            />
-            <Tooltip content={<CustomTooltip />} />
-            <Area
-              type="monotone"
-              dataKey="highPrice"
-              stroke="#D4B896"
-              strokeWidth={1}
-              fill="url(#goldGrad)"
-              strokeOpacity={0.4}
-              dot={false}
-            />
-            <Area
-              type="monotone"
-              dataKey="avgPrice"
-              stroke="#96B8D4"
-              strokeWidth={2}
-              fill="url(#blueGrad)"
-              dot={false}
-              activeDot={{ r: 4, fill: '#96B8D4', stroke: 'var(--color-bg)', strokeWidth: 2 }}
-            />
-          </AreaChart>
-        </ResponsiveContainer>
+        <div className="ray-chart-container">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={data} margin={{ top: 10, right: 16, left: 8, bottom: 0 }}>
+              <defs>
+                <linearGradient id="blueGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#96B8D4" stopOpacity={0.25} />
+                  <stop offset="100%" stopColor="#96B8D4" stopOpacity={0.02} />
+                </linearGradient>
+                <linearGradient id="goldGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#D4B896" stopOpacity={0.15} />
+                  <stop offset="100%" stopColor="#D4B896" stopOpacity={0.01} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
+              <XAxis
+                dataKey="date"
+                tick={{ fontSize: 10, fill: 'var(--color-text-ghost)', fontFamily: "'Syne', sans-serif" }}
+                axisLine={{ stroke: 'var(--color-border)' }}
+                tickLine={false}
+                interval="preserveStartEnd"
+              />
+              <YAxis
+                tickFormatter={formatAxis}
+                tick={{ fontSize: 10, fill: 'var(--color-text-ghost)', fontFamily: "'Syne', sans-serif" }}
+                axisLine={false}
+                tickLine={false}
+                width={50}
+              />
+              <Tooltip content={<CustomTooltip />} />
+              <Area
+                type="monotone"
+                dataKey="highPrice"
+                stroke="#D4B896"
+                strokeWidth={1}
+                fill="url(#goldGrad)"
+                strokeOpacity={0.4}
+                dot={false}
+              />
+              <Area
+                type="monotone"
+                dataKey="avgPrice"
+                stroke="#96B8D4"
+                strokeWidth={2}
+                fill="url(#blueGrad)"
+                dot={false}
+                activeDot={{ r: 4, fill: '#96B8D4', stroke: 'var(--color-bg)', strokeWidth: 2 }}
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
       </div>
     </section>
   );

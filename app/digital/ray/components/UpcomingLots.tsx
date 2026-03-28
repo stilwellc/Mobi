@@ -5,7 +5,23 @@ import LotCard from './LotCard';
 
 export default function UpcomingLots({ lots }: { lots: AuctionLot[] }) {
   return (
-    <section style={{ padding: '40px 56px 60px', maxWidth: 1200, margin: '0 auto' }}>
+    <section className="ray-upcoming" style={{ maxWidth: 1200, margin: '0 auto' }}>
+      <style>{`
+        .ray-upcoming { padding: 40px 56px 60px; }
+        .ray-upcoming-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+          gap: 20px;
+        }
+        @media (max-width: 768px) {
+          .ray-upcoming { padding: 32px 20px 40px; }
+          .ray-upcoming-grid {
+            grid-template-columns: 1fr;
+            gap: 16px;
+          }
+        }
+      `}</style>
+
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 32 }}>
         <span style={{
           width: 8,
@@ -13,6 +29,7 @@ export default function UpcomingLots({ lots }: { lots: AuctionLot[] }) {
           borderRadius: '50%',
           background: '#96B8D4',
           animation: 'pulse 2s infinite',
+          flexShrink: 0,
         }} />
         <h2 style={{
           fontFamily: "'Cormorant Garamond', serif",
@@ -24,22 +41,11 @@ export default function UpcomingLots({ lots }: { lots: AuctionLot[] }) {
         </h2>
       </div>
 
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-        gap: 20,
-      }}>
+      <div className="ray-upcoming-grid">
         {lots.map((lot) => (
           <LotCard key={lot.id} lot={lot} />
         ))}
       </div>
-
-      <style>{`
-        @keyframes pulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.4; }
-        }
-      `}</style>
     </section>
   );
 }
