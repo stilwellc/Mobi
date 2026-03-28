@@ -94,6 +94,7 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
                         fontSize: mobile ? 28 : 36, fontWeight: 300, letterSpacing: '-0.02em',
                         transition: 'color 0.4s ease',
                         color: isHov ? 'var(--color-text-primary)' : 'var(--color-fg-soft)',
+                        ...item.logoStyle,
                       }}>{item.name}</span>
                       {item.wip && (
                         <div style={{

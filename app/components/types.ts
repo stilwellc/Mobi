@@ -6,6 +6,7 @@ export interface SectionItem {
   url?: string;
   handle?: string;
   wip?: boolean;
+  logoStyle?: Record<string, string | number>;
 }
 
 export interface Section {

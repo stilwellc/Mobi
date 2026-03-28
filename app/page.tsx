@@ -401,6 +401,7 @@ export default function MobiSite() {
                                       <span style={{
                                         fontSize: mobile ? 16 : 18, fontWeight: 500, letterSpacing: '-0.01em',
                                         transition: 'all 0.4s ease', color: isHov ? 'var(--color-text-primary)' : 'var(--color-text-secondary)',
+                                        ...item.logoStyle,
                                       }}>{item.name}</span>
                                       {item.wip && (
                                         <div style={{
