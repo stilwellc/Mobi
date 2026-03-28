@@ -284,171 +284,169 @@ export default function MobiSite() {
           </section>
 
           {/* PROJECTS */}
-          <section id="directory" style={{ padding: mobile ? '40px 20px 80px' : '80px 56px 140px', position: 'relative', zIndex: 1, scrollMarginTop: 80 }}>
-            <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-              <div style={{
-                display: 'flex', flexDirection: mobile ? 'column' : 'row',
-                justifyContent: 'space-between', alignItems: mobile ? 'flex-start' : 'flex-end',
-                marginBottom: mobile ? 40 : 72, gap: mobile ? 12 : 0,
-              }}>
-                <div>
-                  <div className="section-label-sm" style={{ marginBottom: 16 }}>Index</div>
-                  <h2 style={{
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: mobile ? 36 : tablet ? 48 : 60,
-                    fontWeight: 300, letterSpacing: '-0.03em', lineHeight: 1,
-                  }}>
-                    Everything we{' '}<span style={{ fontStyle: 'italic', fontWeight: 400, color: 'var(--color-accent-gold)' }}>make</span>
-                  </h2>
-                </div>
-                {!mobile && (
-                  <span style={{ fontSize: 11, color: 'var(--color-text-ghost)', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 600 }}>
-                    {sections.reduce((a, s) => a + s.items.length, 0)} Projects
-                  </span>
-                )}
-              </div>
+          <section id="directory" style={{ padding: mobile ? '40px 0 20px' : '80px 0 40px', position: 'relative', zIndex: 1, scrollMarginTop: 80 }}>
+            {sections.map((section, si) => {
+              const renderCard = (item: typeof section.items[0], opts?: { tall?: boolean; wide?: boolean; fontSize?: number }) => {
+                const linked = hasLink(item);
+                const cardId = `${section.id}-${item.name}`;
+                const isHov = hoveredItem === cardId;
+                const tall = opts?.tall;
+                const nameSize = opts?.fontSize || (mobile ? 26 : 32);
+                const card = (
+                  <div
+                    key={cardId}
+                    className="project-card"
+                    onMouseEnter={() => setHoveredItem(cardId)}
+                    onMouseLeave={() => setHoveredItem(null)}
+                    style={{
+                      position: 'relative',
+                      borderRadius: 20,
+                      overflow: 'hidden',
+                      background: 'var(--color-bg-card)',
+                      border: `1px solid ${isHov ? section.accent + '44' : 'var(--color-border)'}`,
+                      padding: mobile ? '28px 24px' : tall ? '44px 36px' : '36px 32px',
+                      minHeight: mobile ? 160 : tall ? 340 : 200,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between',
+                      cursor: linked ? 'pointer' : 'default',
+                      transition: 'all 0.5s cubic-bezier(0.23, 1, 0.32, 1)',
+                      transform: isHov ? 'translateY(-4px)' : 'none',
+                      gridColumn: opts?.wide && !mobile ? 'span 2' : undefined,
+                      gridRow: tall && !mobile ? 'span 2' : undefined,
+                    }}
+                  >
+                    <div style={{
+                      position: 'absolute', top: -80, right: -80,
+                      width: tall ? 240 : 160, height: tall ? 240 : 160,
+                      borderRadius: '50%',
+                      background: `radial-gradient(circle, ${section.accent}${isHov ? '18' : '08'} 0%, transparent 70%)`,
+                      transition: 'all 0.6s ease', pointerEvents: 'none',
+                    }} />
 
-              <div className="project-grid" style={{
-                display: 'grid',
-                gridTemplateColumns: mobile ? '1fr' : 'repeat(3, 1fr)',
-                gap: mobile ? 14 : 18,
-              }}>
-                {sections.flatMap((section) =>
-                  section.items.map((item) => {
-                    const linked = hasLink(item);
-                    const cardId = `${section.id}-${item.name}`;
-                    const isHov = hoveredItem === cardId;
-                    const card = (
-                      <div
-                        key={cardId}
-                        className="project-card"
-                        onMouseEnter={() => setHoveredItem(cardId)}
-                        onMouseLeave={() => setHoveredItem(null)}
-                        style={{
-                          position: 'relative',
-                          borderRadius: 20,
-                          overflow: 'hidden',
-                          background: 'var(--color-bg-card)',
-                          border: `1px solid ${isHov ? section.accent + '44' : 'var(--color-border)'}`,
-                          padding: mobile ? '28px 24px' : '36px 32px',
-                          minHeight: mobile ? 160 : 200,
-                          display: 'flex',
-                          flexDirection: 'column',
-                          justifyContent: 'space-between',
-                          cursor: linked ? 'pointer' : 'default',
-                          transition: 'all 0.5s cubic-bezier(0.23, 1, 0.32, 1)',
-                          transform: isHov ? 'translateY(-4px)' : 'none',
-                        }}
-                      >
-                        {/* Accent glow */}
-                        <div style={{
-                          position: 'absolute',
-                          top: -60,
-                          right: -60,
-                          width: 160,
-                          height: 160,
-                          borderRadius: '50%',
-                          background: `radial-gradient(circle, ${section.accent}${isHov ? '18' : '08'} 0%, transparent 70%)`,
-                          transition: 'all 0.6s ease',
-                          pointerEvents: 'none',
-                        }} />
-
-                        {/* Top row: category + status */}
-                        <div>
-                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: mobile ? 20 : 28 }}>
-                            <span style={{
-                              fontSize: 9,
-                              letterSpacing: '0.2em',
-                              textTransform: 'uppercase',
-                              color: section.accent,
-                              fontWeight: 600,
-                              background: `${section.accent}0a`,
-                              padding: '4px 12px',
-                              borderRadius: 100,
-                              border: `1px solid ${section.accent}18`,
-                            }}>
-                              {section.label}
-                            </span>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                              {item.wip && (
-                                <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                                  <div className="wip-dot" />
-                                  <span style={{ fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--color-text-subtle)', fontWeight: 600 }}>WIP</span>
-                                </div>
-                              )}
-                              {!linked && !item.wip && (
-                                <span style={{ fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--color-text-faint)', fontWeight: 600 }}>Soon</span>
-                              )}
-                              {linked && (
-                                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{
-                                  opacity: isHov ? 0.6 : 0.15,
-                                  transform: isHov ? 'translate(2px,-2px)' : 'none',
-                                  transition: 'all 0.4s ease',
-                                }}>
-                                  <path d="M4 12L12 4M12 4H7M12 4V9" stroke={section.accent} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
-                              )}
-                            </div>
+                    <div>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', marginBottom: mobile ? 20 : tall ? 40 : 28, minHeight: 20 }}>
+                        {item.wip && (
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                            <div className="wip-dot" />
+                            <span style={{ fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--color-text-subtle)', fontWeight: 600 }}>WIP</span>
                           </div>
-
-                          {/* Logo-style project name */}
-                          <div style={{
-                            fontSize: mobile ? 26 : 32,
-                            fontWeight: 300,
-                            fontFamily: "'Cormorant Garamond', serif",
-                            letterSpacing: '-0.02em',
-                            lineHeight: 1.1,
-                            color: isHov ? 'var(--color-text-primary)' : 'var(--color-fg-soft)',
-                            transition: 'color 0.4s ease',
-                            ...item.logoStyle,
-                          }}>
-                            {item.name}
-                          </div>
-                        </div>
-
-                        {/* Bottom: description + tag */}
-                        <div style={{ marginTop: mobile ? 20 : 24 }}>
-                          <p style={{
-                            fontSize: 12,
-                            lineHeight: 1.6,
-                            color: 'var(--color-text-label)',
-                            fontWeight: 400,
-                            marginBottom: 14,
-                          }}>
-                            {item.description}
-                          </p>
-                          <span style={{
-                            fontSize: 9,
-                            letterSpacing: '0.12em',
-                            textTransform: 'uppercase',
-                            fontWeight: 600,
-                            color: isHov ? section.accent : 'var(--color-text-subtle)',
-                            padding: '4px 12px',
-                            borderRadius: 100,
-                            border: `1px solid ${isHov ? section.accent + '33' : 'var(--color-chip-border)'}`,
+                        )}
+                        {!linked && !item.wip && (
+                          <span style={{ fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--color-text-faint)', fontWeight: 600 }}>Soon</span>
+                        )}
+                        {linked && (
+                          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{
+                            opacity: isHov ? 0.6 : 0.15,
+                            transform: isHov ? 'translate(2px,-2px)' : 'none',
                             transition: 'all 0.4s ease',
                           }}>
-                            {item.tag}
-                          </span>
-                          {item.handle && (
-                            <span style={{ fontSize: 11, color: 'var(--color-text-faint)', marginLeft: 10 }}>{item.handle}</span>
-                          )}
-                        </div>
+                            <path d="M4 12L12 4M12 4H7M12 4V9" stroke={section.accent} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                        )}
                       </div>
-                    );
 
-                    if (linked) {
-                      return (
-                        <ItemWrapper key={cardId} item={item}>
-                          {card}
-                        </ItemWrapper>
-                      );
-                    }
-                    return card;
-                  })
-                )}
-              </div>
-            </div>
+                      <div style={{
+                        fontSize: nameSize,
+                        fontWeight: 300,
+                        fontFamily: "'Cormorant Garamond', serif",
+                        letterSpacing: '-0.02em',
+                        lineHeight: 1.1,
+                        color: isHov ? 'var(--color-text-primary)' : 'var(--color-fg-soft)',
+                        transition: 'color 0.4s ease',
+                        ...item.logoStyle,
+                      }}>
+                        {item.name}
+                      </div>
+                    </div>
+
+                    <div style={{ marginTop: mobile ? 20 : 24 }}>
+                      <p style={{ fontSize: 12, lineHeight: 1.6, color: 'var(--color-text-label)', fontWeight: 400, marginBottom: 14 }}>
+                        {item.description}
+                      </p>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                        <span style={{
+                          fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', fontWeight: 600,
+                          color: isHov ? section.accent : 'var(--color-text-subtle)',
+                          padding: '4px 12px', borderRadius: 100,
+                          border: `1px solid ${isHov ? section.accent + '33' : 'var(--color-chip-border)'}`,
+                          transition: 'all 0.4s ease',
+                        }}>
+                          {item.tag}
+                        </span>
+                        {item.handle && (
+                          <span style={{ fontSize: 11, color: 'var(--color-text-faint)' }}>{item.handle}</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                );
+                if (linked) return <ItemWrapper key={cardId} item={item}>{card}</ItemWrapper>;
+                return card;
+              };
+
+              return (
+                <div key={section.id} style={{ marginBottom: mobile ? 8 : 24 }}>
+                  {/* Section header */}
+                  <div style={{ padding: mobile ? '0 20px' : '0 56px', maxWidth: 1200, margin: '0 auto' }}>
+                    <div style={{
+                      display: 'flex', alignItems: 'center', gap: mobile ? 14 : 20,
+                      padding: mobile ? '28px 0 20px' : '48px 0 32px',
+                      borderTop: si === 0 ? 'none' : '1px solid var(--color-border)',
+                    }}>
+                      <div style={{ width: 8, height: 8, borderRadius: '50%', background: section.accent, opacity: 0.6, flexShrink: 0 }} />
+                      <span style={{
+                        fontFamily: "'Cormorant Garamond', serif",
+                        fontSize: mobile ? 28 : tablet ? 36 : 44,
+                        fontWeight: 300, letterSpacing: '-0.02em', color: 'var(--color-fg-dim)',
+                      }}>
+                        {section.label}
+                      </span>
+                      <div style={{ flex: 1, height: 1, background: `linear-gradient(90deg, ${section.accent}20, transparent 60%)` }} />
+                      <span style={{ fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--color-text-ghost)', fontWeight: 600, flexShrink: 0 }}>
+                        {section.tagline}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Per-section editorial layouts */}
+                  <div style={{ padding: mobile ? '0 20px' : '0 56px', maxWidth: 1200, margin: '0 auto' }}>
+                    {section.id === 'physical' && !mobile ? (
+                      /* Physical: hero left (tall) + 2 stacked right */
+                      <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gridTemplateRows: 'auto auto', gap: 18 }}>
+                        <div style={{ gridRow: 'span 2' }}>
+                          {renderCard(section.items[0], { tall: true, fontSize: 42 })}
+                        </div>
+                        {section.items.slice(1).map(item => renderCard(item))}
+                      </div>
+                    ) : section.id === 'digital' && !mobile ? (
+                      /* Digital: 2 wide top, 2 below — Ray is wide */
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 18 }}>
+                        {renderCard(section.items[3], { wide: false, fontSize: 38 })}
+                        {renderCard(section.items[0], { wide: false, fontSize: 38 })}
+                        {renderCard(section.items[1])}
+                        {renderCard(section.items[2])}
+                      </div>
+                    ) : section.id === 'shop' && !mobile ? (
+                      /* Shop: single full-width card, more horizontal */
+                      <div>
+                        {renderCard(section.items[0], { wide: false, fontSize: 48 })}
+                      </div>
+                    ) : section.id === 'social' && !mobile ? (
+                      /* Social: 3 equal columns */
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 18 }}>
+                        {section.items.map(item => renderCard(item))}
+                      </div>
+                    ) : (
+                      /* Mobile: stack everything */
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                        {section.items.map(item => renderCard(item))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
           </section>
 
           {/* PHILOSOPHY */}
