@@ -146,6 +146,14 @@ const ARTISTS: ArtistConfig[] = [
     christies: 'peter-saul',
     wright: 'peter-saul',
   },
+  {
+    slug: 'ed-ruscha',
+    displayName: 'Ed Ruscha',
+    phillips: { id: '11024', slug: 'ed-ruscha' },
+    sothebys: 'ed-ruscha',
+    christies: 'ed-ruscha',
+    wright: 'ed-ruscha',
+  },
 ];
 
 const DATA_DIR = path.join(process.cwd(), 'public', 'data', 'ray');
