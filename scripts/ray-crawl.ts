@@ -139,6 +139,13 @@ const ARTISTS: ArtistConfig[] = [
     christies: 'keith-haring',
     wright: 'keith-haring',
   },
+  {
+    slug: 'peter-saul',
+    displayName: 'Peter Saul',
+    phillips: { id: '8398', slug: 'peter-saul' },
+    christies: 'peter-saul',
+    wright: 'peter-saul',
+  },
 ];
 
 const DATA_DIR = path.join(process.cwd(), 'public', 'data', 'ray');

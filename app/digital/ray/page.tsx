@@ -21,6 +21,7 @@ const ARTISTS = [
   { slug: 'tom-sachs', label: 'Tom Sachs' },
   { slug: 'barry-mcgee', label: 'Barry McGee' },
   { slug: 'keith-haring', label: 'Keith Haring' },
+  { slug: 'peter-saul', label: 'Peter Saul' },
 ];
 
 export default function RayPage() {
