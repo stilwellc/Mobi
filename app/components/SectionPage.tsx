@@ -70,6 +70,7 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
 }) {
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
   const [phase, setPhase] = useState(0);
+  const [scrollY, setScrollY] = useState(0);
   const [itemsVisible, setItemsVisible] = useState(false);
   const itemsRef = useRef<HTMLDivElement>(null);
   const px = mobile ? 20 : tablet ? 36 : 56;
@@ -87,6 +88,12 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
   }, []);
 
   useEffect(() => {
+    const hs = () => setScrollY(window.scrollY || 0);
+    window.addEventListener('scroll', hs, { passive: true });
+    return () => window.removeEventListener('scroll', hs);
+  }, []);
+
+  useEffect(() => {
     const el = itemsRef.current;
     if (!el) return;
     const obs = new IntersectionObserver(
@@ -100,10 +107,57 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
   return (
     <div style={{ minHeight: '100vh', position: 'relative', overflow: 'hidden' }}>
       <style>{`
+        @keyframes floatOrb{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(15px,-20px) scale(1.03)}66%{transform:translate(-10px,12px) scale(0.97)}}
+        @keyframes pulseGlow{0%,100%{opacity:0.3;transform:scale(1)}50%{opacity:0.7;transform:scale(1.15)}}
+        @keyframes driftLine{0%,100%{transform:translateX(0) scaleX(1)}50%{transform:translateX(20px) scaleX(1.3)}}
         .section-card{position:relative;border-radius:20px;overflow:hidden;background:var(--color-bg-card);border:1px solid var(--color-border);transition:all 0.5s cubic-bezier(0.23,1,0.32,1)}
         .section-card:hover{border-color:var(--color-border-strong);box-shadow:var(--shadow-card-hover);transform:translateY(-4px)}
         .section-card::before{content:'';position:absolute;inset:0;border-radius:20px;padding:1px;background:linear-gradient(135deg,var(--color-border-mid),transparent 40%,transparent 60%,var(--color-overlay-light));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
       `}</style>
+
+      {/* Ambient floating orbs — accent-colored, parallax */}
+      <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0 }} aria-hidden="true">
+        <div style={{
+          position: 'absolute', width: mobile ? 180 : 400, height: mobile ? 180 : 400, borderRadius: '50%',
+          background: `radial-gradient(circle, ${section.accent}0a 0%, transparent 60%)`,
+          bottom: '10%', left: '-5%',
+          animation: 'floatOrb 20s ease-in-out infinite', filter: 'blur(60px)',
+          transform: `translateY(${scrollY * 0.03}px)`,
+          opacity: phase >= 1 ? 1 : 0, transition: 'opacity 1.5s ease',
+        }} />
+        <div style={{
+          position: 'absolute', width: mobile ? 120 : 300, height: mobile ? 120 : 300, borderRadius: '50%',
+          background: `radial-gradient(circle, ${section.accent}08 0%, transparent 60%)`,
+          top: '20%', right: '-8%',
+          animation: 'floatOrb 25s ease-in-out infinite reverse', filter: 'blur(80px)',
+          transform: `translateY(${scrollY * -0.02}px)`,
+          opacity: phase >= 1 ? 1 : 0, transition: 'opacity 1.5s ease 0.3s',
+        }} />
+        <div style={{
+          position: 'absolute', width: mobile ? 80 : 200, height: mobile ? 80 : 200, borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(212,148,184,0.03) 0%, transparent 60%)',
+          top: '55%', left: '25%',
+          animation: 'floatOrb 30s ease-in-out infinite', filter: 'blur(70px)',
+          transform: `translateY(${scrollY * 0.015}px)`,
+          opacity: phase >= 2 ? 1 : 0, transition: 'opacity 1.5s ease 0.6s',
+        }} />
+        {/* Pulsing accent dot */}
+        <div style={{
+          position: 'absolute', top: '35%', right: '12%',
+          width: 6, height: 6, borderRadius: '50%',
+          background: section.accent,
+          animation: 'pulseGlow 4s ease-in-out infinite',
+          opacity: phase >= 3 ? 0.5 : 0, transition: 'opacity 1s ease',
+        }} />
+        {/* Drifting accent line */}
+        <div style={{
+          position: 'absolute', top: '70%', left: '8%',
+          width: mobile ? 40 : 80, height: 1,
+          background: `linear-gradient(90deg, transparent, ${section.accent}20, transparent)`,
+          animation: 'driftLine 12s ease-in-out infinite',
+          opacity: phase >= 4 ? 0.6 : 0, transition: 'opacity 1s ease',
+        }} />
+      </div>
 
       {/* Hero section */}
       <section style={{
