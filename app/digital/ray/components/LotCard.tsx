@@ -1,6 +1,7 @@
 'use client';
 
 import { AuctionLot } from '../types';
+import { ARTIST_LABEL } from '../constants';
 
 const houseColors: Record<string, string> = {
   'Phillips': '#96B8D4',
@@ -23,7 +24,7 @@ function formatEstimate(lot: AuctionLot): string {
   return 'Estimate on request';
 }
 
-export default function LotCard({ lot }: { lot: AuctionLot }) {
+export default function LotCard({ lot, showArtist = false }: { lot: AuctionLot; showArtist?: boolean }) {
   const color = houseColors[lot.auctionHouse] || '#96B8D4';
 
   return (
@@ -121,6 +122,18 @@ export default function LotCard({ lot }: { lot: AuctionLot }) {
         </div>
 
         <div style={{ padding: '16px 20px 20px' }}>
+          {showArtist && lot.artist && (
+            <div style={{
+              fontSize: 10,
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              color: 'var(--color-text-label)',
+              fontWeight: 600,
+              marginBottom: 6,
+            }}>
+              {ARTIST_LABEL[lot.artist] || lot.artist}
+            </div>
+          )}
           <h3 style={{
             fontFamily: "'Cormorant Garamond', serif",
             fontSize: 20,

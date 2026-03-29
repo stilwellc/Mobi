@@ -3,7 +3,7 @@
 import { AuctionLot } from '../types';
 import LotCard from './LotCard';
 
-export default function UpcomingLots({ lots }: { lots: AuctionLot[] }) {
+export default function UpcomingLots({ lots, showArtist = false }: { lots: AuctionLot[]; showArtist?: boolean }) {
   return (
     <section className="ray-upcoming" style={{ maxWidth: 1200, margin: '0 auto' }}>
       <style>{`
@@ -43,7 +43,7 @@ export default function UpcomingLots({ lots }: { lots: AuctionLot[] }) {
 
       <div className="ray-upcoming-grid">
         {lots.map((lot) => (
-          <LotCard key={lot.id} lot={lot} />
+          <LotCard key={lot.id} lot={lot} showArtist={showArtist} />
         ))}
       </div>
     </section>
