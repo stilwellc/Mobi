@@ -4,62 +4,8 @@ import { useState, useEffect, useRef } from 'react';
 import { Section } from './types';
 import ItemWrapper from './ItemWrapper';
 import { CARD_GRADIENTS } from './cardStyles';
-
-// Reuse the same SVG patterns from the homepage
-const SECTION_HEROES: Record<string, (accent: string) => React.ReactNode> = {
-  physical: (accent) => (
-    <svg viewBox="0 0 400 300" fill="none" style={{ width: '100%', height: '100%' }}>
-      <rect x="60" y="40" width="120" height="90" stroke={accent} strokeWidth="0.6" opacity="0.2" transform="rotate(-3 120 85)" />
-      <rect x="70" y="50" width="100" height="70" stroke={accent} strokeWidth="0.4" opacity="0.12" transform="rotate(-3 120 85)" />
-      <rect x="220" y="80" width="80" height="60" stroke={accent} strokeWidth="0.5" opacity="0.15" transform="rotate(5 260 110)" />
-      <line x1="40" y1="180" x2="360" y2="180" stroke={accent} strokeWidth="0.3" opacity="0.08" />
-      <line x1="40" y1="188" x2="280" y2="188" stroke={accent} strokeWidth="0.2" opacity="0.05" />
-      <line x1="160" y1="40" x2="160" y2="160" stroke={accent} strokeWidth="0.2" opacity="0.06" strokeDasharray="6 6" />
-      <circle cx="320" cy="60" r="20" stroke={accent} strokeWidth="0.3" opacity="0.08" />
-      <rect x="80" y="210" width="240" height="50" stroke={accent} strokeWidth="0.3" opacity="0.06" rx="2" strokeDasharray="4 4" />
-    </svg>
-  ),
-  digital: (accent) => (
-    <svg viewBox="0 0 400 300" fill="none" style={{ width: '100%', height: '100%' }}>
-      <circle cx="200" cy="120" r="80" stroke={accent} strokeWidth="0.5" opacity="0.12" />
-      <circle cx="200" cy="120" r="50" stroke={accent} strokeWidth="0.4" opacity="0.08" />
-      <circle cx="200" cy="120" r="20" stroke={accent} strokeWidth="0.3" opacity="0.06" />
-      <circle cx="200" cy="120" r="4" fill={accent} opacity="0.1" />
-      <line x1="120" y1="120" x2="60" y2="80" stroke={accent} strokeWidth="0.3" opacity="0.08" />
-      <line x1="280" y1="120" x2="340" y2="80" stroke={accent} strokeWidth="0.3" opacity="0.08" />
-      <line x1="200" y1="200" x2="200" y2="260" stroke={accent} strokeWidth="0.3" opacity="0.08" />
-      <circle cx="60" cy="80" r="6" stroke={accent} strokeWidth="0.4" opacity="0.1" />
-      <circle cx="340" cy="80" r="6" stroke={accent} strokeWidth="0.4" opacity="0.1" />
-      <circle cx="200" cy="260" r="6" stroke={accent} strokeWidth="0.4" opacity="0.1" />
-      <rect x="80" y="230" width="60" height="30" stroke={accent} strokeWidth="0.3" opacity="0.06" rx="4" strokeDasharray="3 3" />
-      <rect x="260" y="230" width="60" height="30" stroke={accent} strokeWidth="0.3" opacity="0.06" rx="4" strokeDasharray="3 3" />
-    </svg>
-  ),
-  shop: (accent) => (
-    <svg viewBox="0 0 400 300" fill="none" style={{ width: '100%', height: '100%' }}>
-      <path d="M140 60 L260 60 L280 120 L120 120 Z" stroke={accent} strokeWidth="0.5" opacity="0.15" />
-      <line x1="200" y1="120" x2="200" y2="200" stroke={accent} strokeWidth="0.4" opacity="0.1" />
-      <circle cx="200" cy="220" r="16" stroke={accent} strokeWidth="0.5" opacity="0.12" />
-      <circle cx="200" cy="220" r="6" fill={accent} opacity="0.06" />
-      <line x1="120" y1="120" x2="100" y2="200" stroke={accent} strokeWidth="0.2" opacity="0.06" strokeDasharray="4 4" />
-      <line x1="280" y1="120" x2="300" y2="200" stroke={accent} strokeWidth="0.2" opacity="0.06" strokeDasharray="4 4" />
-      <rect x="60" y="240" width="280" height="1" fill={accent} opacity="0.06" />
-    </svg>
-  ),
-  social: (accent) => (
-    <svg viewBox="0 0 400 300" fill="none" style={{ width: '100%', height: '100%' }}>
-      <circle cx="120" cy="100" r="24" stroke={accent} strokeWidth="0.5" opacity="0.15" />
-      <circle cx="280" cy="80" r="24" stroke={accent} strokeWidth="0.5" opacity="0.15" />
-      <circle cx="200" cy="210" r="24" stroke={accent} strokeWidth="0.5" opacity="0.15" />
-      <line x1="140" y1="110" x2="260" y2="90" stroke={accent} strokeWidth="0.4" opacity="0.1" />
-      <line x1="270" y1="100" x2="210" y2="190" stroke={accent} strokeWidth="0.4" opacity="0.1" />
-      <line x1="130" y1="120" x2="190" y2="195" stroke={accent} strokeWidth="0.4" opacity="0.1" />
-      <circle cx="120" cy="100" r="8" fill={accent} opacity="0.05" />
-      <circle cx="280" cy="80" r="8" fill={accent} opacity="0.05" />
-      <circle cx="200" cy="210" r="8" fill={accent} opacity="0.05" />
-    </svg>
-  ),
-};
+import SectionHero3D from './SectionHero3D';
+import { useTheme } from './ThemeProvider';
 
 
 export default function SectionPage({ section, mobile, tablet, navigate }: {
@@ -73,9 +19,9 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
   const [scrollY, setScrollY] = useState(0);
   const [itemsVisible, setItemsVisible] = useState(false);
   const itemsRef = useRef<HTMLDivElement>(null);
+  const { theme } = useTheme();
   const px = mobile ? 20 : tablet ? 36 : 56;
   const hasLink = (item: { href?: string; url?: string }) => !!(item.href || item.url);
-  const heroFn = SECTION_HEROES[section.id];
 
   // Phased entrance — matches homepage cadence
   useEffect(() => {
@@ -169,18 +115,8 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
         minHeight: mobile ? 'auto' : 440,
         display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
       }}>
-        {/* Abstract hero pattern */}
-        {!mobile && heroFn && (
-          <div style={{
-            position: 'absolute', top: 100, right: 0, width: '50%', height: '80%',
-            opacity: phase >= 2 ? 0.6 : 0,
-            transform: phase >= 2 ? 'scale(1)' : 'scale(0.92)',
-            transition: 'all 1.4s cubic-bezier(0.23,1,0.32,1)',
-            pointerEvents: 'none',
-          }}>
-            {heroFn(section.accent)}
-          </div>
-        )}
+        {/* Three.js 3D hero */}
+        <SectionHero3D variant={section.id} mobile={mobile} theme={theme} accent={section.accent} />
 
         {/* Accent gradient blob */}
         <div style={{

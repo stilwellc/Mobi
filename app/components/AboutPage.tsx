@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useScrollReveal } from './hooks';
+import SectionHero3D from './SectionHero3D';
+import { useTheme } from './ThemeProvider';
 
 const PRINCIPLES = [
   {
@@ -63,6 +65,7 @@ export default function AboutPage({ mobile, tablet, navigate }: {
   const principlesReveal = useScrollReveal(0.1);
   const helpReveal = useScrollReveal(0.1);
   const visionReveal = useScrollReveal(0.15);
+  const { theme } = useTheme();
   const px = mobile ? 20 : tablet ? 36 : 56;
 
   // Phased entrance — matches homepage cadence
@@ -84,7 +87,6 @@ export default function AboutPage({ mobile, tablet, navigate }: {
   return (
     <div style={{ minHeight: '100vh', position: 'relative', overflow: 'hidden' }}>
       <style>{`
-        @keyframes svgDraw{from{stroke-dashoffset:300}to{stroke-dashoffset:0}}
         @keyframes floatOrb{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(15px,-20px) scale(1.03)}66%{transform:translate(-10px,12px) scale(0.97)}}
         @keyframes pulseGlow{0%,100%{opacity:0.3;transform:scale(1)}50%{opacity:0.7;transform:scale(1.15)}}
         @keyframes driftLine{0%,100%{transform:translateX(0) scaleX(1)}50%{transform:translateX(20px) scaleX(1.3)}}
@@ -147,33 +149,8 @@ export default function AboutPage({ mobile, tablet, navigate }: {
         minHeight: mobile ? 'auto' : 440,
         display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
       }}>
-        {/* Decorative SVG - Mobius-inspired infinity loop */}
-        {!mobile && (
-          <div style={{
-            position: 'absolute', top: 100, right: 40, width: '45%', height: '80%',
-            opacity: phase >= 2 ? 0.5 : 0,
-            transform: phase >= 2 ? 'scale(1)' : 'scale(0.92)',
-            transition: 'all 1.4s cubic-bezier(0.23,1,0.32,1)',
-            pointerEvents: 'none',
-          }}>
-            <svg viewBox="0 0 400 300" fill="none" style={{ width: '100%', height: '100%' }}>
-              <path
-                d="M100 150C100 100 140 70 180 90C220 110 240 80 280 80C320 80 350 110 350 150C350 190 320 220 280 220C240 220 220 190 180 210C140 230 100 200 100 150Z"
-                stroke="var(--color-accent-gold)" strokeWidth="0.6" opacity="0.2"
-                strokeDasharray="300" strokeDashoffset="0"
-                style={{ animation: phase >= 2 ? 'svgDraw 3s ease forwards' : 'none' }}
-              />
-              <path
-                d="M120 150C120 115 150 90 180 105C210 120 230 95 260 95C290 95 310 115 310 150C310 185 290 205 260 205C230 205 210 180 180 195C150 210 120 185 120 150Z"
-                stroke="var(--color-accent-gold)" strokeWidth="0.4" opacity="0.1"
-              />
-              <circle cx="180" cy="150" r="3" fill="var(--color-accent-gold)" opacity="0.15" />
-              <circle cx="280" cy="150" r="3" fill="var(--color-accent-gold)" opacity="0.15" />
-              <line x1="60" y1="260" x2="340" y2="260" stroke="var(--color-accent-gold)" strokeWidth="0.3" opacity="0.06" />
-              <line x1="60" y1="268" x2="240" y2="268" stroke="var(--color-accent-gold)" strokeWidth="0.2" opacity="0.04" />
-            </svg>
-          </div>
-        )}
+        {/* Three.js 3D hero — torus knot */}
+        <SectionHero3D variant="about" mobile={mobile} theme={theme} accent="#D4B896" />
 
         {/* Accent gradient blob */}
         <div style={{
