@@ -144,7 +144,7 @@ export default function AboutPage({ mobile, tablet, navigate }: {
       {/* Hero Section */}
       <section style={{
         position: 'relative',
-        padding: `${mobile ? 100 : 140}px ${px}px ${mobile ? 48 : 80}px`,
+        padding: `${mobile ? 90 : 140}px ${px}px ${mobile ? 40 : 80}px`,
         maxWidth: 1200, margin: '0 auto',
         minHeight: mobile ? 'auto' : 440,
         display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
@@ -176,12 +176,12 @@ export default function AboutPage({ mobile, tablet, navigate }: {
 
         {/* Back */}
         <div style={{
-          marginBottom: mobile ? 36 : 56,
+          marginBottom: mobile ? 24 : 56,
           opacity: phase >= 1 ? 1 : 0,
           transform: phase >= 1 ? 'translateY(0)' : 'translateY(15px)',
           transition: 'all 0.8s cubic-bezier(0.23,1,0.32,1)',
         }}>
-          <span onClick={() => navigate('home')} style={{
+          <span className="back-link" onClick={() => navigate('home')} style={{
             fontSize: 11, color: 'var(--color-text-subtle)', cursor: 'pointer', fontWeight: 600,
             letterSpacing: '0.15em', textTransform: 'uppercase',
             display: 'inline-flex', alignItems: 'center', gap: 8,
@@ -219,9 +219,9 @@ export default function AboutPage({ mobile, tablet, navigate }: {
         {/* Title */}
         <h1 style={{
           fontFamily: "'Cormorant Garamond', serif",
-          fontSize: mobile ? 56 : tablet ? 80 : 110,
+          fontSize: mobile ? 44 : tablet ? 80 : 110,
           fontWeight: 300, letterSpacing: '-0.04em', lineHeight: 0.9,
-          marginBottom: mobile ? 24 : 36,
+          marginBottom: mobile ? 20 : 36,
           opacity: phase >= 2 ? 1 : 0,
           transform: phase >= 2 ? 'translateY(0)' : 'translateY(40px)',
           transition: 'all 1s cubic-bezier(0.23,1,0.32,1) 0.1s',
@@ -234,7 +234,7 @@ export default function AboutPage({ mobile, tablet, navigate }: {
         <div style={{
           display: 'grid',
           gridTemplateColumns: mobile ? '1fr' : '1fr 1fr',
-          gap: mobile ? 20 : 48,
+          gap: mobile ? 16 : 48,
           maxWidth: 900,
           opacity: phase >= 3 ? 1 : 0,
           transform: phase >= 3 ? 'translateY(0)' : 'translateY(25px)',
@@ -274,12 +274,12 @@ export default function AboutPage({ mobile, tablet, navigate }: {
       <section
         ref={principlesReveal.ref}
         style={{
-          padding: `${mobile ? 48 : 80}px ${px}px`,
+          padding: `${mobile ? 40 : 80}px ${px}px`,
           maxWidth: 1200, margin: '0 auto',
         }}
       >
         <div style={{
-          marginBottom: mobile ? 32 : 48,
+          marginBottom: mobile ? 24 : 48,
           opacity: principlesReveal.isVisible ? 1 : 0,
           transform: principlesReveal.isVisible ? 'translateY(0)' : 'translateY(12px)',
           transition: 'all 0.6s ease',
@@ -304,8 +304,8 @@ export default function AboutPage({ mobile, tablet, navigate }: {
                 onMouseEnter={() => setHoveredPrinciple(i)}
                 onMouseLeave={() => setHoveredPrinciple(null)}
                 style={{
-                  padding: mobile ? '28px 24px' : '36px 32px',
-                  minHeight: mobile ? 200 : 260,
+                  padding: mobile ? '24px 20px' : '36px 32px',
+                  minHeight: mobile ? 180 : 260,
                   display: 'flex', flexDirection: 'column',
                   opacity: principlesReveal.isVisible ? 1 : 0,
                   transform: principlesReveal.isVisible ? 'translateY(0)' : 'translateY(24px) scale(0.97)',
@@ -386,14 +386,14 @@ export default function AboutPage({ mobile, tablet, navigate }: {
       <section
         ref={helpReveal.ref}
         style={{
-          padding: `${mobile ? 48 : 80}px ${px}px`,
+          padding: `${mobile ? 40 : 80}px ${px}px`,
           maxWidth: 1200, margin: '0 auto',
         }}
       >
         <div style={{
           display: 'grid',
           gridTemplateColumns: mobile ? '1fr' : '300px 1fr',
-          gap: mobile ? 32 : 80,
+          gap: mobile ? 24 : 80,
           opacity: helpReveal.isVisible ? 1 : 0,
           transform: helpReveal.isVisible ? 'translateY(0)' : 'translateY(20px)',
           transition: 'all 0.8s cubic-bezier(0.23,1,0.32,1)',
@@ -407,7 +407,7 @@ export default function AboutPage({ mobile, tablet, navigate }: {
             }}>Our Approach</span>
             <h2 style={{
               fontFamily: "'Cormorant Garamond', serif",
-              fontSize: mobile ? 40 : 56, fontWeight: 300, letterSpacing: '-0.03em',
+              fontSize: mobile ? 36 : 56, fontWeight: 300, letterSpacing: '-0.03em',
               lineHeight: 0.95,
             }}>
               How We{' '}
@@ -426,8 +426,8 @@ export default function AboutPage({ mobile, tablet, navigate }: {
                   onMouseEnter={() => setHoveredHelp(i)}
                   onMouseLeave={() => setHoveredHelp(null)}
                   style={{
-                    paddingBottom: mobile ? 28 : 36,
-                    marginBottom: mobile ? 28 : 36,
+                    paddingBottom: mobile ? 20 : 36,
+                    marginBottom: mobile ? 20 : 36,
                     borderBottom: i < HELPS.length - 1 ? '1px solid var(--color-border)' : 'none',
                     opacity: helpReveal.isVisible ? 1 : 0,
                     transform: helpReveal.isVisible ? 'translateY(0)' : 'translateY(16px)',
@@ -464,14 +464,14 @@ export default function AboutPage({ mobile, tablet, navigate }: {
       <section
         ref={visionReveal.ref}
         style={{
-          padding: `0 ${px}px ${mobile ? 80 : 120}px`,
+          padding: `0 ${px}px ${mobile ? 60 : 120}px`,
           maxWidth: 1200, margin: '0 auto',
         }}
       >
         <div style={{
           position: 'relative', overflow: 'hidden',
-          padding: mobile ? '36px 28px' : '64px 56px',
-          borderRadius: 24,
+          padding: mobile ? '28px 20px' : '64px 56px',
+          borderRadius: mobile ? 16 : 24,
           background: 'var(--color-bg-card)',
           border: '1px solid var(--color-border)',
           opacity: visionReveal.isVisible ? 1 : 0,

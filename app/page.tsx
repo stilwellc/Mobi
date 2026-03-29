@@ -235,7 +235,7 @@ export default function MobiSite() {
         )}
 
         {mobile && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, zIndex: 101 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, zIndex: 101 }}>
             <ThemeToggle />
             <button
               onClick={() => setMenuOpen(!menuOpen)}
@@ -243,8 +243,9 @@ export default function MobiSite() {
               aria-expanded={menuOpen}
               style={{
                 background: 'none', border: 'none', cursor: 'pointer',
-                padding: 10, display: 'flex', flexDirection: 'column', gap: 6,
+                padding: 12, display: 'flex', flexDirection: 'column', gap: 6,
                 WebkitTapHighlightColor: 'transparent',
+                minWidth: 44, minHeight: 44, alignItems: 'center', justifyContent: 'center',
               }}
             >
               <span className="hamburger-bar" style={{ transform: menuOpen ? 'rotate(45deg) translate(5px, 5px)' : 'none' }} />
@@ -264,7 +265,7 @@ export default function MobiSite() {
           style={{
             position: 'fixed', inset: 0, zIndex: 99,
             background: 'var(--color-modal-bg-deep)', backdropFilter: 'blur(40px)',
-            display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 6,
+            display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 4,
             opacity: menuOpen ? 1 : 0, pointerEvents: menuOpen ? 'auto' : 'none', transition: 'opacity 0.5s ease',
           }}
         >
@@ -276,9 +277,10 @@ export default function MobiSite() {
               tabIndex={menuOpen ? 0 : -1}
               onKeyDown={e => e.key === 'Enter' && navigate(item.id)}
               style={{
-                fontFamily: "'Cormorant Garamond', serif", fontSize: 40, fontWeight: 300,
+                fontFamily: "'Cormorant Garamond', serif", fontSize: 38, fontWeight: 300,
                 color: page === item.id ? 'var(--color-text-primary)' : (item.id === 'about' ? 'var(--color-accent-gold)' : 'var(--color-text-secondary)'),
-                padding: '14px 0', cursor: 'pointer', textAlign: 'center',
+                padding: '16px 40px', cursor: 'pointer', textAlign: 'center',
+                minHeight: 48,
                 animation: menuOpen ? `menuReveal 0.5s ease ${i * 0.08}s both` : 'none',
               }}
             >{item.label}</div>

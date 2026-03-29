@@ -320,7 +320,7 @@ export default function SectionHero3D({ variant, mobile, theme, accent }: Sectio
     const builder = BUILDERS[variant];
     if (!builder) return;
 
-    const size = mobile ? 280 : 500;
+    const size = mobile ? 220 : 500;
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
     camera.position.set(0, 0, 4.2);
@@ -354,7 +354,7 @@ export default function SectionHero3D({ variant, mobile, theme, accent }: Sectio
     animate();
 
     const hr = () => {
-      const s = mobile ? Math.min(280, window.innerWidth - 40) : Math.min(500, window.innerWidth * 0.38);
+      const s = mobile ? Math.min(220, window.innerWidth * 0.55) : Math.min(500, window.innerWidth * 0.38);
       renderer.setSize(s, s);
     };
     window.addEventListener('resize', hr);
@@ -368,8 +368,13 @@ export default function SectionHero3D({ variant, mobile, theme, accent }: Sectio
   }, [variant, mobile, theme, accent]);
 
   return <div ref={mountRef} style={{
-    position: 'absolute', right: mobile ? '50%' : '2%', top: '50%',
-    transform: mobile ? 'translate(50%,-50%)' : 'translateY(-50%)',
-    zIndex: 0, opacity: 0.85, pointerEvents: 'none', filter: 'contrast(1.1)',
+    position: 'absolute',
+    right: mobile ? '-10%' : '2%',
+    top: mobile ? '15%' : '50%',
+    transform: mobile ? 'none' : 'translateY(-50%)',
+    zIndex: 0,
+    opacity: mobile ? 0.5 : 0.85,
+    pointerEvents: 'none',
+    filter: 'contrast(1.1)',
   }} />;
 }

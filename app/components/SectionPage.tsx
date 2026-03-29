@@ -108,9 +108,7 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
       {/* Hero section */}
       <section style={{
         position: 'relative',
-        paddingTop: mobile ? 100 : 140,
-        paddingBottom: mobile ? 48 : 80,
-        padding: `${mobile ? 100 : 140}px ${px}px ${mobile ? 48 : 80}px`,
+        padding: `${mobile ? 90 : 140}px ${px}px ${mobile ? 40 : 80}px`,
         maxWidth: 1200, margin: '0 auto',
         minHeight: mobile ? 'auto' : 440,
         display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
@@ -142,7 +140,7 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
 
         {/* Back */}
         <div style={{
-          marginBottom: mobile ? 36 : 56,
+          marginBottom: mobile ? 24 : 56,
           opacity: phase >= 1 ? 1 : 0,
           transform: phase >= 1 ? 'translateY(0)' : 'translateY(15px)',
           transition: 'all 0.8s cubic-bezier(0.23,1,0.32,1)',
@@ -185,9 +183,9 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
         {/* Title */}
         <h1 style={{
           fontFamily: "'Cormorant Garamond', serif",
-          fontSize: mobile ? 56 : tablet ? 80 : 110,
+          fontSize: mobile ? 44 : tablet ? 80 : 110,
           fontWeight: 300, letterSpacing: '-0.04em', lineHeight: 0.9,
-          marginBottom: mobile ? 24 : 36,
+          marginBottom: mobile ? 20 : 36,
           opacity: phase >= 2 ? 1 : 0,
           transform: phase >= 2 ? 'translateY(0)' : 'translateY(40px)',
           transition: 'all 1s cubic-bezier(0.23,1,0.32,1) 0.1s',
@@ -207,7 +205,7 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
         {/* Stats bar */}
         <div style={{
           display: 'flex', alignItems: 'center', gap: mobile ? 24 : 40,
-          marginTop: mobile ? 32 : 48,
+          marginTop: mobile ? 24 : 48,
           opacity: phase >= 4 ? 1 : 0,
           transform: phase >= 4 ? 'translateY(0)' : 'translateY(20px)',
           transition: 'all 0.8s cubic-bezier(0.23,1,0.32,1)',
@@ -285,7 +283,7 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
         <div style={{
           display: 'grid',
           gridTemplateColumns: mobile ? '1fr' : section.items.length === 1 ? '1fr' : 'repeat(2, 1fr)',
-          gap: mobile ? 16 : 20,
+          gap: mobile ? 12 : 20,
         }}>
           {section.items.map((item, i) => {
             const isHov = hoveredItem === i;
@@ -299,8 +297,8 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
                   onMouseEnter={() => setHoveredItem(i)}
                   onMouseLeave={() => setHoveredItem(null)}
                   style={{
-                    padding: mobile ? '28px 24px' : '36px 32px',
-                    minHeight: mobile ? 180 : 220,
+                    padding: mobile ? '24px 20px' : '36px 32px',
+                    minHeight: mobile ? 160 : 220,
                     display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
                     cursor: linked ? 'pointer' : 'default',
                     opacity: itemsVisible ? 1 : 0,

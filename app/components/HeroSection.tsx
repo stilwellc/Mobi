@@ -36,7 +36,7 @@ export default function HeroSection({ mobile, tablet, phase, scrollY, theme }: H
         position: 'relative', zIndex: 2,
       }}>
         <div style={{ width: 8, height: 8, borderRadius: '50%', border: '1px solid var(--color-accent-gold)', opacity: 0.5 }} aria-hidden="true" />
-        <span className="section-label-sm">Design Studio &mdash; Est. 2024</span>
+        <span className="section-label-sm">Design Studio &mdash; Hoboken, NJ</span>
       </div>
 
       <h1 style={{

@@ -78,7 +78,7 @@ export default function FooterSection({ mobile, isVisible, footerRef, navigate }
             <div className="footer-col-title">Info</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               <span style={{ fontSize: 11, color: 'var(--color-text-faint)', fontWeight: 400, lineHeight: 1.6 }}>
-                Kansas City, MO
+                Hoboken, NJ
               </span>
               <span style={{ fontSize: 11, color: 'var(--color-text-faint)', fontWeight: 400, lineHeight: 1.6 }}>
                 Est. 2024
