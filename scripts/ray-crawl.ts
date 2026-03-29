@@ -4,9 +4,9 @@ import * as cheerio from 'cheerio';
 
 // ── Types (mirrored from app/digital/ray/types.ts to avoid import issues in standalone script) ──
 
-type AuctionHouse = 'Phillips' | "Sotheby's" | "Christie's" | 'Wright' | 'Rago' | 'Heritage';
+type AuctionHouse = 'Phillips' | "Sotheby's" | "Christie's" | 'Wright' | 'Rago' | 'Heritage' | 'Bonhams' | 'Hindman';
 type LotStatus = 'upcoming' | 'sold' | 'bought_in' | 'withdrawn';
-type Currency = 'USD' | 'GBP' | 'EUR' | 'HKD' | 'CNY';
+type Currency = 'USD' | 'GBP' | 'EUR' | 'HKD' | 'CNY' | 'AUD' | 'CHF';
 
 interface AuctionLot {
   id: string;
@@ -68,6 +68,8 @@ interface ArtistConfig {
   sothebys?: string;
   christies?: string;
   wright?: string;
+  bonhams?: string;
+  hindman?: string;
 }
 
 const ARTISTS: ArtistConfig[] = [
@@ -78,6 +80,7 @@ const ARTISTS: ArtistConfig[] = [
     sothebys: 'george-condo',
     christies: 'george-condo',
     wright: 'george-condo',
+    bonhams: 'George Condo',
   },
   {
     slug: 'futura-2000',
@@ -85,6 +88,7 @@ const ARTISTS: ArtistConfig[] = [
     phillips: { id: '4001', slug: 'futura-2000' },
     christies: 'futura',
     wright: 'futura-lenny-mcgurr',
+    bonhams: 'Futura 2000',
   },
   {
     slug: 'kaws',
@@ -93,6 +97,7 @@ const ARTISTS: ArtistConfig[] = [
     sothebys: 'kaws',
     christies: 'kaws',
     wright: 'kaws-brian-donnelly',
+    bonhams: 'KAWS',
   },
   {
     slug: 'george-nakashima',
@@ -101,12 +106,14 @@ const ARTISTS: ArtistConfig[] = [
     sothebys: 'george-nakashima',
     christies: 'george-nakashima',
     wright: 'george-nakashima',
+    bonhams: 'George Nakashima',
   },
   {
     slug: 'charles-eames',
     displayName: 'Charles & Ray Eames',
     phillips: { id: '10514', slug: 'charles-eames-and-ray-eames' },
     wright: 'charles-and-ray-eames',
+    bonhams: 'Charles Eames',
   },
   {
     slug: 'andy-warhol',
@@ -115,6 +122,7 @@ const ARTISTS: ArtistConfig[] = [
     sothebys: 'andy-warhol',
     christies: 'andy-warhol',
     wright: 'andy-warhol',
+    bonhams: 'Andy Warhol',
   },
   {
     slug: 'tom-sachs',
@@ -123,6 +131,7 @@ const ARTISTS: ArtistConfig[] = [
     sothebys: 'tom-sachs',
     christies: 'tom-sachs',
     wright: 'tom-sachs',
+    bonhams: 'Tom Sachs',
   },
   {
     slug: 'barry-mcgee',
@@ -130,6 +139,7 @@ const ARTISTS: ArtistConfig[] = [
     phillips: { id: '3470', slug: 'barry-mcgee' },
     christies: 'barry-mcgee',
     wright: 'barry-mcgee',
+    bonhams: 'Barry McGee',
   },
   {
     slug: 'keith-haring',
@@ -138,6 +148,7 @@ const ARTISTS: ArtistConfig[] = [
     sothebys: 'keith-haring',
     christies: 'keith-haring',
     wright: 'keith-haring',
+    bonhams: 'Keith Haring',
   },
   {
     slug: 'peter-saul',
@@ -145,6 +156,7 @@ const ARTISTS: ArtistConfig[] = [
     phillips: { id: '8398', slug: 'peter-saul' },
     christies: 'peter-saul',
     wright: 'peter-saul',
+    bonhams: 'Peter Saul',
   },
   {
     slug: 'ed-ruscha',
@@ -153,6 +165,7 @@ const ARTISTS: ArtistConfig[] = [
     sothebys: 'ed-ruscha',
     christies: 'ed-ruscha',
     wright: 'ed-ruscha',
+    bonhams: 'Ed Ruscha',
   },
 ];
 
@@ -635,6 +648,155 @@ function parseWrightAdvancedItem(item: any, artistSlug: string): AuctionLot {
   };
 }
 
+// ── Bonhams Crawler ──
+// Bonhams uses Typesense search with a public API key.
+// We query the 'lots' collection for the artist name.
+
+const BONHAMS_TYPESENSE_KEY = '7YZqOyG0twgst4ACc2VuCyZxpGAYzM0weFTLCC20FQY';
+const BONHAMS_SEARCH_URL = 'https://api01.bonhams.com/search-proxy/collections/lots/documents/search';
+
+async function crawlBonhams(artist: ArtistConfig): Promise<AuctionLot[]> {
+  if (!artist.bonhams) return [];
+  const lots: AuctionLot[] = [];
+  const query = encodeURIComponent(artist.bonhams);
+  console.log(`  [Bonhams] Fetching ${artist.displayName}...`);
+
+  try {
+    // Fetch up to 250 lots per artist (paginate if needed)
+    let page = 1;
+    let totalFetched = 0;
+    let totalFound = 0;
+
+    do {
+      const url = `${BONHAMS_SEARCH_URL}?q=${query}&query_by=catalogDesc,title&per_page=250&page=${page}`;
+      const res = await fetch(url, {
+        headers: {
+          'X-TYPESENSE-API-KEY': BONHAMS_TYPESENSE_KEY,
+          'User-Agent': UA,
+        },
+      });
+
+      if (!res.ok) {
+        console.log(`  [Bonhams] HTTP ${res.status}`);
+        break;
+      }
+
+      const data = await res.json() as any;
+      totalFound = data.found || 0;
+      const hits = data.hits || [];
+
+      if (page === 1) {
+        console.log(`  [Bonhams] Found ${totalFound} lots`);
+      }
+
+      for (const hit of hits) {
+        const doc = hit.document;
+        const lot = parseBonhamsLot(doc, artist.slug);
+        if (lot) lots.push(lot);
+      }
+
+      totalFetched += hits.length;
+      page++;
+
+      if (totalFetched < totalFound && hits.length > 0) {
+        await sleep(500);
+      }
+    } while (totalFetched < totalFound && page <= 10);
+
+    console.log(`  [Bonhams] Parsed ${lots.length} lots (${lots.filter(l => l.status === 'sold').length} sold)`);
+  } catch (err) {
+    console.error('  [Bonhams] Error:', err);
+  }
+
+  return lots;
+}
+
+function parseBonhamsLot(doc: any, artistSlug: string): AuctionLot | null {
+  const rawTitle = doc.title || '';
+  // Extract a clean title from styledDescription if available
+  let title = rawTitle;
+  if (doc.styledDescription) {
+    const lines: string[] = [];
+    const lineMatches = doc.styledDescription.match(/<div class="[^"]*">(.*?)<\/div>/g) || [];
+    for (const m of lineMatches) {
+      const text = m.replace(/<[^>]*>/g, '').trim();
+      if (text) lines.push(text);
+    }
+    // Filter out artist name and date lines, keep actual title/description
+    const titleParts = lines.filter(l =>
+      !l.match(/^\(?[bB](?:orn)?\.\s*\d{4}\)?$/) &&         // "(B. 1957)" or "(born 1957)"
+      !l.match(/^\(\d{4}[-–]\d{4}\)$/) &&                    // "(1928-1987)"
+      !l.match(/^\(?born \d{4}\)?$/i) &&                      // "(born 1974)"
+      !l.match(/^\(?[A-Za-z]+,?\s+(?:born\s+)?\d{4}[-–]?\d{0,4}\)?$/) && // "(American, 1928-1987)"
+      !l.match(/^[A-Z][a-z]+\s+[A-Z][a-z]+$/) &&            // "George Condo"
+      !l.match(/^[A-Z]{2,}$/)                                 // "KAWS"
+    );
+    if (titleParts.length > 0) {
+      // Use the "otherLine" div if available (usually the artwork title), else first non-artist line
+      const otherIdx = lineMatches.findIndex((m: string) => m.includes('otherLine'));
+      if (otherIdx >= 0) {
+        const otherText = lineMatches[otherIdx].replace(/<[^>]*>/g, '').trim();
+        if (otherText) {
+          title = otherText;
+        } else {
+          title = titleParts[0];
+        }
+      } else {
+        title = titleParts[0];
+      }
+    }
+  }
+  // Strip HTML tags from title
+  title = title.replace(/<[^>]*>/g, '').trim() || 'Untitled';
+
+  const currency = isoCurrencyToInternal(doc.currency?.iso_code || '');
+  const hammerPrice = doc.price?.hammerPrice || null;
+  const hammerPremium = doc.price?.hammerPremium || null;
+  const soldPrice = hammerPremium || hammerPrice;
+  const estimateLow = doc.price?.estimateLow || null;
+  const estimateHigh = doc.price?.estimateHigh || null;
+
+  let saleDate = '';
+  const endDate = doc.hammerTime?.datetime || doc.auctionEndDate?.datetime || doc.biddableFrom?.datetime;
+  if (endDate) {
+    saleDate = endDate.split('T')[0];
+  }
+
+  const isSold = doc.status === 'SOLD';
+  const isBoughtIn = doc.status === 'BI';
+  const auctionEnded = doc.flags?.isAuctionEnded ?? (saleDate ? new Date(saleDate) < new Date() : false);
+
+  let status: LotStatus = 'upcoming';
+  if (isSold) status = 'sold';
+  else if (isBoughtIn) status = 'bought_in';
+  else if (auctionEnded) status = 'bought_in';
+
+  const imageUrl = doc.image?.url || null;
+  const lotUrl = `https://www.bonhams.com/auction/${doc.auctionId}/lot/${doc.lotId}`;
+
+  return {
+    id: `bonhams-${doc.auctionId}-${doc.lotId}`,
+    artist: artistSlug,
+    title,
+    year: null,
+    medium: null,
+    dimensions: null,
+    imageUrl,
+    auctionHouse: 'Bonhams',
+    saleName: doc.heading || '',
+    saleDate,
+    lotNumber: doc.lotNo?.number || null,
+    estimateLow,
+    estimateHigh,
+    currency,
+    hammerPrice,
+    premiumPrice: hammerPremium,
+    priceUsd: toUsd(soldPrice, currency),
+    status,
+    url: lotUrl,
+  };
+}
+
 // ── Helpers ──
 
 function detectCurrency(text: string): Currency {
@@ -643,7 +805,16 @@ function detectCurrency(text: string): Currency {
   if (text.includes('EUR') || text.includes('€')) return 'EUR';
   if (text.includes('HKD') || text.includes('HK$')) return 'HKD';
   if (text.includes('CNY') || text.includes('¥')) return 'CNY';
+  if (text.includes('AUD') || text.includes('AU$')) return 'AUD';
+  if (text.includes('CHF')) return 'CHF';
   return 'USD';
+}
+
+function isoCurrencyToInternal(iso: string): Currency {
+  const map: Record<string, Currency> = {
+    USD: 'USD', GBP: 'GBP', EUR: 'EUR', HKD: 'HKD', CNY: 'CNY', AUD: 'AUD', CHF: 'CHF',
+  };
+  return map[iso] || 'USD';
 }
 
 // Rough static conversion to USD for stats/charts (avoids API dependency)
@@ -653,6 +824,8 @@ const USD_RATES: Record<Currency, number> = {
   EUR: 1.08,
   HKD: 0.128,
   CNY: 0.138,
+  AUD: 0.63,
+  CHF: 1.13,
 };
 
 function toUsd(amount: number | null, currency: Currency): number | null {
@@ -766,6 +939,13 @@ async function crawlArtist(artist: ArtistConfig): Promise<AuctionLot[]> {
   console.log(`[Ray] Wright/Rago: ${wrightLots.length} lots`);
   allLots.push(...wrightLots);
 
+  await sleep(DELAY_MS);
+
+  console.log(`[Ray] Crawling Bonhams...`);
+  const bonhamsLots = await crawlBonhams(artist);
+  console.log(`[Ray] Bonhams: ${bonhamsLots.length} lots`);
+  allLots.push(...bonhamsLots);
+
   return allLots;
 }
 
@@ -853,7 +1033,7 @@ async function main() {
   fs.writeFileSync(path.join(DATA_DIR, 'meta.json'), JSON.stringify({
     lastCrawl: new Date().toISOString(),
     artists: ARTISTS.map(a => ({ slug: a.slug, displayName: a.displayName })),
-    sources: ['Phillips', "Sotheby's", "Christie's", 'Wright/Rago'],
+    sources: ['Phillips', "Sotheby's", "Christie's", 'Wright/Rago', 'Bonhams'],
     version: 2,
   }, null, 2));
 

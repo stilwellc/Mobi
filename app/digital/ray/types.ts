@@ -1,6 +1,6 @@
-export type AuctionHouse = 'Phillips' | "Sotheby's" | "Christie's" | 'Wright' | 'Rago' | 'Heritage';
+export type AuctionHouse = 'Phillips' | "Sotheby's" | "Christie's" | 'Wright' | 'Rago' | 'Heritage' | 'Bonhams' | 'Hindman';
 export type LotStatus = 'upcoming' | 'sold' | 'bought_in' | 'withdrawn';
-export type Currency = 'USD' | 'GBP' | 'EUR' | 'HKD' | 'CNY';
+export type Currency = 'USD' | 'GBP' | 'EUR' | 'HKD' | 'CNY' | 'AUD' | 'CHF';
 
 export interface AuctionLot {
   id: string;

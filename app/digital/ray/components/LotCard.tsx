@@ -10,6 +10,8 @@ const houseColors: Record<string, string> = {
   'Rago': '#B8D496',
   'Wright': '#B896D4',
   'Heritage': '#D4D496',
+  'Bonhams': '#C4A265',
+  'Hindman': '#6BA368',
 };
 
 function formatEstimate(lot: AuctionLot): string {
