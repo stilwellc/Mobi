@@ -183,7 +183,7 @@ export default function ArtistDetailPage() {
             </div>
           ) : (
             <>
-              {stats && <StatsGrid stats={stats} />}
+              {stats && <StatsGrid stats={stats} lots={lots} />}
               {stats?.priceHistory?.length ? <PriceChart data={stats.priceHistory} /> : null}
               {upcoming.length > 0 && <UpcomingLots lots={upcoming} />}
               {sold.length > 0 && <PastResults lots={sold} />}

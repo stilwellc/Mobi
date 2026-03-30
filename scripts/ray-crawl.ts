@@ -7,6 +7,7 @@ import * as cheerio from 'cheerio';
 type AuctionHouse = 'Phillips' | "Sotheby's" | "Christie's" | 'Wright' | 'Rago' | 'Heritage' | 'Bonhams' | 'Hindman';
 type LotStatus = 'upcoming' | 'sold' | 'bought_in' | 'withdrawn';
 type Currency = 'USD' | 'GBP' | 'EUR' | 'HKD' | 'CNY' | 'AUD' | 'CHF';
+type LotCategory = 'original' | 'print' | 'photograph' | 'sculpture' | 'design' | 'unknown';
 
 interface AuctionLot {
   id: string;
@@ -15,6 +16,7 @@ interface AuctionLot {
   year: string | null;
   medium: string | null;
   dimensions: string | null;
+  category: LotCategory;
   imageUrl: string | null;
   auctionHouse: AuctionHouse;
   saleName: string;
@@ -28,6 +30,64 @@ interface AuctionLot {
   priceUsd: number | null;
   status: LotStatus;
   url: string;
+}
+
+// ── Lot Classification ──
+// Classifies a lot as original, print, photograph, sculpture, design, or unknown
+// based on medium, title, sale name, URL, and artist context.
+
+const DESIGN_ARTISTS = new Set(['george-nakashima', 'charles-eames']);
+
+const PRINT_PATTERNS = /\b(screenprint|silkscreen|serigraph|lithograph|etching|woodcut|woodblock|linocut|engraving|aquatint|monotype|monoprint|offset|poster|gicl[eé]e|print(?:ed)?|edition of|numbered.*\/|signed.*numbered|multiple|chromolithograph|intaglio)\b/i;
+const PHOTO_PATTERNS = /\b(photograph|gelatin silver|c-print|chromogenic|daguerreotype|platinum print|pigment print|inkjet print|archival pigment|digital print|cibachrome|polaroid|albumen)\b/i;
+const SCULPTURE_PATTERNS = /\b(sculpture|bronze|ceramic|porcelain|cast iron|resin|fibreglass|fiberglass|stainless steel|patinated|figure|figurine|plaster cast)\b/i;
+const DESIGN_PATTERNS = /\b(lounge chair|dining chair|side chair|armchair|cabinet|desk|table|bookcase|shelf|shelving|headboard|bench|settee|sofa|credenza|dresser|nightstand|lamp|chandelier|sconce|light fixture|ottoman|stool|rocker|rocking chair|walnut|rosewood|teak|plywood|upholster|enameled|molded|fiberglass shell)\b/i;
+const ORIGINAL_PATTERNS = /\b(oil on|acrylic on|tempera on|gouache on|watercolor on|watercolour on|mixed media on|ink on|charcoal on|pastel on|enamel on|spray paint on|oil and|acrylic and|encaustic|collage on|canvas|linen|panel|board|paper(?! print))\b/i;
+
+function classifyLot(lot: AuctionLot): LotCategory {
+  // Combine all text signals
+  const medium = (lot.medium || '').toLowerCase();
+  const title = (lot.title || '').toLowerCase();
+  const saleName = (lot.saleName || '').toLowerCase();
+  const url = (lot.url || '').toLowerCase();
+  const text = `${medium} ${title}`;
+
+  // Design artists default to "design" unless clearly something else
+  const isDesignArtist = DESIGN_ARTISTS.has(lot.artist);
+
+  // 1. Check medium field first (most reliable when populated)
+  // Photo checked before print since "c-print", "Polaroid print" etc. are photographs
+  if (medium) {
+    if (PHOTO_PATTERNS.test(medium)) return 'photograph';
+    if (PRINT_PATTERNS.test(medium)) return 'print';
+    if (SCULPTURE_PATTERNS.test(medium)) return 'sculpture';
+    if (DESIGN_PATTERNS.test(medium)) return 'design';
+    if (ORIGINAL_PATTERNS.test(medium)) return 'original';
+  }
+
+  // 2. Check title
+  if (PHOTO_PATTERNS.test(title)) return 'photograph';
+  if (PRINT_PATTERNS.test(title)) return 'print';
+  if (SCULPTURE_PATTERNS.test(title)) return 'sculpture';
+  if (DESIGN_PATTERNS.test(title)) return 'design';
+
+  // 3. Check sale name for category clues
+  if (/prints?\s*[&+]\s*multiples?/i.test(saleName) || /prints?\s+unlimited/i.test(saleName)) return 'print';
+  if (/photograph/i.test(saleName)) return 'photograph';
+  if (/design/i.test(saleName) || /furniture/i.test(saleName)) return 'design';
+
+  // 4. Check URL path
+  if (/\/prints?\b/i.test(url)) return 'print';
+  if (/\/photograph/i.test(url)) return 'photograph';
+  if (/\/design/i.test(url)) return 'design';
+
+  // 5. Artist-level defaults for design furniture makers
+  if (isDesignArtist) return 'design';
+
+  // 6. If we have a medium field but nothing matched the patterns, likely original
+  if (medium && ORIGINAL_PATTERNS.test(text)) return 'original';
+
+  return 'unknown';
 }
 
 interface PricePoint {
@@ -277,6 +337,7 @@ async function crawlPhillips(artist: ArtistConfig): Promise<AuctionLot[]> {
         year: lot.dates || lot.circa || null,
         medium: lot.medium || null,
         dimensions: lot.dimensions || null,
+        category: 'unknown' as LotCategory,
         imageUrl,
         auctionHouse: 'Phillips',
         saleName: lot.saleTitle || '',
@@ -366,6 +427,7 @@ async function crawlSothebys(artist: ArtistConfig): Promise<AuctionLot[]> {
         year: null,
         medium: null,
         dimensions: null,
+        category: 'unknown' as LotCategory,
         imageUrl: null,
         auctionHouse: "Sotheby's",
         saleName: '',
@@ -460,13 +522,20 @@ function parseChristiesJson(jsonStr: string, artistSlug: string): AuctionLot[] {
       const saleNum = lot.sale?.number || '';
       const lotNum = lot.lot_id_txt || '';
 
+      // Try to extract medium from Christie's data — only use short medium_txt, not full description
+      const rawMedium = lot.medium_txt || null;
+      const christiesMedium = rawMedium && String(rawMedium).length < 150
+        ? String(rawMedium).replace(/<[^>]*>/g, '')
+        : null;
+
       lots.push({
         id: `christies-${lotId}`,
         artist: artistSlug,
         title: title.replace(/<[^>]*>/g, ''),
-        year: null,
-        medium: null,
+        year: lot.date_txt || null,
+        medium: christiesMedium,
         dimensions: null,
+        category: 'unknown' as LotCategory,
         imageUrl,
         auctionHouse: "Christie's",
         saleName: lot.sale?.location ? `${lot.sale.location} Sale ${saleNum}` : '',
@@ -595,8 +664,9 @@ function parseWrightBasicItem(item: any, session: any, sessionKey: string, artis
     artist: artistSlug,
     title,
     year: null,
-    medium: null,
+    medium: item.material || null,
     dimensions: dims ? dims.replace(/&times;/g, '×').replace(/&ndash;/g, '–') : null,
+    category: 'unknown' as LotCategory,
     imageUrl,
     auctionHouse,
     saleName: session.title || '',
@@ -648,6 +718,7 @@ function parseWrightAdvancedItem(item: any, artistSlug: string): AuctionLot {
     year: item.year_designed || null,
     medium: item.material || null,
     dimensions: null,
+    category: 'unknown' as LotCategory,
     imageUrl,
     auctionHouse,
     saleName: item.session?.title || '',
@@ -765,6 +836,38 @@ function parseBonhamsLot(doc: any, artistSlug: string): AuctionLot | null {
   // Strip HTML tags from title
   title = title.replace(/<[^>]*>/g, '').trim() || 'Untitled';
 
+  // Extract medium from styledDescription lines
+  // Bonhams structured descriptions often include medium info after the title line
+  let medium: string | null = null;
+  let dimensions: string | null = null;
+  if (doc.styledDescription) {
+    const descLines: string[] = [];
+    const descMatches = doc.styledDescription.match(/<div class="[^"]*">(.*?)<\/div>/g) || [];
+    for (const m of descMatches) {
+      const text = m.replace(/<[^>]*>/g, '').trim();
+      if (text) descLines.push(text);
+    }
+    // Look for medium-like lines (contains material keywords)
+    for (const line of descLines) {
+      if (line === title) continue; // skip the title itself
+      if (/^\(?[bB](?:orn)?\.\s*\d{4}\)?$/.test(line)) continue;
+      if (/^\(\d{4}[-–]\d{4}\)$/.test(line)) continue;
+      if (/^\(?born \d{4}\)?$/i.test(line)) continue;
+      if (/^[A-Z][a-z]+\s+[A-Z][a-z]+$/.test(line)) continue; // artist name
+      if (/^[A-Z]{2,}$/.test(line)) continue; // "KAWS"
+      if (/^\(?[A-Za-z]+,?\s+(?:born\s+)?\d{4}[-–]?\d{0,4}\)?$/.test(line)) continue; // "(American, 1928-1987)"
+      // Dimension line (has cm or in measurements)
+      if (/\d+\s*(?:×|x)\s*\d+|(?:cm|in)\b/.test(line) && !medium) {
+        dimensions = line;
+        continue;
+      }
+      // Medium line — contains material/technique keywords, but skip very long lines (full catalog entries)
+      if (!medium && line.length < 150 && /(?:oil|acrylic|gouache|watercolor|ink|charcoal|pencil|pastel|spray|enamel|screenprint|silkscreen|lithograph|etching|woodcut|print|photograph|gelatin|silver|bronze|ceramic|porcelain|mixed media|collage|canvas|linen|paper|board|panel|synthetic polymer|offset|poster|gicl[eé]e|marker|crayon|felt[- ]?tip)/i.test(line)) {
+        medium = line;
+      }
+    }
+  }
+
   const currency = isoCurrencyToInternal(doc.currency?.iso_code || '');
   const hammerPrice = doc.price?.hammerPrice || null;
   const hammerPremium = doc.price?.hammerPremium || null;
@@ -795,8 +898,9 @@ function parseBonhamsLot(doc: any, artistSlug: string): AuctionLot | null {
     artist: artistSlug,
     title,
     year: null,
-    medium: null,
-    dimensions: null,
+    medium,
+    dimensions,
+    category: 'unknown' as LotCategory,
     imageUrl,
     auctionHouse: 'Bonhams',
     saleName: doc.heading || '',
@@ -983,9 +1087,10 @@ async function main() {
   if (fs.existsSync(lotsPath)) {
     try {
       existingLots = JSON.parse(fs.readFileSync(lotsPath, 'utf-8'));
-      // Backfill artist field for legacy lots without one
+      // Backfill fields for legacy lots
       for (const lot of existingLots) {
         if (!lot.artist) lot.artist = 'george-condo';
+        if (!lot.category) lot.category = 'unknown' as LotCategory;
       }
       console.log(`[Ray] Loaded ${existingLots.length} existing lots.`);
     } catch { console.log('[Ray] Could not parse existing lots.json'); }
@@ -1034,6 +1139,14 @@ async function main() {
     if (isNaN(db)) return -1;
     return db - da;
   });
+
+  // Classify every lot
+  let categoryCounts: Record<string, number> = {};
+  for (const lot of allLots) {
+    lot.category = classifyLot(lot);
+    categoryCounts[lot.category] = (categoryCounts[lot.category] || 0) + 1;
+  }
+  console.log(`[Ray] Category breakdown:`, categoryCounts);
 
   // Compute per-artist stats
   const statsByArtist: Record<string, MarketStats> = {};

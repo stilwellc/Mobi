@@ -2,7 +2,7 @@
 
 import { AuctionLot } from '../types';
 import { ARTIST_LABEL } from '../constants';
-import { houseColors } from '../utils';
+import { houseColors, categoryLabels, categoryColors } from '../utils';
 
 function formatEstimate(lot: AuctionLot): string {
   const fmt = (n: number) => {
@@ -18,6 +18,8 @@ function formatEstimate(lot: AuctionLot): string {
 
 export default function LotCard({ lot, showArtist = false }: { lot: AuctionLot; showArtist?: boolean }) {
   const color = houseColors[lot.auctionHouse] || '#96B8D4';
+  const catColor = categoryColors[lot.category] || '#888';
+  const catLabel = categoryLabels[lot.category] || null;
 
   return (
     <a
@@ -110,6 +112,24 @@ export default function LotCard({ lot, showArtist = false }: { lot: AuctionLot; 
                 animation: 'pulse 2s infinite',
               }} />
               Live
+            </div>
+          )}
+          {lot.category && lot.category !== 'unknown' && (
+            <div style={{
+              position: 'absolute',
+              bottom: 12,
+              left: 12,
+              padding: '3px 10px',
+              borderRadius: 100,
+              background: `${catColor}15`,
+              border: `1px solid ${catColor}30`,
+              fontSize: 9,
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              color: catColor,
+              fontWeight: 600,
+            }}>
+              {catLabel}
             </div>
           )}
         </div>

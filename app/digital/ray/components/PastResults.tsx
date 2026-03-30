@@ -2,24 +2,40 @@
 
 import { useState, useMemo } from 'react';
 import { AuctionLot } from '../types';
+import type { LotCategory } from '../types';
 import { ARTIST_LABEL } from '../constants';
-import { houseColors, formatPrice } from '../utils';
+import { houseColors, formatPrice, categoryLabels, categoryColors } from '../utils';
 
 type SortMode = 'date' | 'price';
+type CategoryFilter = 'all' | LotCategory;
 
 export default function PastResults({ lots, showArtist = false }: { lots: AuctionLot[]; showArtist?: boolean }) {
   const [visible, setVisible] = useState(20);
   const [sortBy, setSortBy] = useState<SortMode>('date');
+  const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>('all');
+
+  const availableCategories = useMemo(() => {
+    const cats = new Set<string>();
+    for (const lot of lots) {
+      if (lot.category && lot.category !== 'unknown') cats.add(lot.category);
+    }
+    return Array.from(cats).sort();
+  }, [lots]);
+
+  const filtered = useMemo(() => {
+    if (categoryFilter === 'all') return lots;
+    return lots.filter(l => l.category === categoryFilter);
+  }, [lots, categoryFilter]);
 
   const sorted = useMemo(() => {
-    const copy = [...lots];
+    const copy = [...filtered];
     if (sortBy === 'price') {
       copy.sort((a, b) => (b.priceUsd || 0) - (a.priceUsd || 0));
     } else {
       copy.sort((a, b) => new Date(b.saleDate).getTime() - new Date(a.saleDate).getTime());
     }
     return copy;
-  }, [lots, sortBy]);
+  }, [filtered, sortBy]);
 
   const shown = sorted.slice(0, visible);
 
@@ -29,7 +45,7 @@ export default function PastResults({ lots, showArtist = false }: { lots: Auctio
         .ray-results { padding: 40px 56px 120px; }
         .ray-result-row {
           display: grid;
-          grid-template-columns: 1fr auto auto;
+          grid-template-columns: 1fr auto auto auto;
           align-items: center;
           gap: 16px;
           padding: 16px 24px;
@@ -92,7 +108,8 @@ export default function PastResults({ lots, showArtist = false }: { lots: Auctio
               Recent <span style={{ fontStyle: 'italic', color: 'var(--color-accent-blue)' }}>Results</span>
             </h2>
             <p style={{ fontSize: 13, color: 'var(--color-text-subtle)', fontWeight: 400, marginTop: 8 }}>
-              {lots.length.toLocaleString()} sold lots at auction
+              {filtered.length.toLocaleString()} sold lots at auction
+              {categoryFilter !== 'all' && ` (${categoryLabels[categoryFilter]})`}
             </p>
           </div>
           <div style={{ display: 'flex', gap: 8 }}>
@@ -112,6 +129,28 @@ export default function PastResults({ lots, showArtist = false }: { lots: Auctio
             </button>
           </div>
         </div>
+
+        {availableCategories.length > 1 && (
+          <div style={{ display: 'flex', gap: 6, marginTop: 16, flexWrap: 'wrap' }}>
+            <button
+              className="ray-sort-pill"
+              data-active={categoryFilter === 'all' ? 'true' : 'false'}
+              onClick={() => { setCategoryFilter('all'); setVisible(20); }}
+            >
+              All
+            </button>
+            {availableCategories.map(cat => (
+              <button
+                key={cat}
+                className="ray-sort-pill"
+                data-active={categoryFilter === cat ? 'true' : 'false'}
+                onClick={() => { setCategoryFilter(cat as CategoryFilter); setVisible(20); }}
+              >
+                {categoryLabels[cat] || cat}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       <div style={{
@@ -122,6 +161,7 @@ export default function PastResults({ lots, showArtist = false }: { lots: Auctio
       }}>
         {shown.map((lot, i) => {
           const color = houseColors[lot.auctionHouse] || '#96B8D4';
+          const catColor = (lot.category && lot.category !== 'unknown') ? categoryColors[lot.category] : null;
           return (
             <a
               key={lot.id}
@@ -183,6 +223,24 @@ export default function PastResults({ lots, showArtist = false }: { lots: Auctio
                   {new Date(lot.saleDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
                 </div>
               </div>
+
+              {catColor && (
+                <div style={{
+                  padding: '3px 10px',
+                  borderRadius: 100,
+                  background: `${catColor}15`,
+                  border: `1px solid ${catColor}30`,
+                  fontSize: 9,
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  color: catColor,
+                  fontWeight: 600,
+                  flexShrink: 0,
+                  whiteSpace: 'nowrap',
+                }}>
+                  {categoryLabels[lot.category] || lot.category}
+                </div>
+              )}
 
               <div style={{
                 padding: '3px 10px',

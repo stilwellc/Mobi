@@ -1,9 +1,23 @@
 'use client';
 
-import { MarketStats } from '../types';
-import { formatPrice } from '../utils';
+import { MarketStats, AuctionLot } from '../types';
+import { formatPrice, categoryLabels, categoryColors } from '../utils';
 
-export default function StatsGrid({ stats }: { stats: MarketStats }) {
+export default function StatsGrid({ stats, lots }: { stats: MarketStats; lots?: AuctionLot[] }) {
+  // Compute category breakdown from lots
+  const catCounts: Record<string, number> = {};
+  if (lots) {
+    for (const lot of lots) {
+      const cat = lot.category || 'unknown';
+      if (cat !== 'unknown') catCounts[cat] = (catCounts[cat] || 0) + 1;
+    }
+  }
+  const topCats = Object.entries(catCounts).sort((a, b) => b[1] - a[1]);
+  const classifiedCount = topCats.reduce((sum, [, n]) => sum + n, 0);
+  const catSub = topCats.length > 0
+    ? topCats.map(([cat, n]) => `${categoryLabels[cat]} ${n}`).join(', ')
+    : '—';
+
   const cards = [
     {
       label: 'Avg. Price (12mo)',
@@ -15,11 +29,11 @@ export default function StatsGrid({ stats }: { stats: MarketStats }) {
       value: formatPrice(stats.recordPrice),
       sub: `${stats.recordTitle}, ${new Date(stats.recordDate).getFullYear()}`,
     },
-    {
-      label: 'Appreciation',
-      value: `${stats.appreciationRate}%`,
-      sub: 'annual since 2013',
-    },
+    ...(topCats.length > 0 ? [{
+      label: 'Medium Breakdown',
+      value: `${classifiedCount}`,
+      sub: catSub,
+    }] : []),
     {
       label: 'Auction Houses',
       value: `${stats.houseDistribution?.length || 0}`,

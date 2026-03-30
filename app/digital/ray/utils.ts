@@ -14,3 +14,21 @@ export function formatPrice(n: number): string {
   if (n >= 1_000) return `$${(n / 1_000).toFixed(0)}K`;
   return `$${n.toLocaleString()}`;
 }
+
+export const categoryLabels: Record<string, string> = {
+  original: 'Original',
+  print: 'Print',
+  photograph: 'Photo',
+  sculpture: 'Sculpture',
+  design: 'Design',
+  unknown: 'Unknown',
+};
+
+export const categoryColors: Record<string, string> = {
+  original: '#D4B896',
+  print: '#96B8D4',
+  photograph: '#B8D496',
+  sculpture: '#D496B8',
+  design: '#B896D4',
+  unknown: '#888',
+};
