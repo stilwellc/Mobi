@@ -1,14 +1,14 @@
 {
   "george-condo": {
-    "lastUpdated": "2026-03-30T21:31:27.669Z",
-    "totalLotsTracked": 2180,
+    "lastUpdated": "2026-03-30T21:41:23.281Z",
+    "totalLotsTracked": 257,
     "avgPriceLast12Months": 404789,
     "medianPriceLast12Months": 63500,
     "recordPrice": 12000000,
     "recordTitle": "Blues In F",
     "recordDate": "2020-07-10",
     "recordHouse": "Phillips",
-    "appreciationRate": 42.5,
+    "appreciationRate": -21.4,
     "totalAuctionRevenue": 169972622,
     "priceHistory": [
       {
@@ -410,7 +410,7 @@
     ]
   },
   "futura-2000": {
-    "lastUpdated": "2026-03-30T21:31:27.678Z",
+    "lastUpdated": "2026-03-30T21:41:23.291Z",
     "totalLotsTracked": 65,
     "avgPriceLast12Months": 62823,
     "medianPriceLast12Months": 82550,
@@ -418,7 +418,7 @@
     "recordTitle": "Untitled",
     "recordDate": "2022-11-18",
     "recordHouse": "Christie's",
-    "appreciationRate": 0,
+    "appreciationRate": -28.3,
     "totalAuctionRevenue": 2259955,
     "priceHistory": [
       {
@@ -663,15 +663,15 @@
     ]
   },
   "kaws": {
-    "lastUpdated": "2026-03-30T21:31:27.678Z",
-    "totalLotsTracked": 540,
+    "lastUpdated": "2026-03-30T21:41:23.291Z",
+    "totalLotsTracked": 539,
     "avgPriceLast12Months": 25927,
     "medianPriceLast12Months": 1802,
     "recordPrice": 3855000,
     "recordTitle": "IN THE WOODS",
     "recordDate": "2019-05-16",
     "recordHouse": "Christie's",
-    "appreciationRate": 0,
+    "appreciationRate": 8.8,
     "totalAuctionRevenue": 39895901,
     "priceHistory": [
       {
@@ -998,7 +998,7 @@
     ]
   },
   "george-nakashima": {
-    "lastUpdated": "2026-03-30T21:31:27.679Z",
+    "lastUpdated": "2026-03-30T21:41:23.291Z",
     "totalLotsTracked": 537,
     "avgPriceLast12Months": 26368,
     "medianPriceLast12Months": 20320,
@@ -1006,7 +1006,7 @@
     "recordTitle": "Exceptional Conoid dining table",
     "recordDate": "2025-10-23",
     "recordHouse": "Wright",
-    "appreciationRate": 0,
+    "appreciationRate": -5.7,
     "totalAuctionRevenue": 13602304,
     "priceHistory": [
       {
@@ -1391,7 +1391,7 @@
     ]
   },
   "charles-eames": {
-    "lastUpdated": "2026-03-30T21:31:27.679Z",
+    "lastUpdated": "2026-03-30T21:41:23.292Z",
     "totalLotsTracked": 725,
     "avgPriceLast12Months": 2138,
     "medianPriceLast12Months": 1079.5,
@@ -1399,7 +1399,7 @@
     "recordTitle": "Charles & Ray Eames Rare \"ESU-420-C\" Storage Unit",
     "recordDate": "2003-03-30",
     "recordHouse": "Bonhams",
-    "appreciationRate": 0,
+    "appreciationRate": 0.2,
     "totalAuctionRevenue": 1273665,
     "priceHistory": [
       {
@@ -1947,15 +1947,15 @@
     ]
   },
   "andy-warhol": {
-    "lastUpdated": "2026-03-30T21:31:27.680Z",
-    "totalLotsTracked": 2398,
+    "lastUpdated": "2026-03-30T21:41:23.293Z",
+    "totalLotsTracked": 2397,
     "avgPriceLast12Months": 45997,
     "medianPriceLast12Months": 10240,
     "recordPrice": 195040000,
     "recordTitle": "Shot Sage Blue Marilyn",
     "recordDate": "2022-05-09",
     "recordHouse": "Christie's",
-    "appreciationRate": 0,
+    "appreciationRate": -38.1,
     "totalAuctionRevenue": 1504712821,
     "priceHistory": [
       {
@@ -2620,7 +2620,7 @@
     ]
   },
   "tom-sachs": {
-    "lastUpdated": "2026-03-30T21:31:27.682Z",
+    "lastUpdated": "2026-03-30T21:41:23.294Z",
     "totalLotsTracked": 108,
     "avgPriceLast12Months": 17477,
     "medianPriceLast12Months": 8890,
@@ -2628,7 +2628,7 @@
     "recordTitle": "Tiffany Value Meal",
     "recordDate": "2022-05-10",
     "recordHouse": "Christie's",
-    "appreciationRate": 0,
+    "appreciationRate": -18.7,
     "totalAuctionRevenue": 2201532,
     "priceHistory": [
       {
@@ -2997,7 +2997,7 @@
     ]
   },
   "barry-mcgee": {
-    "lastUpdated": "2026-03-30T21:31:27.682Z",
+    "lastUpdated": "2026-03-30T21:41:23.294Z",
     "totalLotsTracked": 100,
     "avgPriceLast12Months": 4748,
     "medianPriceLast12Months": 2540,
@@ -3005,7 +3005,7 @@
     "recordTitle": "Untitled",
     "recordDate": "2020-07-02",
     "recordHouse": "Phillips",
-    "appreciationRate": 0,
+    "appreciationRate": -12.7,
     "totalAuctionRevenue": 1522627,
     "priceHistory": [
       {
@@ -3346,7 +3346,7 @@
     ]
   },
   "keith-haring": {
-    "lastUpdated": "2026-03-30T21:31:27.682Z",
+    "lastUpdated": "2026-03-30T21:41:23.295Z",
     "totalLotsTracked": 877,
     "avgPriceLast12Months": 37826,
     "medianPriceLast12Months": 6985,
@@ -3354,7 +3354,7 @@
     "recordTitle": "Untitled",
     "recordDate": "2022-11-17",
     "recordHouse": "Christie's",
-    "appreciationRate": 0,
+    "appreciationRate": -16,
     "totalAuctionRevenue": 98497943,
     "priceHistory": [
       {
@@ -3858,7 +3858,7 @@
     ]
   },
   "peter-saul": {
-    "lastUpdated": "2026-03-30T21:31:27.683Z",
+    "lastUpdated": "2026-03-30T21:41:23.295Z",
     "totalLotsTracked": 118,
     "avgPriceLast12Months": 16786,
     "medianPriceLast12Months": 1143,
@@ -3866,7 +3866,7 @@
     "recordTitle": "Human Dignity",
     "recordDate": "2023-05-15",
     "recordHouse": "Christie's",
-    "appreciationRate": 0,
+    "appreciationRate": -56.5,
     "totalAuctionRevenue": 7079942,
     "priceHistory": [
       {
@@ -4249,7 +4249,7 @@
     ]
   },
   "ed-ruscha": {
-    "lastUpdated": "2026-03-30T21:31:27.683Z",
+    "lastUpdated": "2026-03-30T21:41:23.296Z",
     "totalLotsTracked": 546,
     "avgPriceLast12Months": 20687,
     "medianPriceLast12Months": 4864,
@@ -4257,7 +4257,7 @@
     "recordTitle": "The Eighties 1980",
     "recordDate": "2022-11-16",
     "recordHouse": "Bonhams",
-    "appreciationRate": 0,
+    "appreciationRate": 1.3,
     "totalAuctionRevenue": 8260877.5,
     "priceHistory": [
       {
@@ -4707,15 +4707,15 @@
     ]
   },
   "r-crumb": {
-    "lastUpdated": "2026-03-30T21:31:27.683Z",
+    "lastUpdated": "2026-03-30T21:41:23.296Z",
     "totalLotsTracked": 63,
     "avgPriceLast12Months": 2325,
     "medianPriceLast12Months": 953,
     "recordPrice": 72000,
-    "recordTitle": "Mr. Natural, 1971 (7) sight each sheet 14 x 11in (35.5 x 27.5cm)",
+    "recordTitle": "Mr. Natural, 1971 (7) sight each sheet 14 x 11in (35.5 x ...",
     "recordDate": "2007-05-22",
     "recordHouse": "Bonhams",
-    "appreciationRate": 0,
+    "appreciationRate": -13.4,
     "totalAuctionRevenue": 575822,
     "priceHistory": [
       {
@@ -4946,7 +4946,7 @@
     ]
   },
   "raymond-pettibon": {
-    "lastUpdated": "2026-03-30T21:31:27.684Z",
+    "lastUpdated": "2026-03-30T21:41:23.296Z",
     "totalLotsTracked": 402,
     "avgPriceLast12Months": 4164,
     "medianPriceLast12Months": 572,
@@ -4954,7 +4954,7 @@
     "recordTitle": "No Title (This left was...)",
     "recordDate": "2023-05-15",
     "recordHouse": "Christie's",
-    "appreciationRate": 0,
+    "appreciationRate": -41.7,
     "totalAuctionRevenue": 10778003,
     "priceHistory": [
       {

@@ -1008,18 +1008,33 @@ function computeStats(lots: AuctionLot[], existingStats: MarketStats | null): Ma
     totalValue: data.totalValue,
   }));
 
-  const totalLotsTracked = Math.max(lots.length, existingStats?.totalLotsTracked || 0);
+  // Compute appreciation rate from price history
+  // Compare avg price over recent 4 quarters vs 4 quarters from 3 years ago
+  let appreciationRate = 0;
+  if (priceHistory.length >= 8) {
+    const recent4 = priceHistory.slice(-4);
+    const older4 = priceHistory.slice(-12, -8);
+    if (older4.length === 4) {
+      const recentAvg = recent4.reduce((s, p) => s + p.avgPrice, 0) / 4;
+      const olderAvg = older4.reduce((s, p) => s + p.avgPrice, 0) / 4;
+      if (olderAvg > 0) {
+        appreciationRate = Math.round(((recentAvg / olderAvg) ** (1 / 3) - 1) * 1000) / 10;
+      }
+    }
+  }
+
+  const recordTitle = record?.title || existingStats?.recordTitle || '';
 
   return {
     lastUpdated: now.toISOString(),
-    totalLotsTracked,
+    totalLotsTracked: lots.length,
     avgPriceLast12Months: avg,
     medianPriceLast12Months: median,
     recordPrice: record?.priceUsd || existingStats?.recordPrice || 0,
-    recordTitle: record?.title || existingStats?.recordTitle || '',
+    recordTitle: recordTitle.length > 60 ? recordTitle.substring(0, 57) + '...' : recordTitle,
     recordDate: record?.saleDate || existingStats?.recordDate || '',
     recordHouse: record?.auctionHouse || existingStats?.recordHouse || 'Phillips',
-    appreciationRate: existingStats?.appreciationRate || 0,
+    appreciationRate,
     totalAuctionRevenue: sold.reduce((sum, l) => sum + (l.priceUsd || 0), 0),
     priceHistory: priceHistory.length > 0 ? priceHistory : existingStats?.priceHistory || [],
     houseDistribution: houseDistribution.length > 0 ? houseDistribution : existingStats?.houseDistribution || [],

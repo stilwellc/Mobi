@@ -34,17 +34,23 @@ export default function RayPage() {
   const overviewStats = useMemo(() => {
     const totalLots = allLots.length;
     const totalRevenue = Object.values(statsByArtist).reduce((sum, s) => sum + (s.totalAuctionRevenue || 0), 0);
-    const avgPrices = Object.values(statsByArtist).filter(s => s.avgPriceLast12Months > 0);
-    const avgPrice = avgPrices.length
-      ? avgPrices.reduce((sum, s) => sum + s.avgPriceLast12Months, 0) / avgPrices.length
+    // Compute avg price from actual lot data (not averaging per-artist averages)
+    const oneYearAgo = new Date();
+    oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+    const recentSold = sold.filter(l => {
+      const d = new Date(l.saleDate);
+      return d.getTime() === d.getTime() && d >= oneYearAgo;
+    });
+    const avgPrice = recentSold.length
+      ? recentSold.reduce((sum, l) => sum + (l.priceUsd || 0), 0) / recentSold.length
       : 0;
     return [
       { label: 'Artists Tracked', value: `${ARTISTS.length}`, sub: `across ${sources.length || 5} houses` },
       { label: 'Total Lots', value: totalLots.toLocaleString(), sub: 'sold, upcoming & bought-in' },
       { label: 'Auction Revenue', value: formatPrice(totalRevenue), sub: 'aggregate hammer prices' },
-      { label: 'Avg. Price (12mo)', value: formatPrice(avgPrice), sub: 'across all artists' },
+      { label: 'Avg. Price (12mo)', value: formatPrice(avgPrice), sub: `${recentSold.length.toLocaleString()} sales across all artists` },
     ];
-  }, [allLots, statsByArtist, sources]);
+  }, [allLots, sold, statsByArtist, sources]);
 
   return (
     <div style={{
