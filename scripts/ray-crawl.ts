@@ -174,6 +174,15 @@ const ARTISTS: ArtistConfig[] = [
     wright: 'robert-crumb',
     bonhams: 'Robert Crumb',
   },
+  {
+    slug: 'raymond-pettibon',
+    displayName: 'Raymond Pettibon',
+    phillips: { id: '10831', slug: 'raymond-pettibon' },
+    sothebys: 'raymond-pettibon',
+    christies: 'raymond-pettibon',
+    wright: 'raymond-pettibon',
+    bonhams: 'Raymond Pettibon',
+  },
 ];
 
 const DATA_DIR = path.join(process.cwd(), 'public', 'data', 'ray');
