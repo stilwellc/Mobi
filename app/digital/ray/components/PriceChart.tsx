@@ -53,9 +53,20 @@ export default function PriceChart({ data }: { data: PricePoint[] }) {
         }}>
           Price <span style={{ fontStyle: 'italic', color: 'var(--color-accent-blue)' }}>History</span>
         </h2>
-        <p style={{ fontSize: 13, color: 'var(--color-text-subtle)', fontWeight: 400 }}>
-          Quarterly average sale price at auction
-        </p>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 20, marginTop: 12 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#96B8D4', flexShrink: 0 }} />
+            <span style={{ fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--color-text-label)', fontWeight: 600 }}>
+              Avg Price
+            </span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#D4B896', flexShrink: 0 }} />
+            <span style={{ fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--color-text-label)', fontWeight: 600 }}>
+              High Price
+            </span>
+          </div>
+        </div>
       </div>
 
       <div style={{

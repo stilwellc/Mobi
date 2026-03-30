@@ -141,8 +141,8 @@ export default function ArtistDetailPage() {
               fontWeight: 400,
               maxWidth: 560,
             }}>
-              {lots.length} lots tracked across Phillips, Sotheby&apos;s,
-              Christie&apos;s, and Wright/Rago.
+              {lots.length} lots tracked across{' '}
+              {stats?.houseDistribution?.length || 0} auction houses.
             </p>
 
             {lastCrawl && (

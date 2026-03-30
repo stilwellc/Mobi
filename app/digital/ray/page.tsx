@@ -1,45 +1,50 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import Link from 'next/link';
 import ThemeToggle from '../../components/ThemeToggle';
-import { ARTISTS, ARTIST_LABEL } from './constants';
+import { ARTISTS } from './constants';
 import { useRayData } from './hooks/useRayData';
+import { formatPrice } from './utils';
 import ArtistNav from './components/ArtistNav';
 import LotCard from './components/LotCard';
-
-const houseColors: Record<string, string> = {
-  'Phillips': '#96B8D4',
-  "Sotheby's": '#D4B896',
-  "Christie's": '#D496B8',
-  'Rago': '#B8D496',
-  'Wright': '#B896D4',
-  'Heritage': '#D4D496',
-  'Bonhams': '#C4A265',
-  'Hindman': '#6BA368',
-};
-
-function formatPrice(n: number): string {
-  if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(2)}M`;
-  if (n >= 1_000) return `$${(n / 1_000).toFixed(0)}K`;
-  return `$${n.toLocaleString()}`;
-}
+import PastResults from './components/PastResults';
 
 export default function RayPage() {
-  const { allLots, lastCrawl, loading } = useRayData();
+  const { allLots, statsByArtist, sources, lastCrawl, loading } = useRayData();
 
-  const upcoming = allLots
-    .filter(l => l.status === 'upcoming')
-    .sort((a, b) => {
-      if (!a.saleDate) return 1;
-      if (!b.saleDate) return -1;
-      return new Date(a.saleDate).getTime() - new Date(b.saleDate).getTime();
-    });
+  const upcoming = useMemo(() =>
+    allLots
+      .filter(l => l.status === 'upcoming')
+      .sort((a, b) => {
+        if (!a.saleDate) return 1;
+        if (!b.saleDate) return -1;
+        return new Date(a.saleDate).getTime() - new Date(b.saleDate).getTime();
+      }),
+    [allLots]
+  );
 
-  const recentSold = allLots
-    .filter(l => l.status === 'sold' && l.priceUsd)
-    .sort((a, b) => new Date(b.saleDate).getTime() - new Date(a.saleDate).getTime())
-    .slice(0, 8);
+  const sold = useMemo(() =>
+    allLots
+      .filter(l => l.status === 'sold' && l.priceUsd)
+      .sort((a, b) => new Date(b.saleDate).getTime() - new Date(a.saleDate).getTime()),
+    [allLots]
+  );
+
+  const overviewStats = useMemo(() => {
+    const totalLots = allLots.length;
+    const totalRevenue = Object.values(statsByArtist).reduce((sum, s) => sum + (s.totalAuctionRevenue || 0), 0);
+    const avgPrices = Object.values(statsByArtist).filter(s => s.avgPriceLast12Months > 0);
+    const avgPrice = avgPrices.length
+      ? avgPrices.reduce((sum, s) => sum + s.avgPriceLast12Months, 0) / avgPrices.length
+      : 0;
+    return [
+      { label: 'Artists Tracked', value: `${ARTISTS.length}`, sub: `across ${sources.length || 5} houses` },
+      { label: 'Total Lots', value: totalLots.toLocaleString(), sub: 'sold, upcoming & bought-in' },
+      { label: 'Auction Revenue', value: formatPrice(totalRevenue), sub: 'aggregate hammer prices' },
+      { label: 'Avg. Price (12mo)', value: formatPrice(avgPrice), sub: 'across all artists' },
+    ];
+  }, [allLots, statsByArtist, sources]);
 
   return (
     <div style={{
@@ -58,17 +63,11 @@ export default function RayPage() {
           grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
           gap: 20px;
         }
-        .ray-sold-row {
+        .ray-overview-stats {
           display: grid;
-          grid-template-columns: 1fr auto auto;
-          align-items: center;
+          grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
           gap: 16px;
-          padding: 14px 24px;
-          text-decoration: none;
-          color: inherit;
-          transition: background 0.2s;
         }
-        .ray-sold-row:hover { background: var(--color-hover-item); }
         @media (max-width: 768px) {
           .ray-nav { padding: 16px 20px; }
           .ray-hero { padding: 40px 20px 32px; }
@@ -77,11 +76,12 @@ export default function RayPage() {
             grid-template-columns: 1fr;
             gap: 16px;
           }
-          .ray-sold-row {
-            grid-template-columns: 1fr;
-            gap: 6px;
-            padding: 14px 16px;
+          .ray-overview-stats {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
           }
+          .ray-overview-stats .ray-stat-card { padding: 20px 16px !important; }
+          .ray-overview-stats .ray-stat-value { font-size: 28px !important; }
         }
       `}</style>
 
@@ -160,8 +160,8 @@ export default function RayPage() {
           fontWeight: 400,
           maxWidth: 560,
         }}>
-          Auction intelligence — tracking {ARTISTS.length} artists across Phillips, Sotheby&apos;s,
-          Christie&apos;s, and Wright/Rago. Select an artist to drill into their market data.
+          Auction intelligence — tracking {ARTISTS.length} artists across{' '}
+          {sources.length || 5} auction houses. Select an artist to drill into their market data.
         </p>
 
         {lastCrawl && (
@@ -202,15 +202,57 @@ export default function RayPage() {
         </div>
       ) : (
         <>
+          {/* Aggregate Stats */}
+          <section style={{ maxWidth: 1100, margin: '0 auto', padding: '40px 56px 0' }} className="ray-overview-stats-section">
+            <style>{`
+              @media (max-width: 768px) {
+                .ray-overview-stats-section { padding: 32px 20px 0 !important; }
+                .ray-upcoming-section { padding: 32px 20px 40px !important; }
+              }
+            `}</style>
+            <div className="ray-overview-stats">
+              {overviewStats.map((card) => (
+                <div key={card.label} className="ray-stat-card" style={{
+                  background: 'var(--color-bg-card)',
+                  border: '1px solid var(--color-border)',
+                  borderRadius: 16,
+                  padding: '28px 24px',
+                }}>
+                  <div style={{
+                    fontSize: 10,
+                    letterSpacing: '0.2em',
+                    textTransform: 'uppercase',
+                    color: 'var(--color-text-label)',
+                    fontWeight: 600,
+                    marginBottom: 12,
+                  }}>
+                    {card.label}
+                  </div>
+                  <div className="ray-stat-value" style={{
+                    fontFamily: "'Cormorant Garamond', serif",
+                    fontSize: 36,
+                    fontWeight: 300,
+                    color: 'var(--color-accent-blue)',
+                    lineHeight: 1,
+                    marginBottom: 8,
+                  }}>
+                    {card.value}
+                  </div>
+                  <div style={{
+                    fontSize: 12,
+                    color: 'var(--color-text-subtle)',
+                    fontWeight: 400,
+                  }}>
+                    {card.sub}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
           {/* Upcoming Lots — all artists */}
           {upcoming.length > 0 && (
             <section className="ray-upcoming-section" style={{ maxWidth: 1200, margin: '0 auto', padding: '40px 56px 60px' }}>
-              <style>{`
-                @media (max-width: 768px) {
-                  .ray-upcoming-section { padding: 32px 20px 40px !important; }
-                  .ray-sold-section { padding: 0 20px 80px !important; }
-                }
-              `}</style>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 32 }}>
                 <span style={{
                   width: 8,
@@ -246,98 +288,9 @@ export default function RayPage() {
             </section>
           )}
 
-          {/* Recently Sold — compact preview */}
-          {recentSold.length > 0 && (
-            <section className="ray-sold-section" style={{ maxWidth: 1100, margin: '0 auto', padding: '0 56px 120px' }}>
-              <div style={{ marginBottom: 24 }}>
-                <h2 style={{
-                  fontFamily: "'Cormorant Garamond', serif",
-                  fontSize: 32,
-                  fontWeight: 300,
-                  letterSpacing: '-0.02em',
-                }}>
-                  Recent <span style={{ fontStyle: 'italic', color: 'var(--color-accent-blue)' }}>Results</span>
-                </h2>
-                <p style={{ fontSize: 13, color: 'var(--color-text-subtle)', fontWeight: 400, marginTop: 8 }}>
-                  Latest sold lots across all artists
-                </p>
-              </div>
-
-              <div style={{
-                background: 'var(--color-bg-card)',
-                border: '1px solid var(--color-border)',
-                borderRadius: 20,
-                overflow: 'hidden',
-              }}>
-                {recentSold.map((lot, i) => {
-                  const color = houseColors[lot.auctionHouse] || '#96B8D4';
-                  return (
-                    <a
-                      key={lot.id}
-                      href={lot.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="ray-sold-row"
-                      style={{
-                        borderBottom: i < recentSold.length - 1 ? '1px solid var(--color-border)' : 'none',
-                      }}
-                    >
-                      <div style={{ minWidth: 0 }}>
-                        <div style={{
-                          fontFamily: "'Cormorant Garamond', serif",
-                          fontSize: 18,
-                          fontWeight: 300,
-                          marginBottom: 3,
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                        }}>
-                          {lot.title}
-                        </div>
-                        <div style={{
-                          fontSize: 10,
-                          letterSpacing: '0.1em',
-                          textTransform: 'uppercase',
-                          color: 'var(--color-text-label)',
-                          fontWeight: 600,
-                        }}>
-                          {ARTIST_LABEL[lot.artist] || lot.artist}
-                        </div>
-                      </div>
-
-                      <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                        <div style={{
-                          fontSize: 15,
-                          fontWeight: 500,
-                          color: 'var(--color-accent-blue)',
-                        }}>
-                          {lot.priceUsd ? formatPrice(lot.priceUsd) : '—'}
-                        </div>
-                        <div style={{ fontSize: 10, color: 'var(--color-text-ghost)', marginTop: 2 }}>
-                          {new Date(lot.saleDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
-                        </div>
-                      </div>
-
-                      <div style={{
-                        padding: '3px 10px',
-                        borderRadius: 100,
-                        background: `${color}15`,
-                        border: `1px solid ${color}30`,
-                        fontSize: 9,
-                        letterSpacing: '0.12em',
-                        textTransform: 'uppercase',
-                        color: color,
-                        fontWeight: 600,
-                        flexShrink: 0,
-                        whiteSpace: 'nowrap',
-                      }}>
-                        {lot.auctionHouse}
-                      </div>
-                    </a>
-                  );
-                })}
-              </div>
-            </section>
+          {/* Recently Sold — full paginated list */}
+          {sold.length > 0 && (
+            <PastResults lots={sold} showArtist />
           )}
         </>
       )}

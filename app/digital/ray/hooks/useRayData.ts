@@ -7,6 +7,7 @@ interface RayData {
   statsByArtist: Record<string, MarketStats>;
   allLots: AuctionLot[];
   lastCrawl: string;
+  sources: string[];
   loading: boolean;
 }
 
@@ -14,6 +15,7 @@ export function useRayData(): RayData {
   const [statsByArtist, setStatsByArtist] = useState<Record<string, MarketStats>>({});
   const [allLots, setAllLots] = useState<AuctionLot[]>([]);
   const [lastCrawl, setLastCrawl] = useState('');
+  const [sources, setSources] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -29,9 +31,10 @@ export function useRayData(): RayData {
       }
       setAllLots(lotsData);
       setLastCrawl(metaData.lastCrawl);
+      setSources(metaData.sources || []);
     }).catch(console.error)
       .finally(() => setLoading(false));
   }, []);
 
-  return { statsByArtist, allLots, lastCrawl, loading };
+  return { statsByArtist, allLots, lastCrawl, sources, loading };
 }

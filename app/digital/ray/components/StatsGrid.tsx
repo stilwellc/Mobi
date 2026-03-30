@@ -1,12 +1,7 @@
 'use client';
 
 import { MarketStats } from '../types';
-
-function formatPrice(n: number): string {
-  if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(2)}M`;
-  if (n >= 1_000) return `$${(n / 1_000).toFixed(0)}K`;
-  return `$${n.toLocaleString()}`;
-}
+import { formatPrice } from '../utils';
 
 export default function StatsGrid({ stats }: { stats: MarketStats }) {
   const cards = [
@@ -26,9 +21,9 @@ export default function StatsGrid({ stats }: { stats: MarketStats }) {
       sub: 'annual since 2013',
     },
     {
-      label: 'Institutions',
-      value: '4+',
-      sub: 'MoMA, LACMA, Tate, Guggenheim',
+      label: 'Auction Houses',
+      value: `${stats.houseDistribution?.length || 0}`,
+      sub: stats.houseDistribution?.map(h => h.house).join(', ') || '—',
     },
   ];
 

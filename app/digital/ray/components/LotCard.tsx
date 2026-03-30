@@ -2,17 +2,7 @@
 
 import { AuctionLot } from '../types';
 import { ARTIST_LABEL } from '../constants';
-
-const houseColors: Record<string, string> = {
-  'Phillips': '#96B8D4',
-  "Sotheby's": '#D4B896',
-  "Christie's": '#D496B8',
-  'Rago': '#B8D496',
-  'Wright': '#B896D4',
-  'Heritage': '#D4D496',
-  'Bonhams': '#C4A265',
-  'Hindman': '#6BA368',
-};
+import { houseColors } from '../utils';
 
 function formatEstimate(lot: AuctionLot): string {
   const fmt = (n: number) => {
@@ -46,6 +36,7 @@ export default function LotCard({ lot, showArtist = false }: { lot: AuctionLot; 
         cursor: 'pointer',
       }}>
         <style>{`
+          @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
           .ray-lot-img { height: 220px; }
           @media (max-width: 768px) {
             .ray-lot-img { height: 180px; }

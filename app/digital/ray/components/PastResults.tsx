@@ -1,28 +1,27 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { AuctionLot } from '../types';
+import { ARTIST_LABEL } from '../constants';
+import { houseColors, formatPrice } from '../utils';
 
-const houseColors: Record<string, string> = {
-  'Phillips': '#96B8D4',
-  "Sotheby's": '#D4B896',
-  "Christie's": '#D496B8',
-  'Rago': '#B8D496',
-  'Wright': '#B896D4',
-  'Heritage': '#D4D496',
-  'Bonhams': '#C4A265',
-  'Hindman': '#6BA368',
-};
+type SortMode = 'date' | 'price';
 
-function formatPrice(n: number): string {
-  if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(2)}M`;
-  if (n >= 1_000) return `$${(n / 1_000).toFixed(0)}K`;
-  return `$${n.toLocaleString()}`;
-}
-
-export default function PastResults({ lots }: { lots: AuctionLot[] }) {
+export default function PastResults({ lots, showArtist = false }: { lots: AuctionLot[]; showArtist?: boolean }) {
   const [visible, setVisible] = useState(20);
-  const shown = lots.slice(0, visible);
+  const [sortBy, setSortBy] = useState<SortMode>('date');
+
+  const sorted = useMemo(() => {
+    const copy = [...lots];
+    if (sortBy === 'price') {
+      copy.sort((a, b) => (b.priceUsd || 0) - (a.priceUsd || 0));
+    } else {
+      copy.sort((a, b) => new Date(b.saleDate).getTime() - new Date(a.saleDate).getTime());
+    }
+    return copy;
+  }, [lots, sortBy]);
+
+  const shown = sorted.slice(0, visible);
 
   return (
     <section className="ray-results" style={{ maxWidth: 1100, margin: '0 auto' }}>
@@ -41,6 +40,29 @@ export default function PastResults({ lots }: { lots: AuctionLot[] }) {
         .ray-result-row:hover { background: var(--color-hover-item); }
         .ray-result-price-col { text-align: right; flex-shrink: 0; }
         .ray-result-meta-row { display: flex; align-items: center; gap: 8px; }
+        .ray-sort-pill {
+          font-family: 'Syne', sans-serif;
+          font-size: 11px;
+          font-weight: 600;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          padding: 6px 16px;
+          border-radius: 100px;
+          border: 1px solid var(--color-border);
+          background: transparent;
+          color: var(--color-text-muted);
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+        .ray-sort-pill:hover {
+          border-color: var(--color-accent-blue);
+          color: var(--color-accent-blue);
+        }
+        .ray-sort-pill[data-active="true"] {
+          background: var(--color-accent-blue);
+          border-color: var(--color-accent-blue);
+          color: #060606;
+        }
         @media (max-width: 768px) {
           .ray-results { padding: 32px 20px 80px; }
           .ray-result-row {
@@ -59,17 +81,37 @@ export default function PastResults({ lots }: { lots: AuctionLot[] }) {
       `}</style>
 
       <div style={{ marginBottom: 32 }}>
-        <h2 style={{
-          fontFamily: "'Cormorant Garamond', serif",
-          fontSize: 32,
-          fontWeight: 300,
-          letterSpacing: '-0.02em',
-        }}>
-          Recent <span style={{ fontStyle: 'italic', color: 'var(--color-accent-blue)' }}>Results</span>
-        </h2>
-        <p style={{ fontSize: 13, color: 'var(--color-text-subtle)', fontWeight: 400, marginTop: 8 }}>
-          Sold lots at auction
-        </p>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
+          <div>
+            <h2 style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontSize: 32,
+              fontWeight: 300,
+              letterSpacing: '-0.02em',
+            }}>
+              Recent <span style={{ fontStyle: 'italic', color: 'var(--color-accent-blue)' }}>Results</span>
+            </h2>
+            <p style={{ fontSize: 13, color: 'var(--color-text-subtle)', fontWeight: 400, marginTop: 8 }}>
+              {lots.length.toLocaleString()} sold lots at auction
+            </p>
+          </div>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button
+              className="ray-sort-pill"
+              data-active={sortBy === 'date' ? 'true' : 'false'}
+              onClick={() => { setSortBy('date'); setVisible(20); }}
+            >
+              Date
+            </button>
+            <button
+              className="ray-sort-pill"
+              data-active={sortBy === 'price' ? 'true' : 'false'}
+              onClick={() => { setSortBy('price'); setVisible(20); }}
+            >
+              Price
+            </button>
+          </div>
+        </div>
       </div>
 
       <div style={{
@@ -92,6 +134,18 @@ export default function PastResults({ lots }: { lots: AuctionLot[] }) {
               }}
             >
               <div style={{ minWidth: 0 }}>
+                {showArtist && lot.artist && (
+                  <div style={{
+                    fontSize: 10,
+                    letterSpacing: '0.12em',
+                    textTransform: 'uppercase',
+                    color: 'var(--color-text-label)',
+                    fontWeight: 600,
+                    marginBottom: 3,
+                  }}>
+                    {ARTIST_LABEL[lot.artist] || lot.artist}
+                  </div>
+                )}
                 <div style={{
                   fontFamily: "'Cormorant Garamond', serif",
                   fontSize: 18,
@@ -150,7 +204,7 @@ export default function PastResults({ lots }: { lots: AuctionLot[] }) {
         })}
       </div>
 
-      {visible < lots.length && (
+      {visible < sorted.length && (
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: 24 }}>
           <button
             onClick={() => setVisible((v) => v + 20)}

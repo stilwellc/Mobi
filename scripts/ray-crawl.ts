@@ -167,6 +167,13 @@ const ARTISTS: ArtistConfig[] = [
     wright: 'ed-ruscha',
     bonhams: 'Ed Ruscha',
   },
+  {
+    slug: 'r-crumb',
+    displayName: 'R. Crumb',
+    phillips: { id: '7549', slug: 'robert-crumb' },
+    wright: 'robert-crumb',
+    bonhams: 'Robert Crumb',
+  },
 ];
 
 const DATA_DIR = path.join(process.cwd(), 'public', 'data', 'ray');
