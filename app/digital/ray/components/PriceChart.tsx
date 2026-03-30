@@ -1,7 +1,12 @@
 'use client';
 
+import { useMemo } from 'react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
-import { PricePoint } from '../types';
+import { PricePoint, AuctionLot } from '../types';
+import type { LotCategory } from '../types';
+import { categoryLabels } from '../utils';
+
+type CategoryFilter = 'all' | LotCategory;
 
 function formatAxis(value: number): string {
   if (value >= 1_000_000) return `$${(value / 1_000_000).toFixed(1)}M`;
@@ -31,7 +36,50 @@ function CustomTooltip({ active, payload, label }: { active?: boolean; payload?:
   );
 }
 
-export default function PriceChart({ data }: { data: PricePoint[] }) {
+function computePriceHistory(lots: AuctionLot[]): PricePoint[] {
+  const sold = lots.filter(l => l.status === 'sold' && l.priceUsd);
+  if (sold.length === 0) return [];
+
+  // Group by quarter
+  const quarters: Record<string, number[]> = {};
+  for (const lot of sold) {
+    const d = new Date(lot.saleDate);
+    if (isNaN(d.getTime())) continue;
+    const q = Math.floor(d.getMonth() / 3) + 1;
+    const key = `${d.getFullYear()} Q${q}`;
+    if (!quarters[key]) quarters[key] = [];
+    quarters[key].push(lot.priceUsd!);
+  }
+
+  return Object.entries(quarters)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([date, prices]) => ({
+      date,
+      avgPrice: prices.reduce((s, p) => s + p, 0) / prices.length,
+      medianPrice: prices.sort((a, b) => a - b)[Math.floor(prices.length / 2)],
+      totalSales: prices.length,
+      highPrice: Math.max(...prices),
+    }));
+}
+
+interface Props {
+  lots: AuctionLot[];
+  categoryFilter?: CategoryFilter;
+  fallbackData?: PricePoint[];
+}
+
+export default function PriceChart({ lots, categoryFilter = 'all', fallbackData }: Props) {
+  const data = useMemo(() => {
+    const filtered = categoryFilter === 'all' ? lots : lots.filter(l => l.category === categoryFilter);
+    const computed = computePriceHistory(filtered);
+    // Use computed if we have data, otherwise fall back to pre-baked stats
+    return computed.length >= 2 ? computed : (categoryFilter === 'all' && fallbackData?.length ? fallbackData : computed);
+  }, [lots, categoryFilter, fallbackData]);
+
+  if (data.length < 2) return null;
+
+  const filterLabel = categoryFilter !== 'all' ? ` — ${categoryLabels[categoryFilter]}` : '';
+
   return (
     <section className="ray-chart" style={{ maxWidth: 1100, margin: '0 auto' }}>
       <style>{`
@@ -52,6 +100,9 @@ export default function PriceChart({ data }: { data: PricePoint[] }) {
           marginBottom: 8,
         }}>
           Price <span style={{ fontStyle: 'italic', color: 'var(--color-accent-blue)' }}>History</span>
+          {filterLabel && (
+            <span style={{ fontSize: 18, color: 'var(--color-text-muted)', fontStyle: 'normal' }}>{filterLabel}</span>
+          )}
         </h2>
         <div style={{ display: 'flex', alignItems: 'center', gap: 20, marginTop: 12 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { AuctionLot } from '../types';
 import type { LotCategory } from '../types';
 import { ARTIST_LABEL } from '../constants';
@@ -9,10 +9,33 @@ import { houseColors, formatPrice, categoryLabels, categoryColors } from '../uti
 type SortMode = 'date' | 'price';
 type CategoryFilter = 'all' | LotCategory;
 
-export default function PastResults({ lots, showArtist = false }: { lots: AuctionLot[]; showArtist?: boolean }) {
+interface Props {
+  lots: AuctionLot[];
+  showArtist?: boolean;
+  categoryFilter?: CategoryFilter;
+  onCategoryChange?: (cat: CategoryFilter) => void;
+}
+
+export default function PastResults({ lots, showArtist = false, categoryFilter: externalFilter, onCategoryChange }: Props) {
   const [visible, setVisible] = useState(20);
   const [sortBy, setSortBy] = useState<SortMode>('date');
-  const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>('all');
+  const [internalFilter, setInternalFilter] = useState<CategoryFilter>('all');
+
+  // Use external filter if provided, otherwise internal
+  const categoryFilter = externalFilter ?? internalFilter;
+  const setCategoryFilter = (cat: CategoryFilter) => {
+    if (onCategoryChange) {
+      onCategoryChange(cat);
+    } else {
+      setInternalFilter(cat);
+    }
+    setVisible(20);
+  };
+
+  // Reset visible count when external filter changes
+  useEffect(() => {
+    if (externalFilter !== undefined) setVisible(20);
+  }, [externalFilter]);
 
   const availableCategories = useMemo(() => {
     const cats = new Set<string>();
@@ -135,7 +158,7 @@ export default function PastResults({ lots, showArtist = false }: { lots: Auctio
             <button
               className="ray-sort-pill"
               data-active={categoryFilter === 'all' ? 'true' : 'false'}
-              onClick={() => { setCategoryFilter('all'); setVisible(20); }}
+              onClick={() => setCategoryFilter('all')}
             >
               All
             </button>
@@ -144,7 +167,7 @@ export default function PastResults({ lots, showArtist = false }: { lots: Auctio
                 key={cat}
                 className="ray-sort-pill"
                 data-active={categoryFilter === cat ? 'true' : 'false'}
-                onClick={() => { setCategoryFilter(cat as CategoryFilter); setVisible(20); }}
+                onClick={() => setCategoryFilter(cat as CategoryFilter)}
               >
                 {categoryLabels[cat] || cat}
               </button>

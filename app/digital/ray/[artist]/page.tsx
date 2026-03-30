@@ -1,11 +1,12 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import ThemeToggle from '../../../components/ThemeToggle';
 import { ARTISTS, ARTIST_LABEL } from '../constants';
+import type { LotCategory } from '../types';
 import { useRayData } from '../hooks/useRayData';
 import ArtistNav from '../components/ArtistNav';
 import StatsGrid from '../components/StatsGrid';
@@ -14,10 +15,13 @@ import PastResults from '../components/PastResults';
 
 const PriceChart = dynamic(() => import('../components/PriceChart'), { ssr: false });
 
+type CategoryFilter = 'all' | LotCategory;
+
 export default function ArtistDetailPage() {
   const params = useParams();
   const slug = params.artist as string;
   const { statsByArtist, allLots, lastCrawl, loading } = useRayData();
+  const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>('all');
 
   const label = ARTIST_LABEL[slug];
   const valid = ARTISTS.some(a => a.slug === slug);
@@ -183,10 +187,10 @@ export default function ArtistDetailPage() {
             </div>
           ) : (
             <>
-              {stats && <StatsGrid stats={stats} lots={lots} />}
-              {stats?.priceHistory?.length ? <PriceChart data={stats.priceHistory} /> : null}
+              {stats && <StatsGrid stats={stats} lots={lots} categoryFilter={categoryFilter} onCategoryChange={setCategoryFilter} />}
+              {sold.length > 0 && <PriceChart lots={sold} categoryFilter={categoryFilter} fallbackData={stats?.priceHistory} />}
               {upcoming.length > 0 && <UpcomingLots lots={upcoming} />}
-              {sold.length > 0 && <PastResults lots={sold} />}
+              {sold.length > 0 && <PastResults lots={sold} categoryFilter={categoryFilter} onCategoryChange={setCategoryFilter} />}
             </>
           )}
         </>
