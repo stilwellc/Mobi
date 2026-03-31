@@ -22,7 +22,6 @@ interface Props {
 }
 
 export default function StatsGrid({ stats, lots, categoryFilter = 'all', onCategoryChange }: Props) {
-  // Compute per-category pricing from sold lots
   const catPricing = useMemo(() => {
     const catData: Record<string, { prices: number[]; count: number }> = {};
     if (lots) {
@@ -44,7 +43,6 @@ export default function StatsGrid({ stats, lots, categoryFilter = 'all', onCateg
       .sort((a, b) => b.count - a.count);
   }, [lots]);
 
-  // Recompute top-level stats when a category is selected
   const filteredStats = useMemo(() => {
     if (categoryFilter === 'all' || !lots) {
       return {
@@ -74,14 +72,16 @@ export default function StatsGrid({ stats, lots, categoryFilter = 'all', onCateg
     };
   }, [categoryFilter, lots, stats]);
 
+  const catLabel = categoryFilter !== 'all' ? categoryLabels[categoryFilter] : '';
+
   const cards = [
     {
-      label: categoryFilter !== 'all' ? `Avg. Price — ${categoryLabels[categoryFilter]}` : 'Avg. Price (12mo)',
+      label: catLabel ? `Avg. Price — ${catLabel}` : 'Avg. Price (12mo)',
       value: formatPrice(filteredStats.avgPrice),
-      sub: `across ${filteredStats.lotsTracked.toLocaleString()}+ lots tracked`,
+      sub: `${filteredStats.lotsTracked.toLocaleString()} lots tracked`,
     },
     {
-      label: categoryFilter !== 'all' ? `Record — ${categoryLabels[categoryFilter]}` : 'Record Sale',
+      label: catLabel ? `Record — ${catLabel}` : 'Record Sale',
       value: formatPrice(filteredStats.recordPrice),
       sub: filteredStats.recordYear ? `${filteredStats.recordTitle}, ${filteredStats.recordYear}` : '—',
     },
@@ -98,67 +98,90 @@ export default function StatsGrid({ stats, lots, categoryFilter = 'all', onCateg
         .ray-stats { padding: 40px 56px; }
         .ray-stats-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-          gap: 16px;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 1px;
+          background: var(--color-border);
+          border-radius: 16px;
+          overflow: hidden;
         }
-        .ray-cat-row {
-          display: grid;
-          grid-template-columns: 1fr auto auto;
-          align-items: center;
-          gap: 16px;
-          padding: 14px 20px;
-          transition: background 0.2s;
+        .ray-stat-card {
+          background: var(--color-bg-card);
+          padding: 28px 28px;
+        }
+        .ray-stat-value {
+          font-family: 'Cormorant Garamond', serif;
+          font-size: 34px;
+          font-weight: 300;
+          line-height: 1;
+          margin-bottom: 8;
+        }
+        .ray-cat-table {
+          border-collapse: collapse;
+          width: 100%;
+        }
+        .ray-cat-table th {
+          font-size: 9px;
+          letter-spacing: 0.15em;
+          text-transform: uppercase;
+          color: var(--color-text-ghost);
+          font-weight: 600;
+          padding: 14px 20px 10px;
+          text-align: left;
+          border-bottom: 1px solid var(--color-border);
+        }
+        .ray-cat-table th:nth-child(2),
+        .ray-cat-table th:nth-child(3),
+        .ray-cat-table th:nth-child(4) { text-align: right; }
+        .ray-cat-table td { padding: 0; }
+        .ray-cat-tr {
           cursor: pointer;
+          transition: background 0.15s;
         }
-        .ray-cat-row:hover { background: var(--color-hover-item); }
+        .ray-cat-tr:hover { background: var(--color-hover-item); }
+        .ray-cat-td {
+          padding: 14px 20px;
+          font-size: 13px;
+          border-bottom: 1px solid var(--color-border);
+        }
+        .ray-cat-tr:last-child .ray-cat-td { border-bottom: none; }
+        .ray-cat-td-right { text-align: right; }
         @media (max-width: 768px) {
           .ray-stats { padding: 32px 20px; }
           .ray-stats-grid {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
+            grid-template-columns: 1fr 1fr;
           }
-          .ray-stat-card { padding: 20px 16px !important; }
-          .ray-stat-value { font-size: 28px !important; }
-          .ray-cat-row {
-            grid-template-columns: 1fr auto;
-            gap: 8px;
-            padding: 12px 16px;
+          .ray-stat-card { padding: 20px 18px; }
+          .ray-stat-value { font-size: 26px; }
+          .ray-stat-card:last-child {
+            grid-column: 1 / -1;
           }
-          .ray-cat-record { display: none; }
+          .ray-cat-record-col { display: none; }
         }
       `}</style>
+
       <div className="ray-stats-grid">
         {cards.map((card) => (
-          <div key={card.label} className="ray-stat-card" style={{
-            background: 'var(--color-bg-card)',
-            border: '1px solid var(--color-border)',
-            borderRadius: 16,
-            padding: '28px 24px',
-          }}>
+          <div key={card.label} className="ray-stat-card">
             <div style={{
               fontSize: 10,
-              letterSpacing: '0.2em',
+              letterSpacing: '0.18em',
               textTransform: 'uppercase',
               color: 'var(--color-text-label)',
               fontWeight: 600,
-              marginBottom: 12,
+              marginBottom: 14,
             }}>
               {card.label}
             </div>
             <div className="ray-stat-value" style={{
-              fontFamily: "'Cormorant Garamond', serif",
-              fontSize: 36,
-              fontWeight: 300,
               color: 'var(--color-accent-blue)',
-              lineHeight: 1,
-              marginBottom: 8,
             }}>
               {card.value}
             </div>
             <div style={{
-              fontSize: 12,
+              fontSize: 11,
               color: 'var(--color-text-subtle)',
               fontWeight: 400,
+              lineHeight: 1.4,
             }}>
               {card.sub}
             </div>
@@ -167,7 +190,7 @@ export default function StatsGrid({ stats, lots, categoryFilter = 'all', onCateg
       </div>
 
       {catPricing.length > 0 && (
-        <div style={{ marginTop: 24 }}>
+        <div style={{ marginTop: 32 }}>
           <h3 style={{
             fontFamily: "'Cormorant Garamond', serif",
             fontSize: 24,
@@ -182,107 +205,101 @@ export default function StatsGrid({ stats, lots, categoryFilter = 'all', onCateg
             borderRadius: 16,
             overflow: 'hidden',
           }}>
-            {onCategoryChange && (
-              <div
-                className="ray-cat-row"
-                onClick={() => onCategoryChange('all')}
-                style={{
-                  borderBottom: '1px solid var(--color-border)',
-                  background: categoryFilter === 'all' ? 'var(--color-hover-item)' : undefined,
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <div style={{
-                    padding: '3px 10px',
-                    borderRadius: 100,
-                    background: categoryFilter === 'all' ? 'var(--color-accent-blue)' : 'transparent',
-                    border: `1px solid var(--color-border)`,
-                    fontSize: 9,
-                    letterSpacing: '0.12em',
-                    textTransform: 'uppercase',
-                    color: categoryFilter === 'all' ? '#060606' : 'var(--color-text-muted)',
-                    fontWeight: 600,
-                    flexShrink: 0,
-                  }}>
-                    All
-                  </div>
-                  <span style={{ fontSize: 12, color: 'var(--color-text-subtle)' }}>
-                    {lots?.length || 0} lots
-                  </span>
-                </div>
-                <div style={{ textAlign: 'right' }}>
-                  <div style={{ fontSize: 15, fontWeight: 500, color: 'var(--color-accent-blue)' }}>
-                    {formatPrice(stats.avgPriceLast12Months)}
-                  </div>
-                  <div style={{ fontSize: 9, color: 'var(--color-text-ghost)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Avg</div>
-                </div>
-                <div className="ray-cat-record" style={{ textAlign: 'right' }}>
-                  <div style={{ fontSize: 15, fontWeight: 500, color: 'var(--color-fg)' }}>
-                    {formatPrice(stats.recordPrice)}
-                  </div>
-                  <div style={{ fontSize: 9, color: 'var(--color-text-ghost)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Record</div>
-                </div>
-              </div>
-            )}
-            {catPricing.map((cat, i) => {
-              const color = categoryColors[cat.category] || '#888';
-              const isActive = categoryFilter === cat.category;
-              return (
-                <div
-                  key={cat.category}
-                  className="ray-cat-row"
-                  onClick={() => onCategoryChange?.(cat.category as CategoryFilter)}
-                  style={{
-                    borderBottom: i < catPricing.length - 1 ? '1px solid var(--color-border)' : 'none',
-                    background: isActive ? 'var(--color-hover-item)' : undefined,
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <div style={{
-                      padding: '3px 10px',
-                      borderRadius: 100,
-                      background: isActive ? color : `${color}15`,
-                      border: `1px solid ${isActive ? color : `${color}30`}`,
-                      fontSize: 9,
-                      letterSpacing: '0.12em',
-                      textTransform: 'uppercase',
-                      color: isActive ? '#060606' : color,
-                      fontWeight: 600,
-                      flexShrink: 0,
-                    }}>
-                      {categoryLabels[cat.category] || cat.category}
-                    </div>
-                    <span style={{ fontSize: 12, color: 'var(--color-text-subtle)' }}>
-                      {cat.count} lot{cat.count !== 1 ? 's' : ''}
-                    </span>
-                  </div>
-                  <div style={{ textAlign: 'right' }}>
-                    <div style={{
-                      fontSize: 15,
-                      fontWeight: 500,
-                      color: 'var(--color-accent-blue)',
-                    }}>
-                      {cat.avgPrice > 0 ? formatPrice(cat.avgPrice) : '—'}
-                    </div>
-                    <div style={{ fontSize: 9, color: 'var(--color-text-ghost)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                      Avg
-                    </div>
-                  </div>
-                  <div className="ray-cat-record" style={{ textAlign: 'right' }}>
-                    <div style={{
-                      fontSize: 15,
-                      fontWeight: 500,
-                      color: 'var(--color-fg)',
-                    }}>
-                      {cat.recordPrice > 0 ? formatPrice(cat.recordPrice) : '—'}
-                    </div>
-                    <div style={{ fontSize: 9, color: 'var(--color-text-ghost)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                      Record
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+            <table className="ray-cat-table">
+              <thead>
+                <tr>
+                  <th>Medium</th>
+                  <th>Lots</th>
+                  <th>Avg. Price</th>
+                  <th className="ray-cat-record-col">Record</th>
+                </tr>
+              </thead>
+              <tbody>
+                {onCategoryChange && (
+                  <tr
+                    className="ray-cat-tr"
+                    onClick={() => onCategoryChange('all')}
+                    style={{
+                      background: categoryFilter === 'all' ? 'var(--color-hover-item)' : undefined,
+                    }}
+                  >
+                    <td className="ray-cat-td">
+                      <span style={{
+                        display: 'inline-block',
+                        width: 8,
+                        height: 8,
+                        borderRadius: '50%',
+                        background: categoryFilter === 'all' ? 'var(--color-accent-blue)' : 'var(--color-text-ghost)',
+                        marginRight: 10,
+                        verticalAlign: 'middle',
+                        opacity: categoryFilter === 'all' ? 1 : 0.4,
+                        transition: 'all 0.2s',
+                      }} />
+                      <span style={{
+                        fontWeight: categoryFilter === 'all' ? 600 : 400,
+                        color: categoryFilter === 'all' ? 'var(--color-accent-blue)' : 'var(--color-fg)',
+                        transition: 'color 0.2s',
+                      }}>
+                        All
+                      </span>
+                    </td>
+                    <td className="ray-cat-td ray-cat-td-right" style={{ color: 'var(--color-text-muted)' }}>
+                      {lots?.length || 0}
+                    </td>
+                    <td className="ray-cat-td ray-cat-td-right" style={{ fontWeight: 500, color: 'var(--color-accent-blue)' }}>
+                      {formatPrice(stats.avgPriceLast12Months)}
+                    </td>
+                    <td className="ray-cat-td ray-cat-td-right ray-cat-record-col" style={{ fontWeight: 500 }}>
+                      {formatPrice(stats.recordPrice)}
+                    </td>
+                  </tr>
+                )}
+                {catPricing.map((cat) => {
+                  const color = categoryColors[cat.category] || '#888';
+                  const isActive = categoryFilter === cat.category;
+                  return (
+                    <tr
+                      key={cat.category}
+                      className="ray-cat-tr"
+                      onClick={() => onCategoryChange?.(cat.category as CategoryFilter)}
+                      style={{
+                        background: isActive ? 'var(--color-hover-item)' : undefined,
+                      }}
+                    >
+                      <td className="ray-cat-td">
+                        <span style={{
+                          display: 'inline-block',
+                          width: 8,
+                          height: 8,
+                          borderRadius: '50%',
+                          background: color,
+                          marginRight: 10,
+                          verticalAlign: 'middle',
+                          opacity: isActive ? 1 : 0.5,
+                          transition: 'opacity 0.2s',
+                        }} />
+                        <span style={{
+                          fontWeight: isActive ? 600 : 400,
+                          color: isActive ? color : 'var(--color-fg)',
+                          transition: 'color 0.2s',
+                        }}>
+                          {categoryLabels[cat.category] || cat.category}
+                        </span>
+                      </td>
+                      <td className="ray-cat-td ray-cat-td-right" style={{ color: 'var(--color-text-muted)' }}>
+                        {cat.count}
+                      </td>
+                      <td className="ray-cat-td ray-cat-td-right" style={{ fontWeight: 500, color: 'var(--color-accent-blue)' }}>
+                        {cat.avgPrice > 0 ? formatPrice(cat.avgPrice) : '—'}
+                      </td>
+                      <td className="ray-cat-td ray-cat-td-right ray-cat-record-col" style={{ fontWeight: 500 }}>
+                        {cat.recordPrice > 0 ? formatPrice(cat.recordPrice) : '—'}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         </div>
       )}

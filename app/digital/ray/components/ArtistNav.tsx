@@ -3,8 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ARTISTS } from '../constants';
-import { ARTIST_LABEL } from '../constants';
+import { ARTISTS, ARTIST_LABEL } from '../constants';
 
 export default function ArtistNav({ activeSlug }: { activeSlug: string | null }) {
   const [open, setOpen] = useState(false);
@@ -14,7 +13,7 @@ export default function ArtistNav({ activeSlug }: { activeSlug: string | null })
 
   return (
     <>
-      {/* Desktop: 2-row wrapped pill grid */}
+      {/* Desktop: horizontal pill row */}
       <div className="ray-artist-nav-desktop">
         <style>{`
           .ray-artist-nav-desktop {
@@ -24,10 +23,10 @@ export default function ArtistNav({ activeSlug }: { activeSlug: string | null })
             background: var(--color-nav-bg);
             backdrop-filter: blur(30px);
             border-bottom: 1px solid var(--color-border);
-            padding: 10px 56px;
+            padding: 8px 56px;
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
+            gap: 5px;
             align-items: center;
             justify-content: center;
           }
@@ -36,23 +35,22 @@ export default function ArtistNav({ activeSlug }: { activeSlug: string | null })
             font-family: 'Syne', sans-serif;
             font-weight: 500;
             font-size: 11px;
-            letter-spacing: 0.06em;
-            padding: 6px 14px;
-            border-radius: 20px;
-            border: 1px solid var(--color-border);
+            letter-spacing: 0.04em;
+            padding: 5px 13px;
+            border-radius: 100px;
+            border: 1px solid transparent;
             background: transparent;
             color: var(--color-text-muted);
             text-decoration: none;
-            transition: all 0.2s ease;
+            transition: all 0.15s ease;
           }
           .ray-artist-pill:hover {
-            border-color: var(--color-accent-blue);
             color: var(--color-accent-blue);
           }
           .ray-artist-pill[data-active="true"] {
             background: var(--color-accent-blue);
-            border-color: var(--color-accent-blue);
             color: #060606;
+            font-weight: 600;
           }
           @media (max-width: 768px) {
             .ray-artist-nav-desktop { display: none; }
@@ -78,12 +76,10 @@ export default function ArtistNav({ activeSlug }: { activeSlug: string | null })
         ))}
       </div>
 
-      {/* Mobile: dropdown select */}
+      {/* Mobile: dropdown */}
       <div className="ray-artist-nav-mobile">
         <style>{`
-          .ray-artist-nav-mobile {
-            display: none;
-          }
+          .ray-artist-nav-mobile { display: none; }
           @media (max-width: 768px) {
             .ray-artist-nav-mobile {
               display: block;
@@ -102,20 +98,18 @@ export default function ArtistNav({ activeSlug }: { activeSlug: string | null })
             align-items: center;
             justify-content: space-between;
             padding: 8px 14px;
-            border-radius: 12px;
+            border-radius: 10px;
             border: 1px solid var(--color-border);
             background: var(--color-bg-card);
             color: var(--color-fg);
             font-family: 'Syne', sans-serif;
             font-size: 12px;
             font-weight: 500;
-            letter-spacing: 0.06em;
+            letter-spacing: 0.04em;
             cursor: pointer;
-            transition: border-color 0.2s;
+            transition: border-color 0.15s;
           }
-          .ray-artist-select-btn:hover {
-            border-color: var(--color-accent-blue);
-          }
+          .ray-artist-select-btn:hover { border-color: var(--color-accent-blue); }
           .ray-artist-dropdown {
             position: absolute;
             left: 20px;
@@ -124,7 +118,7 @@ export default function ArtistNav({ activeSlug }: { activeSlug: string | null })
             margin-top: 4px;
             background: var(--color-bg-card);
             border: 1px solid var(--color-border);
-            border-radius: 16px;
+            border-radius: 12px;
             overflow: hidden;
             max-height: 320px;
             overflow-y: auto;
@@ -145,12 +139,12 @@ export default function ArtistNav({ activeSlug }: { activeSlug: string | null })
             background: transparent;
             text-align: left;
             cursor: pointer;
-            transition: background 0.15s, color 0.15s;
+            transition: background 0.1s, color 0.1s;
             border-bottom: 1px solid var(--color-border);
           }
           .ray-artist-dropdown-item:last-child { border-bottom: none; }
           .ray-artist-dropdown-item:hover {
-            background: rgba(150, 184, 212, 0.08);
+            background: rgba(150, 184, 212, 0.06);
             color: var(--color-accent-blue);
           }
           .ray-artist-dropdown-item[data-active="true"] {
@@ -166,7 +160,7 @@ export default function ArtistNav({ activeSlug }: { activeSlug: string | null })
           <span>{activeLabel}</span>
           <span style={{
             fontSize: 10,
-            opacity: 0.5,
+            opacity: 0.4,
             transform: open ? 'rotate(180deg)' : 'rotate(0)',
             transition: 'transform 0.2s',
           }}>

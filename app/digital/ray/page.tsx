@@ -34,7 +34,6 @@ export default function RayPage() {
   const overviewStats = useMemo(() => {
     const totalLots = allLots.length;
     const totalRevenue = Object.values(statsByArtist).reduce((sum, s) => sum + (s.totalAuctionRevenue || 0), 0);
-    // Compute avg price from actual lot data (not averaging per-artist averages)
     const oneYearAgo = new Date();
     oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
     const recentSold = sold.filter(l => {
@@ -45,10 +44,10 @@ export default function RayPage() {
       ? recentSold.reduce((sum, l) => sum + (l.priceUsd || 0), 0) / recentSold.length
       : 0;
     return [
-      { label: 'Artists Tracked', value: `${ARTISTS.length}`, sub: `across ${sources.length || 5} houses` },
+      { label: 'Artists', value: `${ARTISTS.length}`, sub: `${sources.length || 5} auction houses` },
       { label: 'Total Lots', value: totalLots.toLocaleString(), sub: 'sold, upcoming & bought-in' },
-      { label: 'Auction Revenue', value: formatPrice(totalRevenue), sub: 'aggregate hammer prices' },
-      { label: 'Avg. Price (12mo)', value: formatPrice(avgPrice), sub: `${recentSold.length.toLocaleString()} sales across all artists` },
+      { label: 'Revenue', value: formatPrice(totalRevenue), sub: 'aggregate hammer prices' },
+      { label: 'Avg. Price (12mo)', value: formatPrice(avgPrice), sub: `${recentSold.length.toLocaleString()} recent sales` },
     ];
   }, [allLots, sold, statsByArtist, sources]);
 
@@ -64,30 +63,35 @@ export default function RayPage() {
         .ray-nav { padding: 24px 56px; }
         .ray-hero { padding: 60px 56px 40px; }
         .ray-divider-wrap { padding: 0 56px; }
-        .ray-upcoming-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-          gap: 20px;
-        }
         .ray-overview-stats {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+          grid-template-columns: repeat(4, 1fr);
+          gap: 1px;
+          background: var(--color-border);
+          border-radius: 16px;
+          overflow: hidden;
+        }
+        .ray-overview-stats .ray-stat-card {
+          background: var(--color-bg-card);
+          padding: 28px 24px;
+        }
+        .ray-upcoming-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
           gap: 16px;
         }
         @media (max-width: 768px) {
           .ray-nav { padding: 16px 20px; }
           .ray-hero { padding: 40px 20px 32px; }
           .ray-divider-wrap { padding: 0 20px; }
-          .ray-upcoming-grid {
-            grid-template-columns: 1fr;
-            gap: 16px;
-          }
           .ray-overview-stats {
             grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
           }
-          .ray-overview-stats .ray-stat-card { padding: 20px 16px !important; }
-          .ray-overview-stats .ray-stat-value { font-size: 28px !important; }
+          .ray-overview-stats .ray-stat-card { padding: 20px 18px; }
+          .ray-upcoming-grid {
+            grid-template-columns: 1fr;
+            gap: 14px;
+          }
         }
       `}</style>
 
@@ -130,28 +134,28 @@ export default function RayPage() {
       <ArtistNav activeSlug={null} />
 
       <section className="ray-hero" style={{ maxWidth: 1100, margin: '0 auto' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 16 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
           <div style={{
-            width: 10,
-            height: 10,
+            width: 8,
+            height: 8,
             borderRadius: '50%',
             background: 'var(--color-accent-blue)',
-            opacity: 0.6,
+            opacity: 0.5,
             flexShrink: 0,
           }} />
           <span style={{
-            fontSize: 11,
-            letterSpacing: '0.25em',
+            fontSize: 10,
+            letterSpacing: '0.2em',
             textTransform: 'uppercase',
             color: 'var(--color-text-label)',
             fontWeight: 600,
           }}>
-            Digital &mdash; Market Intelligence
+            Market Intelligence
           </span>
         </div>
         <h1 style={{
           fontFamily: "'Cormorant Garamond', serif",
-          fontSize: 'clamp(36px, 6vw, 72px)',
+          fontSize: 'clamp(40px, 6vw, 72px)',
           fontWeight: 300,
           letterSpacing: '-0.03em',
           lineHeight: 0.95,
@@ -160,27 +164,27 @@ export default function RayPage() {
           <span style={{ fontStyle: 'italic', color: 'var(--color-accent-blue)' }}>Ray</span>
         </h1>
         <p style={{
-          fontSize: 15,
+          fontSize: 14,
           lineHeight: 1.7,
           color: 'var(--color-text-muted)',
           fontWeight: 400,
-          maxWidth: 560,
+          maxWidth: 500,
         }}>
-          Auction intelligence — tracking {ARTISTS.length} artists across{' '}
-          {sources.length || 5} auction houses. Select an artist to drill into their market data.
+          Tracking {ARTISTS.length} artists across{' '}
+          {sources.length || 5} auction houses.
         </p>
 
         {lastCrawl && (
           <span style={{
             display: 'inline-block',
-            marginTop: 16,
+            marginTop: 14,
             fontSize: 10,
             letterSpacing: '0.15em',
             textTransform: 'uppercase',
             color: 'var(--color-text-ghost)',
             fontWeight: 500,
           }}>
-            Last updated: {new Date(lastCrawl).toLocaleDateString('en-US', {
+            Updated {new Date(lastCrawl).toLocaleDateString('en-US', {
               month: 'short', day: 'numeric', year: 'numeric',
             })}
           </span>
@@ -208,35 +212,29 @@ export default function RayPage() {
         </div>
       ) : (
         <>
-          {/* Aggregate Stats */}
           <section style={{ maxWidth: 1100, margin: '0 auto', padding: '40px 56px 0' }} className="ray-overview-stats-section">
             <style>{`
               @media (max-width: 768px) {
                 .ray-overview-stats-section { padding: 32px 20px 0 !important; }
-                .ray-upcoming-section { padding: 32px 20px 40px !important; }
+                .ray-upcoming-section { padding: 32px 20px 32px !important; }
               }
             `}</style>
             <div className="ray-overview-stats">
               {overviewStats.map((card) => (
-                <div key={card.label} className="ray-stat-card" style={{
-                  background: 'var(--color-bg-card)',
-                  border: '1px solid var(--color-border)',
-                  borderRadius: 16,
-                  padding: '28px 24px',
-                }}>
+                <div key={card.label} className="ray-stat-card">
                   <div style={{
                     fontSize: 10,
-                    letterSpacing: '0.2em',
+                    letterSpacing: '0.18em',
                     textTransform: 'uppercase',
                     color: 'var(--color-text-label)',
                     fontWeight: 600,
-                    marginBottom: 12,
+                    marginBottom: 14,
                   }}>
                     {card.label}
                   </div>
-                  <div className="ray-stat-value" style={{
+                  <div style={{
                     fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: 36,
+                    fontSize: 34,
                     fontWeight: 300,
                     color: 'var(--color-accent-blue)',
                     lineHeight: 1,
@@ -245,7 +243,7 @@ export default function RayPage() {
                     {card.value}
                   </div>
                   <div style={{
-                    fontSize: 12,
+                    fontSize: 11,
                     color: 'var(--color-text-subtle)',
                     fontWeight: 400,
                   }}>
@@ -256,13 +254,12 @@ export default function RayPage() {
             </div>
           </section>
 
-          {/* Upcoming Lots — all artists */}
           {upcoming.length > 0 && (
-            <section className="ray-upcoming-section" style={{ maxWidth: 1200, margin: '0 auto', padding: '40px 56px 60px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 32 }}>
+            <section className="ray-upcoming-section" style={{ maxWidth: 1100, margin: '0 auto', padding: '40px 56px 48px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 24 }}>
                 <span style={{
-                  width: 8,
-                  height: 8,
+                  width: 7,
+                  height: 7,
                   borderRadius: '50%',
                   background: '#96B8D4',
                   animation: 'pulse 2s infinite',
@@ -276,14 +273,6 @@ export default function RayPage() {
                 }}>
                   Upcoming <span style={{ fontStyle: 'italic', color: 'var(--color-accent-blue)' }}>Lots</span>
                 </h2>
-                <span style={{
-                  fontSize: 12,
-                  color: 'var(--color-text-ghost)',
-                  fontWeight: 500,
-                  marginLeft: 4,
-                }}>
-                  {upcoming.length}
-                </span>
               </div>
 
               <div className="ray-upcoming-grid">
@@ -294,7 +283,6 @@ export default function RayPage() {
             </section>
           )}
 
-          {/* Recently Sold — full paginated list */}
           {sold.length > 0 && (
             <PastResults lots={sold} showArtist />
           )}

@@ -21,7 +21,6 @@ export default function PastResults({ lots, showArtist = false, categoryFilter: 
   const [sortBy, setSortBy] = useState<SortMode>('date');
   const [internalFilter, setInternalFilter] = useState<CategoryFilter>('all');
 
-  // Use external filter if provided, otherwise internal
   const categoryFilter = externalFilter ?? internalFilter;
   const setCategoryFilter = (cat: CategoryFilter) => {
     if (onCategoryChange) {
@@ -32,7 +31,6 @@ export default function PastResults({ lots, showArtist = false, categoryFilter: 
     setVisible(20);
   };
 
-  // Reset visible count when external filter changes
   useEffect(() => {
     if (externalFilter !== undefined) setVisible(20);
   }, [externalFilter]);
@@ -70,15 +68,13 @@ export default function PastResults({ lots, showArtist = false, categoryFilter: 
           display: grid;
           grid-template-columns: 1fr auto auto auto;
           align-items: center;
-          gap: 16px;
-          padding: 16px 24px;
+          gap: 20px;
+          padding: 14px 24px;
           text-decoration: none;
           color: inherit;
-          transition: background 0.2s;
+          transition: background 0.15s;
         }
         .ray-result-row:hover { background: var(--color-hover-item); }
-        .ray-result-price-col { text-align: right; flex-shrink: 0; }
-        .ray-result-meta-row { display: flex; align-items: center; gap: 8px; }
         .ray-sort-pill {
           font-family: 'Syne', sans-serif;
           font-size: 11px;
@@ -105,22 +101,16 @@ export default function PastResults({ lots, showArtist = false, categoryFilter: 
         @media (max-width: 768px) {
           .ray-results { padding: 32px 20px 80px; }
           .ray-result-row {
-            grid-template-columns: 1fr;
+            grid-template-columns: 1fr auto;
             gap: 8px;
-            padding: 16px 16px;
+            padding: 14px 16px;
           }
-          .ray-result-price-col {
-            text-align: left;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-          }
-          .ray-result-meta-row { flex-wrap: wrap; }
+          .ray-result-badges { display: none; }
         }
       `}</style>
 
-      <div style={{ marginBottom: 32 }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
+      <div style={{ marginBottom: 28 }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
           <div>
             <h2 style={{
               fontFamily: "'Cormorant Garamond', serif",
@@ -130,12 +120,12 @@ export default function PastResults({ lots, showArtist = false, categoryFilter: 
             }}>
               Recent <span style={{ fontStyle: 'italic', color: 'var(--color-accent-blue)' }}>Results</span>
             </h2>
-            <p style={{ fontSize: 13, color: 'var(--color-text-subtle)', fontWeight: 400, marginTop: 8 }}>
-              {filtered.length.toLocaleString()} sold lots at auction
-              {categoryFilter !== 'all' && ` (${categoryLabels[categoryFilter]})`}
+            <p style={{ fontSize: 12, color: 'var(--color-text-subtle)', fontWeight: 400, marginTop: 6 }}>
+              {filtered.length.toLocaleString()} sold lots
+              {categoryFilter !== 'all' && ` · ${categoryLabels[categoryFilter]}`}
             </p>
           </div>
-          <div style={{ display: 'flex', gap: 8 }}>
+          <div style={{ display: 'flex', gap: 6 }}>
             <button
               className="ray-sort-pill"
               data-active={sortBy === 'date' ? 'true' : 'false'}
@@ -154,7 +144,7 @@ export default function PastResults({ lots, showArtist = false, categoryFilter: 
         </div>
 
         {availableCategories.length > 1 && (
-          <div style={{ display: 'flex', gap: 6, marginTop: 16, flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: 6, marginTop: 14, flexWrap: 'wrap' }}>
             <button
               className="ray-sort-pill"
               data-active={categoryFilter === 'all' ? 'true' : 'false'}
@@ -179,7 +169,7 @@ export default function PastResults({ lots, showArtist = false, categoryFilter: 
       <div style={{
         background: 'var(--color-bg-card)',
         border: '1px solid var(--color-border)',
-        borderRadius: 20,
+        borderRadius: 16,
         overflow: 'hidden',
       }}>
         {shown.map((lot, i) => {
@@ -204,81 +194,85 @@ export default function PastResults({ lots, showArtist = false, categoryFilter: 
                     textTransform: 'uppercase',
                     color: 'var(--color-text-label)',
                     fontWeight: 600,
-                    marginBottom: 3,
+                    marginBottom: 2,
                   }}>
                     {ARTIST_LABEL[lot.artist] || lot.artist}
                   </div>
                 )}
                 <div style={{
                   fontFamily: "'Cormorant Garamond', serif",
-                  fontSize: 18,
-                  fontWeight: 300,
-                  marginBottom: 4,
+                  fontSize: 17,
+                  fontWeight: 400,
+                  lineHeight: 1.3,
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                 }}>
                   {lot.title}
                 </div>
-                <div className="ray-result-meta-row" style={{
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  marginTop: 3,
                   fontSize: 11,
-                  color: 'var(--color-text-label)',
+                  color: 'var(--color-text-ghost)',
                 }}>
                   {lot.year && <span>{lot.year}</span>}
                   {lot.year && lot.medium && <span style={{ opacity: 0.4 }}>·</span>}
                   {lot.medium && (
-                    <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 200 }}>
+                    <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 220 }}>
                       {lot.medium}
                     </span>
                   )}
                 </div>
               </div>
 
-              <div className="ray-result-price-col">
+              <div style={{ textAlign: 'right', flexShrink: 0 }}>
                 <div style={{
                   fontSize: 15,
                   fontWeight: 500,
                   color: 'var(--color-accent-blue)',
+                  lineHeight: 1.3,
                 }}>
                   {lot.priceUsd ? formatPrice(lot.priceUsd) : '—'}
                 </div>
-                <div style={{ fontSize: 10, color: 'var(--color-text-ghost)', marginTop: 2 }}>
+                <div style={{ fontSize: 10, color: 'var(--color-text-ghost)', marginTop: 1 }}>
                   {new Date(lot.saleDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
                 </div>
               </div>
 
-              {catColor && (
-                <div style={{
+              <div className="ray-result-badges" style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
+                {catColor && (
+                  <span style={{
+                    padding: '3px 10px',
+                    borderRadius: 100,
+                    background: `${catColor}12`,
+                    border: `1px solid ${catColor}25`,
+                    fontSize: 9,
+                    letterSpacing: '0.1em',
+                    textTransform: 'uppercase',
+                    color: catColor,
+                    fontWeight: 600,
+                    whiteSpace: 'nowrap',
+                  }}>
+                    {categoryLabels[lot.category] || lot.category}
+                  </span>
+                )}
+                <span style={{
                   padding: '3px 10px',
                   borderRadius: 100,
-                  background: `${catColor}15`,
-                  border: `1px solid ${catColor}30`,
+                  background: `${color}12`,
+                  border: `1px solid ${color}25`,
                   fontSize: 9,
-                  letterSpacing: '0.12em',
+                  letterSpacing: '0.1em',
                   textTransform: 'uppercase',
-                  color: catColor,
+                  color: color,
                   fontWeight: 600,
-                  flexShrink: 0,
                   whiteSpace: 'nowrap',
                 }}>
-                  {categoryLabels[lot.category] || lot.category}
-                </div>
-              )}
-
-              <div style={{
-                padding: '3px 10px',
-                borderRadius: 100,
-                background: `${color}15`,
-                border: `1px solid ${color}30`,
-                fontSize: 9,
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                color: color,
-                fontWeight: 600,
-                flexShrink: 0,
-                whiteSpace: 'nowrap',
-              }}>
-                {lot.auctionHouse}
+                  {lot.auctionHouse}
+                </span>
               </div>
             </a>
           );
@@ -286,22 +280,22 @@ export default function PastResults({ lots, showArtist = false, categoryFilter: 
       </div>
 
       {visible < sorted.length && (
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 24 }}>
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 28 }}>
           <button
             onClick={() => setVisible((v) => v + 20)}
             style={{
               background: 'none',
               border: '1px solid var(--color-border)',
               borderRadius: 100,
-              padding: '10px 28px',
+              padding: '10px 32px',
               fontSize: 11,
-              letterSpacing: '0.15em',
+              letterSpacing: '0.12em',
               textTransform: 'uppercase',
               color: 'var(--color-text-subtle)',
               fontWeight: 600,
               cursor: 'pointer',
               fontFamily: "'Syne', sans-serif",
-              transition: 'all 0.3s',
+              transition: 'all 0.2s',
             }}
           >
             Show More

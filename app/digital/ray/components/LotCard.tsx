@@ -30,18 +30,19 @@ export default function LotCard({ lot, showArtist = false }: { lot: AuctionLot; 
     >
       <div className="ray-lot-card" style={{
         position: 'relative',
-        borderRadius: 20,
+        borderRadius: 16,
         overflow: 'hidden',
         background: 'var(--color-bg-card)',
         border: '1px solid var(--color-border)',
-        transition: 'all 0.4s ease',
+        transition: 'border-color 0.2s',
         cursor: 'pointer',
       }}>
         <style>{`
           @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-          .ray-lot-img { height: 220px; }
+          .ray-lot-card:hover { border-color: var(--color-accent-blue) !important; }
+          .ray-lot-img { height: 200px; }
           @media (max-width: 768px) {
-            .ray-lot-img { height: 180px; }
+            .ray-lot-img { height: 170px; }
           }
         `}</style>
         <div className="ray-lot-img" style={{
@@ -61,52 +62,36 @@ export default function LotCard({ lot, showArtist = false }: { lot: AuctionLot; 
           ) : (
             <div style={{
               fontFamily: "'Cormorant Garamond', serif",
-              fontSize: 48,
+              fontSize: 42,
               fontWeight: 300,
               color: 'var(--color-text-ghost)',
-              opacity: 0.4,
+              opacity: 0.3,
               fontStyle: 'italic',
             }}>
               {lot.title.charAt(0)}
             </div>
           )}
-          <div style={{
-            position: 'absolute',
-            top: 12,
-            right: 12,
-            padding: '4px 12px',
-            borderRadius: 100,
-            background: `${color}15`,
-            border: `1px solid ${color}30`,
-            fontSize: 9,
-            letterSpacing: '0.15em',
-            textTransform: 'uppercase',
-            color: color,
-            fontWeight: 600,
-          }}>
-            {lot.auctionHouse}
-          </div>
           {lot.status === 'upcoming' && (
             <div style={{
               position: 'absolute',
-              top: 12,
-              left: 12,
-              padding: '4px 12px',
+              top: 10,
+              left: 10,
+              padding: '3px 10px',
               borderRadius: 100,
-              background: 'rgba(150, 184, 212, 0.15)',
-              border: '1px solid rgba(150, 184, 212, 0.3)',
+              background: 'rgba(150, 184, 212, 0.12)',
+              border: '1px solid rgba(150, 184, 212, 0.25)',
               fontSize: 9,
-              letterSpacing: '0.15em',
+              letterSpacing: '0.12em',
               textTransform: 'uppercase',
               color: '#96B8D4',
               fontWeight: 600,
               display: 'flex',
               alignItems: 'center',
-              gap: 6,
+              gap: 5,
             }}>
               <span style={{
-                width: 6,
-                height: 6,
+                width: 5,
+                height: 5,
                 borderRadius: '50%',
                 background: '#96B8D4',
                 animation: 'pulse 2s infinite',
@@ -114,69 +99,87 @@ export default function LotCard({ lot, showArtist = false }: { lot: AuctionLot; 
               Live
             </div>
           )}
-          {lot.category && lot.category !== 'unknown' && (
-            <div style={{
-              position: 'absolute',
-              bottom: 12,
-              left: 12,
-              padding: '3px 10px',
-              borderRadius: 100,
-              background: `${catColor}15`,
-              border: `1px solid ${catColor}30`,
-              fontSize: 9,
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              color: catColor,
-              fontWeight: 600,
-            }}>
-              {catLabel}
-            </div>
-          )}
         </div>
 
-        <div style={{ padding: '16px 20px 20px' }}>
+        <div style={{ padding: '14px 18px 18px' }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
+            marginBottom: 8,
+          }}>
+            <span style={{
+              fontSize: 9,
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              color: color,
+              fontWeight: 600,
+            }}>
+              {lot.auctionHouse}
+            </span>
+            {catLabel && lot.category !== 'unknown' && (
+              <>
+                <span style={{ color: 'var(--color-text-ghost)', fontSize: 9 }}>·</span>
+                <span style={{
+                  fontSize: 9,
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                  color: catColor,
+                  fontWeight: 600,
+                }}>
+                  {catLabel}
+                </span>
+              </>
+            )}
+          </div>
+
           {showArtist && lot.artist && (
             <div style={{
               fontSize: 10,
-              letterSpacing: '0.15em',
+              letterSpacing: '0.12em',
               textTransform: 'uppercase',
               color: 'var(--color-text-label)',
               fontWeight: 600,
-              marginBottom: 6,
+              marginBottom: 4,
             }}>
               {ARTIST_LABEL[lot.artist] || lot.artist}
             </div>
           )}
           <h3 style={{
             fontFamily: "'Cormorant Garamond', serif",
-            fontSize: 20,
-            fontWeight: 300,
+            fontSize: 19,
+            fontWeight: 400,
             marginBottom: 4,
-            lineHeight: 1.2,
+            lineHeight: 1.25,
           }}>
             {lot.title}
           </h3>
           {lot.year && (
-            <div style={{ fontSize: 12, color: 'var(--color-text-subtle)', marginBottom: 8 }}>
+            <div style={{ fontSize: 11, color: 'var(--color-text-ghost)', marginBottom: 10 }}>
               {lot.year}{lot.medium ? ` · ${lot.medium}` : ''}
             </div>
           )}
           <div style={{
-            fontSize: 14,
-            color: 'var(--color-accent-blue)',
-            fontWeight: 500,
-            marginBottom: 6,
+            display: 'flex',
+            alignItems: 'baseline',
+            justifyContent: 'space-between',
+            gap: 8,
           }}>
-            {formatEstimate(lot)}
-          </div>
-          <div style={{
-            fontSize: 11,
-            color: 'var(--color-text-label)',
-            fontWeight: 500,
-            letterSpacing: '0.05em',
-          }}>
-            {new Date(lot.saleDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-            {lot.saleName ? ` · ${lot.saleName}` : ''}
+            <span style={{
+              fontSize: 14,
+              color: 'var(--color-accent-blue)',
+              fontWeight: 500,
+            }}>
+              {formatEstimate(lot)}
+            </span>
+            <span style={{
+              fontSize: 10,
+              color: 'var(--color-text-ghost)',
+              fontWeight: 500,
+              whiteSpace: 'nowrap',
+            }}>
+              {new Date(lot.saleDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+            </span>
           </div>
         </div>
       </div>

@@ -109,28 +109,28 @@ export default function ArtistDetailPage() {
       ) : (
         <>
           <section className="ray-hero" style={{ maxWidth: 1100, margin: '0 auto' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 16 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
               <div style={{
-                width: 10,
-                height: 10,
+                width: 8,
+                height: 8,
                 borderRadius: '50%',
                 background: 'var(--color-accent-blue)',
-                opacity: 0.6,
+                opacity: 0.5,
                 flexShrink: 0,
               }} />
               <span style={{
-                fontSize: 11,
-                letterSpacing: '0.25em',
+                fontSize: 10,
+                letterSpacing: '0.2em',
                 textTransform: 'uppercase',
                 color: 'var(--color-text-label)',
                 fontWeight: 600,
               }}>
-                Ray &mdash; Artist Detail
+                Artist Detail
               </span>
             </div>
             <h1 style={{
               fontFamily: "'Cormorant Garamond', serif",
-              fontSize: 'clamp(36px, 6vw, 72px)',
+              fontSize: 'clamp(40px, 6vw, 72px)',
               fontWeight: 300,
               letterSpacing: '-0.03em',
               lineHeight: 0.95,
@@ -139,27 +139,27 @@ export default function ArtistDetailPage() {
               <span style={{ fontStyle: 'italic', color: 'var(--color-accent-blue)' }}>{label}</span>
             </h1>
             <p style={{
-              fontSize: 15,
+              fontSize: 14,
               lineHeight: 1.7,
               color: 'var(--color-text-muted)',
               fontWeight: 400,
-              maxWidth: 560,
+              maxWidth: 500,
             }}>
-              {lots.length} lots tracked across{' '}
+              {lots.length} lots across{' '}
               {stats?.houseDistribution?.length || 0} auction houses.
             </p>
 
             {lastCrawl && (
               <span style={{
                 display: 'inline-block',
-                marginTop: 16,
+                marginTop: 14,
                 fontSize: 10,
                 letterSpacing: '0.15em',
                 textTransform: 'uppercase',
                 color: 'var(--color-text-ghost)',
                 fontWeight: 500,
               }}>
-                Last updated: {new Date(lastCrawl).toLocaleDateString('en-US', {
+                Updated {new Date(lastCrawl).toLocaleDateString('en-US', {
                   month: 'short', day: 'numeric', year: 'numeric',
                 })}
               </span>
