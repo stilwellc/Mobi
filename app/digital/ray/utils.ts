@@ -16,11 +16,11 @@ export function formatPrice(n: number): string {
 }
 
 export const categoryLabels: Record<string, string> = {
-  original: 'Original',
-  print: 'Print',
-  photograph: 'Photo',
+  original: 'Unique Work',
+  print: 'Edition',
+  photograph: 'Photograph',
   sculpture: 'Sculpture',
-  design: 'Design',
+  design: 'Design Object',
   unknown: 'Unknown',
 };
 

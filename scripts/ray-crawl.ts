@@ -37,12 +37,22 @@ interface AuctionLot {
 // based on medium, title, sale name, URL, and artist context.
 
 const DESIGN_ARTISTS = new Set(['george-nakashima', 'charles-eames']);
+// Fine artists whose unclassified lots default to 'print' (edition-heavy output)
+const EDITION_DEFAULT_ARTISTS = new Set(['andy-warhol', 'keith-haring', 'ed-ruscha']);
+// Fine artists whose unclassified lots default to 'original' (painting/drawing-heavy output)
+const ORIGINAL_DEFAULT_ARTISTS = new Set([
+  'george-condo', 'kaws', 'raymond-pettibon', 'peter-saul',
+  'tom-sachs', 'barry-mcgee', 'futura-2000', 'r-crumb',
+]);
 
 const PRINT_PATTERNS = /\b(screenprint|silkscreen|serigraph|lithograph|etching|woodcut|woodblock|linocut|engraving|aquatint|monotype|monoprint|offset|poster|gicl[eé]e|print(?:ed)?|edition of|numbered.*\/|signed.*numbered|multiple|chromolithograph|intaglio)\b/i;
 const PHOTO_PATTERNS = /\b(photograph|gelatin silver|c-print|chromogenic|daguerreotype|platinum print|pigment print|inkjet print|archival pigment|digital print|cibachrome|polaroid|albumen)\b/i;
 const SCULPTURE_PATTERNS = /\b(sculpture|bronze|ceramic|porcelain|cast iron|resin|fibreglass|fiberglass|stainless steel|patinated|figure|figurine|plaster cast)\b/i;
 const DESIGN_PATTERNS = /\b(lounge chair|dining chair|side chair|armchair|cabinet|desk|table|bookcase|shelf|shelving|headboard|bench|settee|sofa|credenza|dresser|nightstand|lamp|chandelier|sconce|light fixture|ottoman|stool|rocker|rocking chair|walnut|rosewood|teak|plywood|upholster|enameled|molded|fiberglass shell)\b/i;
 const ORIGINAL_PATTERNS = /\b(oil on|acrylic on|tempera on|gouache on|watercolor on|watercolour on|mixed media on|ink on|charcoal on|pastel on|enamel on|spray paint on|oil and|acrylic and|encaustic|collage on|canvas|linen|panel|board|paper(?! print))\b/i;
+
+// Title patterns that signal editions: "from [Series]", "plate(s)", known series formats
+const TITLE_EDITION_PATTERNS = /\b(plates?\s*,?\s*from\b|,\s*from\s+[A-Z]|\bfrom\s+the\s+portfolio\b|\bfrom\s+(?:Myths|Ads|Flowers|Marilyn|Mao|Campbell|Electric Chair|Endangered Species|Cowboys and Indians|Ladies and Gentlemen|Flash|Martha Graham|Hans Christian Andersen|Wild Raspberries|In the Bottom|Ten Portraits|Space Fruit|Sunset|Ingrid Bergman|Reigning Queens))\b/i;
 
 function classifyLot(lot: AuctionLot): LotCategory {
   // Combine all text signals
@@ -65,26 +75,31 @@ function classifyLot(lot: AuctionLot): LotCategory {
     if (ORIGINAL_PATTERNS.test(medium)) return 'original';
   }
 
-  // 2. Check title
+  // 2. Check title for explicit medium patterns
   if (PHOTO_PATTERNS.test(title)) return 'photograph';
   if (PRINT_PATTERNS.test(title)) return 'print';
   if (SCULPTURE_PATTERNS.test(title)) return 'sculpture';
   if (DESIGN_PATTERNS.test(title)) return 'design';
 
-  // 3. Check sale name for category clues
+  // 3. Title patterns that strongly signal editions: "X plate(s), from Y", "from [Known Series]"
+  if (TITLE_EDITION_PATTERNS.test(lot.title)) return 'print';
+
+  // 4. Check sale name for category clues
   if (/prints?\s*[&+]\s*multiples?/i.test(saleName) || /prints?\s+unlimited/i.test(saleName)) return 'print';
   if (/photograph/i.test(saleName)) return 'photograph';
   if (/design/i.test(saleName) || /furniture/i.test(saleName)) return 'design';
 
-  // 4. Check URL path
+  // 5. Check URL path
   if (/\/prints?\b/i.test(url)) return 'print';
   if (/\/photograph/i.test(url)) return 'photograph';
   if (/\/design/i.test(url)) return 'design';
 
-  // 5. Artist-level defaults for design furniture makers
+  // 6. Artist-level defaults
   if (isDesignArtist) return 'design';
+  if (EDITION_DEFAULT_ARTISTS.has(lot.artist)) return 'print';
+  if (ORIGINAL_DEFAULT_ARTISTS.has(lot.artist)) return 'original';
 
-  // 6. If we have a medium field but nothing matched the patterns, likely original
+  // 7. If we have a medium field but nothing matched the patterns, likely original
   if (medium && ORIGINAL_PATTERNS.test(text)) return 'original';
 
   return 'unknown';
