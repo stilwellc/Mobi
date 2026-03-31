@@ -187,8 +187,8 @@ export default function ArtistDetailPage() {
             </div>
           ) : (
             <>
-              {stats && <StatsGrid stats={stats} lots={lots} categoryFilter={categoryFilter} onCategoryChange={setCategoryFilter} />}
-              {sold.length > 0 && <PriceChart lots={sold} categoryFilter={categoryFilter} fallbackData={stats?.priceHistory} />}
+              {stats && <StatsGrid stats={stats} lots={lots} categoryFilter={categoryFilter} />}
+              {sold.length > 0 && <PriceChart lots={sold} allLots={lots} categoryFilter={categoryFilter} onCategoryChange={setCategoryFilter} fallbackData={stats?.priceHistory} />}
               {upcoming.length > 0 && <UpcomingLots lots={upcoming} />}
               {sold.length > 0 && <PastResults lots={sold} categoryFilter={categoryFilter} onCategoryChange={setCategoryFilter} />}
             </>
