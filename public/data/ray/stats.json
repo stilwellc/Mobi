@@ -1,6 +1,6 @@
 {
   "george-condo": {
-    "lastUpdated": "2026-04-01T14:46:00.277Z",
+    "lastUpdated": "2026-04-02T14:25:59.024Z",
     "totalLotsTracked": 257,
     "avgPriceLast12Months": 404789,
     "medianPriceLast12Months": 63500,
@@ -410,7 +410,7 @@
     ]
   },
   "futura-2000": {
-    "lastUpdated": "2026-04-01T14:46:00.285Z",
+    "lastUpdated": "2026-04-02T14:25:59.032Z",
     "totalLotsTracked": 65,
     "avgPriceLast12Months": 62823,
     "medianPriceLast12Months": 82550,
@@ -663,7 +663,7 @@
     ]
   },
   "kaws": {
-    "lastUpdated": "2026-04-01T14:46:00.285Z",
+    "lastUpdated": "2026-04-02T14:25:59.032Z",
     "totalLotsTracked": 541,
     "avgPriceLast12Months": 26436,
     "medianPriceLast12Months": 1905,
@@ -998,7 +998,7 @@
     ]
   },
   "george-nakashima": {
-    "lastUpdated": "2026-04-01T14:46:00.286Z",
+    "lastUpdated": "2026-04-02T14:25:59.033Z",
     "totalLotsTracked": 537,
     "avgPriceLast12Months": 26368,
     "medianPriceLast12Months": 20320,
@@ -1391,8 +1391,8 @@
     ]
   },
   "charles-eames": {
-    "lastUpdated": "2026-04-01T14:46:00.287Z",
-    "totalLotsTracked": 729,
+    "lastUpdated": "2026-04-02T14:25:59.034Z",
+    "totalLotsTracked": 730,
     "avgPriceLast12Months": 2138,
     "medianPriceLast12Months": 1079.5,
     "recordPrice": 29375,
@@ -1947,9 +1947,9 @@
     ]
   },
   "andy-warhol": {
-    "lastUpdated": "2026-04-01T14:46:00.290Z",
-    "totalLotsTracked": 2422,
-    "avgPriceLast12Months": 45997,
+    "lastUpdated": "2026-04-02T14:25:59.036Z",
+    "totalLotsTracked": 2433,
+    "avgPriceLast12Months": 46704,
     "medianPriceLast12Months": 10240,
     "recordPrice": 195040000,
     "recordTitle": "Shot Sage Blue Marilyn",
@@ -2620,7 +2620,7 @@
     ]
   },
   "tom-sachs": {
-    "lastUpdated": "2026-04-01T14:46:00.294Z",
+    "lastUpdated": "2026-04-02T14:25:59.039Z",
     "totalLotsTracked": 108,
     "avgPriceLast12Months": 17477,
     "medianPriceLast12Months": 8890,
@@ -2997,7 +2997,7 @@
     ]
   },
   "barry-mcgee": {
-    "lastUpdated": "2026-04-01T14:46:00.294Z",
+    "lastUpdated": "2026-04-02T14:25:59.039Z",
     "totalLotsTracked": 100,
     "avgPriceLast12Months": 4748,
     "medianPriceLast12Months": 2540,
@@ -3346,9 +3346,9 @@
     ]
   },
   "keith-haring": {
-    "lastUpdated": "2026-04-01T14:46:00.294Z",
-    "totalLotsTracked": 879,
-    "avgPriceLast12Months": 37826,
+    "lastUpdated": "2026-04-02T14:25:59.040Z",
+    "totalLotsTracked": 886,
+    "avgPriceLast12Months": 38229,
     "medianPriceLast12Months": 6985,
     "recordPrice": 5820000,
     "recordTitle": "Untitled",
@@ -3858,7 +3858,7 @@
     ]
   },
   "peter-saul": {
-    "lastUpdated": "2026-04-01T14:46:00.295Z",
+    "lastUpdated": "2026-04-02T14:25:59.041Z",
     "totalLotsTracked": 118,
     "avgPriceLast12Months": 16786,
     "medianPriceLast12Months": 1143,
@@ -4249,10 +4249,10 @@
     ]
   },
   "ed-ruscha": {
-    "lastUpdated": "2026-04-01T14:46:00.296Z",
-    "totalLotsTracked": 546,
-    "avgPriceLast12Months": 20687,
-    "medianPriceLast12Months": 4864,
+    "lastUpdated": "2026-04-02T14:25:59.041Z",
+    "totalLotsTracked": 548,
+    "avgPriceLast12Months": 21192,
+    "medianPriceLast12Months": 4902,
     "recordPrice": 1008375,
     "recordTitle": "The Eighties 1980",
     "recordDate": "2022-11-16",
@@ -4707,7 +4707,7 @@
     ]
   },
   "r-crumb": {
-    "lastUpdated": "2026-04-01T14:46:00.296Z",
+    "lastUpdated": "2026-04-02T14:25:59.042Z",
     "totalLotsTracked": 63,
     "avgPriceLast12Months": 2325,
     "medianPriceLast12Months": 953,
@@ -4946,9 +4946,9 @@
     ]
   },
   "raymond-pettibon": {
-    "lastUpdated": "2026-04-01T14:46:00.297Z",
+    "lastUpdated": "2026-04-02T14:25:59.042Z",
     "totalLotsTracked": 402,
-    "avgPriceLast12Months": 4164,
+    "avgPriceLast12Months": 4189,
     "medianPriceLast12Months": 572,
     "recordPrice": 1865000,
     "recordTitle": "No Title (This left was...)",
