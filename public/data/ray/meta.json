@@ -1,5 +1,5 @@
 {
-  "lastCrawl": "2026-04-04T13:58:19.010Z",
+  "lastCrawl": "2026-04-04T15:34:14.994Z",
   "artists": [
     {
       "slug": "george-condo",
@@ -52,6 +52,18 @@
     {
       "slug": "raymond-pettibon",
       "displayName": "Raymond Pettibon"
+    },
+    {
+      "slug": "henri-matisse",
+      "displayName": "Henri Matisse"
+    },
+    {
+      "slug": "pablo-picasso",
+      "displayName": "Pablo Picasso"
+    },
+    {
+      "slug": "fab-5-freddy",
+      "displayName": "Fab 5 Freddy"
     }
   ],
   "sources": [
