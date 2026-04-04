@@ -435,9 +435,11 @@ async function crawlSothebys(artist: ArtistConfig): Promise<AuctionLot[]> {
       if (!slug || seen.has(slug)) continue;
       seen.add(slug);
 
-      // Image from src or data-src
+      // Image from data-src (lazy loaded), fallback to src
       const img = card.find('img');
-      const imageUrl = img.attr('src') || img.attr('data-src') || null;
+      const imageUrl = img.attr('data-src') || img.attr('src') || null;
+      // Filter out SVG placeholders
+      const finalImageUrl = imageUrl && imageUrl.startsWith('data:image/svg') ? null : imageUrl;
 
       // Lot number
       const lotNumText = card.find('.Card-lotNumber').text().trim();
@@ -514,7 +516,7 @@ async function crawlSothebys(artist: ArtistConfig): Promise<AuctionLot[]> {
         medium: null,
         dimensions: null,
         category: 'unknown' as LotCategory,
-        imageUrl,
+        imageUrl: finalImageUrl,
         auctionHouse: "Sotheby's",
         saleName,
         saleDate,
