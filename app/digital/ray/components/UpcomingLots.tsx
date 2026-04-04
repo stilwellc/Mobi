@@ -1,9 +1,19 @@
 'use client';
 
-import { AuctionLot } from '../types';
+import { AuctionLot, MarketStats } from '../types';
 import LotCard from './LotCard';
 
-export default function UpcomingLots({ lots, showArtist = false }: { lots: AuctionLot[]; showArtist?: boolean }) {
+export default function UpcomingLots({
+  lots,
+  showArtist = false,
+  allLots = [],
+  stats,
+}: {
+  lots: AuctionLot[];
+  showArtist?: boolean;
+  allLots?: AuctionLot[];
+  stats?: MarketStats;
+}) {
   return (
     <section className="ray-upcoming" style={{ maxWidth: 1100, margin: '0 auto' }}>
       <style>{`
@@ -45,7 +55,13 @@ export default function UpcomingLots({ lots, showArtist = false }: { lots: Aucti
 
       <div className="ray-upcoming-grid">
         {lots.map((lot) => (
-          <LotCard key={lot.id} lot={lot} showArtist={showArtist} />
+          <LotCard
+            key={lot.id}
+            lot={lot}
+            showArtist={showArtist}
+            allLots={allLots}
+            stats={stats}
+          />
         ))}
       </div>
     </section>

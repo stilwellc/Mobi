@@ -277,7 +277,13 @@ export default function RayPage() {
 
               <div className="ray-upcoming-grid">
                 {upcoming.map(lot => (
-                  <LotCard key={lot.id} lot={lot} showArtist />
+                  <LotCard
+                    key={lot.id}
+                    lot={lot}
+                    showArtist
+                    allLots={allLots}
+                    stats={statsByArtist[lot.artist]}
+                  />
                 ))}
               </div>
             </section>
