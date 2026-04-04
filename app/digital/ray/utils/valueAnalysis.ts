@@ -29,9 +29,10 @@ export function analyzeLotValue(
 
   const estimateMid = (lot.estimateLow + lot.estimateHigh) / 2;
 
-  // Extract dimensions for size-based filtering (if available)
+  // Extract dimensions and metadata for similarity filtering
   const lotSize = extractSize(lot.dimensions);
   const lotMaterial = extractMaterial(lot.medium);
+  const lotYear = extractYear(lot.year);
 
   // Get comparable sold lots (same artist + category) from last 5 years
   const fiveYearsAgo = new Date();
@@ -69,6 +70,18 @@ export function analyzeLotValue(
     if (lotMaterial && compMaterial && lotMaterial !== compMaterial) {
       // Different materials/techniques (e.g., lithograph vs screenprint)
       similarityScore *= 0.5;
+    }
+
+    // Year/period similarity (if both have years)
+    const compYear = extractYear(comp.year);
+    if (lotYear && compYear) {
+      const yearDiff = Math.abs(lotYear - compYear);
+      // Penalize if years differ by >10 years (different periods/styles)
+      if (yearDiff > 20) {
+        similarityScore *= 0.4;
+      } else if (yearDiff > 10) {
+        similarityScore *= 0.7;
+      }
     }
 
     return { lot: comp, score: similarityScore, price: comp.priceUsd! };
@@ -250,6 +263,26 @@ function extractMaterial(medium: string | null): string | null {
   if (/bronze/i.test(m)) return 'bronze';
   if (/ceramic|porcelain/i.test(m)) return 'ceramic';
   if (/resin/i.test(m)) return 'resin';
+
+  return null;
+}
+
+/**
+ * Extract numeric year from year string
+ * Handles formats like: "1985", "circa 1985", "c. 1985", "1985-1986"
+ */
+function extractYear(year: string | null): number | null {
+  if (!year) return null;
+
+  // Extract first 4-digit year
+  const match = year.match(/\d{4}/);
+  if (match) {
+    const y = parseInt(match[0]);
+    // Sanity check: between 1900 and current year + 5
+    if (y >= 1900 && y <= new Date().getFullYear() + 5) {
+      return y;
+    }
+  }
 
   return null;
 }

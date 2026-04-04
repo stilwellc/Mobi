@@ -508,11 +508,18 @@ async function crawlSothebys(artist: ArtistConfig): Promise<AuctionLot[]> {
 
       const fullUrl = href.startsWith('http') ? href : `https://www.sothebys.com${href}`;
 
-      // Try to extract medium and dimensions from card info container
-      // Sotheby's often includes medium in the info text after the title
+      // Try to extract medium, dimensions, and year from card info container
+      // Sotheby's often includes this data in the info text after the title
       let medium: string | null = null;
       let dimensions: string | null = null;
+      let year: string | null = null;
       const afterTitle = infoText.substring(infoText.indexOf(title) + title.length).trim();
+
+      // Look for year (4-digit number, possibly with circa/c.)
+      const yearMatch = afterTitle.match(/(?:(?:circa|c\.)\s*)?(\d{4})(?:\s|,|$)/i);
+      if (yearMatch) {
+        year = yearMatch[1];
+      }
 
       // Look for medium patterns (oil on canvas, screenprint, etc.)
       const mediumMatch = afterTitle.match(/((?:oil|acrylic|watercolor|gouache|ink|mixed media|screenprint|lithograph|etching|woodcut|gelatin silver|c-print|bronze|ceramic|spray paint)[^,\.]{0,80})/i);
@@ -530,7 +537,7 @@ async function crawlSothebys(artist: ArtistConfig): Promise<AuctionLot[]> {
         id: `sothebys-${slug}`,
         artist: artist.slug,
         title,
-        year: null,
+        year,
         medium,
         dimensions,
         category: 'unknown' as LotCategory,
@@ -819,11 +826,14 @@ function parseWrightBasicItem(item: any, session: any, sessionKey: string, artis
   const auctionHouse: AuctionHouse = house.toLowerCase().includes('rago') ? 'Rago' : 'Wright';
   const dims = item.formatted_dimensions || null;
 
+  // Extract year from Wright basic item
+  const year = item.year_designed || item.circa || item.year || null;
+
   return {
     id: `wright-${item.fd_key || `${lotNum}-${sessionKey}`}`,
     artist: artistSlug,
     title,
-    year: null,
+    year,
     medium: item.material || null,
     dimensions: dims ? dims.replace(/&times;/g, '×').replace(/&ndash;/g, '–') : null,
     category: 'unknown' as LotCategory,
@@ -999,10 +1009,11 @@ function parseBonhamsLot(doc: any, artistSlug: string): AuctionLot | null {
   // Strip HTML tags from title
   title = title.replace(/<[^>]*>/g, '').trim() || 'Untitled';
 
-  // Extract medium from styledDescription lines
-  // Bonhams structured descriptions often include medium info after the title line
+  // Extract medium, dimensions, and year from styledDescription lines
+  // Bonhams structured descriptions often include this data after the title line
   let medium: string | null = null;
   let dimensions: string | null = null;
+  let year: string | null = null;
   if (doc.styledDescription) {
     const descLines: string[] = [];
     const descMatches = doc.styledDescription.match(/<div class="[^"]*">(.*?)<\/div>/g) || [];
@@ -1010,7 +1021,7 @@ function parseBonhamsLot(doc: any, artistSlug: string): AuctionLot | null {
       const text = m.replace(/<[^>]*>/g, '').trim();
       if (text) descLines.push(text);
     }
-    // Look for medium-like lines (contains material keywords)
+    // Look for medium, dimensions, and year
     for (const line of descLines) {
       if (line === title) continue; // skip the title itself
       if (/^\(?[bB](?:orn)?\.\s*\d{4}\)?$/.test(line)) continue;
@@ -1019,6 +1030,14 @@ function parseBonhamsLot(doc: any, artistSlug: string): AuctionLot | null {
       if (/^[A-Z][a-z]+\s+[A-Z][a-z]+$/.test(line)) continue; // artist name
       if (/^[A-Z]{2,}$/.test(line)) continue; // "KAWS"
       if (/^\(?[A-Za-z]+,?\s+(?:born\s+)?\d{4}[-–]?\d{0,4}\)?$/.test(line)) continue; // "(American, 1928-1987)"
+
+      // Year line (standalone 4-digit year, possibly with circa)
+      if (!year && /^(?:circa|c\.?)?\s*\d{4}$/i.test(line)) {
+        const yearMatch = line.match(/(\d{4})/);
+        if (yearMatch) year = yearMatch[1];
+        continue;
+      }
+
       // Dimension line (has cm or in measurements)
       if (/\d+\s*(?:×|x)\s*\d+|(?:cm|in)\b/.test(line) && !medium) {
         dimensions = line;
@@ -1060,7 +1079,7 @@ function parseBonhamsLot(doc: any, artistSlug: string): AuctionLot | null {
     id: `bonhams-${doc.auctionId}-${doc.lotId}`,
     artist: artistSlug,
     title,
-    year: null,
+    year,
     medium,
     dimensions,
     category: 'unknown' as LotCategory,
