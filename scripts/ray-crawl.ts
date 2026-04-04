@@ -38,11 +38,11 @@ interface AuctionLot {
 
 const DESIGN_ARTISTS = new Set(['george-nakashima', 'charles-eames']);
 // Fine artists whose unclassified lots default to 'print' (edition-heavy output)
-const EDITION_DEFAULT_ARTISTS = new Set(['andy-warhol', 'keith-haring', 'ed-ruscha']);
+const EDITION_DEFAULT_ARTISTS = new Set(['andy-warhol', 'keith-haring', 'ed-ruscha', 'henri-matisse', 'pablo-picasso']);
 // Fine artists whose unclassified lots default to 'original' (painting/drawing-heavy output)
 const ORIGINAL_DEFAULT_ARTISTS = new Set([
   'george-condo', 'kaws', 'raymond-pettibon', 'peter-saul',
-  'tom-sachs', 'barry-mcgee', 'futura-2000', 'r-crumb',
+  'tom-sachs', 'barry-mcgee', 'futura-2000', 'r-crumb', 'fab-5-freddy',
 ]);
 
 const PRINT_PATTERNS = /\b(screenprint|silkscreen|serigraph|lithograph|etching|woodcut|woodblock|linocut|engraving|aquatint|monotype|monoprint|offset|poster|gicl[eé]e|print(?:ed)?|edition of|numbered.*\/|signed.*numbered|multiple|chromolithograph|intaglio)\b/i;
@@ -258,6 +258,30 @@ const ARTISTS: ArtistConfig[] = [
     wright: 'raymond-pettibon',
     bonhams: 'Raymond Pettibon',
   },
+  {
+    slug: 'henri-matisse',
+    displayName: 'Henri Matisse',
+    phillips: { id: '10638', slug: 'henri-matisse' },
+    sothebys: 'henri-matisse',
+    christies: 'henri-matisse',
+    wright: 'henri-matisse',
+    bonhams: 'Henri Matisse',
+  },
+  {
+    slug: 'pablo-picasso',
+    displayName: 'Pablo Picasso',
+    phillips: { id: '10800', slug: 'pablo-picasso' },
+    sothebys: 'pablo-picasso',
+    christies: 'pablo-picasso',
+    wright: 'pablo-picasso',
+    bonhams: 'Pablo Picasso',
+  },
+  {
+    slug: 'fab-5-freddy',
+    displayName: 'Fab 5 Freddy',
+    phillips: { id: '10358', slug: 'fred-brathwaite-aka-fab-5-freddy' },
+    bonhams: 'Fab 5 Freddy',
+  },
 ];
 
 const DATA_DIR = path.join(process.cwd(), 'public', 'data', 'ray');
@@ -393,36 +417,83 @@ async function crawlSothebys(artist: ArtistConfig): Promise<AuctionLot[]> {
     const html = await res.text();
     const $ = cheerio.load(html);
 
-    const allLinks = $('a[href*="/buy/auction/"]').toArray();
-    console.log(`  [Sothebys] Found ${allLinks.length} raw lot links`);
-
     const now = new Date();
     const seen = new Set<string>();
-    // Build regex to strip artist name prefix from slugs
-    const artistSlugParts = artist.sothebys.split('-');
+    const artistSlugParts = artist.sothebys!.split('-');
     const stripPrefix = new RegExp(`^${artistSlugParts.join('-?')}-?`, 'i');
 
-    for (const el of allLinks) {
-      const $el = $(el);
-      const href = $el.attr('href') || '';
+    // Parse from Card elements (richer data: images, estimates, lot numbers)
+    const cards = $('.Card.data-type-lot').toArray();
+    console.log(`  [Sothebys] Found ${cards.length} lot cards`);
+
+    for (const cardEl of cards) {
+      const card = $(cardEl);
+      const href = card.find('a[href*="/buy/auction/"]').first().attr('href') || '';
+      if (!href) continue;
 
       const slug = href.split('/').pop() || '';
       if (!slug || seen.has(slug)) continue;
       seen.add(slug);
 
-      // Strip artist name prefix and any co-artist prefixes
-      let titleSlug = slug.replace(stripPrefix, '');
-      // Also strip common Sotheby's co-artist prefixes
-      titleSlug = titleSlug.replace(/^qiao-zhi?-?kang-duo-?/i, '');
+      // Image from data-src (lazy-loaded)
+      const img = card.find('img');
+      const imageUrl = img.attr('data-src') || null;
 
-      if (!titleSlug || titleSlug.length < 2) continue;
-      const title = titleSlug
-        .split('-')
-        .map(w => w.charAt(0).toUpperCase() + w.slice(1))
-        .join(' ');
+      // Lot number
+      const lotNumText = card.find('.Card-lotNumber').text().trim();
+      const lotNumber = lotNumText ? parseInt(lotNumText) || null : null;
 
-      const yearMatch = href.match(/\/auction\/(\d{4})\//);
-      const auctionYear = yearMatch ? parseInt(yearMatch[1]) : null;
+      // Title from card info text — extract the actual work title
+      const infoText = card.find('.Card-info-container').text().trim();
+      // Info typically has: "Type: lot Category: Lot ArtistName ArtistName Title Estimate: ..."
+      // Extract title by looking for text between duplicated artist name and "Estimate:"
+      let title = '';
+      const estimateIdx = infoText.indexOf('Estimate:');
+      const relevantText = estimateIdx > 0 ? infoText.substring(0, estimateIdx) : infoText;
+      // Find the display name repeated (Sotheby's shows it twice)
+      const displayParts = artist.displayName.split(' ');
+      const lastName = displayParts[displayParts.length - 1];
+      const lastNameIdx = relevantText.lastIndexOf(lastName);
+      if (lastNameIdx >= 0) {
+        title = relevantText.substring(lastNameIdx + lastName.length).trim();
+        // Clean up any Chinese characters or extra whitespace
+        title = title.replace(/[\u4e00-\u9fff\u00b7\u2013\u2014|]+/g, ' ').replace(/\s+/g, ' ').trim();
+        // Strip artist name if it appears at the start (ALL CAPS variant)
+        const nameUpper = artist.displayName.toUpperCase();
+        if (title.startsWith(nameUpper)) {
+          title = title.substring(nameUpper.length).trim();
+        }
+      }
+      if (!title || title.length < 2) {
+        // Fallback to slug-based title
+        let titleSlug = slug.replace(stripPrefix, '');
+        titleSlug = titleSlug.replace(/^qiao-zhi?-?kang-duo-?/i, '');
+        if (!titleSlug || titleSlug.length < 2) continue;
+        title = titleSlug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+      }
+
+      // Estimate parsing: "Estimate: 800,000 – 1,200,000 USD"
+      const estText = card.find('.Card-estimate').text().trim();
+      let estimateLow: number | null = null;
+      let estimateHigh: number | null = null;
+      let currency: Currency = 'USD';
+      const estMatch = estText.match(/Estimate:\s*([\d,]+)\s*[–—-]\s*([\d,]+)\s*(\w+)/);
+      if (estMatch) {
+        estimateLow = parseInt(estMatch[1].replace(/,/g, ''));
+        estimateHigh = parseInt(estMatch[2].replace(/,/g, ''));
+        const cur = estMatch[3].toUpperCase();
+        if (['USD', 'GBP', 'EUR', 'HKD', 'CNY', 'AUD', 'CHF'].includes(cur)) {
+          currency = cur as Currency;
+        }
+      }
+
+      // Sale name and year from href: /buy/auction/YYYY/sale-name/slug
+      const hrefParts = href.split('/');
+      const auctionIdx = hrefParts.indexOf('auction');
+      const auctionYear = auctionIdx >= 0 && hrefParts[auctionIdx + 1] ? parseInt(hrefParts[auctionIdx + 1]) || null : null;
+      const saleName = auctionIdx >= 0 && hrefParts[auctionIdx + 2]
+        ? hrefParts[auctionIdx + 2].split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+        : '';
 
       let status: LotStatus = 'sold';
       let saleDate = '';
@@ -435,6 +506,53 @@ async function crawlSothebys(artist: ArtistConfig): Promise<AuctionLot[]> {
 
       const fullUrl = href.startsWith('http') ? href : `https://www.sothebys.com${href}`;
 
+      lots.push({
+        id: `sothebys-${slug}`,
+        artist: artist.slug,
+        title,
+        year: null,
+        medium: null,
+        dimensions: null,
+        category: 'unknown' as LotCategory,
+        imageUrl,
+        auctionHouse: "Sotheby's",
+        saleName,
+        saleDate,
+        lotNumber,
+        estimateLow,
+        estimateHigh,
+        currency,
+        hammerPrice: null,
+        premiumPrice: null,
+        priceUsd: null,
+        status,
+        url: fullUrl,
+      });
+    }
+
+    // Also pick up any additional lot links not in Card containers
+    const allLinks = $('a[href*="/buy/auction/"]').toArray();
+    for (const el of allLinks) {
+      const href = $(el).attr('href') || '';
+      const slug = href.split('/').pop() || '';
+      if (!slug || seen.has(slug)) continue;
+      seen.add(slug);
+
+      let titleSlug = slug.replace(stripPrefix, '');
+      titleSlug = titleSlug.replace(/^qiao-zhi?-?kang-duo-?/i, '');
+      if (!titleSlug || titleSlug.length < 2) continue;
+      const title = titleSlug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+
+      const yearMatch = href.match(/\/auction\/(\d{4})\//);
+      const auctionYear = yearMatch ? parseInt(yearMatch[1]) : null;
+      let status: LotStatus = 'sold';
+      let saleDate = '';
+      if (auctionYear) {
+        saleDate = `${auctionYear}-06-01`;
+        if (auctionYear >= now.getFullYear()) status = 'upcoming';
+      }
+
+      const fullUrl = href.startsWith('http') ? href : `https://www.sothebys.com${href}`;
       lots.push({
         id: `sothebys-${slug}`,
         artist: artist.slug,
@@ -459,7 +577,8 @@ async function crawlSothebys(artist: ArtistConfig): Promise<AuctionLot[]> {
       });
     }
 
-    console.log(`  [Sothebys] Parsed ${lots.length} unique lots (${lots.filter(l => l.status === 'upcoming').length} upcoming, ${lots.filter(l => l.status === 'sold').length} past)`);
+    const withImages = lots.filter(l => l.imageUrl).length;
+    console.log(`  [Sothebys] Parsed ${lots.length} unique lots (${withImages} with images, ${lots.filter(l => l.status === 'upcoming').length} upcoming)`);
   } catch (err) {
     console.error('  [Sothebys] Error:', err);
   }
