@@ -29,6 +29,10 @@ export function analyzeLotValue(
 
   const estimateMid = (lot.estimateLow + lot.estimateHigh) / 2;
 
+  // Extract dimensions for size-based filtering (if available)
+  const lotSize = extractSize(lot.dimensions);
+  const lotMaterial = extractMaterial(lot.medium);
+
   // Get comparable sold lots (same artist + category) from last 5 years
   const fiveYearsAgo = new Date();
   fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear() - 5);
@@ -44,13 +48,42 @@ export function analyzeLotValue(
     return true;
   });
 
-  if (comparables.length < 5) {
-    // Not enough recent data for reliable analysis
+  // Score comparables by similarity (better matches get higher weight)
+  const scoredComparables = comparables.map(comp => {
+    let similarityScore = 1.0;
+
+    // Size similarity (if both have dimensions)
+    const compSize = extractSize(comp.dimensions);
+    if (lotSize && compSize) {
+      const sizeRatio = Math.min(lotSize, compSize) / Math.max(lotSize, compSize);
+      // Penalize if size differs by >50%
+      if (sizeRatio < 0.5) {
+        similarityScore *= 0.3;
+      } else if (sizeRatio < 0.75) {
+        similarityScore *= 0.7;
+      }
+    }
+
+    // Material/technique similarity
+    const compMaterial = extractMaterial(comp.medium);
+    if (lotMaterial && compMaterial && lotMaterial !== compMaterial) {
+      // Different materials/techniques (e.g., lithograph vs screenprint)
+      similarityScore *= 0.5;
+    }
+
+    return { lot: comp, score: similarityScore, price: comp.priceUsd! };
+  });
+
+  // Filter to keep only reasonably similar lots (score > 0.4)
+  const similarComparables = scoredComparables.filter(c => c.score > 0.4);
+
+  if (similarComparables.length < 5) {
+    // Not enough similar lots for reliable analysis
     return null;
   }
 
   // Sort by price and filter outliers using IQR method
-  const prices = comparables.map(l => l.priceUsd!).sort((a, b) => a - b);
+  const prices = similarComparables.map(c => c.price).sort((a, b) => a - b);
   const q1 = prices[Math.floor(prices.length * 0.25)];
   const q3 = prices[Math.floor(prices.length * 0.75)];
   const iqr = q3 - q1;
@@ -135,4 +168,68 @@ export function analyzeLotValue(
     confidenceLevel,
     comparableCount: filteredPrices.length,
   };
+}
+
+/**
+ * Extract approximate size in square inches from dimension string
+ * Handles formats like: "24 × 18 in", "60 x 45 cm", etc.
+ */
+function extractSize(dimensions: string | null): number | null {
+  if (!dimensions) return null;
+
+  // Try to extract width × height in inches or cm
+  const inchMatch = dimensions.match(/(\d+(?:\.\d+)?)\s*[×x]\s*(\d+(?:\.\d+)?)\s*in/i);
+  if (inchMatch) {
+    const w = parseFloat(inchMatch[1]);
+    const h = parseFloat(inchMatch[2]);
+    return w * h;
+  }
+
+  const cmMatch = dimensions.match(/(\d+(?:\.\d+)?)\s*[×x]\s*(\d+(?:\.\d+)?)\s*cm/i);
+  if (cmMatch) {
+    const w = parseFloat(cmMatch[1]) / 2.54; // convert to inches
+    const h = parseFloat(cmMatch[2]) / 2.54;
+    return w * h;
+  }
+
+  return null;
+}
+
+/**
+ * Extract primary material/technique from medium string
+ * Groups similar techniques together (e.g., all screenprints together)
+ */
+function extractMaterial(medium: string | null): string | null {
+  if (!medium) return null;
+
+  const m = medium.toLowerCase();
+
+  // Print techniques
+  if (/screenprint|silkscreen|serigraph/i.test(m)) return 'screenprint';
+  if (/lithograph|litho/i.test(m)) return 'lithograph';
+  if (/etching/i.test(m)) return 'etching';
+  if (/woodcut|woodblock/i.test(m)) return 'woodcut';
+  if (/linocut|linoleum/i.test(m)) return 'linocut';
+  if (/monotype|monoprint/i.test(m)) return 'monotype';
+  if (/offset|poster/i.test(m)) return 'offset';
+  if (/gicl[eé]e|digital print|inkjet/i.test(m)) return 'giclee';
+
+  // Photo techniques
+  if (/gelatin silver|silver gelatin/i.test(m)) return 'gelatin-silver';
+  if (/c-print|chromogenic/i.test(m)) return 'c-print';
+  if (/pigment print/i.test(m)) return 'pigment';
+
+  // Painting techniques
+  if (/oil on|oil and/i.test(m)) return 'oil';
+  if (/acrylic on|acrylic and/i.test(m)) return 'acrylic';
+  if (/watercolor|watercolour/i.test(m)) return 'watercolor';
+  if (/gouache/i.test(m)) return 'gouache';
+  if (/spray paint|aerosol/i.test(m)) return 'spray-paint';
+
+  // Sculpture materials
+  if (/bronze/i.test(m)) return 'bronze';
+  if (/ceramic|porcelain/i.test(m)) return 'ceramic';
+  if (/resin/i.test(m)) return 'resin';
+
+  return null;
 }
