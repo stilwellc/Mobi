@@ -508,13 +508,31 @@ async function crawlSothebys(artist: ArtistConfig): Promise<AuctionLot[]> {
 
       const fullUrl = href.startsWith('http') ? href : `https://www.sothebys.com${href}`;
 
+      // Try to extract medium and dimensions from card info container
+      // Sotheby's often includes medium in the info text after the title
+      let medium: string | null = null;
+      let dimensions: string | null = null;
+      const afterTitle = infoText.substring(infoText.indexOf(title) + title.length).trim();
+
+      // Look for medium patterns (oil on canvas, screenprint, etc.)
+      const mediumMatch = afterTitle.match(/((?:oil|acrylic|watercolor|gouache|ink|mixed media|screenprint|lithograph|etching|woodcut|gelatin silver|c-print|bronze|ceramic|spray paint)[^,\.]{0,80})/i);
+      if (mediumMatch) {
+        medium = mediumMatch[1].trim();
+      }
+
+      // Look for dimensions (numbers followed by × or x and units)
+      const dimMatch = afterTitle.match(/(\d+(?:\.\d+)?\s*[×x]\s*\d+(?:\.\d+)?\s*(?:in|cm)[^,\.]{0,40})/i);
+      if (dimMatch) {
+        dimensions = dimMatch[1].trim();
+      }
+
       lots.push({
         id: `sothebys-${slug}`,
         artist: artist.slug,
         title,
         year: null,
-        medium: null,
-        dimensions: null,
+        medium,
+        dimensions,
         category: 'unknown' as LotCategory,
         imageUrl: finalImageUrl,
         auctionHouse: "Sotheby's",
