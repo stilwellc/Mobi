@@ -682,13 +682,19 @@ function parseChristiesJson(jsonStr: string, artistSlug: string): AuctionLot[] {
         ? String(rawMedium).replace(/<[^>]*>/g, '')
         : null;
 
+      // Extract dimensions from Christie's data
+      const rawDimensions = lot.measurements_txt || lot.dimensions_txt || null;
+      const christiesDimensions = rawDimensions && String(rawDimensions).length < 200
+        ? String(rawDimensions).replace(/<[^>]*>/g, '').replace(/&times;/g, '×').replace(/&ndash;/g, '–')
+        : null;
+
       lots.push({
         id: `christies-${lotId}`,
         artist: artistSlug,
         title: title.replace(/<[^>]*>/g, ''),
         year: lot.date_txt || null,
         medium: christiesMedium,
-        dimensions: null,
+        dimensions: christiesDimensions,
         category: 'unknown' as LotCategory,
         imageUrl,
         auctionHouse: "Christie's",
@@ -865,13 +871,16 @@ function parseWrightAdvancedItem(item: any, artistSlug: string): AuctionLot {
   const houseName = item.session?.auction?.auction_house?.name || item.auction?.auction_house?.name || 'Wright';
   const auctionHouse: AuctionHouse = houseName.toLowerCase().includes('rago') ? 'Rago' : 'Wright';
 
+  // Extract dimensions from Wright advanced item
+  const dims = item.formatted_dimensions || item.dimensions || null;
+
   return {
     id: `wright-${item.fd_key || item.id || `${lotNum}`}`,
     artist: artistSlug,
     title,
     year: item.year_designed || null,
     medium: item.material || null,
-    dimensions: null,
+    dimensions: dims ? String(dims).replace(/&times;/g, '×').replace(/&ndash;/g, '–') : null,
     category: 'unknown' as LotCategory,
     imageUrl,
     auctionHouse,
