@@ -435,9 +435,9 @@ async function crawlSothebys(artist: ArtistConfig): Promise<AuctionLot[]> {
       if (!slug || seen.has(slug)) continue;
       seen.add(slug);
 
-      // Image from data-src (lazy-loaded)
+      // Image from src or data-src
       const img = card.find('img');
-      const imageUrl = img.attr('data-src') || null;
+      const imageUrl = img.attr('src') || img.attr('data-src') || null;
 
       // Lot number
       const lotNumText = card.find('.Card-lotNumber').text().trim();
