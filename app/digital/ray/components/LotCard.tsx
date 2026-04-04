@@ -36,6 +36,9 @@ export default function LotCard({ lot, showArtist = false }: { lot: AuctionLot; 
         border: '1px solid var(--color-border)',
         transition: 'border-color 0.2s',
         cursor: 'pointer',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
       }}>
         <style>{`
           @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
@@ -101,7 +104,7 @@ export default function LotCard({ lot, showArtist = false }: { lot: AuctionLot; 
           )}
         </div>
 
-        <div style={{ padding: '14px 18px 18px' }}>
+        <div style={{ padding: '14px 18px 18px', flex: 1, display: 'flex', flexDirection: 'column' }}>
           <div style={{
             display: 'flex',
             alignItems: 'center',
@@ -151,6 +154,7 @@ export default function LotCard({ lot, showArtist = false }: { lot: AuctionLot; 
             fontWeight: 400,
             marginBottom: 4,
             lineHeight: 1.25,
+            flex: 1,
           }}>
             {lot.title}
           </h3>
@@ -164,6 +168,7 @@ export default function LotCard({ lot, showArtist = false }: { lot: AuctionLot; 
             alignItems: 'baseline',
             justifyContent: 'space-between',
             gap: 8,
+            marginTop: 'auto',
           }}>
             <span style={{
               fontSize: 14,
