@@ -77,21 +77,41 @@ export function analyzeLotValue(
   // Filter to keep only reasonably similar lots (score > 0.4)
   const similarComparables = scoredComparables.filter(c => c.score > 0.4);
 
-  if (similarComparables.length < 5) {
+  // If the lot has no medium/dimensions, we need MANY more comparables to be reliable
+  // (since we can't distinguish between different types of works)
+  const minRequired = (lotMaterial || lotSize) ? 5 : 30;
+
+  if (similarComparables.length < minRequired) {
     // Not enough similar lots for reliable analysis
     return null;
   }
 
   // Sort by price and filter outliers using IQR method
   const prices = similarComparables.map(c => c.price).sort((a, b) => a - b);
-  const q1 = prices[Math.floor(prices.length * 0.25)];
-  const q3 = prices[Math.floor(prices.length * 0.75)];
+
+  // Additional filtering: if we don't have material/size data, only compare to lots
+  // in a similar price range (within 1 order of magnitude of the estimate)
+  let filteredByRange = prices;
+  if (!lotMaterial && !lotSize) {
+    const estimateOrder = Math.log10(estimateMid);
+    filteredByRange = prices.filter(p => {
+      const priceOrder = Math.log10(p);
+      return Math.abs(priceOrder - estimateOrder) < 1; // within 1 order of magnitude
+    });
+
+    if (filteredByRange.length < minRequired) {
+      // Not enough comparables in similar price range
+      return null;
+    }
+  }
+  const q1 = filteredByRange[Math.floor(filteredByRange.length * 0.25)];
+  const q3 = filteredByRange[Math.floor(filteredByRange.length * 0.75)];
   const iqr = q3 - q1;
   const lowerBound = q1 - 1.5 * iqr;
   const upperBound = q3 + 1.5 * iqr;
 
   // Filter out outliers
-  const filteredPrices = prices.filter(p => p >= lowerBound && p <= upperBound);
+  const filteredPrices = filteredByRange.filter(p => p >= lowerBound && p <= upperBound);
 
   if (filteredPrices.length < 5) {
     // After filtering outliers, not enough data
