@@ -193,7 +193,7 @@ export default function LotCard({
               fontWeight: 500,
               whiteSpace: 'nowrap',
             }}>
-              {new Date(lot.saleDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+              {new Date(lot.saleDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
             </span>
           </div>
         </div>
