@@ -3,7 +3,6 @@
 import { AuctionLot, MarketStats } from '../types';
 import { ARTIST_LABEL } from '../constants';
 import { houseColors, categoryLabels, categoryColors } from '../utils';
-import { analyzeLotValue, ValueIndicator } from '../utils/valueAnalysis';
 
 function formatEstimate(lot: AuctionLot): string {
   const fmt = (n: number) => {
@@ -31,8 +30,6 @@ export default function LotCard({
   const color = houseColors[lot.auctionHouse] || '#96B8D4';
   const catColor = categoryColors[lot.category] || '#888';
   const catLabel = categoryLabels[lot.category] || null;
-
-  const valueIndicator = analyzeLotValue(lot, allLots, stats);
 
   return (
     <a
@@ -199,49 +196,6 @@ export default function LotCard({
               {new Date(lot.saleDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
             </span>
           </div>
-
-          {valueIndicator && (
-            <div style={{
-              marginTop: 10,
-              padding: '6px 10px',
-              borderRadius: 8,
-              background: `${valueIndicator.color}15`,
-              border: `1px solid ${valueIndicator.color}40`,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: 8,
-            }}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 6,
-              }}>
-                <div style={{
-                  width: 6,
-                  height: 6,
-                  borderRadius: '50%',
-                  background: valueIndicator.color,
-                }} />
-                <span style={{
-                  fontSize: 10,
-                  fontWeight: 600,
-                  letterSpacing: '0.05em',
-                  color: valueIndicator.color,
-                  textTransform: 'uppercase',
-                }}>
-                  {valueIndicator.label}
-                </span>
-              </div>
-              <span style={{
-                fontSize: 9,
-                color: 'var(--color-text-ghost)',
-                fontWeight: 500,
-              }}>
-                {valueIndicator.confidenceLevel === 'high' ? '●●●' : valueIndicator.confidenceLevel === 'medium' ? '●●○' : '●○○'}
-              </span>
-            </div>
-          )}
         </div>
       </div>
     </a>
