@@ -28,7 +28,13 @@ export default function ArtistDetailPage() {
 
   const stats = statsByArtist[slug] || null;
   const lots = allLots.filter(l => l.artist === slug);
-  const upcoming = lots.filter(l => l.status === 'upcoming');
+  const upcoming = lots
+    .filter(l => l.status === 'upcoming')
+    .sort((a, b) => {
+      if (!a.saleDate) return 1;
+      if (!b.saleDate) return -1;
+      return new Date(a.saleDate).getTime() - new Date(b.saleDate).getTime();
+    });
   const sold = lots.filter(l => l.status === 'sold');
 
   return (
