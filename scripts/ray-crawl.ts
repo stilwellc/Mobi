@@ -324,20 +324,22 @@ async function crawlPhillips(artist: ArtistConfig): Promise<AuctionLot[]> {
         try {
           const innerJson = JSON.parse('"' + makerMatch[1] + '"');
           makerData = JSON.parse(innerJson);
-          console.log(`  [Phillips] Found maker data with ${makerData?.pastLots?.totalCount || 0} total lots`);
+          console.log(`  [Phillips] Found maker data with ${makerData?.pastLots?.totalCount || 0} past lots, ${makerData?.upcomingLots?.totalCount || 0} upcoming lots`);
         } catch (e) {
           console.log('  [Phillips] Failed to parse maker prop:', (e as Error).message?.substring(0, 100));
         }
       }
     });
 
-    if (!makerData?.pastLots?.data) {
+    const pastData = makerData?.pastLots?.data || [];
+    const upcomingData = makerData?.upcomingLots?.data || [];
+    if (pastData.length === 0 && upcomingData.length === 0) {
       console.log('  [Phillips] No structured lot data found');
       return lots;
     }
 
-    const lotData = makerData.pastLots.data;
-    console.log(`  [Phillips] Parsing ${lotData.length} lots from page 1...`);
+    const lotData = [...upcomingData, ...pastData];
+    console.log(`  [Phillips] Parsing ${upcomingData.length} upcoming + ${pastData.length} past lots...`);
 
     for (const lot of lotData) {
       const title = lot.description || lot.title || lot.lotTitle || 'Untitled';
