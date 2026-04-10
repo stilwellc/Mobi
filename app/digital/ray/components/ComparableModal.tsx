@@ -17,13 +17,44 @@ function formatEstimate(lot: AuctionLot): string {
   return 'Estimate on request';
 }
 
-/** Parse a dimension string like "24 x 18 in" into an area number, or null */
-function parseArea(dims: string | null): number | null {
+/** Convert fraction characters (½, ¼, etc.) and mixed numbers to decimals */
+function parseFrac(s: string): number {
+  const fracs: Record<string, number> = { '½': 0.5, '¼': 0.25, '¾': 0.75, '⅓': 0.333, '⅔': 0.667, '⅛': 0.125, '⅜': 0.375, '⅝': 0.625, '⅞': 0.875 };
+  let val = 0;
+  // Match leading integer
+  const intMatch = s.match(/^(\d+)/);
+  if (intMatch) val += parseFloat(intMatch[1]);
+  // Match trailing fraction character
+  for (const [ch, n] of Object.entries(fracs)) {
+    if (s.includes(ch)) { val += n; break; }
+  }
+  // If no fraction char, try decimal
+  if (val === 0) val = parseFloat(s) || 0;
+  return val;
+}
+
+/** Parse a dimension string into [height, width] or null.
+ *  Handles: "24 x 18 in", "25¼ h × 20¾ w in", "63 × 52 cm", etc. */
+function parseDims(dims: string | null): [number, number] | null {
   if (!dims) return null;
-  // Match patterns like "24 x 18", "24 × 18", "24 by 18"
-  const m = dims.match(/([\d.]+)\s*[x×by]+\s*([\d.]+)/i);
-  if (!m) return null;
-  return parseFloat(m[1]) * parseFloat(m[2]);
+  // Prefer inches; fall back to cm
+  const useIn = dims.toLowerCase().includes('in');
+  // Extract numeric tokens separated by × or x
+  const tokens = dims.split(/[x×]/i).map(t => t.trim());
+  if (tokens.length < 2) return null;
+  const h = parseFrac(tokens[0]);
+  const w = parseFrac(tokens[1]);
+  if (!h || !w) return null;
+  // Normalize cm to inches for consistent comparison
+  if (!useIn && dims.toLowerCase().includes('cm')) {
+    return [h / 2.54, w / 2.54];
+  }
+  return [h, w];
+}
+
+function parseArea(dims: string | null): number | null {
+  const hw = parseDims(dims);
+  return hw ? hw[0] * hw[1] : null;
 }
 
 /** Parse a year string like "2000" or "circa 2000" into a number */
@@ -47,15 +78,23 @@ function mediumSimilarity(a: string | null, b: string | null): number {
 function scoreComparable(upcoming: AuctionLot, sold: AuctionLot): number {
   let score = 0;
 
-  // Category match (weight: 40)
+  // Category match (weight: 30) — must be same type of work
   if (upcoming.category !== 'unknown' && sold.category !== 'unknown') {
-    if (upcoming.category === sold.category) score += 40;
+    if (upcoming.category === sold.category) score += 30;
   }
 
-  // Medium similarity (weight: 25)
-  score += mediumSimilarity(upcoming.medium, sold.medium) * 25;
+  // Dimensions similarity (weight: 35) — most important comparable factor
+  // When both have dimensions, this dominates. A small drawing is not
+  // comparable to a large canvas regardless of other factors.
+  const areaA = parseArea(upcoming.dimensions);
+  const areaB = parseArea(sold.dimensions);
+  if (areaA && areaB) {
+    const ratio = Math.min(areaA, areaB) / Math.max(areaA, areaB);
+    score += ratio * 35;
+  }
 
-  // Estimate proximity (weight: 20)
+  // Estimate proximity (weight: 20) — good proxy for size/importance
+  // when dimensions are missing
   const estMid = upcoming.estimateLow && upcoming.estimateHigh
     ? (upcoming.estimateLow + upcoming.estimateHigh) / 2
     : null;
@@ -64,13 +103,8 @@ function scoreComparable(upcoming: AuctionLot, sold: AuctionLot): number {
     score += ratio * 20;
   }
 
-  // Dimensions similarity (weight: 10)
-  const areaA = parseArea(upcoming.dimensions);
-  const areaB = parseArea(sold.dimensions);
-  if (areaA && areaB) {
-    const ratio = Math.min(areaA, areaB) / Math.max(areaA, areaB);
-    score += ratio * 10;
-  }
+  // Medium similarity (weight: 10)
+  score += mediumSimilarity(upcoming.medium, sold.medium) * 10;
 
   // Year proximity (weight: 5)
   const yearA = parseYear(upcoming.year);
