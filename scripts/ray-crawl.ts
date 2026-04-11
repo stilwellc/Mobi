@@ -1405,8 +1405,8 @@ async function enrichSothebys(lot: AuctionLot): Promise<EnrichResult> {
   } catch { return {}; }
 }
 
-const ENRICH_MAX_PER_RUN = 200;
-const ENRICH_DELAY = 500;
+const ENRICH_MAX_PER_RUN = 2000;
+const ENRICH_DELAY = 300;
 
 async function enrichLots(lots: AuctionLot[]): Promise<void> {
   // Find lots missing any of medium, dimensions, year (skip Wright — already good)
