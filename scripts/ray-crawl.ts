@@ -1225,6 +1225,248 @@ function computeStats(lots: AuctionLot[], existingStats: MarketStats | null): Ma
   };
 }
 
+// ── Detail Page Enrichment ──
+// Fetches individual lot pages to backfill missing medium, dimensions, and year.
+// Only enriches lots that are missing at least one of these fields.
+
+type EnrichResult = { medium?: string; dimensions?: string; year?: string };
+
+const MEDIUM_PATTERNS = /(?:oil|acrylic|gouache|watercolor|watercolour|ink|charcoal|pencil|pastel|spray|enamel|screenprint|silkscreen|lithograph|etching|woodcut|woodblock|linocut|engraving|aquatint|monotype|monoprint|offset|poster|gicl[eé]e|print|photograph|gelatin silver|c-print|chromogenic|pigment print|inkjet|cibachrome|bronze|ceramic|porcelain|mixed media|collage|canvas|linen|paper|board|panel|synthetic polymer|marker|crayon|felt[- ]?tip|tempera|encaustic)/i;
+
+async function enrichPhillips(lot: AuctionLot): Promise<EnrichResult> {
+  try {
+    const res = await fetch(lot.url, { headers: { 'User-Agent': UA } });
+    if (!res.ok) return {};
+    const html = await res.text();
+    const $ = cheerio.load(html);
+    const result: EnrichResult = {};
+
+    // Phillips renders lot details in div[data-testid="html-parser"] spans.
+    // Collect all text blocks from these elements.
+    const blocks: string[] = [];
+    $('div[data-testid="html-parser"]').each((_, el) => {
+      const text = $(el).text().trim();
+      if (text) blocks.push(text);
+    });
+
+    for (const block of blocks) {
+      // Dimensions: contains measurement patterns (e.g. "7 x 5 1/8 in.")
+      if (!result.dimensions && /\d+\s*[x×]\s*\d+.*(?:in|cm)/i.test(block)) {
+        result.dimensions = block;
+        continue;
+      }
+      // Medium: contains material keywords
+      if (!result.medium && MEDIUM_PATTERNS.test(block) && block.length < 200) {
+        result.medium = block;
+        continue;
+      }
+      // Year: "Painted in 1994." or "Executed in 2005"
+      if (!result.year) {
+        const yearMatch = block.match(/(?:painted|executed|created|conceived|dated|made)\s+(?:circa\s+)?(?:in\s+)?(\d{4})/i);
+        if (yearMatch) {
+          result.year = yearMatch[1];
+          continue;
+        }
+      }
+    }
+
+    return result;
+  } catch { return {}; }
+}
+
+async function enrichChristies(lot: AuctionLot): Promise<EnrichResult> {
+  try {
+    const res = await fetch(lot.url, { headers: { 'User-Agent': UA } });
+    if (!res.ok) return {};
+    const html = await res.text();
+    const $ = cheerio.load(html);
+    const result: EnrichResult = {};
+
+    // Christie's detail page has lot info in the "Details" section
+    const detailText = $('[data-scroll-section="Details"]').text().trim();
+    if (!detailText) return {};
+
+    // Extract medium: look for material keywords in the detail text
+    const medMatch = detailText.match(new RegExp(`(${MEDIUM_PATTERNS.source}[^,\\.\\n]{0,80})`, 'i'));
+    if (medMatch) result.medium = medMatch[0].trim();
+
+    // Extract dimensions: "24 x 18 in." or "65 x 81.2 cm."
+    const dimMatch = detailText.match(/(\d+(?:[.,]\d+)?(?:\s*[⁄\/]\s*\d+)?\s*[×x]\s*\d+(?:[.,]\d+)?(?:\s*[⁄\/]\s*\d+)?\s*(?:in|cm)\.?(?:\s*\([^)]+\))?)/i);
+    if (dimMatch) result.dimensions = dimMatch[1].trim();
+
+    // Extract year: "executed in 1963", "painted circa 1903-04", or standalone year
+    const yearPatterns = [
+      /(?:executed|painted|conceived|made|created|dated)\s+(?:circa|c\.?\s*)?\s*(?:in\s+)?(\d{4})/i,
+      /(?:circa|c\.)\s*(\d{4})/i,
+      /,\s*(\d{4})\s*(?:[,.]|$)/,
+    ];
+    for (const pat of yearPatterns) {
+      const m = detailText.match(pat);
+      if (m) { result.year = m[1]; break; }
+    }
+
+    return result;
+  } catch { return {}; }
+}
+
+async function enrichBonhams(lot: AuctionLot): Promise<EnrichResult> {
+  try {
+    const res = await fetch(lot.url, { headers: { 'User-Agent': UA } });
+    if (!res.ok) return {};
+    const html = await res.text();
+    const $ = cheerio.load(html);
+    const result: EnrichResult = {};
+
+    // Bonhams uses Next.js with __NEXT_DATA__ containing lot.sCatalogDesc (HTML)
+    // and also has JSON-LD with a plain text description
+    let description = '';
+
+    // Try JSON-LD first (cleanest)
+    $('script[type="application/ld+json"]').each((_, script) => {
+      try {
+        const json = JSON.parse($(script).html() || '{}');
+        if (json.description) description = json.description;
+      } catch {}
+    });
+
+    // Fallback to __NEXT_DATA__ sCatalogDesc
+    if (!description) {
+      $('script#__NEXT_DATA__').each((_, script) => {
+        try {
+          const json = JSON.parse($(script).html() || '{}');
+          const lotData = json?.props?.pageProps?.lot;
+          if (lotData?.sCatalogDesc) {
+            description = lotData.sCatalogDesc.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+          }
+        } catch {}
+      });
+    }
+
+    if (!description) return {};
+
+    // Parse medium from description
+    const medMatch = description.match(new RegExp(`(${MEDIUM_PATTERNS.source}[^,;.]{0,60})`, 'i'));
+    if (medMatch) result.medium = medMatch[0].trim();
+
+    // Parse dimensions
+    const dimMatch = description.match(/(\d+(?:\s*\d+\/\d+)?\s*[×x]\s*\d+(?:\s*\d+\/\d+)?\s*(?:in|cm)\.?(?:\s*\([^)]+\))?)/i);
+    if (dimMatch) result.dimensions = dimMatch[1].trim();
+
+    // Parse year
+    const yearMatch = description.match(/(?:^|,\s*)(\d{4})(?:\s|,|$)/m) ||
+                      description.match(/(?:executed|painted|dated)\s+(?:circa\s+)?(\d{4})/i);
+    if (yearMatch) result.year = yearMatch[1];
+
+    return result;
+  } catch { return {}; }
+}
+
+async function enrichSothebys(lot: AuctionLot): Promise<EnrichResult> {
+  try {
+    const res = await fetch(lot.url, { headers: { 'User-Agent': UA } });
+    if (!res.ok) return {};
+    const html = await res.text();
+    const $ = cheerio.load(html);
+    const result: EnrichResult = {};
+
+    // Try JSON-LD description
+    let description = '';
+    $('script[type="application/ld+json"]').each((_, script) => {
+      try {
+        const json = JSON.parse($(script).html() || '{}');
+        if (json.description) description = json.description;
+      } catch {}
+    });
+
+    // Fallback to og:description
+    if (!description) {
+      description = $('meta[property="og:description"]').attr('content') || '';
+    }
+
+    if (!description) return {};
+
+    const medMatch = description.match(new RegExp(`(${MEDIUM_PATTERNS.source}[^,;.]{0,60})`, 'i'));
+    if (medMatch) result.medium = medMatch[0].trim();
+
+    // Sotheby's uses "X by Y in." format
+    const dimMatch = description.match(/(\d+(?:[¼½¾⅓⅔⅛⅜⅝⅞]|\.\d+)?\s*(?:by|[×x])\s*\d+(?:[¼½¾⅓⅔⅛⅜⅝⅞]|\.\d+)?\s*(?:in|cm|mm)\.?)/i);
+    if (dimMatch) result.dimensions = dimMatch[1].trim();
+
+    const yearPatterns = [
+      /(?:executed|painted|conceived|created)\s+(?:circa\s+)?(?:in\s+)?(\d{4})/i,
+      /(?:circa|c\.)\s*(\d{4})/i,
+    ];
+    for (const pat of yearPatterns) {
+      const m = description.match(pat);
+      if (m) { result.year = m[1]; break; }
+    }
+
+    return result;
+  } catch { return {}; }
+}
+
+const ENRICH_MAX_PER_RUN = 200;
+const ENRICH_DELAY = 500;
+
+async function enrichLots(lots: AuctionLot[]): Promise<void> {
+  // Find lots missing any of medium, dimensions, year (skip Wright — already good)
+  const needsEnrich = lots.filter(l =>
+    l.auctionHouse !== 'Wright' && l.auctionHouse !== 'Rago' &&
+    (!l.medium || !l.dimensions || !l.year) &&
+    l.url
+  );
+
+  if (needsEnrich.length === 0) {
+    console.log('[Enrich] All lots already have complete data.');
+    return;
+  }
+
+  // Prioritize: upcoming first, then most recent sold
+  needsEnrich.sort((a, b) => {
+    if (a.status === 'upcoming' && b.status !== 'upcoming') return -1;
+    if (b.status === 'upcoming' && a.status !== 'upcoming') return 1;
+    return new Date(b.saleDate).getTime() - new Date(a.saleDate).getTime();
+  });
+
+  const batch = needsEnrich.slice(0, ENRICH_MAX_PER_RUN);
+  console.log(`[Enrich] ${needsEnrich.length} lots need enrichment, processing ${batch.length} this run...`);
+
+  let enriched = 0;
+  const houseCounts: Record<string, { total: number; success: number }> = {};
+
+  for (const lot of batch) {
+    const house = lot.auctionHouse;
+    if (!houseCounts[house]) houseCounts[house] = { total: 0, success: 0 };
+    houseCounts[house].total++;
+
+    let result: EnrichResult = {};
+    switch (house) {
+      case 'Phillips': result = await enrichPhillips(lot); break;
+      case "Christie's": result = await enrichChristies(lot); break;
+      case 'Bonhams': result = await enrichBonhams(lot); break;
+      case "Sotheby's": result = await enrichSothebys(lot); break;
+      default: continue;
+    }
+
+    let updated = false;
+    if (result.medium && !lot.medium) { lot.medium = result.medium; updated = true; }
+    if (result.dimensions && !lot.dimensions) { lot.dimensions = result.dimensions; updated = true; }
+    if (result.year && !lot.year) { lot.year = result.year; updated = true; }
+
+    if (updated) {
+      enriched++;
+      houseCounts[house].success++;
+    }
+
+    await sleep(ENRICH_DELAY);
+  }
+
+  console.log(`[Enrich] Enriched ${enriched}/${batch.length} lots.`);
+  for (const [house, counts] of Object.entries(houseCounts)) {
+    console.log(`  [${house}] ${counts.success}/${counts.total} enriched`);
+  }
+}
+
 // ── Crawl a single artist across all houses ──
 
 async function crawlArtist(artist: ArtistConfig): Promise<AuctionLot[]> {
@@ -1338,6 +1580,9 @@ async function main() {
     if (isNaN(db)) return -1;
     return db - da;
   });
+
+  // Enrich lots missing medium/dimensions/year from detail pages
+  await enrichLots(allLots);
 
   // Classify every lot
   let categoryCounts: Record<string, number> = {};
