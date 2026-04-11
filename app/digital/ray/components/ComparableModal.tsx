@@ -109,54 +109,42 @@ function mediumClass(medium: string | null): string | null {
 function scoreComparable(upcoming: AuctionLot, sold: AuctionLot): number {
   let score = 0;
 
-  // Category match — hard filter via multiplier
-  // Wrong category gets heavily penalized (0.15x) rather than just missing a bonus
-  let categoryMultiplier = 1;
-  if (upcoming.category !== 'unknown' && sold.category !== 'unknown') {
-    if (upcoming.category === sold.category) {
-      score += 20;
-    } else {
-      categoryMultiplier = 0.15; // severe penalty for category mismatch
-    }
-  }
-
-  // Medium sub-class match (weight: 20) — distinguishes sketches from paintings
-  // within the same "original" category
+  // Medium sub-class match (weight: 25) — distinguishes sketches from paintings
   const classA = mediumClass(upcoming.medium);
   const classB = mediumClass(sold.medium);
   if (classA && classB) {
-    if (classA === classB) score += 20;
-    else score += 3; // small credit for having medium data at all
+    if (classA === classB) score += 25;
+    else score += 3;
   }
   // Word-level medium similarity as tiebreaker (weight: 5)
   score += mediumSimilarity(upcoming.medium, sold.medium) * 5;
 
-  // Dimensions similarity (weight: 30) — critical for matching scale
+  // Dimensions similarity (weight: 35) — critical for matching scale
   const areaA = parseArea(upcoming.dimensions);
   const areaB = parseArea(sold.dimensions);
   if (areaA && areaB) {
     const ratio = Math.min(areaA, areaB) / Math.max(areaA, areaB);
-    score += ratio * 30;
+    score += ratio * 35;
   }
 
-  // Estimate proximity (weight: 20) — good proxy for importance/scale
+  // Estimate proximity (weight: 25) — good proxy for importance/scale
   const estMid = upcoming.estimateLow && upcoming.estimateHigh
     ? (upcoming.estimateLow + upcoming.estimateHigh) / 2
     : null;
   if (estMid && sold.priceUsd) {
     const ratio = Math.min(estMid, sold.priceUsd) / Math.max(estMid, sold.priceUsd);
-    score += ratio * 20;
+    score += ratio * 25;
   }
 
-  // Year proximity (weight: 5)
+  // Year proximity (weight: 10)
   const yearA = parseYear(upcoming.year);
   const yearB = parseYear(sold.year);
   if (yearA && yearB) {
     const diff = Math.abs(yearA - yearB);
-    score += Math.max(0, 1 - diff / 30) * 5;
+    score += Math.max(0, 1 - diff / 30) * 10;
   }
 
-  return score * categoryMultiplier;
+  return score;
 }
 
 const MAX_COMPARABLES = 15;
@@ -188,7 +176,9 @@ export default function ComparableModal({
       l.artist === lot.artist &&
       l.status === 'sold' &&
       l.priceUsd &&
-      l.id !== lot.id
+      l.id !== lot.id &&
+      // Hard filter: category must match (prints comp prints, originals comp originals, etc.)
+      (lot.category === 'unknown' || l.category === 'unknown' || l.category === lot.category)
     );
 
     const scored = sold.map(s => ({
