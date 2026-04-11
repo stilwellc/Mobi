@@ -17,36 +17,54 @@ function formatEstimate(lot: AuctionLot): string {
   return 'Estimate on request';
 }
 
-/** Convert fraction characters (½, ¼, etc.) and mixed numbers to decimals */
+/** Convert fraction characters (½, ¼, etc.), slash fractions (3/8), and mixed numbers to decimals */
 function parseFrac(s: string): number {
   const fracs: Record<string, number> = { '½': 0.5, '¼': 0.25, '¾': 0.75, '⅓': 0.333, '⅔': 0.667, '⅛': 0.125, '⅜': 0.375, '⅝': 0.625, '⅞': 0.875 };
+  // Strip non-numeric prefixes like "I." or "S." (image/sheet size labels)
+  const cleaned = s.replace(/^[A-Za-z.]+\s*/, '').trim();
   let val = 0;
-  // Match leading integer
-  const intMatch = s.match(/^(\d+)/);
-  if (intMatch) val += parseFloat(intMatch[1]);
-  // Match trailing fraction character
-  for (const [ch, n] of Object.entries(fracs)) {
-    if (s.includes(ch)) { val += n; break; }
+  // Try: "10 3/8" or "23 1/4" (integer + slash fraction)
+  const mixedSlash = cleaned.match(/^(\d+)\s+(\d+)\/(\d+)/);
+  if (mixedSlash) {
+    return parseFloat(mixedSlash[1]) + parseFloat(mixedSlash[2]) / parseFloat(mixedSlash[3]);
   }
-  // If no fraction char, try decimal
-  if (val === 0) val = parseFloat(s) || 0;
+  // Try standalone slash fraction "3/8"
+  const slashFrac = cleaned.match(/^(\d+)\/(\d+)/);
+  if (slashFrac) {
+    return parseFloat(slashFrac[1]) / parseFloat(slashFrac[2]);
+  }
+  // Match leading integer/decimal
+  const intMatch = cleaned.match(/^(\d+\.?\d*)/);
+  if (intMatch) val += parseFloat(intMatch[1]);
+  // Match trailing unicode fraction character
+  for (const [ch, n] of Object.entries(fracs)) {
+    if (cleaned.includes(ch)) { val += n; break; }
+  }
+  // If nothing matched, try decimal parse
+  if (val === 0) val = parseFloat(cleaned) || 0;
   return val;
 }
 
 /** Parse a dimension string into [height, width] or null.
- *  Handles: "24 x 18 in", "25¼ h × 20¾ w in", "63 × 52 cm", etc. */
+ *  Handles: "24 x 18 in", "25¼ h × 20¾ w in", "63 × 52 cm",
+ *  "99.8 by 73 cm.", "I. 23 1/4 x 39 3/4 in. (59.1 x 101 cm)S. ..." */
 function parseDims(dims: string | null): [number, number] | null {
   if (!dims) return null;
+  // For Image/Sheet format, extract just the first measurement block
+  // e.g., "I. 23 1/4 x 39 3/4 in. (59.1 x 101 cm)S. 30 3/8 x 45 3/4 in."
+  let str = dims;
+  const sheetMatch = dims.match(/[IS]\.\s*(.+?)(?:\(|[IS]\.|$)/);
+  if (sheetMatch) str = sheetMatch[1].trim();
   // Prefer inches; fall back to cm
-  const useIn = dims.toLowerCase().includes('in');
-  // Extract numeric tokens separated by × or x
-  const tokens = dims.split(/[x×]/i).map(t => t.trim());
+  const useIn = str.toLowerCase().includes('in');
+  // Split on "x", "×", or "by"
+  const tokens = str.split(/\s*(?:[x×]|\bby\b)\s*/i).map(t => t.trim());
   if (tokens.length < 2) return null;
   const h = parseFrac(tokens[0]);
   const w = parseFrac(tokens[1]);
   if (!h || !w) return null;
   // Normalize cm to inches for consistent comparison
-  if (!useIn && dims.toLowerCase().includes('cm')) {
+  if (!useIn && str.toLowerCase().includes('cm')) {
     return [h / 2.54, w / 2.54];
   }
   return [h, w];
@@ -75,26 +93,53 @@ function mediumSimilarity(a: string | null, b: string | null): number {
   return overlap / Math.max(wordsA.size, wordsB.size);
 }
 
+/** Classify medium into sub-type for finer matching within "original" category */
+function mediumClass(medium: string | null): string | null {
+  if (!medium) return null;
+  const m = medium.toLowerCase();
+  if (/oil|acrylic|enamel/.test(m) && /canvas|linen|panel|board/.test(m)) return 'painting';
+  if (/pencil|charcoal|graphite|crayon|ink|pastel|watercolor|gouache|marker/.test(m)) return 'work-on-paper';
+  if (/screen\s*print|lithograph|etching|woodcut|gicl[eé]e|print|engraving|aquatint|monoprint/.test(m)) return 'print';
+  if (/bronze|ceramic|resin|marble|plaster/.test(m)) return 'sculpture';
+  if (/canvas|linen|panel/.test(m)) return 'painting';
+  if (/paper/.test(m)) return 'work-on-paper';
+  return null;
+}
+
 function scoreComparable(upcoming: AuctionLot, sold: AuctionLot): number {
   let score = 0;
 
-  // Category match (weight: 30) — must be same type of work
+  // Category match — hard filter via multiplier
+  // Wrong category gets heavily penalized (0.15x) rather than just missing a bonus
+  let categoryMultiplier = 1;
   if (upcoming.category !== 'unknown' && sold.category !== 'unknown') {
-    if (upcoming.category === sold.category) score += 30;
+    if (upcoming.category === sold.category) {
+      score += 20;
+    } else {
+      categoryMultiplier = 0.15; // severe penalty for category mismatch
+    }
   }
 
-  // Dimensions similarity (weight: 35) — most important comparable factor
-  // When both have dimensions, this dominates. A small drawing is not
-  // comparable to a large canvas regardless of other factors.
+  // Medium sub-class match (weight: 20) — distinguishes sketches from paintings
+  // within the same "original" category
+  const classA = mediumClass(upcoming.medium);
+  const classB = mediumClass(sold.medium);
+  if (classA && classB) {
+    if (classA === classB) score += 20;
+    else score += 3; // small credit for having medium data at all
+  }
+  // Word-level medium similarity as tiebreaker (weight: 5)
+  score += mediumSimilarity(upcoming.medium, sold.medium) * 5;
+
+  // Dimensions similarity (weight: 30) — critical for matching scale
   const areaA = parseArea(upcoming.dimensions);
   const areaB = parseArea(sold.dimensions);
   if (areaA && areaB) {
     const ratio = Math.min(areaA, areaB) / Math.max(areaA, areaB);
-    score += ratio * 35;
+    score += ratio * 30;
   }
 
-  // Estimate proximity (weight: 20) — good proxy for size/importance
-  // when dimensions are missing
+  // Estimate proximity (weight: 20) — good proxy for importance/scale
   const estMid = upcoming.estimateLow && upcoming.estimateHigh
     ? (upcoming.estimateLow + upcoming.estimateHigh) / 2
     : null;
@@ -103,18 +148,15 @@ function scoreComparable(upcoming: AuctionLot, sold: AuctionLot): number {
     score += ratio * 20;
   }
 
-  // Medium similarity (weight: 10)
-  score += mediumSimilarity(upcoming.medium, sold.medium) * 10;
-
   // Year proximity (weight: 5)
   const yearA = parseYear(upcoming.year);
   const yearB = parseYear(sold.year);
   if (yearA && yearB) {
     const diff = Math.abs(yearA - yearB);
-    score += Math.max(0, 1 - diff / 30) * 5; // 30-year window
+    score += Math.max(0, 1 - diff / 30) * 5;
   }
 
-  return score;
+  return score * categoryMultiplier;
 }
 
 const MAX_COMPARABLES = 15;
@@ -177,43 +219,86 @@ export default function ComparableModal({
         background: 'rgba(0, 0, 0, 0.7)',
         backdropFilter: 'blur(8px)',
         display: 'flex',
-        alignItems: 'center',
+        alignItems: 'flex-end',
         justifyContent: 'center',
-        padding: 20,
+        padding: 0,
       }}
     >
+      <style>{`
+        .comp-modal-row:hover { background: var(--color-bg-card) !important; }
+        .comp-modal-close:hover { color: var(--color-fg) !important; }
+        .comp-modal-panel {
+          width: 100%;
+          max-width: 720px;
+          max-height: calc(100vh - 40px);
+          border-radius: 20px 20px 0 0;
+          overflow: auto;
+        }
+        .comp-modal-header {
+          display: flex;
+          gap: 0;
+        }
+        .comp-modal-img {
+          width: 200px;
+          min-height: 200px;
+        }
+        .comp-modal-header-info { padding: 28px 28px; }
+        .comp-modal-comps { padding: 24px 28px 32px; }
+        .comp-modal-row-inner {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+        }
+        .comp-modal-meta {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 4px;
+          align-items: center;
+        }
+        .comp-modal-meta-dims { display: inline; }
+        .comp-modal-thumb {
+          width: 52px;
+          height: 52px;
+        }
+        .comp-modal-price { text-align: right; }
+        @media (min-width: 769px) {
+          .comp-modal-panel {
+            align-self: center;
+            border-radius: 20px;
+            margin: 20px;
+            max-height: calc(100vh - 40px);
+          }
+        }
+        @media (max-width: 768px) {
+          .comp-modal-header { flex-direction: column !important; }
+          .comp-modal-img { width: 100% !important; height: 180px !important; min-height: auto !important; }
+          .comp-modal-header-info { padding: 20px 20px !important; }
+          .comp-modal-comps { padding: 20px 16px 28px !important; }
+          .comp-modal-row-inner { gap: 10px !important; }
+          .comp-modal-thumb { width: 44px !important; height: 44px !important; }
+          .comp-modal-meta-dims { display: none !important; }
+          .comp-modal-price { min-width: 60px; }
+        }
+      `}</style>
       <div
         onClick={e => e.stopPropagation()}
+        className="comp-modal-panel"
         style={{
           background: 'var(--color-bg)',
           border: '1px solid var(--color-border)',
-          borderRadius: 20,
-          width: '100%',
-          maxWidth: 680,
-          maxHeight: 'calc(100vh - 40px)',
-          overflow: 'auto',
           position: 'relative',
         }}
       >
-        <style>{`
-          .comp-modal-row:hover { background: var(--color-bg-card) !important; }
-          .comp-modal-close:hover { color: var(--color-fg) !important; }
-          @media (max-width: 768px) {
-            .comp-modal-header { flex-direction: column !important; }
-            .comp-modal-img { width: 100% !important; height: 200px !important; }
-          }
-        `}</style>
-
         {/* Close button */}
         <button
           className="comp-modal-close"
           onClick={onClose}
           style={{
             position: 'sticky',
-            top: 16,
+            top: 12,
             float: 'right',
-            marginRight: 16,
-            marginTop: 16,
+            marginRight: 12,
+            marginTop: 12,
             background: 'var(--color-bg-card)',
             border: '1px solid var(--color-border)',
             borderRadius: 100,
@@ -234,20 +319,15 @@ export default function ComparableModal({
 
         {/* Header: image + lot info */}
         <div className="comp-modal-header" style={{
-          display: 'flex',
-          gap: 0,
           borderBottom: '1px solid var(--color-border)',
         }}>
           <div className="comp-modal-img" style={{
-            width: 220,
-            minHeight: 200,
             flexShrink: 0,
             background: `linear-gradient(135deg, var(--color-bg-card) 0%, var(--color-bg) 100%)`,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             overflow: 'hidden',
-            borderRadius: '20px 0 0 0',
           }}>
             {lot.imageUrl ? (
               <img
@@ -269,7 +349,7 @@ export default function ComparableModal({
             )}
           </div>
 
-          <div style={{ padding: '28px 24px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          <div className="comp-modal-header-info" style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
               <span style={{
                 fontSize: 9,
@@ -309,7 +389,7 @@ export default function ComparableModal({
 
             <h2 style={{
               fontFamily: "'Cormorant Garamond', serif",
-              fontSize: 24,
+              fontSize: 22,
               fontWeight: 400,
               lineHeight: 1.25,
               marginBottom: 4,
@@ -318,12 +398,12 @@ export default function ComparableModal({
             </h2>
 
             {lot.year && (
-              <div style={{ fontSize: 11, color: 'var(--color-text-ghost)', marginBottom: 12 }}>
+              <div style={{ fontSize: 11, color: 'var(--color-text-ghost)', marginBottom: 10 }}>
                 {lot.year}{lot.medium ? ` · ${lot.medium}` : ''}
               </div>
             )}
 
-            <div style={{ fontSize: 16, color: 'var(--color-accent-blue)', fontWeight: 500, marginBottom: 4 }}>
+            <div style={{ fontSize: 16, color: 'var(--color-accent-blue)', fontWeight: 500, marginBottom: 3 }}>
               {formatEstimate(lot)}
             </div>
             <div style={{ fontSize: 10, color: 'var(--color-text-ghost)' }}>
@@ -339,7 +419,7 @@ export default function ComparableModal({
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: 6,
-                marginTop: 16,
+                marginTop: 14,
                 padding: '8px 20px',
                 borderRadius: 100,
                 background: 'var(--color-accent-blue)',
@@ -350,6 +430,7 @@ export default function ComparableModal({
                 textTransform: 'uppercase',
                 textDecoration: 'none',
                 transition: 'opacity 0.15s',
+                alignSelf: 'flex-start',
               }}
             >
               View Lot &#8599;
@@ -358,14 +439,14 @@ export default function ComparableModal({
         </div>
 
         {/* Comparables */}
-        <div style={{ padding: '20px 24px 28px' }}>
+        <div className="comp-modal-comps">
           <div style={{
             fontSize: 10,
             letterSpacing: '0.15em',
             textTransform: 'uppercase',
             color: 'var(--color-text-label)',
             fontWeight: 600,
-            marginBottom: 14,
+            marginBottom: 16,
           }}>
             Comparable Sales ({comparables.length})
           </div>
@@ -380,7 +461,7 @@ export default function ComparableModal({
               No comparable sold lots found for this artist.
             </div>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
               {comparables.map(({ lot: comp, score }, i) => {
                 const compHouseColor = houseColors[comp.auctionHouse] || '#96B8D4';
                 const estMid = lot.estimateLow && lot.estimateHigh
@@ -398,117 +479,111 @@ export default function ComparableModal({
                     rel="noopener noreferrer"
                     className="comp-modal-row"
                     style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 14,
-                      padding: '12px 14px',
+                      display: 'block',
+                      padding: '10px 12px',
                       borderRadius: 12,
                       textDecoration: 'none',
                       color: 'inherit',
                       transition: 'background 0.15s',
                     }}
                   >
-                    {/* Rank */}
-                    <span style={{
-                      fontSize: 10,
-                      color: 'var(--color-text-ghost)',
-                      fontWeight: 500,
-                      width: 18,
-                      textAlign: 'right',
-                      flexShrink: 0,
-                    }}>
-                      {i + 1}
-                    </span>
-
-                    {/* Thumbnail */}
-                    <div style={{
-                      width: 44,
-                      height: 44,
-                      borderRadius: 8,
-                      overflow: 'hidden',
-                      flexShrink: 0,
-                      background: 'var(--color-bg-card)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}>
-                      {comp.imageUrl ? (
-                        <img src={comp.imageUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                      ) : (
-                        <span style={{
-                          fontFamily: "'Cormorant Garamond', serif",
-                          fontSize: 18,
-                          color: 'var(--color-text-ghost)',
-                          opacity: 0.3,
-                          fontStyle: 'italic',
-                        }}>
-                          {comp.title.charAt(0)}
-                        </span>
-                      )}
-                    </div>
-
-                    {/* Info */}
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{
-                        fontSize: 13,
-                        fontFamily: "'Cormorant Garamond', serif",
-                        fontWeight: 500,
-                        whiteSpace: 'nowrap',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        marginBottom: 2,
-                      }}>
-                        {comp.title}
-                      </div>
-                      <div style={{
+                    <div className="comp-modal-row-inner">
+                      {/* Rank */}
+                      <span style={{
                         fontSize: 10,
                         color: 'var(--color-text-ghost)',
-                        display: 'flex',
-                        flexWrap: 'wrap',
-                        gap: 4,
-                        alignItems: 'center',
-                      }}>
-                        <span style={{ color: compHouseColor, fontWeight: 600 }}>{comp.auctionHouse}</span>
-                        <span>&middot;</span>
-                        <span>{new Date(comp.saleDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}</span>
-                        {comp.medium && (
-                          <>
-                            <span>&middot;</span>
-                            <span style={{
-                              maxWidth: 150,
-                              whiteSpace: 'nowrap',
-                              overflow: 'hidden',
-                              textOverflow: 'ellipsis',
-                            }}>{comp.medium}</span>
-                          </>
-                        )}
-                        {comp.dimensions && (
-                          <>
-                            <span>&middot;</span>
-                            <span>{comp.dimensions}</span>
-                          </>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Price + ratio */}
-                    <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                      <div style={{
-                        fontSize: 13,
                         fontWeight: 500,
-                        color: 'var(--color-fg)',
+                        width: 16,
+                        textAlign: 'right',
+                        flexShrink: 0,
                       }}>
-                        {formatPrice(comp.priceUsd!)}
+                        {i + 1}
+                      </span>
+
+                      {/* Thumbnail */}
+                      <div className="comp-modal-thumb" style={{
+                        borderRadius: 8,
+                        overflow: 'hidden',
+                        flexShrink: 0,
+                        background: 'var(--color-bg-card)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
+                        {comp.imageUrl ? (
+                          <img src={comp.imageUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        ) : (
+                          <span style={{
+                            fontFamily: "'Cormorant Garamond', serif",
+                            fontSize: 18,
+                            color: 'var(--color-text-ghost)',
+                            opacity: 0.3,
+                            fontStyle: 'italic',
+                          }}>
+                            {comp.title.charAt(0)}
+                          </span>
+                        )}
                       </div>
-                      {ratio !== null && (
+
+                      {/* Info */}
+                      <div style={{ flex: 1, minWidth: 0 }}>
                         <div style={{
-                          fontSize: 10,
-                          color: ratio >= 1 ? '#8BC48A' : '#D49696',
+                          fontSize: 14,
+                          fontFamily: "'Cormorant Garamond', serif",
                           fontWeight: 500,
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          marginBottom: 3,
                         }}>
-                          {ratio >= 1 ? '+' : ''}{((ratio - 1) * 100).toFixed(0)}% est.
+                          {comp.title}
                         </div>
-                      )}
+                        <div className="comp-modal-meta" style={{
+                          fontSize: 10,
+                          color: 'var(--color-text-ghost)',
+                        }}>
+                          <span style={{ color: compHouseColor, fontWeight: 600 }}>{comp.auctionHouse}</span>
+                          <span>&middot;</span>
+                          <span>{new Date(comp.saleDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}</span>
+                          {comp.medium && (
+                            <>
+                              <span>&middot;</span>
+                              <span style={{
+                                maxWidth: 140,
+                                whiteSpace: 'nowrap',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                              }}>{comp.medium}</span>
+                            </>
+                          )}
+                          {comp.dimensions && (
+                            <span className="comp-modal-meta-dims">
+                              <span>&middot; </span>
+                              {comp.dimensions}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Price + ratio */}
+                      <div className="comp-modal-price" style={{ flexShrink: 0 }}>
+                        <div style={{
+                          fontSize: 14,
+                          fontWeight: 500,
+                          color: 'var(--color-fg)',
+                        }}>
+                          {formatPrice(comp.priceUsd!)}
+                        </div>
+                        {ratio !== null && (
+                          <div style={{
+                            fontSize: 10,
+                            color: ratio >= 1 ? '#8BC48A' : '#D49696',
+                            fontWeight: 500,
+                          }}>
+                            {ratio >= 1 ? '+' : ''}{((ratio - 1) * 100).toFixed(0)}% est.
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </a>
                 );
