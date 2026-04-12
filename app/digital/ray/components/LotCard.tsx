@@ -118,12 +118,11 @@ export default function LotCard({
             left: 10,
             padding: '3px 10px',
             borderRadius: 100,
-            background: 'rgba(150, 184, 212, 0.12)',
-            border: '1px solid rgba(150, 184, 212, 0.25)',
+            background: '#96B8D4',
             fontSize: 9,
             letterSpacing: '0.12em',
             textTransform: 'uppercase',
-            color: '#96B8D4',
+            color: '#060606',
             fontWeight: 600,
             display: 'flex',
             alignItems: 'center',
@@ -133,7 +132,7 @@ export default function LotCard({
               width: 5,
               height: 5,
               borderRadius: '50%',
-              background: '#96B8D4',
+              background: '#060606',
               animation: 'pulse 2s infinite',
             }} />
             Live
@@ -146,12 +145,11 @@ export default function LotCard({
             right: 10,
             padding: '3px 9px',
             borderRadius: 100,
-            background: `${buySignal.color}18`,
-            border: `1px solid ${buySignal.color}40`,
+            background: buySignal.color,
             fontSize: 9,
             letterSpacing: '0.08em',
             textTransform: 'uppercase',
-            color: buySignal.color,
+            color: '#060606',
             fontWeight: 600,
           }}>
             {buySignal.label}
