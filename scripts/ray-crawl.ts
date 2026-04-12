@@ -1231,11 +1231,11 @@ function computeStats(lots: AuctionLot[], existingStats: MarketStats | null): Ma
 
 type EnrichResult = { medium?: string; dimensions?: string; year?: string };
 
-const MEDIUM_PATTERNS = /(?:oil|acrylic|gouache|watercolor|watercolour|ink|charcoal|pencil|pastel|spray|enamel|screenprint|silkscreen|lithograph|etching|woodcut|woodblock|linocut|engraving|aquatint|monotype|monoprint|offset|poster|gicl[eé]e|print|photograph|gelatin silver|c-print|chromogenic|pigment print|inkjet|cibachrome|bronze|ceramic|porcelain|mixed media|collage|canvas|linen|paper|board|panel|synthetic polymer|marker|crayon|felt[- ]?tip|tempera|encaustic)/i;
+const MEDIUM_PATTERNS = /(?:oil|acrylic|gouache|watercolor|watercolour|ink|charcoal|pencil|pastel|spray|enamel|screenprint|silkscreen|lithograph|etching|woodcut|woodblock|linocut|engraving|aquatint|monotype|monoprint|offset|poster|gicl[eé]e|print|photograph|gelatin silver|c-print|chromogenic|pigment print|inkjet|cibachrome|bronze|ceramic|porcelain|earthenware|stoneware|terracotta|glazed|mixed media|collage|canvas|linen|paper|board|panel|synthetic polymer|marker|crayon|felt[- ]?tip|tempera|encaustic|aluminum|steel|wood|glass|leather|fabric|textile|neon|plaster|resin|fiberglass|marble)/i;
 
 async function enrichPhillips(lot: AuctionLot): Promise<EnrichResult> {
   try {
-    const res = await fetch(lot.url, { headers: { 'User-Agent': UA } });
+    const res = await fetch(lot.url, { signal: AbortSignal.timeout(10_000), headers: { 'User-Agent': UA } });
     if (!res.ok) return {};
     const html = await res.text();
     const $ = cheerio.load(html);
@@ -1276,33 +1276,65 @@ async function enrichPhillips(lot: AuctionLot): Promise<EnrichResult> {
 
 async function enrichChristies(lot: AuctionLot): Promise<EnrichResult> {
   try {
-    const res = await fetch(lot.url, { headers: { 'User-Agent': UA } });
+    const res = await fetch(lot.url, { signal: AbortSignal.timeout(10_000), headers: { 'User-Agent': UA } });
     if (!res.ok) return {};
     const html = await res.text();
     const $ = cheerio.load(html);
     const result: EnrichResult = {};
 
-    // Christie's detail page has lot info in the "Details" section
-    const detailText = $('[data-scroll-section="Details"]').text().trim();
-    if (!detailText) return {};
+    // Strategy 1: Parse the accordion text (most reliable)
+    // Christie's has lot details in <span class="chr-lot-section__accordion--text">
+    let detailText = '';
+    $('span.chr-lot-section__accordion--text').each((_, el) => {
+      const t = $(el).text().trim();
+      if (t && !detailText) detailText = t;
+    });
 
-    // Extract medium: look for material keywords in the detail text
-    const medMatch = detailText.match(new RegExp(`(${MEDIUM_PATTERNS.source}[^,\\.\\n]{0,80})`, 'i'));
-    if (medMatch) result.medium = medMatch[0].trim();
+    // Strategy 2: Try window.chrComponents.lotHeader_* JSON for dimensions
+    if (!detailText) {
+      $('script').each((_, script) => {
+        const content = $(script).html() || '';
+        const m = content.match(/window\.chrComponents\.lotHeader_\d+\s*=\s*(\{[\s\S]*?\});/);
+        if (m) {
+          try {
+            const json = JSON.parse(m[1]);
+            const lotData = json?.data?.lots?.[0];
+            if (lotData?.lot_assets?.[0]?.measurements_txt) {
+              result.dimensions = lotData.lot_assets[0].measurements_txt;
+            }
+          } catch {}
+        }
+      });
+    }
 
-    // Extract dimensions: "24 x 18 in." or "65 x 81.2 cm."
-    const dimMatch = detailText.match(/(\d+(?:[.,]\d+)?(?:\s*[⁄\/]\s*\d+)?\s*[×x]\s*\d+(?:[.,]\d+)?(?:\s*[⁄\/]\s*\d+)?\s*(?:in|cm)\.?(?:\s*\([^)]+\))?)/i);
-    if (dimMatch) result.dimensions = dimMatch[1].trim();
+    // Strategy 3: Fallback to data-scroll-section
+    if (!detailText) {
+      detailText = $('[data-scroll-section="Details"]').text().trim();
+    }
 
-    // Extract year: "executed in 1963", "painted circa 1903-04", or standalone year
-    const yearPatterns = [
-      /(?:executed|painted|conceived|made|created|dated)\s+(?:circa|c\.?\s*)?\s*(?:in\s+)?(\d{4})/i,
-      /(?:circa|c\.)\s*(\d{4})/i,
-      /,\s*(\d{4})\s*(?:[,.]|$)/,
-    ];
-    for (const pat of yearPatterns) {
-      const m = detailText.match(pat);
-      if (m) { result.year = m[1]; break; }
+    if (!detailText && !result.dimensions) return {};
+
+    if (detailText) {
+      // Extract medium
+      const medMatch = detailText.match(new RegExp(`(${MEDIUM_PATTERNS.source}[^,\\.\\n]{0,80})`, 'i'));
+      if (medMatch) result.medium = medMatch[0].trim();
+
+      // Extract dimensions: "243.8 x 203.2 cm. (97 x 80 in.)" or "24 x 18 in."
+      if (!result.dimensions) {
+        const dimMatch = detailText.match(/(\d+(?:[.,]\d+)?(?:[¼½¾⅓⅔⅛⅜⅝⅞]|\s+\d+\/\d+)?\s*[×x]\s*\d+(?:[.,]\d+)?(?:[¼½¾⅓⅔⅛⅜⅝⅞]|\s+\d+\/\d+)?\s*(?:in|cm)\.?(?:\s*\([^)]+\))?)/i);
+        if (dimMatch) result.dimensions = dimMatch[1].trim();
+      }
+
+      // Extract year
+      const yearPatterns = [
+        /(?:executed|painted|conceived|made|created|dated)\s+(?:circa|c\.?\s*)?\s*(?:in\s+)?(\d{4})/i,
+        /(?:circa|c\.)\s*(\d{4})/i,
+        /,\s*(\d{4})\s*(?:[,.]|$)/,
+      ];
+      for (const pat of yearPatterns) {
+        const m = detailText.match(pat);
+        if (m) { result.year = m[1]; break; }
+      }
     }
 
     return result;
@@ -1311,17 +1343,15 @@ async function enrichChristies(lot: AuctionLot): Promise<EnrichResult> {
 
 async function enrichBonhams(lot: AuctionLot): Promise<EnrichResult> {
   try {
-    const res = await fetch(lot.url, { headers: { 'User-Agent': UA } });
+    const res = await fetch(lot.url, { signal: AbortSignal.timeout(10_000), headers: { 'User-Agent': UA } });
     if (!res.ok) return {};
     const html = await res.text();
     const $ = cheerio.load(html);
     const result: EnrichResult = {};
 
-    // Bonhams uses Next.js with __NEXT_DATA__ containing lot.sCatalogDesc (HTML)
-    // and also has JSON-LD with a plain text description
+    // Bonhams embeds lot data in JSON-LD (@type: Product) with a combined description string
     let description = '';
 
-    // Try JSON-LD first (cleanest)
     $('script[type="application/ld+json"]').each((_, script) => {
       try {
         const json = JSON.parse($(script).html() || '{}');
@@ -1329,33 +1359,51 @@ async function enrichBonhams(lot: AuctionLot): Promise<EnrichResult> {
       } catch {}
     });
 
-    // Fallback to __NEXT_DATA__ sCatalogDesc
-    if (!description) {
-      $('script#__NEXT_DATA__').each((_, script) => {
-        try {
-          const json = JSON.parse($(script).html() || '{}');
-          const lotData = json?.props?.pageProps?.lot;
-          if (lotData?.sCatalogDesc) {
-            description = lotData.sCatalogDesc.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
-          }
-        } catch {}
-      });
-    }
-
     if (!description) return {};
 
-    // Parse medium from description
+    // Parse medium: look for material keywords
     const medMatch = description.match(new RegExp(`(${MEDIUM_PATTERNS.source}[^,;.]{0,60})`, 'i'));
     if (medMatch) result.medium = medMatch[0].trim();
 
-    // Parse dimensions
-    const dimMatch = description.match(/(\d+(?:\s*\d+\/\d+)?\s*[×x]\s*\d+(?:\s*\d+\/\d+)?\s*(?:in|cm)\.?(?:\s*\([^)]+\))?)/i);
-    if (dimMatch) result.dimensions = dimMatch[1].trim();
+    // Parse dimensions — multiple formats:
+    const dimPatterns = [
+      // Standard W x H: "24 x 18 in", "63 × 52 cm", "99.8 by 73 cm."
+      /(\d+(?:[¼½¾⅓⅔⅛⅜⅝⅞]|\s+\d+\/\d+)?(?:\.\d+)?\s*(?:[×x]|\bby\b)\s*\d+(?:[¼½¾⅓⅔⅛⅜⅝⅞]|\s+\d+\/\d+)?(?:\.\d+)?\s*(?:in|cm)\.?(?:\s*\([^)]+\))?)/i,
+      // "height 34in; width 32in" or "height of chair 32 1/2in (83cm); width 32in"
+      /height\s+(?:of\s+\w+\s+)?(\d+(?:\s+\d+\/\d+)?(?:[.,]\d+)?)\s*in[^;]*;\s*width\s+(\d+(?:\s+\d+\/\d+)?(?:[.,]\d+)?)\s*in/i,
+      // Single dimension: "ht. 9 3/8 in." or "height 24in"
+      /(?:ht\.?|height)\s+(\d+(?:\s+\d+\/\d+)?(?:[.,]\d+)?)\s*in/i,
+    ];
 
-    // Parse year
-    const yearMatch = description.match(/(?:^|,\s*)(\d{4})(?:\s|,|$)/m) ||
-                      description.match(/(?:executed|painted|dated)\s+(?:circa\s+)?(\d{4})/i);
-    if (yearMatch) result.year = yearMatch[1];
+    for (let i = 0; i < dimPatterns.length; i++) {
+      const m = description.match(dimPatterns[i]);
+      if (m) {
+        if (m[2]) {
+          // height/width format — reconstruct as "H x W in"
+          result.dimensions = `${m[1]} x ${m[2]} in`;
+        } else if (i === 2) {
+          // Single dimension (ht. only) — store as-is for reference
+          result.dimensions = `${m[1]} in (height)`;
+        } else {
+          result.dimensions = m[1].trim();
+        }
+        break;
+      }
+    }
+
+    // Parse year — multiple patterns
+    const yearPatterns = [
+      /(?:executed|painted|dated|conceived|created)\s+(?:circa\s+)?(?:in\s+)?(\d{4})/i,
+      /(?:circa|c\.)\s*(\d{4})/i,
+      // "designed 1956" or "produced 1984"
+      /(?:designed|produced|made)\s+(?:circa\s+)?(\d{4})/i,
+      // Standalone year after comma: ", 1963" (common in descriptions)
+      /,\s*(\d{4})(?:\s|,|$)/,
+    ];
+    for (const pat of yearPatterns) {
+      const m = description.match(pat);
+      if (m) { result.year = m[1]; break; }
+    }
 
     return result;
   } catch { return {}; }
@@ -1363,7 +1411,7 @@ async function enrichBonhams(lot: AuctionLot): Promise<EnrichResult> {
 
 async function enrichSothebys(lot: AuctionLot): Promise<EnrichResult> {
   try {
-    const res = await fetch(lot.url, { headers: { 'User-Agent': UA } });
+    const res = await fetch(lot.url, { signal: AbortSignal.timeout(10_000), headers: { 'User-Agent': UA } });
     if (!res.ok) return {};
     const html = await res.text();
     const $ = cheerio.load(html);
@@ -1405,8 +1453,8 @@ async function enrichSothebys(lot: AuctionLot): Promise<EnrichResult> {
   } catch { return {}; }
 }
 
-const ENRICH_MAX_PER_RUN = 2000;
-const ENRICH_DELAY = 300;
+const ENRICH_MAX_PER_RUN = 10000;
+const ENRICH_DELAY = 250;
 
 async function enrichLots(lots: AuctionLot[]): Promise<void> {
   // Find lots missing any of medium, dimensions, year (skip Wright — already good)

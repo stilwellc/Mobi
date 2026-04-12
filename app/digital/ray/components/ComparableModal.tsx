@@ -195,6 +195,22 @@ export default function ComparableModal({
     return scored.slice(0, MAX_COMPARABLES);
   }, [lot, allLots]);
 
+  const compStats = useMemo(() => {
+    if (comparables.length === 0) return null;
+    const prices = comparables.map(c => c.lot.priceUsd!).sort((a, b) => a - b);
+    const median = prices.length % 2 === 0
+      ? (prices[prices.length / 2 - 1] + prices[prices.length / 2]) / 2
+      : prices[Math.floor(prices.length / 2)];
+    const low = prices[0];
+    const high = prices[prices.length - 1];
+    const estMid = lot.estimateLow && lot.estimateHigh
+      ? (lot.estimateLow + lot.estimateHigh) / 2
+      : null;
+    const aboveEst = estMid ? prices.filter(p => p >= estMid).length : 0;
+    const hammerVsEst = estMid ? median / estMid : null;
+    return { median, low, high, aboveEst, total: prices.length, hammerVsEst };
+  }, [comparables, lot]);
+
   const houseColor = houseColors[lot.auctionHouse] || '#96B8D4';
   const catLabel = categoryLabels[lot.category] || null;
   const catColor = categoryColors[lot.category] || '#888';
@@ -263,6 +279,7 @@ export default function ComparableModal({
           .comp-modal-header { flex-direction: column !important; }
           .comp-modal-img { width: 100% !important; height: 180px !important; min-height: auto !important; }
           .comp-modal-header-info { padding: 20px 20px !important; }
+          .comp-modal-stats { padding: 14px 16px !important; }
           .comp-modal-comps { padding: 20px 16px 28px !important; }
           .comp-modal-row-inner { gap: 10px !important; }
           .comp-modal-thumb { width: 44px !important; height: 44px !important; }
@@ -427,6 +444,52 @@ export default function ComparableModal({
             </a>
           </div>
         </div>
+
+        {/* Summary Stats */}
+        {compStats && (
+          <div className="comp-modal-stats" style={{
+            padding: '18px 28px',
+            borderBottom: '1px solid var(--color-border)',
+            display: 'flex',
+            gap: 0,
+          }}>
+            <div style={{ flex: 1, textAlign: 'center' }}>
+              <div style={{ fontSize: 18, fontWeight: 500, color: 'var(--color-fg)', fontFamily: "'Cormorant Garamond', serif" }}>
+                {formatPrice(compStats.median)}
+              </div>
+              <div style={{ fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--color-text-ghost)', marginTop: 3 }}>
+                Median
+              </div>
+            </div>
+            <div style={{ width: 1, background: 'var(--color-border)', margin: '0 4px' }} />
+            <div style={{ flex: 1, textAlign: 'center' }}>
+              <div style={{ fontSize: 18, fontWeight: 500, color: 'var(--color-fg)', fontFamily: "'Cormorant Garamond', serif" }}>
+                {formatPrice(compStats.low)} — {formatPrice(compStats.high)}
+              </div>
+              <div style={{ fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--color-text-ghost)', marginTop: 3 }}>
+                Range
+              </div>
+            </div>
+            {compStats.hammerVsEst !== null && (
+              <>
+                <div style={{ width: 1, background: 'var(--color-border)', margin: '0 4px' }} />
+                <div style={{ flex: 1, textAlign: 'center' }}>
+                  <div style={{
+                    fontSize: 18,
+                    fontWeight: 500,
+                    fontFamily: "'Cormorant Garamond', serif",
+                    color: compStats.hammerVsEst >= 1 ? '#8BC48A' : '#D49696',
+                  }}>
+                    {compStats.hammerVsEst >= 1 ? '+' : ''}{((compStats.hammerVsEst - 1) * 100).toFixed(0)}%
+                  </div>
+                  <div style={{ fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--color-text-ghost)', marginTop: 3 }}>
+                    vs. Est.
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        )}
 
         {/* Comparables */}
         <div className="comp-modal-comps">
