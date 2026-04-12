@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
-import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
+import { ResponsiveContainer, AreaChart, Area, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { PricePoint, AuctionLot } from '../types';
 import type { LotCategory } from '../types';
 import { formatPrice, categoryLabels, categoryColors } from '../utils';
@@ -21,6 +21,9 @@ function formatAxis(value: number): string {
   return `$${value}`;
 }
 
+const tooltipColors: Record<string, string> = { avgPrice: '#96B8D4', highPrice: '#D4B896', trendline: '#A8D4A0' };
+const tooltipLabels: Record<string, string> = { avgPrice: 'Avg', highPrice: 'High', trendline: 'Trend' };
+
 function CustomTooltip({ active, payload, label }: { active?: boolean; payload?: Array<{ value: number; dataKey: string }>; label?: string }) {
   if (!active || !payload?.length) return null;
   return (
@@ -34,9 +37,9 @@ function CustomTooltip({ active, payload, label }: { active?: boolean; payload?:
       <div style={{ fontSize: 10, color: 'var(--color-text-label)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 6 }}>
         {label}
       </div>
-      {payload.map((entry) => (
-        <div key={entry.dataKey} style={{ fontSize: 13, color: entry.dataKey === 'avgPrice' ? '#96B8D4' : '#D4B896', marginBottom: 1, fontWeight: 500 }}>
-          {entry.dataKey === 'avgPrice' ? 'Avg' : 'High'}: {formatAxis(entry.value)}
+      {payload.filter(e => e.value != null).map((entry) => (
+        <div key={entry.dataKey} style={{ fontSize: 13, color: tooltipColors[entry.dataKey] || '#96B8D4', marginBottom: 1, fontWeight: 500 }}>
+          {tooltipLabels[entry.dataKey] || entry.dataKey}: {formatAxis(entry.value)}
         </div>
       ))}
     </div>
@@ -80,7 +83,15 @@ export default function PriceChart({ lots, allLots, categoryFilter = 'all', onCa
   const data = useMemo(() => {
     const filtered = categoryFilter === 'all' ? lots : lots.filter(l => l.category === categoryFilter);
     const computed = computePriceHistory(filtered);
-    return computed.length >= 2 ? computed : (categoryFilter === 'all' && fallbackData?.length ? fallbackData : computed);
+    const points = computed.length >= 2 ? computed : (categoryFilter === 'all' && fallbackData?.length ? fallbackData : computed);
+    // Add 3-quarter moving average trendline
+    const window = 3;
+    return points.map((p, i) => {
+      if (i < window - 1) return { ...p, trendline: undefined };
+      const slice = points.slice(i - window + 1, i + 1);
+      const avg = slice.reduce((s, q) => s + q.avgPrice, 0) / window;
+      return { ...p, trendline: avg };
+    });
   }, [lots, categoryFilter, fallbackData]);
 
   const catPricing = useMemo(() => {
@@ -177,6 +188,12 @@ export default function PriceChart({ lots, allLots, categoryFilter = 'all', onCa
                   High
                 </span>
               </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                <span style={{ width: 12, height: 2, background: '#A8D4A0', borderRadius: 1, flexShrink: 0 }} />
+                <span style={{ fontSize: 9, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--color-text-ghost)', fontWeight: 600 }}>
+                  Trend
+                </span>
+              </div>
             </div>
             <div className="ray-chart-container">
               <ResponsiveContainer width="100%" height="100%">
@@ -224,6 +241,15 @@ export default function PriceChart({ lots, allLots, categoryFilter = 'all', onCa
                     fill="url(#blueGrad)"
                     dot={false}
                     activeDot={{ r: 3, fill: '#96B8D4', stroke: 'var(--color-bg)', strokeWidth: 2 }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="trendline"
+                    stroke="#A8D4A0"
+                    strokeWidth={2}
+                    strokeDasharray="6 3"
+                    dot={false}
+                    connectNulls={false}
                   />
                 </AreaChart>
               </ResponsiveContainer>

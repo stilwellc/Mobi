@@ -45,6 +45,15 @@ export default function StatsGrid({ stats, lots, categoryFilter = 'all' }: Props
 
   const catLabel = categoryFilter !== 'all' ? categoryLabels[categoryFilter] : '';
 
+  const sellThrough = useMemo(() => {
+    const source = lots || [];
+    const filtered = categoryFilter === 'all' ? source : source.filter(l => l.category === categoryFilter);
+    const concluded = filtered.filter(l => l.status === 'sold' || l.status === 'bought_in');
+    if (concluded.length < 5) return null;
+    const sold = concluded.filter(l => l.status === 'sold').length;
+    return { rate: Math.round((sold / concluded.length) * 100), total: concluded.length };
+  }, [lots, categoryFilter]);
+
   const cards = [
     {
       label: catLabel ? `Avg. Price — ${catLabel}` : 'Avg. Price (12mo)',
@@ -55,6 +64,11 @@ export default function StatsGrid({ stats, lots, categoryFilter = 'all' }: Props
       label: catLabel ? `Record — ${catLabel}` : 'Record Sale',
       value: formatPrice(filteredStats.recordPrice),
       sub: filteredStats.recordYear ? `${filteredStats.recordTitle}, ${filteredStats.recordYear}` : '—',
+    },
+    {
+      label: 'Sell-Through Rate',
+      value: sellThrough ? `${sellThrough.rate}%` : '—',
+      sub: sellThrough ? `${sellThrough.total.toLocaleString()} lots concluded` : 'Insufficient data',
     },
     {
       label: 'Auction Houses',
@@ -69,7 +83,7 @@ export default function StatsGrid({ stats, lots, categoryFilter = 'all' }: Props
         .ray-stats { padding: 40px 56px; }
         .ray-stats-grid {
           display: grid;
-          grid-template-columns: repeat(3, 1fr);
+          grid-template-columns: repeat(4, 1fr);
           gap: 1px;
           background: var(--color-border);
           border-radius: 16px;
@@ -93,9 +107,6 @@ export default function StatsGrid({ stats, lots, categoryFilter = 'all' }: Props
           }
           .ray-stat-card { padding: 20px 18px; }
           .ray-stat-value { font-size: 26px; }
-          .ray-stat-card:last-child {
-            grid-column: 1 / -1;
-          }
         }
       `}</style>
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { AuctionLot, MarketStats } from '../types';
 import { ARTIST_LABEL } from '../constants';
 import { houseColors, categoryLabels, categoryColors } from '../utils';
@@ -16,6 +16,30 @@ function formatEstimate(lot: AuctionLot): string {
     return `${fmt(lot.estimateLow)} — ${fmt(lot.estimateHigh)} ${lot.currency}`;
   }
   return 'Estimate on request';
+}
+
+/** Compute a quick buy signal: median comp price vs estimate midpoint */
+function computeBuySignal(lot: AuctionLot, allLots: AuctionLot[]): { label: string; color: string; pct: number } | null {
+  if (!lot.estimateLow || !lot.estimateHigh) return null;
+  const estMid = (lot.estimateLow + lot.estimateHigh) / 2;
+  // Get same-artist sold lots in same category
+  const comps = allLots.filter(l =>
+    l.artist === lot.artist &&
+    l.status === 'sold' &&
+    l.priceUsd &&
+    l.id !== lot.id &&
+    (lot.category === 'unknown' || l.category === 'unknown' || l.category === lot.category)
+  );
+  if (comps.length < 3) return null;
+  const prices = comps.map(l => l.priceUsd!).sort((a, b) => a - b);
+  const median = prices.length % 2 === 0
+    ? (prices[prices.length / 2 - 1] + prices[prices.length / 2]) / 2
+    : prices[Math.floor(prices.length / 2)];
+  const ratio = median / estMid;
+  // Only show signal when there's a meaningful gap
+  if (ratio >= 1.2) return { label: 'Below Market', color: '#8BC48A', pct: Math.round((ratio - 1) * 100) };
+  if (ratio <= 0.75) return { label: 'Above Market', color: '#D49696', pct: Math.round((1 - ratio) * 100) };
+  return null;
 }
 
 export default function LotCard({
@@ -34,6 +58,11 @@ export default function LotCard({
   const catColor = categoryColors[lot.category] || '#888';
   const catLabel = categoryLabels[lot.category] || null;
   const isUpcoming = lot.status === 'upcoming';
+
+  const buySignal = useMemo(() => {
+    if (!isUpcoming || !allLots.length) return null;
+    return computeBuySignal(lot, allLots);
+  }, [lot, allLots, isUpcoming]);
 
   const cardContent = (
     <div className="ray-lot-card" style={{
@@ -108,6 +137,24 @@ export default function LotCard({
               animation: 'pulse 2s infinite',
             }} />
             Live
+          </div>
+        )}
+        {buySignal && (
+          <div style={{
+            position: 'absolute',
+            top: 10,
+            right: 10,
+            padding: '3px 9px',
+            borderRadius: 100,
+            background: `${buySignal.color}18`,
+            border: `1px solid ${buySignal.color}40`,
+            fontSize: 9,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            color: buySignal.color,
+            fontWeight: 600,
+          }}>
+            {buySignal.label}
           </div>
         )}
       </div>
