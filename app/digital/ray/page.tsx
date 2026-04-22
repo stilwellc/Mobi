@@ -13,16 +13,16 @@ import PastResults from './components/PastResults';
 export default function RayPage() {
   const { allLots, statsByArtist, sources, lastCrawl, loading } = useRayData();
 
-  const upcoming = useMemo(() =>
-    allLots
-      .filter(l => l.status === 'upcoming')
+  const upcoming = useMemo(() => {
+    const now = new Date();
+    return allLots
+      .filter(l => l.status === 'upcoming' && l.saleDate && new Date(l.saleDate) >= now)
       .sort((a, b) => {
         if (!a.saleDate) return 1;
         if (!b.saleDate) return -1;
         return new Date(a.saleDate).getTime() - new Date(b.saleDate).getTime();
-      }),
-    [allLots]
-  );
+      });
+  }, [allLots]);
 
   const sold = useMemo(() =>
     allLots

@@ -303,7 +303,10 @@ async function crawlPhillips(artist: ArtistConfig): Promise<AuctionLot[]> {
   console.log(`  [Phillips] Fetching ${artist.displayName}...`);
 
   try {
-    const res = await fetch(url, { headers: { 'User-Agent': UA } });
+    const res = await fetch(url, {
+      headers: { 'User-Agent': UA },
+      signal: AbortSignal.timeout(30000)
+    });
     if (!res.ok) {
       console.log(`  [Phillips] HTTP ${res.status}`);
       return lots;
@@ -411,7 +414,10 @@ async function crawlSothebys(artist: ArtistConfig): Promise<AuctionLot[]> {
   console.log(`  [Sothebys] Fetching ${artist.displayName}...`);
 
   try {
-    const res = await fetch(url, { headers: { 'User-Agent': UA } });
+    const res = await fetch(url, {
+      headers: { 'User-Agent': UA },
+      signal: AbortSignal.timeout(30000)
+    });
     if (!res.ok) {
       console.log(`  [Sothebys] HTTP ${res.status}`);
       return lots;
@@ -624,7 +630,10 @@ async function crawlChristies(artist: ArtistConfig): Promise<AuctionLot[]> {
   console.log(`  [Christie's] Fetching ${artist.displayName}...`);
 
   try {
-    const res = await fetch(url, { headers: { 'User-Agent': UA } });
+    const res = await fetch(url, {
+      headers: { 'User-Agent': UA },
+      signal: AbortSignal.timeout(30000)
+    });
     if (!res.ok) {
       console.log(`  [Christie's] HTTP ${res.status}`);
       return [];
@@ -679,7 +688,7 @@ function parseChristiesJson(jsonStr: string, artistSlug: string): AuctionLot[] {
       }
 
       const saleDate = lot.start_date ? lot.start_date.split('T')[0] : '';
-      const auctionInPast = saleDate ? new Date(saleDate) < new Date() : false;
+      const auctionInPast = saleDate ? new Date(saleDate) < new Date() : true; // default to past if no date
       const isSold = priceRealized != null && priceRealized > 0;
       const imageUrl = lot.image?.image_src || null;
       const saleNum = lot.sale?.number || '';
@@ -737,7 +746,10 @@ async function crawlWright(artist: ArtistConfig): Promise<AuctionLot[]> {
   console.log(`  [Wright] Fetching ${artist.displayName}...`);
 
   try {
-    const res = await fetch(url, { headers: { 'User-Agent': UA } });
+    const res = await fetch(url, {
+      headers: { 'User-Agent': UA },
+      signal: AbortSignal.timeout(30000)
+    });
     if (!res.ok) {
       console.log(`  [Wright] HTTP ${res.status}`);
       return lots;
@@ -1067,7 +1079,7 @@ function parseBonhamsLot(doc: any, artistSlug: string): AuctionLot | null {
 
   const isSold = doc.status === 'SOLD';
   const isBoughtIn = doc.status === 'BI';
-  const auctionEnded = doc.flags?.isAuctionEnded ?? (saleDate ? new Date(saleDate) < new Date() : false);
+  const auctionEnded = doc.flags?.isAuctionEnded ?? (saleDate ? new Date(saleDate) < new Date() : true); // default to ended if no date
 
   let status: LotStatus = 'upcoming';
   if (isSold) status = 'sold';
@@ -1453,7 +1465,7 @@ async function enrichSothebys(lot: AuctionLot): Promise<EnrichResult> {
   } catch { return {}; }
 }
 
-const ENRICH_MAX_PER_RUN = 10000;
+const ENRICH_MAX_PER_RUN = 500;
 const ENRICH_DELAY = 250;
 
 async function enrichLots(lots: AuctionLot[]): Promise<void> {
@@ -1477,7 +1489,19 @@ async function enrichLots(lots: AuctionLot[]): Promise<void> {
   });
 
   const batch = needsEnrich.slice(0, ENRICH_MAX_PER_RUN);
-  console.log(`[Enrich] ${needsEnrich.length} lots need enrichment, processing ${batch.length} this run...`);
+
+  // Pre-loop breakdown by house
+  const houseBreakdown: Record<string, number> = {};
+  for (const lot of batch) {
+    houseBreakdown[lot.auctionHouse] = (houseBreakdown[lot.auctionHouse] || 0) + 1;
+  }
+
+  console.log(`\n[Enrich] ${needsEnrich.length} lots need enrichment, processing ${batch.length} this run...`);
+  console.log('[Enrich] Per-house breakdown for this batch:');
+  for (const [house, count] of Object.entries(houseBreakdown).sort((a, b) => b[1] - a[1])) {
+    console.log(`  [${house}] ${count} lots`);
+  }
+  console.log('[Enrich] Starting enrichment loop...\n');
 
   let enriched = 0;
   const houseCounts: Record<string, { total: number; success: number }> = {};
