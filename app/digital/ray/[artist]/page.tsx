@@ -28,9 +28,9 @@ export default function ArtistDetailPage() {
 
   const stats = statsByArtist[slug] || null;
   const lots = allLots.filter(l => l.artist === slug);
-  const now = new Date();
+  const today = new Date().toISOString().split('T')[0]; // Get YYYY-MM-DD string
   const upcoming = lots
-    .filter(l => l.status === 'upcoming' && l.saleDate && new Date(l.saleDate) >= now)
+    .filter(l => l.status === 'upcoming' && l.saleDate && l.saleDate >= today)
     .sort((a, b) => {
       if (!a.saleDate) return 1;
       if (!b.saleDate) return -1;

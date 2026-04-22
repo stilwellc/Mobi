@@ -14,9 +14,9 @@ export default function RayPage() {
   const { allLots, statsByArtist, sources, lastCrawl, loading } = useRayData();
 
   const upcoming = useMemo(() => {
-    const now = new Date();
+    const today = new Date().toISOString().split('T')[0]; // Get YYYY-MM-DD string
     return allLots
-      .filter(l => l.status === 'upcoming' && l.saleDate && new Date(l.saleDate) >= now)
+      .filter(l => l.status === 'upcoming' && l.saleDate && l.saleDate >= today)
       .sort((a, b) => {
         if (!a.saleDate) return 1;
         if (!b.saleDate) return -1;
