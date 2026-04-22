@@ -372,7 +372,12 @@ async function crawlPhillips(artist: ArtistConfig): Promise<AuctionLot[]> {
       let imageUrl: string | null = null;
       if (lot.imagePath) {
         const ver = lot.cloudinaryVersion || '1';
-        imageUrl = `https://assets.phillips.com/image/upload/t_Website_LotDetailMainImage/v${ver}/${lot.imagePath}`;
+        // If imagePath is already a full URL, use it as-is; otherwise build Cloudinary URL
+        if (lot.imagePath.startsWith('http')) {
+          imageUrl = lot.imagePath;
+        } else {
+          imageUrl = `https://assets.phillips.com/image/upload/t_Website_LotDetailMainImage/v${ver}/${lot.imagePath}`;
+        }
       }
 
       let saleDate = '';
