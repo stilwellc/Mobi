@@ -282,6 +282,14 @@ const ARTISTS: ArtistConfig[] = [
     phillips: { id: '10358', slug: 'fred-brathwaite-aka-fab-5-freddy' },
     bonhams: 'Fab 5 Freddy',
   },
+  {
+    slug: 'francesco-clemente',
+    displayName: 'Francesco Clemente',
+    phillips: { id: '8171', slug: 'francesco-clemente' },
+    christies: 'francesco-clemente',
+    wright: 'francesco-clemente',
+    bonhams: 'Francesco Clemente',
+  },
 ];
 
 const DATA_DIR = path.join(process.cwd(), 'public', 'data', 'ray');

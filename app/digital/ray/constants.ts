@@ -15,6 +15,7 @@ export const ARTISTS = [
   { slug: 'henri-matisse', label: 'Henri Matisse' },
   { slug: 'pablo-picasso', label: 'Pablo Picasso' },
   { slug: 'fab-5-freddy', label: 'Fab 5 Freddy' },
+  { slug: 'francesco-clemente', label: 'Francesco Clemente' },
 ] as const;
 
 export type ArtistSlug = (typeof ARTISTS)[number]['slug'];
