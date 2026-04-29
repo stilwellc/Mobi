@@ -639,35 +639,86 @@ async function crawlSothebys(artist: ArtistConfig): Promise<AuctionLot[]> {
 
 async function crawlChristies(artist: ArtistConfig): Promise<AuctionLot[]> {
   if (!artist.christies) return [];
-  const url = `https://www.christies.com/en/artists/${artist.christies}?lotavailability=All&sortby=relevance`;
-  console.log(`  [Christie's] Fetching ${artist.displayName}...`);
+
+  const lots: AuctionLot[] = [];
+  const seen = new Set<string>();
+
+  // Fetch from artist page (gets recent/past lots)
+  const artistUrl = `https://www.christies.com/en/artists/${artist.christies}?lotavailability=All&sortby=relevance`;
+  console.log(`  [Christie's] Fetching artist page for ${artist.displayName}...`);
 
   try {
-    const res = await fetch(url, {
+    const res = await fetch(artistUrl, {
       headers: { 'User-Agent': UA },
       signal: AbortSignal.timeout(30000)
     });
-    if (!res.ok) {
-      console.log(`  [Christie's] HTTP ${res.status}`);
-      return [];
-    }
-    const html = await res.text();
-
-    const searchMatch = html.match(/window\.chrComponents\s*=\s*window\.chrComponents\s*\|\|\s*\{\};\s*window\.chrComponents\.configurableSearch\s*=\s*(\{[\s\S]*?\});\s*<\/script>/);
-    if (!searchMatch) {
-      const altMatch = html.match(/configurableSearch\s*=\s*(\{[\s\S]*?\});\s*(?:window\.|<\/script>)/);
-      if (!altMatch) {
-        console.log("  [Christie's] Could not find configurableSearch JSON");
-        return [];
+    if (res.ok) {
+      const html = await res.text();
+      const searchMatch = html.match(/window\.chrComponents\s*=\s*window\.chrComponents\s*\|\|\s*\{\};\s*window\.chrComponents\.configurableSearch\s*=\s*(\{[\s\S]*?\});\s*<\/script>/);
+      if (searchMatch) {
+        const artistLots = parseChristiesJson(searchMatch[1], artist.slug);
+        artistLots.forEach(lot => {
+          if (!seen.has(lot.id)) {
+            seen.add(lot.id);
+            lots.push(lot);
+          }
+        });
+      } else {
+        const altMatch = html.match(/configurableSearch\s*=\s*(\{[\s\S]*?\});\s*(?:window\.|<\/script>)/);
+        if (altMatch) {
+          const artistLots = parseChristiesJson(altMatch[1], artist.slug);
+          artistLots.forEach(lot => {
+            if (!seen.has(lot.id)) {
+              seen.add(lot.id);
+              lots.push(lot);
+            }
+          });
+        }
       }
-      return parseChristiesJson(altMatch[1], artist.slug);
     }
-    return parseChristiesJson(searchMatch[1], artist.slug);
   } catch (err) {
-    console.error("  [Christie's] Error:", err);
+    console.error("  [Christie's] Error fetching artist page:", err);
   }
 
-  return [];
+  // Also fetch from search (gets upcoming lots that might not be on artist page)
+  const searchUrl = `https://www.christies.com/en/search?entry=${encodeURIComponent(artist.displayName)}&page=1&sortby=relevance&tab=available_lots`;
+  console.log(`  [Christie's] Fetching search for upcoming lots...`);
+
+  try {
+    const res = await fetch(searchUrl, {
+      headers: { 'User-Agent': UA },
+      signal: AbortSignal.timeout(30000)
+    });
+    if (res.ok) {
+      const html = await res.text();
+      const searchMatch = html.match(/window\.chrComponents\s*=\s*window\.chrComponents\s*\|\|\s*\{\};\s*window\.chrComponents\.configurableSearch\s*=\s*(\{[\s\S]*?\});\s*<\/script>/);
+      if (searchMatch) {
+        const searchLots = parseChristiesJson(searchMatch[1], artist.slug);
+        searchLots.forEach(lot => {
+          if (!seen.has(lot.id)) {
+            seen.add(lot.id);
+            lots.push(lot);
+          }
+        });
+      } else {
+        const altMatch = html.match(/configurableSearch\s*=\s*(\{[\s\S]*?\});\s*(?:window\.|<\/script>)/);
+        if (altMatch) {
+          const searchLots = parseChristiesJson(altMatch[1], artist.slug);
+          searchLots.forEach(lot => {
+            if (!seen.has(lot.id)) {
+              seen.add(lot.id);
+              lots.push(lot);
+            }
+          });
+        }
+      }
+    }
+  } catch (err) {
+    console.error("  [Christie's] Error fetching search:", err);
+  }
+
+  console.log(`  [Christie's] Found ${lots.length} total lots`);
+  return lots;
 }
 
 function parseChristiesJson(jsonStr: string, artistSlug: string): AuctionLot[] {
