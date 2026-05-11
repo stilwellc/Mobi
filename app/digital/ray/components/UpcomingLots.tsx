@@ -8,11 +8,15 @@ export default function UpcomingLots({
   showArtist = false,
   allLots = [],
   stats,
+  savedIds = [],
+  onToggleSave,
 }: {
   lots: AuctionLot[];
   showArtist?: boolean;
   allLots?: AuctionLot[];
   stats?: MarketStats;
+  savedIds?: string[];
+  onToggleSave?: (lotId: string) => void;
 }) {
   return (
     <section className="ray-upcoming" style={{ maxWidth: 1100, margin: '0 auto' }}>
@@ -61,6 +65,8 @@ export default function UpcomingLots({
             showArtist={showArtist}
             allLots={allLots}
             stats={stats}
+            saved={savedIds.includes(lot.id)}
+            onToggleSave={onToggleSave}
           />
         ))}
       </div>

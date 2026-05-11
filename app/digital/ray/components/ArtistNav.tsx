@@ -5,11 +5,11 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ARTISTS, ARTIST_LABEL } from '../constants';
 
-export default function ArtistNav({ activeSlug }: { activeSlug: string | null }) {
+export default function ArtistNav({ activeSlug, savedCount = 0 }: { activeSlug: string | null; savedCount?: number }) {
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
-  const activeLabel = activeSlug ? (ARTIST_LABEL[activeSlug] || activeSlug) : 'Overview';
+  const activeLabel = activeSlug === 'saved' ? `Saved${savedCount > 0 ? ` (${savedCount})` : ''}` : activeSlug ? (ARTIST_LABEL[activeSlug] || activeSlug) : 'Overview';
 
   return (
     <>
@@ -63,6 +63,21 @@ export default function ArtistNav({ activeSlug }: { activeSlug: string | null })
           data-active={activeSlug === null ? 'true' : 'false'}
         >
           Overview
+        </Link>
+        <Link
+          href="/digital/ray/saved"
+          className="ray-artist-pill"
+          data-active={activeSlug === 'saved' ? 'true' : 'false'}
+          style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}
+        >
+          <svg width="10" height="12" viewBox="0 0 12 14" fill="none" style={{ opacity: 0.7 }}>
+            <path
+              d="M1 1.5C1 1.22386 1.22386 1 1.5 1H10.5C10.7761 1 11 1.22386 11 1.5V12.5C11 12.6894 10.8862 12.8625 10.7096 12.9472C10.533 13.0319 10.3239 13.0136 10.1646 12.8994L6 9.91421L1.83541 12.8994C1.67614 13.0136 1.46698 13.0319 1.29037 12.9472C1.11377 12.8625 1 12.6894 1 12.5V1.5Z"
+              fill="currentColor"
+              strokeWidth="0.8"
+            />
+          </svg>
+          Saved{savedCount > 0 ? ` (${savedCount})` : ''}
         </Link>
         {ARTISTS.map(a => (
           <Link
@@ -176,6 +191,13 @@ export default function ArtistNav({ activeSlug }: { activeSlug: string | null })
               onClick={() => { setOpen(false); router.push('/digital/ray'); }}
             >
               Overview
+            </button>
+            <button
+              className="ray-artist-dropdown-item"
+              data-active={activeSlug === 'saved' ? 'true' : 'false'}
+              onClick={() => { setOpen(false); router.push('/digital/ray/saved'); }}
+            >
+              Saved{savedCount > 0 ? ` (${savedCount})` : ''}
             </button>
             {ARTISTS.map(a => (
               <button

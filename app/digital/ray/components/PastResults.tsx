@@ -14,9 +14,11 @@ interface Props {
   showArtist?: boolean;
   categoryFilter?: CategoryFilter;
   onCategoryChange?: (cat: CategoryFilter) => void;
+  savedIds?: string[];
+  onToggleSave?: (lotId: string) => void;
 }
 
-export default function PastResults({ lots, showArtist = false, categoryFilter: externalFilter, onCategoryChange }: Props) {
+export default function PastResults({ lots, showArtist = false, categoryFilter: externalFilter, onCategoryChange, savedIds = [], onToggleSave }: Props) {
   const [visible, setVisible] = useState(20);
   const [sortBy, setSortBy] = useState<SortMode>('date');
   const [internalFilter, setInternalFilter] = useState<CategoryFilter>('all');
@@ -66,7 +68,7 @@ export default function PastResults({ lots, showArtist = false, categoryFilter: 
         .ray-results { padding: 40px 56px 120px; }
         .ray-result-row {
           display: grid;
-          grid-template-columns: 1fr auto auto auto;
+          grid-template-columns: 1fr auto auto auto auto;
           align-items: center;
           gap: 20px;
           padding: 14px 24px;
@@ -274,6 +276,36 @@ export default function PastResults({ lots, showArtist = false, categoryFilter: 
                   {lot.auctionHouse}
                 </span>
               </div>
+
+              {onToggleSave && (
+                <button
+                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); onToggleSave(lot.id); }}
+                  style={{
+                    width: 24,
+                    height: 24,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: savedIds.includes(lot.id) ? 'var(--color-accent-blue)' : 'transparent',
+                    border: savedIds.includes(lot.id) ? 'none' : '1px solid var(--color-border)',
+                    borderRadius: 6,
+                    cursor: 'pointer',
+                    padding: 0,
+                    flexShrink: 0,
+                    transition: 'all 0.15s',
+                  }}
+                  title={savedIds.includes(lot.id) ? 'Remove from saved' : 'Save lot'}
+                >
+                  <svg width="10" height="12" viewBox="0 0 12 14" fill="none">
+                    <path
+                      d="M1 1.5C1 1.22386 1.22386 1 1.5 1H10.5C10.7761 1 11 1.22386 11 1.5V12.5C11 12.6894 10.8862 12.8625 10.7096 12.9472C10.533 13.0319 10.3239 13.0136 10.1646 12.8994L6 9.91421L1.83541 12.8994C1.67614 13.0136 1.46698 13.0319 1.29037 12.9472C1.11377 12.8625 1 12.6894 1 12.5V1.5Z"
+                      fill={savedIds.includes(lot.id) ? '#060606' : 'var(--color-text-ghost)'}
+                      stroke={savedIds.includes(lot.id) ? '#060606' : 'var(--color-text-ghost)'}
+                      strokeWidth="0.8"
+                    />
+                  </svg>
+                </button>
+              )}
             </a>
           );
         })}

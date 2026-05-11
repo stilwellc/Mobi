@@ -5,6 +5,7 @@ import Link from 'next/link';
 import ThemeToggle from '../../components/ThemeToggle';
 import { ARTISTS } from './constants';
 import { useRayData } from './hooks/useRayData';
+import { useSavedLots } from './hooks/useSavedLots';
 import { formatPrice } from './utils';
 import ArtistNav from './components/ArtistNav';
 import LotCard from './components/LotCard';
@@ -12,6 +13,7 @@ import PastResults from './components/PastResults';
 
 export default function RayPage() {
   const { allLots, statsByArtist, sources, lastCrawl, loading } = useRayData();
+  const { toggle, isSaved, savedIds } = useSavedLots();
 
   const upcoming = useMemo(() => {
     const today = new Date().toISOString().split('T')[0]; // Get YYYY-MM-DD string
@@ -131,7 +133,7 @@ export default function RayPage() {
         </div>
       </nav>
 
-      <ArtistNav activeSlug={null} />
+      <ArtistNav activeSlug={null} savedCount={savedIds.length} />
 
       <section className="ray-hero" style={{ maxWidth: 1100, margin: '0 auto' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
@@ -283,6 +285,8 @@ export default function RayPage() {
                     showArtist
                     allLots={allLots}
                     stats={statsByArtist[lot.artist]}
+                    saved={isSaved(lot.id)}
+                    onToggleSave={toggle}
                   />
                 ))}
               </div>
@@ -290,7 +294,7 @@ export default function RayPage() {
           )}
 
           {sold.length > 0 && (
-            <PastResults lots={sold} showArtist />
+            <PastResults lots={sold} showArtist savedIds={savedIds} onToggleSave={toggle} />
           )}
         </>
       )}

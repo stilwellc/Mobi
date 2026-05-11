@@ -47,11 +47,15 @@ export default function LotCard({
   showArtist = false,
   allLots = [],
   stats,
+  saved = false,
+  onToggleSave,
 }: {
   lot: AuctionLot;
   showArtist?: boolean;
   allLots?: AuctionLot[];
   stats?: MarketStats;
+  saved?: boolean;
+  onToggleSave?: (lotId: string) => void;
 }) {
   const [modalOpen, setModalOpen] = useState(false);
   const color = houseColors[lot.auctionHouse] || '#96B8D4';
@@ -142,7 +146,7 @@ export default function LotCard({
           <div style={{
             position: 'absolute',
             top: 10,
-            right: 10,
+            right: onToggleSave ? 36 : 10,
             padding: '3px 9px',
             borderRadius: 100,
             background: buySignal.color,
@@ -154,6 +158,37 @@ export default function LotCard({
           }}>
             {buySignal.label}
           </div>
+        )}
+        {onToggleSave && (
+          <button
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); onToggleSave(lot.id); }}
+            style={{
+              position: 'absolute',
+              top: 10,
+              right: 10,
+              width: 24,
+              height: 24,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              background: saved ? 'var(--color-accent-blue)' : 'rgba(0,0,0,0.45)',
+              border: 'none',
+              borderRadius: 6,
+              cursor: 'pointer',
+              padding: 0,
+              transition: 'background 0.15s',
+            }}
+            title={saved ? 'Remove from saved' : 'Save lot'}
+          >
+            <svg width="12" height="14" viewBox="0 0 12 14" fill="none">
+              <path
+                d="M1 1.5C1 1.22386 1.22386 1 1.5 1H10.5C10.7761 1 11 1.22386 11 1.5V12.5C11 12.6894 10.8862 12.8625 10.7096 12.9472C10.533 13.0319 10.3239 13.0136 10.1646 12.8994L6 9.91421L1.83541 12.8994C1.67614 13.0136 1.46698 13.0319 1.29037 12.9472C1.11377 12.8625 1 12.6894 1 12.5V1.5Z"
+                fill={saved ? '#060606' : '#F0EDE8'}
+                stroke={saved ? '#060606' : '#F0EDE8'}
+                strokeWidth="0.8"
+              />
+            </svg>
+          </button>
         )}
       </div>
 

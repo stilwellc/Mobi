@@ -8,6 +8,7 @@ import ThemeToggle from '../../../components/ThemeToggle';
 import { ARTISTS, ARTIST_LABEL } from '../constants';
 import type { LotCategory } from '../types';
 import { useRayData } from '../hooks/useRayData';
+import { useSavedLots } from '../hooks/useSavedLots';
 import ArtistNav from '../components/ArtistNav';
 import StatsGrid from '../components/StatsGrid';
 import UpcomingLots from '../components/UpcomingLots';
@@ -21,6 +22,7 @@ export default function ArtistDetailPage() {
   const params = useParams();
   const slug = params.artist as string;
   const { statsByArtist, allLots, lastCrawl, loading } = useRayData();
+  const { toggle, savedIds } = useSavedLots();
   const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>('all');
 
   const label = ARTIST_LABEL[slug];
@@ -93,7 +95,7 @@ export default function ArtistDetailPage() {
         </div>
       </nav>
 
-      <ArtistNav activeSlug={slug} />
+      <ArtistNav activeSlug={slug} savedCount={savedIds.length} />
 
       {!valid ? (
         <div style={{ padding: '120px 56px', textAlign: 'center' }}>
@@ -196,8 +198,8 @@ export default function ArtistDetailPage() {
             <>
               {stats && <StatsGrid stats={stats} lots={lots} categoryFilter={categoryFilter} />}
               {sold.length > 0 && <PriceChart lots={sold} allLots={lots} categoryFilter={categoryFilter} onCategoryChange={setCategoryFilter} fallbackData={stats?.priceHistory} />}
-              {upcoming.length > 0 && <UpcomingLots lots={upcoming} allLots={allLots} stats={stats || undefined} />}
-              {sold.length > 0 && <PastResults lots={sold} categoryFilter={categoryFilter} onCategoryChange={setCategoryFilter} />}
+              {upcoming.length > 0 && <UpcomingLots lots={upcoming} allLots={allLots} stats={stats || undefined} savedIds={savedIds} onToggleSave={toggle} />}
+              {sold.length > 0 && <PastResults lots={sold} categoryFilter={categoryFilter} onCategoryChange={setCategoryFilter} savedIds={savedIds} onToggleSave={toggle} />}
             </>
           )}
         </>
