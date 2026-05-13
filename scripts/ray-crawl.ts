@@ -36,7 +36,7 @@ interface AuctionLot {
 // Classifies a lot as original, print, photograph, sculpture, design, or unknown
 // based on medium, title, sale name, URL, and artist context.
 
-const DESIGN_ARTISTS = new Set(['george-nakashima', 'charles-eames']);
+const DESIGN_ARTISTS = new Set(['george-nakashima', 'charles-eames', 'jean-prouve', 'pierre-jeanneret']);
 // Fine artists whose unclassified lots default to 'print' (edition-heavy output)
 const EDITION_DEFAULT_ARTISTS = new Set(['andy-warhol', 'keith-haring', 'ed-ruscha', 'henri-matisse', 'pablo-picasso']);
 // Fine artists whose unclassified lots default to 'original' (painting/drawing-heavy output)
@@ -289,6 +289,22 @@ const ARTISTS: ArtistConfig[] = [
     christies: 'francesco-clemente',
     wright: 'francesco-clemente',
     bonhams: 'Francesco Clemente',
+  },
+  {
+    slug: 'jean-prouve',
+    displayName: 'Jean Prouvé',
+    phillips: { id: '5611', slug: 'jean-prouve' },
+    christies: 'jean-prouve',
+    wright: 'jean-prouve',
+    bonhams: 'Jean Prouvé',
+  },
+  {
+    slug: 'pierre-jeanneret',
+    displayName: 'Pierre Jeanneret',
+    phillips: { id: '7134', slug: 'pierre-jeanneret' },
+    christies: 'pierre-jeanneret',
+    wright: 'pierre-jeanneret',
+    bonhams: 'Pierre Jeanneret',
   },
 ];
 
