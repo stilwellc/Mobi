@@ -35,6 +35,17 @@ export default function SavedPage() {
     [savedLots]
   );
 
+  const upcomingCounts = useMemo(() => {
+    const today = new Date().toISOString().split('T')[0];
+    const counts: Record<string, number> = {};
+    for (const lot of allLots) {
+      if (lot.status === 'upcoming' && lot.saleDate && lot.saleDate >= today) {
+        counts[lot.artist] = (counts[lot.artist] || 0) + 1;
+      }
+    }
+    return counts;
+  }, [allLots]);
+
   return (
     <div style={{
       minHeight: '100vh',
@@ -117,7 +128,7 @@ export default function SavedPage() {
         </div>
       </nav>
 
-      <ArtistNav activeSlug="saved" savedCount={savedIds.length} />
+      <ArtistNav activeSlug="saved" savedCount={savedIds.length} upcomingCounts={upcomingCounts} />
 
       <section className="ray-hero" style={{ maxWidth: 1100, margin: '0 auto' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>

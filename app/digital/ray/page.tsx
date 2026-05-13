@@ -16,7 +16,7 @@ export default function RayPage() {
   const { toggle, isSaved, savedIds } = useSavedLots();
 
   const upcoming = useMemo(() => {
-    const today = new Date().toISOString().split('T')[0]; // Get YYYY-MM-DD string
+    const today = new Date().toISOString().split('T')[0];
     return allLots
       .filter(l => l.status === 'upcoming' && l.saleDate && l.saleDate >= today)
       .sort((a, b) => {
@@ -25,6 +25,14 @@ export default function RayPage() {
         return new Date(a.saleDate).getTime() - new Date(b.saleDate).getTime();
       });
   }, [allLots]);
+
+  const upcomingCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const lot of upcoming) {
+      counts[lot.artist] = (counts[lot.artist] || 0) + 1;
+    }
+    return counts;
+  }, [upcoming]);
 
   const sold = useMemo(() =>
     allLots
@@ -133,7 +141,7 @@ export default function RayPage() {
         </div>
       </nav>
 
-      <ArtistNav activeSlug={null} savedCount={savedIds.length} />
+      <ArtistNav activeSlug={null} savedCount={savedIds.length} upcomingCounts={upcomingCounts} />
 
       <section className="ray-hero" style={{ maxWidth: 1100, margin: '0 auto' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>

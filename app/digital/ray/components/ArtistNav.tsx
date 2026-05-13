@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ARTISTS, ARTIST_LABEL } from '../constants';
 
-export default function ArtistNav({ activeSlug, savedCount = 0 }: { activeSlug: string | null; savedCount?: number }) {
+export default function ArtistNav({ activeSlug, savedCount = 0, upcomingCounts = {} }: { activeSlug: string | null; savedCount?: number; upcomingCounts?: Record<string, number> }) {
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const ref = useRef<HTMLDivElement>(null);
@@ -108,6 +108,15 @@ export default function ArtistNav({ activeSlug, savedCount = 0 }: { activeSlug: 
           color: var(--color-accent-blue);
           font-weight: 600;
         }
+        .ray-artist-count {
+          font-size: 10px;
+          font-weight: 600;
+          color: #060606;
+          background: var(--color-accent-blue);
+          border-radius: 100px;
+          padding: 1px 7px;
+          margin-left: 8px;
+        }
         .ray-artist-dropdown-divider {
           height: 1px;
           background: var(--color-border);
@@ -168,8 +177,12 @@ export default function ArtistNav({ activeSlug, savedCount = 0 }: { activeSlug: 
                 className="ray-artist-dropdown-item"
                 data-active={activeSlug === a.slug ? 'true' : 'false'}
                 onClick={() => navigate(`/digital/ray/${a.slug}`)}
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
               >
-                {a.label}
+                <span>{a.label}</span>
+                {(upcomingCounts[a.slug] || 0) > 0 && (
+                  <span className="ray-artist-count">{upcomingCounts[a.slug]}</span>
+                )}
               </button>
             ))}
           </div>

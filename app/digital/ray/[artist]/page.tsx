@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import dynamic from 'next/dynamic';
@@ -39,6 +39,17 @@ export default function ArtistDetailPage() {
       return new Date(a.saleDate).getTime() - new Date(b.saleDate).getTime();
     });
   const sold = lots.filter(l => l.status === 'sold');
+
+  const upcomingCounts = useMemo(() => {
+    const today = new Date().toISOString().split('T')[0];
+    const counts: Record<string, number> = {};
+    for (const lot of allLots) {
+      if (lot.status === 'upcoming' && lot.saleDate && lot.saleDate >= today) {
+        counts[lot.artist] = (counts[lot.artist] || 0) + 1;
+      }
+    }
+    return counts;
+  }, [allLots]);
 
   return (
     <div style={{
@@ -95,7 +106,7 @@ export default function ArtistDetailPage() {
         </div>
       </nav>
 
-      <ArtistNav activeSlug={slug} savedCount={savedIds.length} />
+      <ArtistNav activeSlug={slug} savedCount={savedIds.length} upcomingCounts={upcomingCounts} />
 
       {!valid ? (
         <div style={{ padding: '120px 56px', textAlign: 'center' }}>
