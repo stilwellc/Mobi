@@ -1,6 +1,6 @@
 {
   "george-condo": {
-    "lastUpdated": "2026-05-12T15:50:43.434Z",
+    "lastUpdated": "2026-05-13T15:56:08.550Z",
     "totalLotsTracked": 291,
     "avgPriceLast12Months": 404789,
     "medianPriceLast12Months": 63500,
@@ -410,7 +410,7 @@
     ]
   },
   "futura-2000": {
-    "lastUpdated": "2026-05-12T15:50:43.443Z",
+    "lastUpdated": "2026-05-13T15:56:08.559Z",
     "totalLotsTracked": 65,
     "avgPriceLast12Months": 62823,
     "medianPriceLast12Months": 82550,
@@ -663,8 +663,8 @@
     ]
   },
   "kaws": {
-    "lastUpdated": "2026-05-12T15:50:43.443Z",
-    "totalLotsTracked": 548,
+    "lastUpdated": "2026-05-13T15:56:08.560Z",
+    "totalLotsTracked": 550,
     "avgPriceLast12Months": 26581,
     "medianPriceLast12Months": 1905,
     "recordPrice": 3855000,
@@ -998,16 +998,16 @@
     ]
   },
   "george-nakashima": {
-    "lastUpdated": "2026-05-12T15:50:43.444Z",
+    "lastUpdated": "2026-05-13T15:56:08.561Z",
     "totalLotsTracked": 564,
-    "avgPriceLast12Months": 26402,
+    "avgPriceLast12Months": 26568,
     "medianPriceLast12Months": 20320,
     "recordPrice": 355600,
     "recordTitle": "Exceptional Conoid dining table",
     "recordDate": "2025-10-23",
     "recordHouse": "Wright",
-    "appreciationRate": -6.5,
-    "totalAuctionRevenue": 13750831,
+    "appreciationRate": -5.4,
+    "totalAuctionRevenue": 13861551,
     "priceHistory": [
       {
         "date": "2003-Q1",
@@ -1368,22 +1368,22 @@
       },
       {
         "date": "2026-Q2",
-        "avgPrice": 24755,
+        "avgPrice": 28805,
         "medianPrice": 21760,
-        "totalSales": 6,
-        "highPrice": 39319
+        "totalSales": 9,
+        "highPrice": 57600
       }
     ],
     "houseDistribution": [
       {
+        "house": "Wright",
+        "count": 250,
+        "totalValue": 6038047
+      },
+      {
         "house": "Phillips",
         "count": 24,
         "totalValue": 909320
-      },
-      {
-        "house": "Wright",
-        "count": 247,
-        "totalValue": 5927327
       },
       {
         "house": "Christie's",
@@ -1398,8 +1398,8 @@
     ]
   },
   "charles-eames": {
-    "lastUpdated": "2026-05-12T15:50:43.445Z",
-    "totalLotsTracked": 753,
+    "lastUpdated": "2026-05-13T15:56:08.562Z",
+    "totalLotsTracked": 754,
     "avgPriceLast12Months": 2127,
     "medianPriceLast12Months": 1056,
     "recordPrice": 29375,
@@ -1961,7 +1961,7 @@
     ]
   },
   "andy-warhol": {
-    "lastUpdated": "2026-05-12T15:50:43.447Z",
+    "lastUpdated": "2026-05-13T15:56:08.563Z",
     "totalLotsTracked": 2536,
     "avgPriceLast12Months": 46464,
     "medianPriceLast12Months": 10160,
@@ -2641,7 +2641,7 @@
     ]
   },
   "tom-sachs": {
-    "lastUpdated": "2026-05-12T15:50:43.450Z",
+    "lastUpdated": "2026-05-13T15:56:08.567Z",
     "totalLotsTracked": 109,
     "avgPriceLast12Months": 15964,
     "medianPriceLast12Months": 8890,
@@ -3025,7 +3025,7 @@
     ]
   },
   "barry-mcgee": {
-    "lastUpdated": "2026-05-12T15:50:43.451Z",
+    "lastUpdated": "2026-05-13T15:56:08.567Z",
     "totalLotsTracked": 101,
     "avgPriceLast12Months": 4748,
     "medianPriceLast12Months": 2540,
@@ -3374,8 +3374,8 @@
     ]
   },
   "keith-haring": {
-    "lastUpdated": "2026-05-12T15:50:43.451Z",
-    "totalLotsTracked": 920,
+    "lastUpdated": "2026-05-13T15:56:08.568Z",
+    "totalLotsTracked": 921,
     "avgPriceLast12Months": 39559,
     "medianPriceLast12Months": 6985,
     "recordPrice": 5820000,
@@ -3893,7 +3893,7 @@
     ]
   },
   "peter-saul": {
-    "lastUpdated": "2026-05-12T15:50:43.452Z",
+    "lastUpdated": "2026-05-13T15:56:08.569Z",
     "totalLotsTracked": 120,
     "avgPriceLast12Months": 28032,
     "medianPriceLast12Months": 1088,
@@ -4284,7 +4284,7 @@
     ]
   },
   "ed-ruscha": {
-    "lastUpdated": "2026-05-12T15:50:43.453Z",
+    "lastUpdated": "2026-05-13T15:56:08.569Z",
     "totalLotsTracked": 597,
     "avgPriceLast12Months": 22019,
     "medianPriceLast12Months": 4877,
@@ -4749,7 +4749,7 @@
     ]
   },
   "r-crumb": {
-    "lastUpdated": "2026-05-12T15:50:43.454Z",
+    "lastUpdated": "2026-05-13T15:56:08.570Z",
     "totalLotsTracked": 63,
     "avgPriceLast12Months": 2325,
     "medianPriceLast12Months": 953,
@@ -4988,7 +4988,7 @@
     ]
   },
   "raymond-pettibon": {
-    "lastUpdated": "2026-05-12T15:50:43.454Z",
+    "lastUpdated": "2026-05-13T15:56:08.571Z",
     "totalLotsTracked": 409,
     "avgPriceLast12Months": 4189,
     "medianPriceLast12Months": 572,
@@ -5400,8 +5400,8 @@
     ]
   },
   "henri-matisse": {
-    "lastUpdated": "2026-05-12T15:50:43.455Z",
-    "totalLotsTracked": 967,
+    "lastUpdated": "2026-05-13T15:56:08.571Z",
+    "totalLotsTracked": 969,
     "avgPriceLast12Months": 392051,
     "medianPriceLast12Months": 5632,
     "recordPrice": 80750000,
@@ -6064,9 +6064,9 @@
     ]
   },
   "pablo-picasso": {
-    "lastUpdated": "2026-05-12T15:50:43.456Z",
-    "totalLotsTracked": 3000,
-    "avgPriceLast12Months": 327194,
+    "lastUpdated": "2026-05-13T15:56:08.573Z",
+    "totalLotsTracked": 3007,
+    "avgPriceLast12Months": 240685,
     "medianPriceLast12Months": 7040,
     "recordPrice": 179365000,
     "recordTitle": "Les femmes d'Alger (Version 'O')",
@@ -6735,7 +6735,7 @@
     ]
   },
   "fab-5-freddy": {
-    "lastUpdated": "2026-05-12T15:50:43.459Z",
+    "lastUpdated": "2026-05-13T15:56:08.576Z",
     "totalLotsTracked": 10,
     "avgPriceLast12Months": 704,
     "medianPriceLast12Months": 704,
@@ -6777,7 +6777,7 @@
     ]
   },
   "francesco-clemente": {
-    "lastUpdated": "2026-05-12T15:50:43.460Z",
+    "lastUpdated": "2026-05-13T15:56:08.576Z",
     "totalLotsTracked": 197,
     "avgPriceLast12Months": 40373,
     "medianPriceLast12Months": 30240,
