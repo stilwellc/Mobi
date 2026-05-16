@@ -1,6 +1,6 @@
 {
   "george-condo": {
-    "lastUpdated": "2026-05-15T15:29:51.618Z",
+    "lastUpdated": "2026-05-16T14:34:34.647Z",
     "totalLotsTracked": 291,
     "avgPriceLast12Months": 359480,
     "medianPriceLast12Months": 52500,
@@ -410,7 +410,7 @@
     ]
   },
   "futura-2000": {
-    "lastUpdated": "2026-05-15T15:29:51.627Z",
+    "lastUpdated": "2026-05-16T14:34:34.656Z",
     "totalLotsTracked": 65,
     "avgPriceLast12Months": 62823,
     "medianPriceLast12Months": 82550,
@@ -663,7 +663,7 @@
     ]
   },
   "kaws": {
-    "lastUpdated": "2026-05-15T15:29:51.628Z",
+    "lastUpdated": "2026-05-16T14:34:34.656Z",
     "totalLotsTracked": 551,
     "avgPriceLast12Months": 27418,
     "medianPriceLast12Months": 2032,
@@ -998,9 +998,9 @@
     ]
   },
   "george-nakashima": {
-    "lastUpdated": "2026-05-15T15:29:51.628Z",
+    "lastUpdated": "2026-05-16T14:34:34.657Z",
     "totalLotsTracked": 566,
-    "avgPriceLast12Months": 27608,
+    "avgPriceLast12Months": 28625,
     "medianPriceLast12Months": 20320,
     "recordPrice": 355600,
     "recordTitle": "Exceptional Conoid dining table",
@@ -1398,7 +1398,7 @@
     ]
   },
   "charles-eames": {
-    "lastUpdated": "2026-05-15T15:29:51.630Z",
+    "lastUpdated": "2026-05-16T14:34:34.659Z",
     "totalLotsTracked": 758,
     "avgPriceLast12Months": 2121,
     "medianPriceLast12Months": 1056,
@@ -1961,10 +1961,10 @@
     ]
   },
   "andy-warhol": {
-    "lastUpdated": "2026-05-15T15:29:51.634Z",
+    "lastUpdated": "2026-05-16T14:34:34.660Z",
     "totalLotsTracked": 2539,
-    "avgPriceLast12Months": 47123,
-    "medianPriceLast12Months": 10320,
+    "avgPriceLast12Months": 47121,
+    "medianPriceLast12Months": 10240,
     "recordPrice": 195040000,
     "recordTitle": "Shot Sage Blue Marilyn",
     "recordDate": "2022-05-09",
@@ -2641,7 +2641,7 @@
     ]
   },
   "tom-sachs": {
-    "lastUpdated": "2026-05-15T15:29:51.637Z",
+    "lastUpdated": "2026-05-16T14:34:34.664Z",
     "totalLotsTracked": 109,
     "avgPriceLast12Months": 15964,
     "medianPriceLast12Months": 8890,
@@ -3025,7 +3025,7 @@
     ]
   },
   "barry-mcgee": {
-    "lastUpdated": "2026-05-15T15:29:51.637Z",
+    "lastUpdated": "2026-05-16T14:34:34.665Z",
     "totalLotsTracked": 101,
     "avgPriceLast12Months": 4748,
     "medianPriceLast12Months": 2540,
@@ -3374,9 +3374,9 @@
     ]
   },
   "keith-haring": {
-    "lastUpdated": "2026-05-15T15:29:51.638Z",
+    "lastUpdated": "2026-05-16T14:34:34.665Z",
     "totalLotsTracked": 923,
-    "avgPriceLast12Months": 39559,
+    "avgPriceLast12Months": 26097,
     "medianPriceLast12Months": 6985,
     "recordPrice": 5820000,
     "recordTitle": "Untitled",
@@ -3893,7 +3893,7 @@
     ]
   },
   "peter-saul": {
-    "lastUpdated": "2026-05-15T15:29:51.639Z",
+    "lastUpdated": "2026-05-16T14:34:34.666Z",
     "totalLotsTracked": 120,
     "avgPriceLast12Months": 11813,
     "medianPriceLast12Months": 445,
@@ -4284,7 +4284,7 @@
     ]
   },
   "ed-ruscha": {
-    "lastUpdated": "2026-05-15T15:29:51.639Z",
+    "lastUpdated": "2026-05-16T14:34:34.667Z",
     "totalLotsTracked": 597,
     "avgPriceLast12Months": 24287,
     "medianPriceLast12Months": 4902,
@@ -4749,8 +4749,8 @@
     ]
   },
   "r-crumb": {
-    "lastUpdated": "2026-05-15T15:29:51.640Z",
-    "totalLotsTracked": 63,
+    "lastUpdated": "2026-05-16T14:34:34.668Z",
+    "totalLotsTracked": 64,
     "avgPriceLast12Months": 2325,
     "medianPriceLast12Months": 953,
     "recordPrice": 72000,
@@ -4758,7 +4758,7 @@
     "recordDate": "2007-05-22",
     "recordHouse": "Bonhams",
     "appreciationRate": -13.4,
-    "totalAuctionRevenue": 575822,
+    "totalAuctionRevenue": 578947,
     "priceHistory": [
       {
         "date": "2004-Q2",
@@ -4839,9 +4839,9 @@
       },
       {
         "date": "2015-Q2",
-        "avgPrice": 4000,
+        "avgPrice": 3563,
         "medianPrice": 4000,
-        "totalSales": 1,
+        "totalSales": 2,
         "highPrice": 4000
       },
       {
@@ -4977,8 +4977,8 @@
       },
       {
         "house": "Bonhams",
-        "count": 32,
-        "totalValue": 504791
+        "count": 33,
+        "totalValue": 507916
       },
       {
         "house": "Phillips",
@@ -4988,7 +4988,7 @@
     ]
   },
   "raymond-pettibon": {
-    "lastUpdated": "2026-05-15T15:29:51.640Z",
+    "lastUpdated": "2026-05-16T14:34:34.668Z",
     "totalLotsTracked": 409,
     "avgPriceLast12Months": 4189,
     "medianPriceLast12Months": 572,
@@ -5400,7 +5400,7 @@
     ]
   },
   "henri-matisse": {
-    "lastUpdated": "2026-05-15T15:29:51.641Z",
+    "lastUpdated": "2026-05-16T14:34:34.669Z",
     "totalLotsTracked": 969,
     "avgPriceLast12Months": 398405,
     "medianPriceLast12Months": 5632,
@@ -6064,10 +6064,10 @@
     ]
   },
   "pablo-picasso": {
-    "lastUpdated": "2026-05-15T15:29:51.642Z",
+    "lastUpdated": "2026-05-16T14:34:34.670Z",
     "totalLotsTracked": 3015,
-    "avgPriceLast12Months": 242119,
-    "medianPriceLast12Months": 7040,
+    "avgPriceLast12Months": 243776,
+    "medianPriceLast12Months": 6985,
     "recordPrice": 179365000,
     "recordTitle": "Les femmes d'Alger (Version 'O')",
     "recordDate": "2015-05-11",
@@ -6735,7 +6735,7 @@
     ]
   },
   "fab-5-freddy": {
-    "lastUpdated": "2026-05-15T15:29:51.646Z",
+    "lastUpdated": "2026-05-16T14:34:34.674Z",
     "totalLotsTracked": 10,
     "avgPriceLast12Months": 704,
     "medianPriceLast12Months": 704,
@@ -6777,10 +6777,10 @@
     ]
   },
   "francesco-clemente": {
-    "lastUpdated": "2026-05-15T15:29:51.646Z",
+    "lastUpdated": "2026-05-16T14:34:34.674Z",
     "totalLotsTracked": 197,
-    "avgPriceLast12Months": 33421,
-    "medianPriceLast12Months": 28804,
+    "avgPriceLast12Months": 23975,
+    "medianPriceLast12Months": 27203,
     "recordPrice": 3042900,
     "recordTitle": "1950 Ferrari 166 MM Touring Barchetta",
     "recordDate": "2025-02-06",
@@ -7196,7 +7196,7 @@
     ]
   },
   "jean-prouve": {
-    "lastUpdated": "2026-05-15T15:29:51.647Z",
+    "lastUpdated": "2026-05-16T14:34:34.675Z",
     "totalLotsTracked": 389,
     "avgPriceLast12Months": 65519,
     "medianPriceLast12Months": 16640,
@@ -7650,9 +7650,9 @@
     ]
   },
   "pierre-jeanneret": {
-    "lastUpdated": "2026-05-15T15:29:51.647Z",
+    "lastUpdated": "2026-05-16T14:34:34.675Z",
     "totalLotsTracked": 577,
-    "avgPriceLast12Months": 10062,
+    "avgPriceLast12Months": 9888,
     "medianPriceLast12Months": 8890,
     "recordPrice": 243000,
     "recordTitle": "Bibliothèque vitrée, créée pour la Central State Library ...",
