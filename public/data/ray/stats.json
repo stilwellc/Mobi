@@ -1,15 +1,15 @@
 {
   "george-condo": {
-    "lastUpdated": "2026-05-21T16:27:30.532Z",
-    "totalLotsTracked": 292,
-    "avgPriceLast12Months": 350289,
-    "medianPriceLast12Months": 45150,
+    "lastUpdated": "2026-05-22T16:01:59.931Z",
+    "totalLotsTracked": 293,
+    "avgPriceLast12Months": 374792,
+    "medianPriceLast12Months": 52500,
     "recordPrice": 12000000,
     "recordTitle": "Blues In F",
     "recordDate": "2020-07-10",
     "recordHouse": "Phillips",
-    "appreciationRate": -32.4,
-    "totalAuctionRevenue": 169973646,
+    "appreciationRate": -23.5,
+    "totalAuctionRevenue": 171678826,
     "priceHistory": [
       {
         "date": "2003-Q1",
@@ -377,13 +377,23 @@
       },
       {
         "date": "2026-Q2",
-        "avgPrice": 1024,
-        "medianPrice": 1024,
-        "totalSales": 1,
-        "highPrice": 1024
+        "avgPrice": 568735,
+        "medianPrice": 54180,
+        "totalSales": 3,
+        "highPrice": 1651000
       }
     ],
     "houseDistribution": [
+      {
+        "house": "Christie's",
+        "count": 59,
+        "totalValue": 137555787
+      },
+      {
+        "house": "Phillips",
+        "count": 47,
+        "totalValue": 20878221
+      },
       {
         "house": "Wright",
         "count": 18,
@@ -393,16 +403,6 @@
         "house": "Bonhams",
         "count": 68,
         "totalValue": 1920669
-      },
-      {
-        "house": "Phillips",
-        "count": 46,
-        "totalValue": 20824041
-      },
-      {
-        "house": "Christie's",
-        "count": 58,
-        "totalValue": 135904787
       },
       {
         "house": "Sotheby's",
@@ -417,7 +417,7 @@
     ]
   },
   "futura-2000": {
-    "lastUpdated": "2026-05-21T16:27:30.540Z",
+    "lastUpdated": "2026-05-22T16:01:59.940Z",
     "totalLotsTracked": 66,
     "avgPriceLast12Months": 62823,
     "medianPriceLast12Months": 82550,
@@ -670,16 +670,16 @@
     ]
   },
   "kaws": {
-    "lastUpdated": "2026-05-21T16:27:30.540Z",
-    "totalLotsTracked": 551,
-    "avgPriceLast12Months": 27418,
-    "medianPriceLast12Months": 2032,
+    "lastUpdated": "2026-05-22T16:01:59.940Z",
+    "totalLotsTracked": 555,
+    "avgPriceLast12Months": 33452,
+    "medianPriceLast12Months": 2048,
     "recordPrice": 3855000,
     "recordTitle": "IN THE WOODS",
     "recordDate": "2019-05-16",
     "recordHouse": "Christie's",
-    "appreciationRate": 12.9,
-    "totalAuctionRevenue": 39956736,
+    "appreciationRate": 62.8,
+    "totalAuctionRevenue": 40584836,
     "priceHistory": [
       {
         "date": "2008-Q4",
@@ -974,13 +974,25 @@
         "medianPrice": 1064,
         "totalSales": 30,
         "highPrice": 82560
+      },
+      {
+        "date": "2026-Q2",
+        "avgPrice": 314050,
+        "medianPrice": 374100,
+        "totalSales": 2,
+        "highPrice": 374100
       }
     ],
     "houseDistribution": [
       {
+        "house": "Christie's",
+        "count": 51,
+        "totalValue": 36591046
+      },
+      {
         "house": "Phillips",
-        "count": 22,
-        "totalValue": 1007748
+        "count": 23,
+        "totalValue": 1381848
       },
       {
         "house": "Wright",
@@ -993,11 +1005,6 @@
         "totalValue": 1703962
       },
       {
-        "house": "Christie's",
-        "count": 50,
-        "totalValue": 36337046
-      },
-      {
         "house": "Rago",
         "count": 32,
         "totalValue": 298733
@@ -1005,16 +1012,16 @@
     ]
   },
   "george-nakashima": {
-    "lastUpdated": "2026-05-21T16:27:30.541Z",
-    "totalLotsTracked": 566,
-    "avgPriceLast12Months": 28625,
+    "lastUpdated": "2026-05-22T16:01:59.942Z",
+    "totalLotsTracked": 573,
+    "avgPriceLast12Months": 27967,
     "medianPriceLast12Months": 20320,
     "recordPrice": 355600,
     "recordTitle": "Exceptional Conoid dining table",
     "recordDate": "2025-10-23",
     "recordHouse": "Wright",
-    "appreciationRate": -3.6,
-    "totalAuctionRevenue": 14555951,
+    "appreciationRate": -3.8,
+    "totalAuctionRevenue": 14504751,
     "priceHistory": [
       {
         "date": "2003-Q1",
@@ -1375,17 +1382,17 @@
       },
       {
         "date": "2026-Q2",
-        "avgPrice": 35320,
+        "avgPrice": 34710,
         "medianPrice": 25600,
-        "totalSales": 27,
+        "totalSales": 26,
         "highPrice": 153600
       }
     ],
     "houseDistribution": [
       {
         "house": "Wright",
-        "count": 268,
-        "totalValue": 6732447
+        "count": 267,
+        "totalValue": 6681247
       },
       {
         "house": "Phillips",
@@ -1405,16 +1412,16 @@
     ]
   },
   "charles-eames": {
-    "lastUpdated": "2026-05-21T16:27:30.543Z",
-    "totalLotsTracked": 759,
-    "avgPriceLast12Months": 2121,
-    "medianPriceLast12Months": 1056,
+    "lastUpdated": "2026-05-22T16:01:59.943Z",
+    "totalLotsTracked": 765,
+    "avgPriceLast12Months": 2234,
+    "medianPriceLast12Months": 1079.5,
     "recordPrice": 29375,
     "recordTitle": "Charles & Ray Eames Rare \"ESU-420-C\" Storage Unit",
     "recordDate": "2003-03-30",
     "recordHouse": "Bonhams",
-    "appreciationRate": 12.7,
-    "totalAuctionRevenue": 1275939,
+    "appreciationRate": 15,
+    "totalAuctionRevenue": 1318797.5,
     "priceHistory": [
       {
         "date": "2003-Q1",
@@ -1943,17 +1950,17 @@
       },
       {
         "date": "2026-Q2",
-        "avgPrice": 3990,
+        "avgPrice": 4685,
         "medianPrice": 3990,
-        "totalSales": 1,
-        "highPrice": 3990
+        "totalSales": 10,
+        "highPrice": 14080
       }
     ],
     "houseDistribution": [
       {
         "house": "Wright",
-        "count": 229,
-        "totalValue": 504031
+        "count": 238,
+        "totalValue": 546889.5
       },
       {
         "house": "Bonhams",
@@ -1968,16 +1975,16 @@
     ]
   },
   "andy-warhol": {
-    "lastUpdated": "2026-05-21T16:27:30.544Z",
-    "totalLotsTracked": 2545,
-    "avgPriceLast12Months": 291104,
+    "lastUpdated": "2026-05-22T16:01:59.946Z",
+    "totalLotsTracked": 2567,
+    "avgPriceLast12Months": 288883,
     "medianPriceLast12Months": 10240,
     "recordPrice": 195040000,
     "recordTitle": "Shot Sage Blue Marilyn",
     "recordDate": "2022-05-09",
     "recordHouse": "Christie's",
-    "appreciationRate": 11.4,
-    "totalAuctionRevenue": 1567159191,
+    "appreciationRate": 9.5,
+    "totalAuctionRevenue": 1567257231,
     "priceHistory": [
       {
         "date": "2003-Q1",
@@ -2618,13 +2625,18 @@
       },
       {
         "date": "2026-Q2",
-        "avgPrice": 1584387,
+        "avgPrice": 1499088,
         "medianPrice": 12800,
-        "totalSales": 34,
+        "totalSales": 36,
         "highPrice": 27085000
       }
     ],
     "houseDistribution": [
+      {
+        "house": "Phillips",
+        "count": 25,
+        "totalValue": 3469903
+      },
       {
         "house": "Wright",
         "count": 208,
@@ -2639,17 +2651,12 @@
         "house": "Bonhams",
         "count": 1533,
         "totalValue": 40091753
-      },
-      {
-        "house": "Phillips",
-        "count": 23,
-        "totalValue": 3371863
       }
     ]
   },
   "tom-sachs": {
-    "lastUpdated": "2026-05-21T16:27:30.548Z",
-    "totalLotsTracked": 109,
+    "lastUpdated": "2026-05-22T16:01:59.950Z",
+    "totalLotsTracked": 110,
     "avgPriceLast12Months": 15964,
     "medianPriceLast12Months": 8890,
     "recordPrice": 302400,
@@ -3032,16 +3039,16 @@
     ]
   },
   "barry-mcgee": {
-    "lastUpdated": "2026-05-21T16:27:30.549Z",
+    "lastUpdated": "2026-05-22T16:01:59.951Z",
     "totalLotsTracked": 102,
-    "avgPriceLast12Months": 4748,
-    "medianPriceLast12Months": 2540,
+    "avgPriceLast12Months": 11411,
+    "medianPriceLast12Months": 5715,
     "recordPrice": 112500,
     "recordTitle": "Untitled",
     "recordDate": "2020-07-02",
     "recordHouse": "Phillips",
-    "appreciationRate": -12.7,
-    "totalAuctionRevenue": 1522627,
+    "appreciationRate": 3.5,
+    "totalAuctionRevenue": 1580677,
     "priceHistory": [
       {
         "date": "2005-Q4",
@@ -3350,9 +3357,21 @@
         "medianPrice": 14630,
         "totalSales": 2,
         "highPrice": 14630
+      },
+      {
+        "date": "2026-Q2",
+        "avgPrice": 58050,
+        "medianPrice": 58050,
+        "totalSales": 1,
+        "highPrice": 58050
       }
     ],
     "houseDistribution": [
+      {
+        "house": "Phillips",
+        "count": 18,
+        "totalValue": 571600
+      },
       {
         "house": "Wright",
         "count": 38,
@@ -3369,11 +3388,6 @@
         "totalValue": 392920
       },
       {
-        "house": "Phillips",
-        "count": 17,
-        "totalValue": 513550
-      },
-      {
         "house": "Bonhams",
         "count": 8,
         "totalValue": 166354
@@ -3381,16 +3395,16 @@
     ]
   },
   "keith-haring": {
-    "lastUpdated": "2026-05-21T16:27:30.549Z",
-    "totalLotsTracked": 923,
-    "avgPriceLast12Months": 83169,
-    "medianPriceLast12Months": 7040,
+    "lastUpdated": "2026-05-22T16:01:59.951Z",
+    "totalLotsTracked": 931,
+    "avgPriceLast12Months": 83536,
+    "medianPriceLast12Months": 6985,
     "recordPrice": 5820000,
     "recordTitle": "Untitled",
     "recordDate": "2022-11-17",
     "recordHouse": "Christie's",
-    "appreciationRate": 36.1,
-    "totalAuctionRevenue": 103596903,
+    "appreciationRate": 31.5,
+    "totalAuctionRevenue": 103687203,
     "priceHistory": [
       {
         "date": "2003-Q1",
@@ -3870,13 +3884,18 @@
       },
       {
         "date": "2026-Q2",
-        "avgPrice": 728423,
-        "medianPrice": 15360,
-        "totalSales": 7,
+        "avgPrice": 648658,
+        "medianPrice": 35840,
+        "totalSales": 8,
         "highPrice": 4955000
       }
     ],
     "houseDistribution": [
+      {
+        "house": "Phillips",
+        "count": 24,
+        "totalValue": 1275371
+      },
       {
         "house": "Christie's",
         "count": 51,
@@ -3891,25 +3910,20 @@
         "house": "Bonhams",
         "count": 415,
         "totalValue": 18659950
-      },
-      {
-        "house": "Phillips",
-        "count": 23,
-        "totalValue": 1185071
       }
     ]
   },
   "peter-saul": {
-    "lastUpdated": "2026-05-21T16:27:30.550Z",
+    "lastUpdated": "2026-05-22T16:01:59.953Z",
     "totalLotsTracked": 120,
-    "avgPriceLast12Months": 11813,
-    "medianPriceLast12Months": 445,
+    "avgPriceLast12Months": 19614,
+    "medianPriceLast12Months": 1088,
     "recordPrice": 819000,
     "recordTitle": "Human Dignity",
     "recordDate": "2023-05-15",
     "recordHouse": "Christie's",
-    "appreciationRate": -56.5,
-    "totalAuctionRevenue": 7079942,
+    "appreciationRate": -44.9,
+    "totalAuctionRevenue": 7158172,
     "priceHistory": [
       {
         "date": "2003-Q3",
@@ -4260,9 +4274,26 @@
         "medianPrice": 57150,
         "totalSales": 2,
         "highPrice": 57150
+      },
+      {
+        "date": "2026-Q2",
+        "avgPrice": 39115,
+        "medianPrice": 49020,
+        "totalSales": 2,
+        "highPrice": 49020
       }
     ],
     "houseDistribution": [
+      {
+        "house": "Christie's",
+        "count": 51,
+        "totalValue": 5484104
+      },
+      {
+        "house": "Phillips",
+        "count": 17,
+        "totalValue": 564321
+      },
       {
         "house": "Rago",
         "count": 13,
@@ -4277,30 +4308,20 @@
         "house": "Bonhams",
         "count": 17,
         "totalValue": 999130
-      },
-      {
-        "house": "Phillips",
-        "count": 16,
-        "totalValue": 515301
-      },
-      {
-        "house": "Christie's",
-        "count": 50,
-        "totalValue": 5454894
       }
     ]
   },
   "ed-ruscha": {
-    "lastUpdated": "2026-05-21T16:27:30.551Z",
-    "totalLotsTracked": 597,
-    "avgPriceLast12Months": 27035,
-    "medianPriceLast12Months": 4064,
+    "lastUpdated": "2026-05-22T16:01:59.954Z",
+    "totalLotsTracked": 599,
+    "avgPriceLast12Months": 28605,
+    "medianPriceLast12Months": 4128,
     "recordPrice": 1008375,
     "recordTitle": "The Eighties 1980",
     "recordDate": "2022-11-16",
     "recordHouse": "Bonhams",
-    "appreciationRate": 11.6,
-    "totalAuctionRevenue": 8946636.5,
+    "appreciationRate": 13.7,
+    "totalAuctionRevenue": 9140136.5,
     "priceHistory": [
       {
         "date": "2003-Q2",
@@ -4731,13 +4752,18 @@
       },
       {
         "date": "2026-Q2",
-        "avgPrice": 28774,
+        "avgPrice": 35363,
         "medianPrice": 931,
-        "totalSales": 24,
+        "totalSales": 25,
         "highPrice": 635500
       }
     ],
     "houseDistribution": [
+      {
+        "house": "Phillips",
+        "count": 24,
+        "totalValue": 1391607
+      },
       {
         "house": "Bonhams",
         "count": 208,
@@ -4747,16 +4773,11 @@
         "house": "Wright",
         "count": 256,
         "totalValue": 1578748.5
-      },
-      {
-        "house": "Phillips",
-        "count": 23,
-        "totalValue": 1198107
       }
     ]
   },
   "r-crumb": {
-    "lastUpdated": "2026-05-21T16:27:30.552Z",
+    "lastUpdated": "2026-05-22T16:01:59.955Z",
     "totalLotsTracked": 64,
     "avgPriceLast12Months": 2325,
     "medianPriceLast12Months": 953,
@@ -4995,16 +5016,16 @@
     ]
   },
   "raymond-pettibon": {
-    "lastUpdated": "2026-05-21T16:27:30.552Z",
+    "lastUpdated": "2026-05-22T16:01:59.955Z",
     "totalLotsTracked": 414,
-    "avgPriceLast12Months": 4189,
+    "avgPriceLast12Months": 5421,
     "medianPriceLast12Months": 572,
     "recordPrice": 1865000,
     "recordTitle": "No Title (This left was...)",
     "recordDate": "2023-05-15",
     "recordHouse": "Christie's",
-    "appreciationRate": -42.1,
-    "totalAuctionRevenue": 10778003,
+    "appreciationRate": 15.4,
+    "totalAuctionRevenue": 10968503,
     "priceHistory": [
       {
         "date": "2004-Q4",
@@ -5376,13 +5397,20 @@
         "medianPrice": 4352,
         "totalSales": 5,
         "highPrice": 32258
+      },
+      {
+        "date": "2026-Q2",
+        "avgPrice": 95250,
+        "medianPrice": 120650,
+        "totalSales": 2,
+        "highPrice": 120650
       }
     ],
     "houseDistribution": [
       {
         "house": "Christie's",
-        "count": 50,
-        "totalValue": 9215069
+        "count": 52,
+        "totalValue": 9405569
       },
       {
         "house": "Bonhams",
@@ -5407,16 +5435,16 @@
     ]
   },
   "henri-matisse": {
-    "lastUpdated": "2026-05-21T16:27:30.553Z",
-    "totalLotsTracked": 971,
-    "avgPriceLast12Months": 1012158,
-    "medianPriceLast12Months": 5632,
+    "lastUpdated": "2026-05-22T16:01:59.956Z",
+    "totalLotsTracked": 972,
+    "avgPriceLast12Months": 959780,
+    "medianPriceLast12Months": 5715,
     "recordPrice": 80750000,
     "recordTitle": "Odalisque couchée aux magnolias",
     "recordDate": "2018-05-08",
     "recordHouse": "Christie's",
-    "appreciationRate": 138.6,
-    "totalAuctionRevenue": 551345250,
+    "appreciationRate": 128.5,
+    "totalAuctionRevenue": 551727460,
     "priceHistory": [
       {
         "date": "2000-Q2",
@@ -6036,13 +6064,23 @@
       },
       {
         "date": "2026-Q2",
-        "avgPrice": 2685794,
-        "medianPrice": 8320,
-        "totalSales": 16,
+        "avgPrice": 2167746,
+        "medianPrice": 9600,
+        "totalSales": 20,
         "highPrice": 34560000
       }
     ],
     "houseDistribution": [
+      {
+        "house": "Bonhams",
+        "count": 564,
+        "totalValue": 8452992
+      },
+      {
+        "house": "Phillips",
+        "count": 20,
+        "totalValue": 1178266
+      },
       {
         "house": "Wright",
         "count": 53,
@@ -6054,16 +6092,6 @@
         "totalValue": 541603992
       },
       {
-        "house": "Bonhams",
-        "count": 562,
-        "totalValue": 8185592
-      },
-      {
-        "house": "Phillips",
-        "count": 18,
-        "totalValue": 1063456
-      },
-      {
         "house": "Rago",
         "count": 23,
         "totalValue": 196556
@@ -6071,16 +6099,16 @@
     ]
   },
   "pablo-picasso": {
-    "lastUpdated": "2026-05-21T16:27:30.554Z",
-    "totalLotsTracked": 3049,
-    "avgPriceLast12Months": 242282,
+    "lastUpdated": "2026-05-22T16:01:59.958Z",
+    "totalLotsTracked": 3068,
+    "avgPriceLast12Months": 589166,
     "medianPriceLast12Months": 6985,
     "recordPrice": 179365000,
     "recordTitle": "Les femmes d'Alger (Version 'O')",
     "recordDate": "2015-05-11",
     "recordHouse": "Christie's",
-    "appreciationRate": 21.9,
-    "totalAuctionRevenue": 1828730939,
+    "appreciationRate": 45.5,
+    "totalAuctionRevenue": 1940460939,
     "priceHistory": [
       {
         "date": "2003-Q1",
@@ -6707,10 +6735,10 @@
       },
       {
         "date": "2026-Q2",
-        "avgPrice": 23600,
-        "medianPrice": 9975,
-        "totalSales": 101,
-        "highPrice": 320000
+        "avgPrice": 1097246,
+        "medianPrice": 10880,
+        "totalSales": 104,
+        "highPrice": 48360000
       }
     ],
     "houseDistribution": [
@@ -6718,6 +6746,11 @@
         "house": "Wright",
         "count": 162,
         "totalValue": 2224770
+      },
+      {
+        "house": "Christie's",
+        "count": 51,
+        "totalValue": 1914806203
       },
       {
         "house": "Bonhams",
@@ -6733,16 +6766,11 @@
         "house": "Phillips",
         "count": 23,
         "totalValue": 1431470
-      },
-      {
-        "house": "Christie's",
-        "count": 48,
-        "totalValue": 1803076203
       }
     ]
   },
   "fab-5-freddy": {
-    "lastUpdated": "2026-05-21T16:27:30.558Z",
+    "lastUpdated": "2026-05-22T16:01:59.962Z",
     "totalLotsTracked": 10,
     "avgPriceLast12Months": 704,
     "medianPriceLast12Months": 704,
@@ -6784,16 +6812,16 @@
     ]
   },
   "francesco-clemente": {
-    "lastUpdated": "2026-05-21T16:27:30.558Z",
-    "totalLotsTracked": 197,
-    "avgPriceLast12Months": 21782,
+    "lastUpdated": "2026-05-22T16:01:59.962Z",
+    "totalLotsTracked": 199,
+    "avgPriceLast12Months": 25666,
     "medianPriceLast12Months": 27203,
     "recordPrice": 3042900,
     "recordTitle": "1950 Ferrari 166 MM Touring Barchetta",
     "recordDate": "2025-02-06",
     "recordHouse": "Bonhams",
-    "appreciationRate": 17.3,
-    "totalAuctionRevenue": 8981351,
+    "appreciationRate": 30.2,
+    "totalAuctionRevenue": 9072851,
     "priceHistory": [
       {
         "date": "2002-Q4",
@@ -6944,9 +6972,9 @@
       },
       {
         "date": "2015-Q2",
-        "avgPrice": 9713,
-        "medianPrice": 1191,
-        "totalSales": 5,
+        "avgPrice": 12594,
+        "medianPrice": 2500,
+        "totalSales": 6,
         "highPrice": 43750
       },
       {
@@ -7175,13 +7203,18 @@
       },
       {
         "date": "2026-Q2",
-        "avgPrice": 2048,
-        "medianPrice": 2048,
-        "totalSales": 1,
-        "highPrice": 2048
+        "avgPrice": 33274,
+        "medianPrice": 64500,
+        "totalSales": 2,
+        "highPrice": 64500
       }
     ],
     "houseDistribution": [
+      {
+        "house": "Phillips",
+        "count": 21,
+        "totalValue": 514789
+      },
       {
         "house": "Wright",
         "count": 22,
@@ -7194,13 +7227,8 @@
       },
       {
         "house": "Christie's",
-        "count": 49,
-        "totalValue": 5090593
-      },
-      {
-        "house": "Phillips",
-        "count": 20,
-        "totalValue": 450289
+        "count": 50,
+        "totalValue": 5117593
       },
       {
         "house": "Bonhams",
@@ -7210,16 +7238,16 @@
     ]
   },
   "jean-prouve": {
-    "lastUpdated": "2026-05-21T16:27:30.559Z",
-    "totalLotsTracked": 389,
-    "avgPriceLast12Months": 65519,
-    "medianPriceLast12Months": 16640,
+    "lastUpdated": "2026-05-22T16:01:59.963Z",
+    "totalLotsTracked": 390,
+    "avgPriceLast12Months": 54159,
+    "medianPriceLast12Months": 14630,
     "recordPrice": 1188000,
     "recordTitle": "Table 'Centrale' dite 'Trapèze', le petit modèle réalisé ...",
     "recordDate": "2021-11-02",
     "recordHouse": "Christie's",
-    "appreciationRate": -5.1,
-    "totalAuctionRevenue": 26394407,
+    "appreciationRate": -6.9,
+    "totalAuctionRevenue": 26400551,
     "priceHistory": [
       {
         "date": "2003-Q1",
@@ -7629,13 +7657,18 @@
       },
       {
         "date": "2026-Q2",
-        "avgPrice": 44862,
-        "medianPrice": 22118,
-        "totalSales": 4,
+        "avgPrice": 37118,
+        "medianPrice": 13926,
+        "totalSales": 5,
         "highPrice": 139256
       }
     ],
     "houseDistribution": [
+      {
+        "house": "Wright",
+        "count": 215,
+        "totalValue": 4841421
+      },
       {
         "house": "Phillips",
         "count": 21,
@@ -7645,11 +7678,6 @@
         "house": "Bonhams",
         "count": 43,
         "totalValue": 1343988
-      },
-      {
-        "house": "Wright",
-        "count": 214,
-        "totalValue": 4835277
       },
       {
         "house": "Christie's",
@@ -7664,16 +7692,16 @@
     ]
   },
   "pierre-jeanneret": {
-    "lastUpdated": "2026-05-21T16:27:30.560Z",
-    "totalLotsTracked": 577,
-    "avgPriceLast12Months": 9888,
+    "lastUpdated": "2026-05-22T16:01:59.964Z",
+    "totalLotsTracked": 585,
+    "avgPriceLast12Months": 9594,
     "medianPriceLast12Months": 8890,
     "recordPrice": 243000,
     "recordTitle": "Bibliothèque vitrée, créée pour la Central State Library ...",
     "recordDate": "2021-11-02",
     "recordHouse": "Christie's",
-    "appreciationRate": 18,
-    "totalAuctionRevenue": 6902415,
+    "appreciationRate": 16,
+    "totalAuctionRevenue": 6922365,
     "priceHistory": [
       {
         "date": "2003-Q1",
@@ -7978,17 +8006,17 @@
       },
       {
         "date": "2026-Q2",
-        "avgPrice": 11503,
-        "medianPrice": 10240,
-        "totalSales": 18,
+        "avgPrice": 9459,
+        "medianPrice": 9600,
+        "totalSales": 24,
         "highPrice": 21760
       }
     ],
     "houseDistribution": [
       {
         "house": "Wright",
-        "count": 218,
-        "totalValue": 2548696
+        "count": 224,
+        "totalValue": 2568646
       },
       {
         "house": "Bonhams",
