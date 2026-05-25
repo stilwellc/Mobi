@@ -1,0 +1,190 @@
+'use client';
+
+import { useMemo } from 'react';
+import { ResponsiveContainer, AreaChart, Area, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
+import { MarketStats } from '../../types';
+
+interface Props {
+  statsByArtist: Record<string, MarketStats>;
+}
+
+function formatAxis(value: number): string {
+  if (value >= 1_000_000) return `$${(value / 1_000_000).toFixed(1)}M`;
+  if (value >= 1_000) return `$${(value / 1_000).toFixed(0)}K`;
+  return `$${value}`;
+}
+
+const tooltipColors: Record<string, string> = { avgPrice: '#96B8D4', highPrice: '#D4B896', trendline: '#A8D4A0' };
+const tooltipLabels: Record<string, string> = { avgPrice: 'Avg', highPrice: 'High', trendline: 'Trend' };
+
+function CustomTooltip({ active, payload, label }: { active?: boolean; payload?: Array<{ value: number; dataKey: string }>; label?: string }) {
+  if (!active || !payload?.length) return null;
+  return (
+    <div style={{
+      background: 'var(--color-bg-card)',
+      border: '1px solid var(--color-border)',
+      borderRadius: 10,
+      padding: '10px 14px',
+      fontFamily: "'Syne', sans-serif",
+    }}>
+      <div style={{ fontSize: 10, color: 'var(--color-text-label)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 6 }}>
+        {label}
+      </div>
+      {payload.filter(e => e.value != null).map((entry) => (
+        <div key={entry.dataKey} style={{ fontSize: 13, color: tooltipColors[entry.dataKey] || '#96B8D4', marginBottom: 1, fontWeight: 500 }}>
+          {tooltipLabels[entry.dataKey] || entry.dataKey}: {formatAxis(entry.value)}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export default function PortfolioPerformanceChart({ statsByArtist }: Props) {
+  const data = useMemo(() => {
+    const quarterMap: Record<string, { weightedSum: number; totalHigh: number; totalSales: number }> = {};
+
+    for (const stats of Object.values(statsByArtist)) {
+      for (const point of stats.priceHistory || []) {
+        const key = point.date.replace(' ', '-');
+        if (!quarterMap[key]) {
+          quarterMap[key] = { weightedSum: 0, totalHigh: 0, totalSales: 0 };
+        }
+        quarterMap[key].weightedSum += point.avgPrice * point.totalSales;
+        quarterMap[key].totalHigh = Math.max(quarterMap[key].totalHigh, point.highPrice);
+        quarterMap[key].totalSales += point.totalSales;
+      }
+    }
+
+    const sorted = Object.entries(quarterMap)
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([date, d]) => ({
+        date: date.replace('-', ' '),
+        avgPrice: d.totalSales > 0 ? d.weightedSum / d.totalSales : 0,
+        highPrice: d.totalHigh,
+        totalSales: d.totalSales,
+      }));
+
+    const window = 3;
+    return sorted.map((p, i) => {
+      if (i < window - 1) return { ...p, trendline: undefined };
+      const slice = sorted.slice(i - window + 1, i + 1);
+      const avg = slice.reduce((s, q) => s + q.avgPrice, 0) / window;
+      return { ...p, trendline: avg };
+    });
+  }, [statsByArtist]);
+
+  if (data.length < 2) return null;
+
+  return (
+    <section className="ray-perf-chart" style={{ maxWidth: 1100, margin: '0 auto' }}>
+      <style>{`
+        .ray-perf-chart { padding: 40px 56px 48px; }
+        .ray-perf-chart-container { height: 300px; }
+        @media (max-width: 768px) {
+          .ray-perf-chart { padding: 32px 20px 32px; }
+          .ray-perf-chart-container { height: 200px; }
+        }
+      `}</style>
+
+      <div style={{ marginBottom: 20 }}>
+        <h2 style={{
+          fontFamily: "'Cormorant Garamond', serif",
+          fontSize: 32,
+          fontWeight: 300,
+          letterSpacing: '-0.02em',
+        }}>
+          Portfolio <span style={{ fontStyle: 'italic', color: 'var(--color-accent-green)' }}>Performance</span>
+        </h2>
+      </div>
+
+      <div style={{
+        background: 'var(--color-bg-card)',
+        border: '1px solid var(--color-border)',
+        borderRadius: 16,
+        overflow: 'hidden',
+      }}>
+        <div style={{ padding: '20px 8px 0 0' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '0 20px 12px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+              <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#96B8D4', flexShrink: 0 }} />
+              <span style={{ fontSize: 9, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--color-text-ghost)', fontWeight: 600 }}>
+                Avg
+              </span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+              <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#D4B896', flexShrink: 0 }} />
+              <span style={{ fontSize: 9, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--color-text-ghost)', fontWeight: 600 }}>
+                High
+              </span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+              <span style={{ width: 12, height: 2, background: '#A8D4A0', borderRadius: 1, flexShrink: 0 }} />
+              <span style={{ fontSize: 9, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--color-text-ghost)', fontWeight: 600 }}>
+                Trend
+              </span>
+            </div>
+          </div>
+          <div className="ray-perf-chart-container">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={data} margin={{ top: 4, right: 16, left: 8, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="perfBlueGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#96B8D4" stopOpacity={0.2} />
+                    <stop offset="100%" stopColor="#96B8D4" stopOpacity={0.01} />
+                  </linearGradient>
+                  <linearGradient id="perfGoldGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#D4B896" stopOpacity={0.1} />
+                    <stop offset="100%" stopColor="#D4B896" stopOpacity={0.01} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
+                <XAxis
+                  dataKey="date"
+                  tick={{ fontSize: 10, fill: 'var(--color-text-ghost)', fontFamily: "'Syne', sans-serif" }}
+                  axisLine={{ stroke: 'var(--color-border)' }}
+                  tickLine={false}
+                  interval="preserveStartEnd"
+                />
+                <YAxis
+                  tickFormatter={formatAxis}
+                  tick={{ fontSize: 10, fill: 'var(--color-text-ghost)', fontFamily: "'Syne', sans-serif" }}
+                  axisLine={false}
+                  tickLine={false}
+                  width={55}
+                />
+                <Tooltip content={<CustomTooltip />} />
+                <Area
+                  type="monotone"
+                  dataKey="highPrice"
+                  stroke="#D4B896"
+                  strokeWidth={1}
+                  fill="url(#perfGoldGrad)"
+                  strokeOpacity={0.35}
+                  dot={false}
+                />
+                <Area
+                  type="monotone"
+                  dataKey="avgPrice"
+                  stroke="#96B8D4"
+                  strokeWidth={2}
+                  fill="url(#perfBlueGrad)"
+                  dot={false}
+                  activeDot={{ r: 3, fill: '#96B8D4', stroke: 'var(--color-bg)', strokeWidth: 2 }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="trendline"
+                  stroke="#A8D4A0"
+                  strokeWidth={2}
+                  strokeDasharray="6 3"
+                  dot={false}
+                  connectNulls={false}
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

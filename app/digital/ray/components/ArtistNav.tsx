@@ -11,9 +11,11 @@ export default function ArtistNav({ activeSlug, savedCount = 0, upcomingCounts =
 
   const activeLabel = activeSlug === 'saved'
     ? `Saved${savedCount > 0 ? ` (${savedCount})` : ''}`
-    : activeSlug
-      ? (ARTIST_LABEL[activeSlug] || activeSlug)
-      : 'Overview';
+    : activeSlug === 'analytics'
+      ? 'Analytics'
+      : activeSlug
+        ? (ARTIST_LABEL[activeSlug] || activeSlug)
+        : 'Overview';
 
   useEffect(() => {
     if (!open) return;
@@ -169,6 +171,13 @@ export default function ArtistNav({ activeSlug, savedCount = 0, upcomingCounts =
               onClick={() => navigate('/digital/ray/saved')}
             >
               Saved{savedCount > 0 ? ` (${savedCount})` : ''}
+            </button>
+            <button
+              className="ray-artist-dropdown-item"
+              data-active={activeSlug === 'analytics' ? 'true' : 'false'}
+              onClick={() => navigate('/digital/ray/analytics')}
+            >
+              Analytics
             </button>
             <div className="ray-artist-dropdown-label">Artists</div>
             {ARTISTS.map(a => (
