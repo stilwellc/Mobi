@@ -13,6 +13,7 @@ import ArtistRankingsTable from '../components/analytics/ArtistRankingsTable';
 import TopSales from '../components/analytics/TopSales';
 
 const PortfolioPerformanceChart = dynamic(() => import('../components/analytics/PortfolioPerformanceChart'), { ssr: false });
+const ArtistSparklines = dynamic(() => import('../components/analytics/ArtistSparklines'), { ssr: false });
 const CategoryBreakdown = dynamic(() => import('../components/analytics/CategoryBreakdown'), { ssr: false });
 const AuctionHouseDistribution = dynamic(() => import('../components/analytics/AuctionHouseDistribution'), { ssr: false });
 const PriceDistribution = dynamic(() => import('../components/analytics/PriceDistribution'), { ssr: false });
@@ -170,6 +171,7 @@ export default function AnalyticsPage() {
         <>
           <PortfolioHeader statsByArtist={statsByArtist} allLots={allLots} />
           <PortfolioPerformanceChart statsByArtist={statsByArtist} />
+          <ArtistSparklines statsByArtist={statsByArtist} allLots={allLots} />
           <ArtistRankingsTable statsByArtist={statsByArtist} allLots={allLots} />
           <CategoryBreakdown allLots={allLots} />
           <AuctionHouseDistribution statsByArtist={statsByArtist} />
