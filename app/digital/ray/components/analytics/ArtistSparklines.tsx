@@ -166,7 +166,7 @@ function ArtistCard({ artist }: { artist: ArtistCardData }) {
       }}>
         <div>
           <div style={{ fontSize: 9, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--color-text-ghost)', fontWeight: 600, marginBottom: 3 }}>
-            Revenue
+            Lot Value
           </div>
           <div style={{ fontSize: 14, fontWeight: 500, color: 'var(--color-accent-blue)' }}>
             {formatPrice(artist.totalRevenue)}

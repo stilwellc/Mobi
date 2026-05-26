@@ -38,7 +38,7 @@ export default function PortfolioHeader({ statsByArtist, allLots }: Props) {
       : 0;
 
     return [
-      { label: 'Portfolio Value', value: formatPrice(totalRevenue), sub: 'aggregate revenue across all artists' },
+      { label: 'Portfolio Value', value: formatPrice(totalRevenue), sub: 'aggregate lot value across all artists' },
       { label: 'Total Lots', value: allLots.length.toLocaleString(), sub: `${ARTISTS.length} artists tracked` },
       { label: 'Appreciation', value: `${weightedAppreciation >= 0 ? '+' : ''}${weightedAppreciation.toFixed(1)}%`, sub: 'weighted avg across portfolio' },
       { label: 'Avg. % Over Estimate', value: `${avgOverEstimate >= 0 ? '+' : ''}${avgOverEstimate.toFixed(1)}%`, sub: `${lotsWithEstimate.length.toLocaleString()} lots with estimates` },

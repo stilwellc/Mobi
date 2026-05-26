@@ -144,7 +144,7 @@ export default function ArtistRankingsTable({ statsByArtist, allLots }: Props) {
                 Artist {sortKey === 'name' && (sortDir === 'asc' ? '\u25B2' : '\u25BC')}
               </th>
               <th className="ray-rankings-hide-mobile" style={thStyle('totalRevenue')} onClick={() => handleSort('totalRevenue')}>
-                Revenue {sortKey === 'totalRevenue' && (sortDir === 'asc' ? '\u25B2' : '\u25BC')}
+                Lot Value {sortKey === 'totalRevenue' && (sortDir === 'asc' ? '\u25B2' : '\u25BC')}
               </th>
               <th style={thStyle('avgPrice')} onClick={() => handleSort('avgPrice')}>
                 Avg (12mo) {sortKey === 'avgPrice' && (sortDir === 'asc' ? '\u25B2' : '\u25BC')}

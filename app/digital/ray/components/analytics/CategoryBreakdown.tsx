@@ -30,7 +30,7 @@ function CategoryTooltip({ active, payload }: { active?: boolean; payload?: Arra
         {d.category}
       </div>
       <div style={{ fontSize: 13, color: 'var(--color-accent-green)', fontWeight: 500, marginBottom: 1 }}>
-        Revenue: {formatPrice(d.revenue)}
+        Lot Value: {formatPrice(d.revenue)}
       </div>
       <div style={{ fontSize: 13, color: 'var(--color-text-muted)', marginBottom: 1 }}>
         {d.soldCount.toLocaleString()} sold of {d.count.toLocaleString()} total
