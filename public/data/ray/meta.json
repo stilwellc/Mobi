@@ -1,5 +1,5 @@
 {
-  "lastCrawl": "2026-05-27T16:50:09.669Z",
+  "lastCrawl": "2026-05-28T17:06:09.647Z",
   "artists": [
     {
       "slug": "george-condo",
@@ -76,6 +76,14 @@
     {
       "slug": "pierre-jeanneret",
       "displayName": "Pierre Jeanneret"
+    },
+    {
+      "slug": "eddie-martinez",
+      "displayName": "Eddie Martinez"
+    },
+    {
+      "slug": "kenny-scharf",
+      "displayName": "Kenny Scharf"
     }
   ],
   "sources": [
