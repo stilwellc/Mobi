@@ -43,6 +43,7 @@ const EDITION_DEFAULT_ARTISTS = new Set(['andy-warhol', 'keith-haring', 'ed-rusc
 const ORIGINAL_DEFAULT_ARTISTS = new Set([
   'george-condo', 'kaws', 'raymond-pettibon', 'peter-saul',
   'tom-sachs', 'barry-mcgee', 'futura-2000', 'r-crumb', 'fab-5-freddy',
+  'eddie-martinez', 'kenny-scharf',
 ]);
 
 const PRINT_PATTERNS = /\b(screenprint|silkscreen|serigraph|lithograph|etching|woodcut|woodblock|linocut|engraving|aquatint|monotype|monoprint|offset|poster|gicl[eé]e|print(?:ed)?|edition of|numbered.*\/|signed.*numbered|multiple|chromolithograph|intaglio)\b/i;
@@ -305,6 +306,23 @@ const ARTISTS: ArtistConfig[] = [
     christies: 'pierre-jeanneret',
     wright: 'pierre-jeanneret',
     bonhams: 'Pierre Jeanneret',
+  },
+  {
+    slug: 'eddie-martinez',
+    displayName: 'Eddie Martinez',
+    phillips: { id: '7287', slug: 'eddie-martinez' },
+    sothebys: 'eddie-martinez',
+    christies: 'eddie-martinez',
+    bonhams: 'Eddie Martinez',
+  },
+  {
+    slug: 'kenny-scharf',
+    displayName: 'Kenny Scharf',
+    phillips: { id: '1306', slug: 'kenny-scharf' },
+    sothebys: 'kenny-scharf',
+    christies: 'kenny-scharf',
+    wright: 'kenny-scharf',
+    bonhams: 'Kenny Scharf',
   },
 ];
 
