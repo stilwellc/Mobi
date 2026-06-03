@@ -1,6 +1,6 @@
 {
   "george-condo": {
-    "lastUpdated": "2026-06-02T17:36:36.448Z",
+    "lastUpdated": "2026-06-03T18:11:23.847Z",
     "totalLotsTracked": 295,
     "avgPriceLast12Months": 331270,
     "medianPriceLast12Months": 45150,
@@ -417,7 +417,7 @@
     ]
   },
   "futura-2000": {
-    "lastUpdated": "2026-06-02T17:36:36.456Z",
+    "lastUpdated": "2026-06-03T18:11:23.854Z",
     "totalLotsTracked": 66,
     "avgPriceLast12Months": 62823,
     "medianPriceLast12Months": 82550,
@@ -670,7 +670,7 @@
     ]
   },
   "kaws": {
-    "lastUpdated": "2026-06-02T17:36:36.457Z",
+    "lastUpdated": "2026-06-03T18:11:23.854Z",
     "totalLotsTracked": 555,
     "avgPriceLast12Months": 33838,
     "medianPriceLast12Months": 1905,
@@ -1012,7 +1012,7 @@
     ]
   },
   "george-nakashima": {
-    "lastUpdated": "2026-06-02T17:36:36.458Z",
+    "lastUpdated": "2026-06-03T18:11:23.855Z",
     "totalLotsTracked": 600,
     "avgPriceLast12Months": 28714,
     "medianPriceLast12Months": 21590,
@@ -1412,7 +1412,7 @@
     ]
   },
   "charles-eames": {
-    "lastUpdated": "2026-06-02T17:36:36.459Z",
+    "lastUpdated": "2026-06-03T18:11:23.856Z",
     "totalLotsTracked": 776,
     "avgPriceLast12Months": 2578,
     "medianPriceLast12Months": 1216,
@@ -1975,8 +1975,8 @@
     ]
   },
   "andy-warhol": {
-    "lastUpdated": "2026-06-02T17:36:36.460Z",
-    "totalLotsTracked": 2583,
+    "lastUpdated": "2026-06-03T18:11:23.857Z",
+    "totalLotsTracked": 2585,
     "avgPriceLast12Months": 299696,
     "medianPriceLast12Months": 10965,
     "recordPrice": 195040000,
@@ -1984,7 +1984,7 @@
     "recordDate": "2022-05-09",
     "recordHouse": "Christie's",
     "appreciationRate": 2.7,
-    "totalAuctionRevenue": 1567777230,
+    "totalAuctionRevenue": 1587639730,
     "priceHistory": [
       {
         "date": "2003-Q1",
@@ -2226,9 +2226,9 @@
       },
       {
         "date": "2011-Q4",
-        "avgPrice": 692120,
+        "avgPrice": 1057495,
         "medianPrice": 8750,
-        "totalSales": 24,
+        "totalSales": 25,
         "highPrice": 16322500
       },
       {
@@ -2443,9 +2443,9 @@
       },
       {
         "date": "2019-Q4",
-        "avgPrice": 508987,
-        "medianPrice": 5159,
-        "totalSales": 41,
+        "avgPrice": 735821,
+        "medianPrice": 6429,
+        "totalSales": 42,
         "highPrice": 20137500
       },
       {
@@ -2644,8 +2644,8 @@
       },
       {
         "house": "Christie's",
-        "count": 48,
-        "totalValue": 1516238849
+        "count": 50,
+        "totalValue": 1536101349
       },
       {
         "house": "Bonhams",
@@ -2655,7 +2655,7 @@
     ]
   },
   "tom-sachs": {
-    "lastUpdated": "2026-06-02T17:36:36.463Z",
+    "lastUpdated": "2026-06-03T18:11:23.860Z",
     "totalLotsTracked": 111,
     "avgPriceLast12Months": 16265,
     "medianPriceLast12Months": 8385,
@@ -3039,7 +3039,7 @@
     ]
   },
   "barry-mcgee": {
-    "lastUpdated": "2026-06-02T17:36:36.464Z",
+    "lastUpdated": "2026-06-03T18:11:23.860Z",
     "totalLotsTracked": 102,
     "avgPriceLast12Months": 11046,
     "medianPriceLast12Months": 5715,
@@ -3395,7 +3395,7 @@
     ]
   },
   "keith-haring": {
-    "lastUpdated": "2026-06-02T17:36:36.464Z",
+    "lastUpdated": "2026-06-03T18:11:23.861Z",
     "totalLotsTracked": 937,
     "avgPriceLast12Months": 82654,
     "medianPriceLast12Months": 7864,
@@ -3914,7 +3914,7 @@
     ]
   },
   "peter-saul": {
-    "lastUpdated": "2026-06-02T17:36:36.465Z",
+    "lastUpdated": "2026-06-03T18:11:23.862Z",
     "totalLotsTracked": 120,
     "avgPriceLast12Months": 19614,
     "medianPriceLast12Months": 1088,
@@ -4312,8 +4312,8 @@
     ]
   },
   "ed-ruscha": {
-    "lastUpdated": "2026-06-02T17:36:36.466Z",
-    "totalLotsTracked": 603,
+    "lastUpdated": "2026-06-03T18:11:23.862Z",
+    "totalLotsTracked": 604,
     "avgPriceLast12Months": 29911,
     "medianPriceLast12Months": 4864,
     "recordPrice": 1008375,
@@ -4777,7 +4777,7 @@
     ]
   },
   "r-crumb": {
-    "lastUpdated": "2026-06-02T17:36:36.467Z",
+    "lastUpdated": "2026-06-03T18:11:23.863Z",
     "totalLotsTracked": 64,
     "avgPriceLast12Months": 2325,
     "medianPriceLast12Months": 953,
@@ -5016,7 +5016,7 @@
     ]
   },
   "raymond-pettibon": {
-    "lastUpdated": "2026-06-02T17:36:36.467Z",
+    "lastUpdated": "2026-06-03T18:11:23.863Z",
     "totalLotsTracked": 419,
     "avgPriceLast12Months": 5503,
     "medianPriceLast12Months": 572,
@@ -5435,7 +5435,7 @@
     ]
   },
   "henri-matisse": {
-    "lastUpdated": "2026-06-02T17:36:36.468Z",
+    "lastUpdated": "2026-06-03T18:11:23.864Z",
     "totalLotsTracked": 977,
     "avgPriceLast12Months": 987691,
     "medianPriceLast12Months": 5715,
@@ -6099,8 +6099,8 @@
     ]
   },
   "pablo-picasso": {
-    "lastUpdated": "2026-06-02T17:36:36.469Z",
-    "totalLotsTracked": 3087,
+    "lastUpdated": "2026-06-03T18:11:23.865Z",
+    "totalLotsTracked": 3088,
     "avgPriceLast12Months": 625611,
     "medianPriceLast12Months": 6985,
     "recordPrice": 179365000,
@@ -6770,7 +6770,7 @@
     ]
   },
   "fab-5-freddy": {
-    "lastUpdated": "2026-06-02T17:36:36.472Z",
+    "lastUpdated": "2026-06-03T18:11:23.868Z",
     "totalLotsTracked": 10,
     "avgPriceLast12Months": 704,
     "medianPriceLast12Months": 704,
@@ -6812,7 +6812,7 @@
     ]
   },
   "francesco-clemente": {
-    "lastUpdated": "2026-06-02T17:36:36.473Z",
+    "lastUpdated": "2026-06-03T18:11:23.868Z",
     "totalLotsTracked": 199,
     "avgPriceLast12Months": 28175,
     "medianPriceLast12Months": 28804,
@@ -7238,7 +7238,7 @@
     ]
   },
   "jean-prouve": {
-    "lastUpdated": "2026-06-02T17:36:36.473Z",
+    "lastUpdated": "2026-06-03T18:11:23.868Z",
     "totalLotsTracked": 403,
     "avgPriceLast12Months": 54159,
     "medianPriceLast12Months": 14630,
@@ -7692,16 +7692,16 @@
     ]
   },
   "pierre-jeanneret": {
-    "lastUpdated": "2026-06-02T17:36:36.474Z",
-    "totalLotsTracked": 587,
-    "avgPriceLast12Months": 9648,
+    "lastUpdated": "2026-06-03T18:11:23.869Z",
+    "totalLotsTracked": 589,
+    "avgPriceLast12Months": 9613,
     "medianPriceLast12Months": 8890,
     "recordPrice": 243000,
     "recordTitle": "Bibliothèque vitrée, créée pour la Central State Library ...",
     "recordDate": "2021-11-02",
     "recordHouse": "Christie's",
-    "appreciationRate": 16.3,
-    "totalAuctionRevenue": 6948078,
+    "appreciationRate": 16.1,
+    "totalAuctionRevenue": 6952955,
     "priceHistory": [
       {
         "date": "2003-Q1",
@@ -8006,17 +8006,17 @@
       },
       {
         "date": "2026-Q2",
-        "avgPrice": 9720,
-        "medianPrice": 9600,
-        "totalSales": 26,
+        "avgPrice": 9541,
+        "medianPrice": 8960,
+        "totalSales": 27,
         "highPrice": 24689
       }
     ],
     "houseDistribution": [
       {
         "house": "Bonhams",
-        "count": 152,
-        "totalValue": 1789349
+        "count": 153,
+        "totalValue": 1794226
       },
       {
         "house": "Christie's",
@@ -8036,7 +8036,7 @@
     ]
   },
   "eddie-martinez": {
-    "lastUpdated": "2026-06-02T17:36:36.475Z",
+    "lastUpdated": "2026-06-03T18:11:23.870Z",
     "totalLotsTracked": 87,
     "avgPriceLast12Months": 73333,
     "medianPriceLast12Months": 19350,
@@ -8249,7 +8249,7 @@
     ]
   },
   "kenny-scharf": {
-    "lastUpdated": "2026-06-02T17:36:36.476Z",
+    "lastUpdated": "2026-06-03T18:11:23.870Z",
     "totalLotsTracked": 255,
     "avgPriceLast12Months": 38213,
     "medianPriceLast12Months": 7740,
