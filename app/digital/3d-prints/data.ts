@@ -31,4 +31,13 @@ export const prints: Print3D[] = [
       material: 'PLA',
     },
   },
+  {
+    id: 'wall-sconce',
+    name: 'Wall Sconce',
+    description: 'A wall-mounted sconce designed for 3D printing.',
+    stlPath: '/models/wall_sconce.stl',
+    details: {
+      material: 'PLA',
+    },
+  },
 ];
