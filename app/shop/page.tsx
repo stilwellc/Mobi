@@ -14,6 +14,7 @@ interface ShopItem {
 export default function ShopPage() {
   const [items, setItems] = useState<ShopItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchItems() {
@@ -21,8 +22,9 @@ export default function ShopPage() {
         const response = await fetch('/api/shop');
         const data = await response.json();
         setItems(data.items);
-      } catch (error) {
-        console.error('Error fetching shop items:', error);
+      } catch (err) {
+        console.error('Error fetching shop items:', err);
+        setError('Unable to load shop items. Please try again.');
       } finally {
         setLoading(false);
       }
@@ -74,7 +76,22 @@ export default function ShopPage() {
       <section style={{ padding: '20px 56px 120px', maxWidth: 1200, margin: '0 auto' }}>
         {loading ? (
           <div style={{ display: 'flex', justifyContent: 'center', padding: 80 }}>
-            <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--color-accent-green)', opacity: 0.5 }} />
+            <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--color-accent-green)', opacity: 0.5, animation: 'pulse 2s infinite' }} />
+          </div>
+        ) : error ? (
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '80px 20px', gap: 12 }}>
+            <p style={{ fontSize: 13, color: 'var(--color-text-muted)', textAlign: 'center' }}>{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              style={{
+                fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 600,
+                padding: '8px 20px', borderRadius: 100, border: '1px solid var(--color-border)',
+                background: 'none', color: 'var(--color-text-subtle)', cursor: 'pointer',
+                fontFamily: "'Syne', sans-serif",
+              }}
+            >
+              Retry
+            </button>
           </div>
         ) : (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 20 }}>

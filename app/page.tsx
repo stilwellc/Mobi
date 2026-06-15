@@ -38,13 +38,16 @@ export default function MobiSite() {
   const footerReveal = useScrollReveal(0.2);
 
   useEffect(() => {
-    setTimeout(() => setLoaded(true), 200);
-    setTimeout(() => setPhase(1), 700);
-    setTimeout(() => setPhase(2), 1400);
-    setTimeout(() => setPhase(3), 2000);
+    const t1 = setTimeout(() => setLoaded(true), 200);
+    const t2 = setTimeout(() => setPhase(1), 700);
+    const t3 = setTimeout(() => setPhase(2), 1400);
+    const t4 = setTimeout(() => setPhase(3), 2000);
     const hs = () => setScrollY(window.scrollY || 0);
     window.addEventListener('scroll', hs, { passive: true });
-    return () => window.removeEventListener('scroll', hs);
+    return () => {
+      clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4);
+      window.removeEventListener('scroll', hs);
+    };
   }, []);
 
   useEffect(() => {
@@ -79,27 +82,6 @@ export default function MobiSite() {
       overflowX: 'hidden',
     }}>
       <style>{`
-        @keyframes grainShift{0%,100%{transform:translate(0,0)}10%{transform:translate(-5%,-10%)}30%{transform:translate(7%,-25%)}50%{transform:translate(-15%,10%)}70%{transform:translate(0%,15%)}90%{transform:translate(-10%,10%)}}
-        @keyframes floatSlow{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(15px,-20px) scale(1.02)}66%{transform:translate(-10px,10px) scale(0.98)}}
-        @keyframes wipPulse{0%,100%{opacity:0.3}50%{opacity:0.8}}
-        @keyframes menuReveal{from{opacity:0;transform:translateY(20px) scale(0.95)}to{opacity:1;transform:translateY(0) scale(1)}}
-        @keyframes pageIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-        @keyframes cardReveal{from{opacity:0;transform:translateY(24px) scale(0.97)}to{opacity:1;transform:translateY(0) scale(1)}}
-        @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
-        @keyframes expandLine{from{transform:scaleX(0)}to{transform:scaleX(1)}}
-        @keyframes scrollReveal{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
-        @keyframes fadeOut{to{opacity:0;transform:scale(0.98) translateY(-10px)}}
-        @keyframes pulseGlow{0%,100%{opacity:0.4}50%{opacity:0.8}}
-
-        @media (prefers-reduced-motion: reduce) {
-          *, *::before, *::after {
-            animation-duration: 0.01ms !important;
-            animation-iteration-count: 1 !important;
-            transition-duration: 0.01ms !important;
-          }
-          .grain-overlay { display: none !important; }
-        }
-
         .grain-overlay{position:fixed;top:-50%;left:-50%;width:200%;height:200%;pointer-events:none;z-index:9999;opacity:var(--grain-opacity);animation:grainShift 0.5s steps(5) infinite;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")}
 
         .nav-item{color:var(--color-text-muted);text-decoration:none;font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;position:relative;padding:6px 0;transition:color 0.4s ease;-webkit-tap-highlight-color:transparent}
@@ -205,7 +187,7 @@ export default function MobiSite() {
           fontFamily: "'Syne', sans-serif",
           fontSize: mobile ? 22 : 26, fontWeight: 700,
           color: 'var(--color-fg)', letterSpacing: '-0.04em', lineHeight: 1,
-        }} role="link" tabIndex={0} onKeyDown={e => e.key === 'Enter' && navigate('home')} aria-label="Mobi home">
+        }} role="button" tabIndex={0} onKeyDown={e => e.key === 'Enter' && navigate('home')} aria-label="Mobi home">
           mobi<span style={{ color: 'var(--color-accent-gold)' }}>.</span>
         </div>
 
@@ -216,7 +198,7 @@ export default function MobiSite() {
                 key={s.id}
                 className={`nav-item ${page === s.id ? 'nav-item-active' : ''}`}
                 onClick={() => navigate(s.id)}
-                role="link"
+                role="button"
                 tabIndex={0}
                 onKeyDown={e => e.key === 'Enter' && navigate(s.id)}
               >{s.label}</span>
@@ -226,7 +208,7 @@ export default function MobiSite() {
               className={`nav-item ${page === 'about' ? 'nav-item-active' : ''}`}
               style={{ color: page === 'about' ? 'var(--color-text-primary)' : 'var(--color-accent-gold)' }}
               onClick={() => navigate('about')}
-              role="link"
+              role="button"
               tabIndex={0}
               onKeyDown={e => e.key === 'Enter' && navigate('about')}
             >about</span>
@@ -273,7 +255,7 @@ export default function MobiSite() {
             <div
               key={item.id}
               onClick={() => navigate(item.id)}
-              role="link"
+              role="button"
               tabIndex={menuOpen ? 0 : -1}
               onKeyDown={e => e.key === 'Enter' && navigate(item.id)}
               style={{

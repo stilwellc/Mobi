@@ -53,9 +53,6 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
   return (
     <div style={{ minHeight: '100vh', position: 'relative', overflow: 'hidden' }}>
       <style>{`
-        @keyframes floatOrb{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(15px,-20px) scale(1.03)}66%{transform:translate(-10px,12px) scale(0.97)}}
-        @keyframes pulseGlow{0%,100%{opacity:0.3;transform:scale(1)}50%{opacity:0.7;transform:scale(1.15)}}
-        @keyframes driftLine{0%,100%{transform:translateX(0) scaleX(1)}50%{transform:translateX(20px) scaleX(1.3)}}
         .section-card{position:relative;border-radius:20px;overflow:hidden;background:var(--color-bg-card);border:1px solid var(--color-border);transition:all 0.5s cubic-bezier(0.23,1,0.32,1)}
         .section-card:hover{border-color:var(--color-border-strong);box-shadow:var(--shadow-card-hover);transform:translateY(-4px)}
         .section-card::before{content:'';position:absolute;inset:0;border-radius:20px;padding:1px;background:linear-gradient(135deg,var(--color-border-mid),transparent 40%,transparent 60%,var(--color-overlay-light));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
@@ -145,7 +142,7 @@ export default function SectionPage({ section, mobile, tablet, navigate }: {
           transform: phase >= 1 ? 'translateY(0)' : 'translateY(15px)',
           transition: 'all 0.8s cubic-bezier(0.23,1,0.32,1)',
         }}>
-          <span className="back-link" onClick={() => navigate('home')} style={{
+          <span className="back-link" onClick={() => navigate('home')} role="button" tabIndex={0} onKeyDown={e => e.key === 'Enter' && navigate('home')} style={{
             fontSize: 11, color: 'var(--color-text-subtle)', cursor: 'pointer', fontWeight: 600,
             letterSpacing: '0.15em', textTransform: 'uppercase',
             display: 'inline-flex', alignItems: 'center', gap: 8,

@@ -53,11 +53,11 @@ export default function FooterSection({ mobile, isVisible, footerRef, navigate }
             <div className="footer-col-title">Studio</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               {sections.filter(s => s.id !== 'social').map(s => (
-                <span key={s.id} className="footer-link" onClick={() => navigate(s.id)} style={{ cursor: 'pointer' }} role="link" tabIndex={0} onKeyDown={e => e.key === 'Enter' && navigate(s.id)}>
+                <span key={s.id} className="footer-link" onClick={() => navigate(s.id)} style={{ cursor: 'pointer' }} role="button" tabIndex={0} onKeyDown={e => e.key === 'Enter' && navigate(s.id)}>
                   {s.label}
                 </span>
               ))}
-              <span className="footer-link" onClick={() => navigate('about')} style={{ cursor: 'pointer' }} role="link" tabIndex={0} onKeyDown={e => e.key === 'Enter' && navigate('about')}>
+              <span className="footer-link" onClick={() => navigate('about')} style={{ cursor: 'pointer' }} role="button" tabIndex={0} onKeyDown={e => e.key === 'Enter' && navigate('about')}>
                 About
               </span>
             </div>

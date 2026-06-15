@@ -107,8 +107,8 @@ export default function Project1122() {
           { title: 'Living Room', text: 'The living room is designed for both comfort and entertainment, featuring a flexible layout that can accommodate various furniture arrangements. Large windows provide natural light and views of the surrounding area.' },
           { title: 'Bathroom', text: 'A luxurious bathroom with a spa-like atmosphere. The design includes a walk-in shower, freestanding tub, and double vanity. Premium materials and fixtures create a sophisticated yet functional space.' },
           { title: 'Office', text: 'A dedicated workspace designed for productivity and comfort. The office features built-in shelving, ample desk space, and strategic lighting to create an optimal working environment.' },
-        ].map((room, i) => (
-          <div key={i} style={{
+        ].map((room) => (
+          <div key={room.title} style={{
             marginBottom: 32,
             display: 'grid', gridTemplateColumns: '180px 1fr', gap: 40,
           }}>

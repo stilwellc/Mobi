@@ -94,8 +94,6 @@ export default function DirectorySection({ mobile, tablet, isVisible, sectionRef
         className="project-card card-stagger"
         onMouseEnter={() => setHoveredItem(cardId)}
         onMouseLeave={() => setHoveredItem(null)}
-        role={linked ? 'link' : undefined}
-        tabIndex={linked ? 0 : undefined}
         style={{
           position: 'relative',
           borderRadius: 20,

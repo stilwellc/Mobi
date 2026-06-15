@@ -66,14 +66,20 @@ export default function LotCard({
     const ics = makeAuctionIcs(lot);
     const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `auction-${lot.id}.ics`;
-    a.style.display = 'none';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(() => URL.revokeObjectURL(url), 100);
+    // window.open preserves the user-gesture context on iOS Safari so the
+    // system intercepts the .ics MIME type and offers to add it to Calendar.
+    const opened = window.open(url, '_blank');
+    if (!opened) {
+      // Popup blocked (desktop) — fall back to hidden anchor
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `auction-${lot.id}.ics`;
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
   const catColor = categoryColors[lot.category] || '#888';
   const catLabel = categoryLabels[lot.category] || null;
@@ -101,12 +107,11 @@ export default function LotCard({
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
         .ray-lot-card:hover { border-color: var(--color-accent-blue) !important; }
         .ray-lot-img { height: 200px; }
-        .ray-remind-btn:hover { background: var(--color-bg) !important; border-color: var(--color-accent-blue) !important; color: var(--color-accent-blue) !important; }
+        .ray-remind-btn:hover { opacity: 0.85; }
         .ray-save-btn { transition: background 0.15s; }
         .ray-save-btn:hover { opacity: 0.85; }
         @media (max-width: 768px) {
           .ray-lot-img { height: 170px; }
-          .ray-remind-btn { padding: 10px 0 !important; font-size: 12px !important; }
         }
       `}</style>
       <div className="ray-lot-img" style={{
@@ -307,17 +312,17 @@ export default function LotCard({
               alignItems: 'center',
               justifyContent: 'center',
               gap: 6,
-              padding: '8px 0',
+              padding: '10px 0',
               borderRadius: 8,
-              border: '1px solid var(--color-border)',
-              background: 'transparent',
-              color: 'var(--color-text-subtle)',
+              border: 'none',
+              background: 'var(--color-accent-blue)',
+              color: '#060606',
               fontSize: 11,
-              fontWeight: 600,
+              fontWeight: 700,
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
               cursor: 'pointer',
-              transition: 'background 0.15s, border-color 0.15s, color 0.15s',
+              transition: 'opacity 0.15s',
               fontFamily: "'Syne', sans-serif",
             }}
           >
