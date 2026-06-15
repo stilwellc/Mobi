@@ -6,7 +6,7 @@ import ThemeToggle from '../../components/ThemeToggle';
 import { ARTISTS } from './constants';
 import { useRayData } from './hooks/useRayData';
 import { useSavedLots } from './hooks/useSavedLots';
-import { formatPrice } from './utils';
+import { formatPrice, getUpcomingCounts } from './utils';
 import ArtistNav from './components/ArtistNav';
 import LotCard from './components/LotCard';
 import PastResults from './components/PastResults';
@@ -26,13 +26,7 @@ export default function RayPage() {
       });
   }, [allLots]);
 
-  const upcomingCounts = useMemo(() => {
-    const counts: Record<string, number> = {};
-    for (const lot of upcoming) {
-      counts[lot.artist] = (counts[lot.artist] || 0) + 1;
-    }
-    return counts;
-  }, [upcoming]);
+  const upcomingCounts = useMemo(() => getUpcomingCounts(allLots), [allLots]);
 
   const sold = useMemo(() =>
     allLots
@@ -48,7 +42,7 @@ export default function RayPage() {
     oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
     const recentSold = sold.filter(l => {
       const d = new Date(l.saleDate);
-      return d.getTime() === d.getTime() && d >= oneYearAgo;
+      return !isNaN(d.getTime()) && d >= oneYearAgo;
     });
     const avgPrice = recentSold.length
       ? recentSold.reduce((sum, l) => sum + (l.priceUsd || 0), 0) / recentSold.length

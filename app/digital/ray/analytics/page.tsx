@@ -8,6 +8,7 @@ import { ARTISTS } from '../constants';
 import { useRayData } from '../hooks/useRayData';
 import { useSavedLots } from '../hooks/useSavedLots';
 import ArtistNav from '../components/ArtistNav';
+import { getUpcomingCounts } from '../utils';
 import PortfolioHeader from '../components/analytics/PortfolioHeader';
 import ArtistRankingsTable from '../components/analytics/ArtistRankingsTable';
 import TopSales from '../components/analytics/TopSales';
@@ -22,16 +23,7 @@ export default function AnalyticsPage() {
   const { allLots, statsByArtist, sources, lastCrawl, loading } = useRayData();
   const { savedIds } = useSavedLots();
 
-  const upcomingCounts = useMemo(() => {
-    const today = new Date().toISOString().split('T')[0];
-    const counts: Record<string, number> = {};
-    for (const lot of allLots) {
-      if (lot.status === 'upcoming' && lot.saleDate && lot.saleDate >= today) {
-        counts[lot.artist] = (counts[lot.artist] || 0) + 1;
-      }
-    }
-    return counts;
-  }, [allLots]);
+  const upcomingCounts = useMemo(() => getUpcomingCounts(allLots), [allLots]);
 
   return (
     <div style={{

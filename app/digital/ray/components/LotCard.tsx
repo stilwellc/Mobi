@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import { AuctionLot, MarketStats } from '../types';
 import { ARTIST_LABEL } from '../constants';
-import { houseColors, categoryLabels, categoryColors } from '../utils';
+import { houseColors, categoryLabels, categoryColors, makeAuctionIcs } from '../utils';
 import ComparableModal from './ComparableModal';
 
 function formatEstimate(lot: AuctionLot): string {
@@ -59,6 +59,19 @@ export default function LotCard({
 }) {
   const [modalOpen, setModalOpen] = useState(false);
   const color = houseColors[lot.auctionHouse] || '#96B8D4';
+
+  function handleAddToCalendar(e: React.MouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    const ics = makeAuctionIcs(lot);
+    const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `auction-${lot.id}.ics`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
   const catColor = categoryColors[lot.category] || '#888';
   const catLabel = categoryLabels[lot.category] || null;
   const isUpcoming = lot.status === 'upcoming';
@@ -85,8 +98,10 @@ export default function LotCard({
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
         .ray-lot-card:hover { border-color: var(--color-accent-blue) !important; }
         .ray-lot-img { height: 200px; }
+        .ray-remind-btn:hover { background: var(--color-bg) !important; border-color: var(--color-accent-blue) !important; color: var(--color-accent-blue) !important; }
         @media (max-width: 768px) {
           .ray-lot-img { height: 170px; }
+          .ray-remind-btn { padding: 10px 0 !important; font-size: 12px !important; }
         }
       `}</style>
       <div className="ray-lot-img" style={{
@@ -274,6 +289,41 @@ export default function LotCard({
             {new Date(lot.saleDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
           </span>
         </div>
+
+        {isUpcoming && (
+          <button
+            onClick={handleAddToCalendar}
+            className="ray-remind-btn"
+            style={{
+              marginTop: 10,
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 6,
+              padding: '8px 0',
+              borderRadius: 8,
+              border: '1px solid var(--color-border)',
+              background: 'transparent',
+              color: 'var(--color-text-subtle)',
+              fontSize: 11,
+              fontWeight: 600,
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              cursor: 'pointer',
+              transition: 'background 0.15s, border-color 0.15s, color 0.15s',
+              fontFamily: "'Syne', sans-serif",
+            }}
+          >
+            <svg width="11" height="11" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <rect x="1" y="2" width="12" height="11" rx="2" stroke="currentColor" strokeWidth="1.25" fill="none"/>
+              <line x1="4" y1="1" x2="4" y2="4" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round"/>
+              <line x1="10" y1="1" x2="10" y2="4" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round"/>
+              <line x1="1" y1="6" x2="13" y2="6" stroke="currentColor" strokeWidth="1.25"/>
+            </svg>
+            Remind Me
+          </button>
+        )}
       </div>
     </div>
   );

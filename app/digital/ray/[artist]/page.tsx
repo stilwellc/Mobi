@@ -9,6 +9,11 @@ import { ARTISTS, ARTIST_LABEL } from '../constants';
 import type { LotCategory } from '../types';
 import { useRayData } from '../hooks/useRayData';
 import { useSavedLots } from '../hooks/useSavedLots';
+import { getUpcomingCounts } from '../utils';
+
+export function generateStaticParams() {
+  return ARTISTS.map(a => ({ artist: a.slug }));
+}
 import ArtistNav from '../components/ArtistNav';
 import StatsGrid from '../components/StatsGrid';
 import UpcomingLots from '../components/UpcomingLots';
@@ -40,16 +45,7 @@ export default function ArtistDetailPage() {
     });
   const sold = lots.filter(l => l.status === 'sold');
 
-  const upcomingCounts = useMemo(() => {
-    const today = new Date().toISOString().split('T')[0];
-    const counts: Record<string, number> = {};
-    for (const lot of allLots) {
-      if (lot.status === 'upcoming' && lot.saleDate && lot.saleDate >= today) {
-        counts[lot.artist] = (counts[lot.artist] || 0) + 1;
-      }
-    }
-    return counts;
-  }, [allLots]);
+  const upcomingCounts = useMemo(() => getUpcomingCounts(allLots), [allLots]);
 
   return (
     <div style={{

@@ -65,7 +65,7 @@ function computePriceHistory(lots: AuctionLot[]): PricePoint[] {
     .map(([date, prices]) => ({
       date,
       avgPrice: prices.reduce((s, p) => s + p, 0) / prices.length,
-      medianPrice: prices.sort((a, b) => a - b)[Math.floor(prices.length / 2)],
+      medianPrice: (() => { const s = prices.sort((a, b) => a - b); const m = Math.floor(s.length / 2); return s.length % 2 === 0 ? (s[m - 1] + s[m]) / 2 : s[m]; })(),
       totalSales: prices.length,
       highPrice: Math.max(...prices),
     }));

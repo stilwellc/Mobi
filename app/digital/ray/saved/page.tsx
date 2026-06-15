@@ -8,7 +8,7 @@ import { useSavedLots } from '../hooks/useSavedLots';
 import ArtistNav from '../components/ArtistNav';
 import LotCard from '../components/LotCard';
 import { ARTIST_LABEL } from '../constants';
-import { houseColors, formatPrice, categoryLabels, categoryColors } from '../utils';
+import { houseColors, formatPrice, categoryLabels, categoryColors, getUpcomingCounts } from '../utils';
 
 export default function SavedPage() {
   const { allLots, statsByArtist, loading } = useRayData();
@@ -35,16 +35,7 @@ export default function SavedPage() {
     [savedLots]
   );
 
-  const upcomingCounts = useMemo(() => {
-    const today = new Date().toISOString().split('T')[0];
-    const counts: Record<string, number> = {};
-    for (const lot of allLots) {
-      if (lot.status === 'upcoming' && lot.saleDate && lot.saleDate >= today) {
-        counts[lot.artist] = (counts[lot.artist] || 0) + 1;
-      }
-    }
-    return counts;
-  }, [allLots]);
+  const upcomingCounts = useMemo(() => getUpcomingCounts(allLots), [allLots]);
 
   return (
     <div style={{

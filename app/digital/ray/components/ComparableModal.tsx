@@ -141,7 +141,7 @@ function scoreComparable(upcoming: AuctionLot, sold: AuctionLot): number {
   const yearB = parseYear(sold.year);
   if (yearA && yearB) {
     const diff = Math.abs(yearA - yearB);
-    score += Math.max(0, 1 - diff / 30) * 10;
+    score += Math.max(0, 1 - diff / 50) * 10;
   }
 
   return score;
