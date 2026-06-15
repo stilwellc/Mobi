@@ -27,6 +27,8 @@ export function useSavedLots() {
         ? prev.filter(id => id !== lotId)
         : [...prev, lotId];
       localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      // Brief haptic pulse on iOS / Android
+      if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(8);
       return next;
     });
   }, []);

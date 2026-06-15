@@ -20,12 +20,15 @@ export default function ArtistNav({ activeSlug, savedCount = 0, upcomingCounts =
   useEffect(() => {
     if (!open) return;
     function handleClick(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
     }
+    function handleScroll() { setOpen(false); }
     document.addEventListener('mousedown', handleClick);
-    return () => document.removeEventListener('mousedown', handleClick);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      document.removeEventListener('mousedown', handleClick);
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, [open]);
 
   function navigate(path: string) {
@@ -144,6 +147,9 @@ export default function ArtistNav({ activeSlug, savedCount = 0, upcomingCounts =
         <button
           className="ray-artist-select-btn"
           onClick={() => setOpen(o => !o)}
+          aria-haspopup="listbox"
+          aria-expanded={open}
+          aria-label={`Navigate Ray — currently: ${activeLabel}`}
         >
           <span>{activeLabel}</span>
           <span style={{

@@ -154,10 +154,25 @@ html {
   background: var(--color-accent-gold);
 }
 
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* Shared Ray layout classes — defined once, used across all Ray pages */
+.ray-nav { padding: 24px 56px; }
+.ray-hero { padding: 60px 56px 40px; }
+.ray-divider-wrap { padding: 0 56px; }
+
+@media (max-width: 768px) {
+  .ray-nav { padding: 16px 20px; }
+  .ray-hero { padding: 40px 20px 32px; }
+  .ray-divider-wrap { padding: 0 20px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
 
 @layer utilities {

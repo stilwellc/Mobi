@@ -12,7 +12,7 @@ import LotCard from './components/LotCard';
 import PastResults from './components/PastResults';
 
 export default function RayPage() {
-  const { allLots, statsByArtist, sources, lastCrawl, loading } = useRayData();
+  const { allLots, statsByArtist, sources, lastCrawl, loading, error } = useRayData();
   const { toggle, isSaved, savedIds } = useSavedLots();
 
   const upcoming = useMemo(() => {
@@ -63,10 +63,6 @@ export default function RayPage() {
       fontFamily: "'Syne', sans-serif",
     }}>
       <style>{`
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-        .ray-nav { padding: 24px 56px; }
-        .ray-hero { padding: 60px 56px 40px; }
-        .ray-divider-wrap { padding: 0 56px; }
         .ray-overview-stats {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
@@ -85,17 +81,9 @@ export default function RayPage() {
           gap: 16px;
         }
         @media (max-width: 768px) {
-          .ray-nav { padding: 16px 20px; }
-          .ray-hero { padding: 40px 20px 32px; }
-          .ray-divider-wrap { padding: 0 20px; }
-          .ray-overview-stats {
-            grid-template-columns: repeat(2, 1fr);
-          }
+          .ray-overview-stats { grid-template-columns: repeat(2, 1fr); }
           .ray-overview-stats .ray-stat-card { padding: 20px 18px; }
-          .ray-upcoming-grid {
-            grid-template-columns: 1fr;
-            gap: 14px;
-          }
+          .ray-upcoming-grid { grid-template-columns: 1fr; gap: 14px; }
         }
       `}</style>
 
@@ -203,7 +191,22 @@ export default function RayPage() {
         }} />
       </div>
 
-      {loading ? (
+      {error ? (
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '120px 20px', gap: 12 }}>
+          <p style={{ fontSize: 13, color: 'var(--color-text-muted)', textAlign: 'center' }}>{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            style={{
+              fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 600,
+              padding: '8px 20px', borderRadius: 100, border: '1px solid var(--color-border)',
+              background: 'none', color: 'var(--color-text-subtle)', cursor: 'pointer',
+              fontFamily: "'Syne', sans-serif",
+            }}
+          >
+            Retry
+          </button>
+        </div>
+      ) : loading ? (
         <div style={{ display: 'flex', justifyContent: 'center', padding: 120 }}>
           <div style={{
             width: 8,

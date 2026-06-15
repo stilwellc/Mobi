@@ -218,6 +218,7 @@ export default function ComparableModal({
   return (
     <div
       onClick={onClose}
+      role="presentation"
       style={{
         position: 'fixed',
         inset: 0,
@@ -290,6 +291,9 @@ export default function ComparableModal({
       <div
         onClick={e => e.stopPropagation()}
         className="comp-modal-panel"
+        role="dialog"
+        aria-modal="true"
+        aria-label={`Comparable sales for ${lot.title}`}
         style={{
           background: 'var(--color-bg)',
           border: '1px solid var(--color-border)',
@@ -300,6 +304,7 @@ export default function ComparableModal({
         <button
           className="comp-modal-close"
           onClick={onClose}
+          aria-label="Close"
           style={{
             position: 'sticky',
             top: 12,

@@ -45,10 +45,6 @@ export default function SavedPage() {
       fontFamily: "'Syne', sans-serif",
     }}>
       <style>{`
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-        .ray-nav { padding: 24px 56px; }
-        .ray-hero { padding: 60px 56px 40px; }
-        .ray-divider-wrap { padding: 0 56px; }
         .ray-saved-grid {
           display: grid;
           grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -68,9 +64,6 @@ export default function SavedPage() {
         }
         .ray-result-row:hover { background: var(--color-hover-item); }
         @media (max-width: 768px) {
-          .ray-nav { padding: 16px 20px; }
-          .ray-hero { padding: 40px 20px 32px; }
-          .ray-divider-wrap { padding: 0 20px; }
           .ray-saved-grid { grid-template-columns: 1fr; gap: 14px; }
           .ray-saved-section { padding: 32px 20px 32px; }
           .ray-saved-results { padding: 32px 20px 80px; }
@@ -364,20 +357,20 @@ export default function SavedPage() {
                       <button
                         onClick={() => toggle(lot.id)}
                         style={{
-                          width: 24,
-                          height: 24,
+                          width: 32,
+                          height: 32,
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
                           background: 'var(--color-accent-blue)',
                           border: 'none',
-                          borderRadius: 6,
+                          borderRadius: 8,
                           cursor: 'pointer',
                           padding: 0,
                           flexShrink: 0,
                           transition: 'all 0.15s',
                         }}
-                        title="Remove from saved"
+                        aria-label="Remove from saved"
                       >
                         <svg width="10" height="12" viewBox="0 0 12 14" fill="none">
                           <path

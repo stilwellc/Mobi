@@ -32,19 +32,8 @@ export default function AnalyticsPage() {
       color: 'var(--color-fg)',
       fontFamily: "'Syne', sans-serif",
     }}>
-      <style>{`
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-        .ray-nav { padding: 24px 56px; }
-        .ray-hero { padding: 60px 56px 40px; }
-        .ray-divider-wrap { padding: 0 56px; }
-        @media (max-width: 768px) {
-          .ray-nav { padding: 16px 20px; }
-          .ray-hero { padding: 40px 20px 32px; }
-          .ray-divider-wrap { padding: 0 20px; }
-        }
-      `}</style>
 
-      <nav className="ray-nav" style={{
+<nav className="ray-nav" style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',

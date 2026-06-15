@@ -69,8 +69,11 @@ export default function LotCard({
     const a = document.createElement('a');
     a.href = url;
     a.download = `auction-${lot.id}.ics`;
+    a.style.display = 'none';
+    document.body.appendChild(a);
     a.click();
-    URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 100);
   }
   const catColor = categoryColors[lot.category] || '#888';
   const catLabel = categoryLabels[lot.category] || null;
@@ -99,6 +102,8 @@ export default function LotCard({
         .ray-lot-card:hover { border-color: var(--color-accent-blue) !important; }
         .ray-lot-img { height: 200px; }
         .ray-remind-btn:hover { background: var(--color-bg) !important; border-color: var(--color-accent-blue) !important; color: var(--color-accent-blue) !important; }
+        .ray-save-btn { transition: background 0.15s; }
+        .ray-save-btn:hover { opacity: 0.85; }
         @media (max-width: 768px) {
           .ray-lot-img { height: 170px; }
           .ray-remind-btn { padding: 10px 0 !important; font-size: 12px !important; }
@@ -161,7 +166,7 @@ export default function LotCard({
           <div style={{
             position: 'absolute',
             top: 10,
-            right: onToggleSave ? 36 : 10,
+            right: onToggleSave ? 46 : 10,
             padding: '3px 9px',
             borderRadius: 100,
             background: buySignal.color,
@@ -176,26 +181,26 @@ export default function LotCard({
         )}
         {onToggleSave && (
           <button
+            className="ray-save-btn"
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); onToggleSave(lot.id); }}
             style={{
               position: 'absolute',
-              top: 10,
-              right: 10,
-              width: 24,
-              height: 24,
+              top: 6,
+              right: 6,
+              width: 32,
+              height: 32,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               background: saved ? 'var(--color-accent-blue)' : 'rgba(0,0,0,0.45)',
               border: 'none',
-              borderRadius: 6,
+              borderRadius: 8,
               cursor: 'pointer',
               padding: 0,
-              transition: 'background 0.15s',
             }}
-            title={saved ? 'Remove from saved' : 'Save lot'}
+            aria-label={saved ? 'Remove from saved' : 'Save lot'}
           >
-            <svg width="12" height="14" viewBox="0 0 12 14" fill="none">
+            <svg width="12" height="14" viewBox="0 0 12 14" fill="none" aria-hidden="true">
               <path
                 d="M1 1.5C1 1.22386 1.22386 1 1.5 1H10.5C10.7761 1 11 1.22386 11 1.5V12.5C11 12.6894 10.8862 12.8625 10.7096 12.9472C10.533 13.0319 10.3239 13.0136 10.1646 12.8994L6 9.91421L1.83541 12.8994C1.67614 13.0136 1.46698 13.0319 1.29037 12.9472C1.11377 12.8625 1 12.6894 1 12.5V1.5Z"
                 fill={saved ? '#060606' : '#F0EDE8'}
@@ -294,6 +299,7 @@ export default function LotCard({
           <button
             onClick={handleAddToCalendar}
             className="ray-remind-btn"
+            aria-label={`Add ${lot.title} auction to calendar`}
             style={{
               marginTop: 10,
               width: '100%',

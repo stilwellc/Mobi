@@ -98,7 +98,7 @@ export default function StatsGrid({ stats, lots, categoryFilter = 'all' }: Props
           font-size: 34px;
           font-weight: 300;
           line-height: 1;
-          margin-bottom: 8;
+          margin-bottom: 8px;
         }
         @media (max-width: 768px) {
           .ray-stats { padding: 32px 20px; }

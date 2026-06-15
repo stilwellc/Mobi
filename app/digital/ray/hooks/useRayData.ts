@@ -9,6 +9,7 @@ interface RayData {
   lastCrawl: string;
   sources: string[];
   loading: boolean;
+  error: string | null;
 }
 
 export function useRayData(): RayData {
@@ -17,6 +18,7 @@ export function useRayData(): RayData {
   const [lastCrawl, setLastCrawl] = useState('');
   const [sources, setSources] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     Promise.allSettled([
@@ -41,8 +43,11 @@ export function useRayData(): RayData {
           setStatsByArtist(statsData);
         }
       }
+      const lotsOk = lotsResult.status === 'fulfilled';
+      const statsOk = statsResult.status === 'fulfilled';
+      if (!lotsOk && !statsOk) setError('Unable to load auction data. Please try again later.');
     }).finally(() => setLoading(false));
   }, []);
 
-  return { statsByArtist, allLots, lastCrawl, sources, loading };
+  return { statsByArtist, allLots, lastCrawl, sources, loading, error };
 }
