@@ -11,9 +11,6 @@ import { useRayData } from '../hooks/useRayData';
 import { useSavedLots } from '../hooks/useSavedLots';
 import { getUpcomingCounts } from '../utils';
 
-export function generateStaticParams() {
-  return ARTISTS.map(a => ({ artist: a.slug }));
-}
 import ArtistNav from '../components/ArtistNav';
 import StatsGrid from '../components/StatsGrid';
 import UpcomingLots from '../components/UpcomingLots';
