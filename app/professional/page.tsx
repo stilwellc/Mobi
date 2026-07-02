@@ -33,11 +33,12 @@ export default function ProfessionalRoute() {
   return (
     <div style={{ minHeight: '100vh' }}>
       <style>{`
-        .pro-row { display: grid; grid-template-columns: 120px 1fr auto; gap: var(--space-3); align-items: baseline; padding: var(--space-3) 0; border-bottom: 1px solid var(--color-border); }
+        .pro-row { display: grid; grid-template-columns: 120px 1fr auto; gap: var(--space-3); align-items: baseline; padding: var(--space-3) 0; border-bottom: 1px solid var(--color-border); transition: border-color var(--duration-fast) var(--ease-signature), background var(--duration-fast) var(--ease-signature); }
         .pro-row:last-of-type { border-bottom: none; }
-        .pro-work-row { display: block; text-decoration: none; padding: var(--space-4) 0; border-bottom: 1px solid var(--color-border); transition: border-color var(--duration-fast) var(--ease-signature); }
+        .pro-row:hover { border-color: color-mix(in srgb, var(--color-accent-gold) 40%, transparent); background: color-mix(in srgb, var(--color-accent-gold) 4%, transparent); }
+        .pro-work-row { display: block; text-decoration: none; padding: var(--space-4) 0; border-bottom: 1px solid var(--color-border); transition: border-color var(--duration-fast) var(--ease-signature), background var(--duration-fast) var(--ease-signature); }
         .pro-work-row:last-of-type { border-bottom: none; }
-        .pro-work-row:hover { border-color: color-mix(in srgb, var(--color-accent-gold) 40%, transparent); }
+        .pro-work-row:hover { border-color: color-mix(in srgb, var(--color-accent-gold) 40%, transparent); background: color-mix(in srgb, var(--color-accent-gold) 4%, transparent); }
         .pro-work-row .pro-arrow { display: inline-block; transition: transform var(--duration-fast) var(--ease-signature); color: var(--color-text-faint); }
         .pro-work-row:hover .pro-arrow { transform: translateX(2px); color: var(--color-accent-gold); }
         .pro-beat-1 { animation: pageIn var(--duration-slow) var(--ease-signature) both; }

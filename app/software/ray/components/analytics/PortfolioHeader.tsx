@@ -52,13 +52,9 @@ export default function PortfolioHeader({ statsByArtist, allLots }: Props) {
         .ray-portfolio-grid {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
-          gap: 1px;
-          background: var(--color-border);
-          border-radius: 16px;
-          overflow: hidden;
+          gap: 12px;
         }
         .ray-portfolio-card {
-          background: var(--color-bg-elevated);
           padding: 28px 24px;
           min-width: 0;
         }
@@ -87,7 +83,7 @@ export default function PortfolioHeader({ statsByArtist, allLots }: Props) {
 
       <div className="ray-portfolio-grid">
         {cards.map((card) => (
-          <div key={card.label} className="ray-portfolio-card">
+          <div key={card.label} className="ray-portfolio-card glass glass-quiet">
             <div style={{
               fontSize: 12,
               letterSpacing: '0.18em',

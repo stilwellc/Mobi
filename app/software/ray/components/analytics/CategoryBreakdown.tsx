@@ -89,10 +89,7 @@ export default function CategoryBreakdown({ allLots }: Props) {
         </h2>
       </div>
 
-      <div style={{
-        background: 'var(--color-bg-elevated)',
-        border: '1px solid var(--color-border)',
-        borderRadius: 16,
+      <div className="glass glass-quiet" style={{
         overflow: 'hidden',
         padding: '20px 8px 16px 0',
       }}>

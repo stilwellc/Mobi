@@ -129,9 +129,6 @@ export default function PriceChart({ lots, allLots, categoryFilter = 'all', onCa
       <style>{`
         .ray-market { padding: 40px 56px 48px; }
         .ray-market-card {
-          background: var(--color-bg-elevated);
-          border: 1px solid var(--color-border);
-          border-radius: 16px;
           overflow: hidden;
         }
         .ray-chart-container { height: 300px; }
@@ -173,7 +170,7 @@ export default function PriceChart({ lots, allLots, categoryFilter = 'all', onCa
         </h2>
       </div>
 
-      <div className="ray-market-card">
+      <div className="ray-market-card glass glass-quiet">
         {/* Chart */}
         {hasChart && (
           <div style={{ padding: '20px 8px 0 0' }}>

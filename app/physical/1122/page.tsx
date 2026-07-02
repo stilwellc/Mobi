@@ -151,13 +151,13 @@ export default function Project1122() {
         </p>
 
         <dl
+          className="glass glass-quiet"
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
             gap: 'var(--space-2) var(--space-3)',
             margin: 0,
-            paddingTop: 'var(--space-3)',
-            borderTop: '1px solid var(--color-border)',
+            padding: 'var(--space-3)',
           }}
         >
           {facts.map(([k, v]) => (
@@ -264,23 +264,27 @@ export default function Project1122() {
           }}
         >
           <figure style={{ margin: 0 }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/images/1122/1122beforeBP.png"
-              alt="Floor plan as found: railroad layout with master bedroom, living room, dining room, bathroom and bedroom-office"
-              loading="lazy"
-              style={{ width: '100%', height: 'auto', display: 'block', border: '1px solid var(--color-border)' }}
-            />
+            <div className="glass glass-quiet" style={{ padding: 'var(--space-2)' }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/1122/1122beforeBP.png"
+                alt="Floor plan as found: railroad layout with master bedroom, living room, dining room, bathroom and bedroom-office"
+                loading="lazy"
+                style={{ width: '100%', height: 'auto', display: 'block', borderRadius: 8 }}
+              />
+            </div>
             <figcaption style={{ ...label, marginTop: 'var(--space-1)' }}>Plan — as found</figcaption>
           </figure>
           <figure style={{ margin: 0 }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/images/1122/1122afterBP.png"
-              alt="Floor plan as intended: consolidated master closet, widened living room opening, extended kitchen counter and new built-in at the bedroom-office"
-              loading="lazy"
-              style={{ width: '100%', height: 'auto', display: 'block', border: '1px solid var(--color-border)' }}
-            />
+            <div className="glass glass-quiet" style={{ padding: 'var(--space-2)' }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/1122/1122afterBP.png"
+                alt="Floor plan as intended: consolidated master closet, widened living room opening, extended kitchen counter and new built-in at the bedroom-office"
+                loading="lazy"
+                style={{ width: '100%', height: 'auto', display: 'block', borderRadius: 8 }}
+              />
+            </div>
             <figcaption style={{ ...label, marginTop: 'var(--space-1)' }}>Plan — intent</figcaption>
           </figure>
         </div>

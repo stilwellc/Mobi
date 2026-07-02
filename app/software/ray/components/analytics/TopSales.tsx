@@ -53,16 +53,13 @@ export default function TopSales({ allLots }: Props) {
         </h2>
       </div>
 
-      {/* The table keeps its natural min width and scrolls inside this
-          wrapper instead of widening the page on narrow viewports. */}
-      <div style={{
-        background: 'var(--color-bg-elevated)',
-        border: '1px solid var(--color-border)',
-        borderRadius: 16,
-        overflow: 'hidden',
-        overflowX: 'auto',
-        WebkitOverflowScrolling: 'touch',
-      }}>
+      {/* Glass frame; the table keeps its natural min width and scrolls
+          inside the inner wrapper instead of widening the page. */}
+      <div className="glass glass-quiet" style={{ overflow: 'hidden' }}>
+        <div style={{
+          overflowX: 'auto',
+          WebkitOverflowScrolling: 'touch',
+        }}>
         <table style={{ borderCollapse: 'collapse', width: '100%', minWidth: 500 }}>
           <thead>
             <tr>
@@ -217,6 +214,7 @@ export default function TopSales({ allLots }: Props) {
             })}
           </tbody>
         </table>
+        </div>
       </div>
     </section>
   );

@@ -126,13 +126,12 @@ export default function PrintDetailPage() {
         }}
       >
         <div
+          className="glass"
           style={{
             position: 'relative',
             width: '100%',
             height: 'clamp(360px, 60vh, 640px)',
-            background: 'var(--color-bg-elevated)',
-            border: '1px solid var(--color-border)',
-            borderRadius: 4,
+            padding: 'var(--space-2)',
             overflow: 'hidden',
           }}
         >
@@ -173,7 +172,7 @@ export default function PrintDetailPage() {
         }}
       >
         {/* Specs — real data only; dimensions are measured from the STL at load */}
-        <dl style={{ display: 'grid', gap: 'var(--space-2)', margin: 0 }}>
+        <dl className="glass glass-quiet" style={{ display: 'grid', gap: 'var(--space-2)', margin: 0, padding: 'var(--space-3)', alignContent: 'start' }}>
           {specs.map(({ term, value }) => (
             <div key={term}>
               <dt style={label}>{term}</dt>

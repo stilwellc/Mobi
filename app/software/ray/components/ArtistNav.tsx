@@ -98,33 +98,33 @@ export default function ArtistNav({ activeSlug, savedCount = 0, upcomingCounts =
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 8px 14px;
-          border-radius: 10px;
-          border: 1px solid var(--color-border);
-          background: var(--color-bg-elevated);
+          padding: 8px 16px;
           color: var(--color-fg);
           font-family: var(--font-sans), sans-serif;
           font-size: 12px;
           font-weight: 500;
           letter-spacing: 0.04em;
           cursor: pointer;
-          transition: border-color var(--duration-fast) var(--ease-signature);
         }
-        .ray-artist-select-btn:hover { border-color: var(--color-accent-ocean); }
-        .ray-artist-dropdown {
+        /* Higher specificity on purpose - position must beat the
+           position: relative from .glass regardless of stylesheet order.
+           NOTE: keep this style block free of quotes, apostrophes and
+           angle brackets; React escapes them server-side and hydration
+           of raw-text elements then fails. */
+        .ray-artist-select-wrap .ray-artist-dropdown {
           position: absolute;
           left: 0;
           right: 0;
           top: 100%;
           margin-top: 4px;
-          background: var(--color-bg-elevated);
-          border: 1px solid var(--color-border);
-          border-radius: 12px;
-          overflow: hidden;
           max-height: 400px;
           overflow-y: auto;
           scrollbar-width: none;
           z-index: 100;
+          /* Opaque on purpose. backdrop-filter cannot work here - the
+             sticky nav above is itself a backdrop root, so glass blur
+             samples nothing and page text would ghost through the menu. */
+          background: var(--color-bg-elevated);
         }
         .ray-artist-dropdown::-webkit-scrollbar { display: none; }
         .ray-artist-dropdown-item {
@@ -196,7 +196,7 @@ export default function ArtistNav({ activeSlug, savedCount = 0, upcomingCounts =
         <div className="ray-artist-select-wrap">
         <button
           ref={triggerRef}
-          className="ray-artist-select-btn"
+          className="ray-artist-select-btn glass glass-pill glass-quiet"
           onClick={() => setOpen(o => !o)}
           aria-haspopup="menu"
           aria-expanded={open}
@@ -214,7 +214,7 @@ export default function ArtistNav({ activeSlug, savedCount = 0, upcomingCounts =
         </button>
 
         {open && (
-          <div className="ray-artist-dropdown" role="menu" aria-label="Navigate Ray" ref={dropdownRef}>
+          <div className="ray-artist-dropdown glass glass-noblur" role="menu" aria-label="Navigate Ray" ref={dropdownRef}>
             <button
               role="menuitem"
               className="ray-artist-dropdown-item"

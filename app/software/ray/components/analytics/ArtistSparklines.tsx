@@ -88,7 +88,7 @@ function ArtistCard({ artist }: { artist: ArtistCardData }) {
   return (
     <Link
       href={`/software/ray/${artist.slug}`}
-      className="ray-spark-card"
+      className="ray-spark-card glass glass-quiet"
       style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
     >
       <div style={{
@@ -243,18 +243,10 @@ export default function ArtistSparklines({ statsByArtist, allLots }: Props) {
         .ray-spark-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 1px;
-          background: var(--color-border);
-          border-radius: 16px;
-          overflow: hidden;
+          gap: 12px;
         }
         .ray-spark-card {
-          background: var(--color-bg-elevated);
           padding: 20px;
-          transition: background var(--duration-fast) var(--ease-signature);
-        }
-        .ray-spark-card:hover {
-          background: var(--color-hover-item);
         }
         @media (max-width: 1024px) {
           .ray-spark-grid { grid-template-columns: repeat(2, 1fr); }

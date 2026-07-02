@@ -76,8 +76,6 @@ export default function AboutRoute() {
           .about-intro { grid-template-columns: 1fr; gap: var(--space-2); }
           .about-row { grid-template-columns: 1fr; gap: var(--space-1); }
         }
-        .about-card { transition: border-color var(--duration-fast) var(--ease-signature); }
-        .about-card:hover { border-color: color-mix(in srgb, var(--color-accent-gold) 40%, transparent); }
         .about-link { color: var(--color-text-secondary); text-decoration: underline; text-decoration-color: var(--color-border-mid); text-underline-offset: 3px; transition: color var(--duration-fast) var(--ease-signature); }
         .about-link:hover { color: var(--color-accent-gold); }
         .about-cta { display: inline-flex; align-items: baseline; gap: var(--space-1); color: var(--color-accent-gold); text-decoration: none; }
@@ -136,10 +134,8 @@ export default function AboutRoute() {
             {PRINCIPLES.map((p) => (
               <div
                 key={p.number}
-                className="about-card"
+                className="glass"
                 style={{
-                  background: 'var(--color-bg-elevated)',
-                  border: '1px solid var(--color-border)',
                   padding: 'var(--space-4) var(--space-3)',
                   display: 'flex',
                   flexDirection: 'column',
@@ -200,10 +196,8 @@ export default function AboutRoute() {
       <section style={{ ...container, paddingBottom: 'var(--space-6)' }}>
         <Reveal>
           <div
-            className="about-card"
+            className="glass"
             style={{
-              background: 'var(--color-bg-elevated)',
-              border: '1px solid var(--color-border)',
               padding: 'clamp(28px, 5vw, 64px)',
             }}
           >

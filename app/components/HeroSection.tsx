@@ -53,8 +53,7 @@ export default function HeroSection() {
           .hero-subrow{margin-top:40px;flex-direction:column;align-items:flex-start;gap:32px}
           .hero-sub{max-width:100%;font-size:14px}
         }
-        .hero-cta{display:inline-flex;align-items:center;gap:12px;padding:16px 32px;border-radius:60px;border:1px solid var(--color-border-mid);background:transparent;color:var(--color-accent-gold);font-family:var(--font-sans),sans-serif;font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;transition:border-color var(--duration-base) var(--ease-signature);-webkit-tap-highlight-color:transparent}
-        .hero-cta:hover{border-color:var(--color-accent-gold)}
+        .hero-cta{display:inline-flex;align-items:center;gap:12px;padding:16px 32px;color:var(--color-accent-gold);font-family:var(--font-sans),sans-serif;font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;-webkit-tap-highlight-color:transparent}
         .hero-cta svg{transition:transform var(--duration-fast) var(--ease-signature)}
         .hero-cta:hover svg{transform:translateX(2px)}
       `}</style>
@@ -108,8 +107,8 @@ export default function HeroSection() {
         }}>
           I design and build across code and matter &mdash; one studio, one continuous surface.
         </p>
-        <button className="hero-cta" onClick={scrollToIndex}>
-          Explore
+        <button className="hero-cta glass glass-pill" onClick={scrollToIndex}>
+          <span>Explore</span>
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
             <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>

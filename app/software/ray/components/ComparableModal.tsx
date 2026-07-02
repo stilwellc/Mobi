@@ -262,7 +262,6 @@ export default function ComparableModal({
         inset: 0,
         zIndex: 1000,
         background: 'rgba(0, 0, 0, 0.7)',
-        backdropFilter: 'blur(8px)',
         display: 'flex',
         alignItems: 'flex-end',
         justifyContent: 'center',
@@ -329,13 +328,11 @@ export default function ComparableModal({
       <div
         ref={panelRef}
         onClick={e => e.stopPropagation()}
-        className="comp-modal-panel"
+        className="comp-modal-panel glass"
         role="dialog"
         aria-modal="true"
         aria-label={`Comparable sales for ${lot.title}`}
         style={{
-          background: 'var(--color-bg)',
-          border: '1px solid var(--color-border)',
           position: 'relative',
         }}
       >

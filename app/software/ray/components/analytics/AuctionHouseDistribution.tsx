@@ -86,10 +86,7 @@ export default function AuctionHouseDistribution({ statsByArtist }: Props) {
         </h2>
       </div>
 
-      <div style={{
-        background: 'var(--color-bg-elevated)',
-        border: '1px solid var(--color-border)',
-        borderRadius: 16,
+      <div className="glass glass-quiet" style={{
         overflow: 'hidden',
       }}>
         <div style={{ padding: '20px 8px 0 0' }}>

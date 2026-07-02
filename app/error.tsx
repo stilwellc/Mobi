@@ -44,15 +44,15 @@ export default function Error({
         <div style={{ display: 'flex', gap: 'var(--space-3)', justifyContent: 'center', alignItems: 'center' }}>
           <button
             onClick={reset}
+            className="glass glass-pill"
             style={{
               padding: '12px 28px',
-              border: '1px solid var(--color-accent-gold)', borderRadius: 2,
-              background: 'transparent', color: 'var(--color-fg)',
+              color: 'var(--color-fg)',
               fontFamily: 'var(--font-mono), monospace', fontSize: 12,
               letterSpacing: '0.18em', textTransform: 'uppercase',
               cursor: 'pointer',
             }}
-          >Try again</button>
+          ><span>Try again</span></button>
           <Link href="/" style={{
             fontFamily: 'var(--font-mono), monospace', fontSize: 12,
             letterSpacing: '0.18em', textTransform: 'uppercase',

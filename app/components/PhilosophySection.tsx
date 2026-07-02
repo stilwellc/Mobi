@@ -95,18 +95,18 @@ export default function PhilosophySection() {
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }} role="list" aria-label="Design principles">
             {PRINCIPLES.map((p, pi) => (
-              <div key={p.num} role="listitem" className="philo-card" style={{
-                borderRadius: 16,
-                background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border)',
+              <div key={p.num} role="listitem" style={{
                 opacity: isVisible ? 1 : 0,
                 transform: isVisible ? 'translateY(0)' : 'translateY(24px)',
                 transition: `opacity var(--duration-slow) var(--ease-signature) ${0.1 + pi * 0.1}s, transform var(--duration-slow) var(--ease-signature) ${0.1 + pi * 0.1}s`,
               }}>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, marginBottom: 10 }}>
-                  <span style={{ fontFamily: 'var(--font-mono), monospace', fontSize: 12, color: 'var(--color-accent-gold)' }} aria-hidden="true">{p.num}</span>
-                  <span className="philo-card-title" style={{ fontWeight: 600, letterSpacing: '-0.01em' }}>{p.title}</span>
+                <div className="philo-card glass">
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, marginBottom: 10 }}>
+                    <span style={{ fontFamily: 'var(--font-mono), monospace', fontSize: 12, color: 'var(--color-accent-gold)' }} aria-hidden="true">{p.num}</span>
+                    <span className="philo-card-title" style={{ fontWeight: 600, letterSpacing: '-0.01em' }}>{p.title}</span>
+                  </div>
+                  <p className="philo-card-desc" style={{ color: 'var(--color-text-muted)', fontWeight: 400, lineHeight: 1.65, margin: 0 }}>{p.desc}</p>
                 </div>
-                <p className="philo-card-desc" style={{ color: 'var(--color-text-muted)', fontWeight: 400, lineHeight: 1.65, margin: 0 }}>{p.desc}</p>
               </div>
             ))}
           </div>

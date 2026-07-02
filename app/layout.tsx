@@ -5,6 +5,7 @@ import './globals.css';
 import ThemeProvider from './components/ThemeProvider';
 import Nav from './components/Nav';
 import Footer from './components/Footer';
+import GlassEffects from './components/GlassEffects';
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -79,6 +80,7 @@ export default function RootLayout({
       <body style={{ margin: 0, padding: 0 }}>
         <a href="#main" className="skip-link">Skip to content</a>
         <ThemeProvider>
+          <GlassEffects />
           <Nav />
           <main id="main">{children}</main>
           <Footer />

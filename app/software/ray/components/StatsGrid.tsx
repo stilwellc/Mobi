@@ -86,13 +86,9 @@ export default function StatsGrid({ stats, lots, categoryFilter = 'all' }: Props
         .ray-stats-grid {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
-          gap: 1px;
-          background: var(--color-border);
-          border-radius: 16px;
-          overflow: hidden;
+          gap: 12px;
         }
         .ray-stat-card {
-          background: var(--color-bg-elevated);
           padding: 28px 28px;
         }
         .ray-stat-value {
@@ -114,7 +110,7 @@ export default function StatsGrid({ stats, lots, categoryFilter = 'all' }: Props
 
       <div className="ray-stats-grid">
         {cards.map((card) => (
-          <div key={card.label} className="ray-stat-card">
+          <div key={card.label} className="ray-stat-card glass glass-quiet">
             <div style={{
               fontSize: 12,
               letterSpacing: '0.18em',

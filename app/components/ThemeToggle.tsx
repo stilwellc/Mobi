@@ -9,18 +9,16 @@ export default function ThemeToggle() {
     <button
       onClick={toggleTheme}
       aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+      className="glass glass-pill glass-quiet"
       style={{
-        background: 'none',
-        border: '1px solid var(--color-border-mid)',
-        borderRadius: '50%',
         width: 32,
         height: 32,
+        padding: 0,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         cursor: 'pointer',
         color: 'var(--color-text-muted)',
-        transition: 'all 0.3s ease',
         flexShrink: 0,
       }}
     >

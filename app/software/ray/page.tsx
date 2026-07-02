@@ -73,13 +73,9 @@ export default function RayPage() {
         .ray-overview-stats {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
-          gap: 1px;
-          background: var(--color-border);
-          border-radius: 16px;
-          overflow: hidden;
+          gap: 12px;
         }
         .ray-overview-stats .ray-stat-card {
-          background: var(--color-bg-elevated);
           padding: 28px 24px;
         }
         .ray-upcoming-grid {
@@ -190,7 +186,7 @@ export default function RayPage() {
             `}</style>
             <div className="ray-overview-stats">
               {overviewStats.map((card) => (
-                <div key={card.label} className="ray-stat-card">
+                <div key={card.label} className="ray-stat-card glass glass-quiet">
                   <div style={{
                     fontSize: 12,
                     letterSpacing: '0.18em',

@@ -24,14 +24,7 @@ export default function PrintsPage() {
           display: block;
           text-decoration: none;
           color: inherit;
-          background: var(--color-bg-elevated);
-          border: 1px solid var(--color-border);
-          border-radius: 4px;
           padding: var(--space-3) var(--space-4);
-          transition: border-color var(--duration-fast) var(--ease-signature);
-        }
-        .print-card:hover {
-          border-color: color-mix(in srgb, var(--color-accent-gold) 40%, transparent);
         }
         .print-card .print-arrow {
           display: inline-block;
@@ -124,7 +117,7 @@ export default function PrintsPage() {
             .filter(Boolean)
             .join(' · ');
           return (
-            <Link key={print.id} href={`/physical/prints/${print.id}`} className="print-card">
+            <Link key={print.id} href={`/physical/prints/${print.id}`} className="print-card glass">
               <div
                 style={{
                   display: 'flex',

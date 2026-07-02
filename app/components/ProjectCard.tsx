@@ -11,12 +11,6 @@ interface ProjectCardProps {
   flagship?: boolean;
 }
 
-/** hex accent → theme-aware token at 40% alpha for the hover border */
-function accentBorder(accent: string) {
-  const token = accent === '#96B8D4' ? 'var(--color-accent-ocean)' : 'var(--color-accent-gold)';
-  return `color-mix(in srgb, ${token} 40%, transparent)`;
-}
-
 /** hex accent → theme-aware, AA-safe token for any small TEXT usage (light gold fails AA at 12px, so gold text uses the -text variant) */
 function accentText(accent: string) {
   return accent === '#96B8D4' ? 'var(--color-accent-ocean)' : 'var(--color-accent-gold-text)';
@@ -29,18 +23,20 @@ export default function ProjectCard({ item, accent, index, flagship = false }: P
     ? [item.meta.year, item.meta.stack ?? item.meta.material, item.meta.status].filter(Boolean)
     : [];
 
+  // Glass lives on the link wrapper when the card is a link (so the whole
+  // touchable object shimmers); on the article itself otherwise.
+  const wrapped = Boolean(item.href || item.url);
+
   const card = (
     <article
+      className={wrapped ? undefined : 'glass'}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        background: 'var(--color-bg-elevated)',
-        border: `1px solid ${hovered ? accentBorder(accent) : 'var(--color-border)'}`,
         padding: flagship ? 'var(--space-4)' : 'var(--space-3)',
-        transition: 'border-color var(--duration-fast) var(--ease-signature)',
       }}
     >
       <div
@@ -142,7 +138,7 @@ export default function ProjectCard({ item, accent, index, flagship = false }: P
 
   if (item.href) {
     return (
-      <Link href={item.href} style={{ textDecoration: 'none', display: 'block', height: '100%' }}>
+      <Link href={item.href} className="glass" style={{ textDecoration: 'none', display: 'block', height: '100%' }}>
         {card}
       </Link>
     );
@@ -154,6 +150,7 @@ export default function ProjectCard({ item, accent, index, flagship = false }: P
         href={item.url}
         target="_blank"
         rel="noopener noreferrer"
+        className="glass"
         style={{ textDecoration: 'none', display: 'block', height: '100%' }}
       >
         {card}

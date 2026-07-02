@@ -292,3 +292,218 @@ h1 {
 #directory-index {
   scroll-margin-top: 96px;
 }
+
+/* ============================================================
+   GOLDEN GLASS — the material system.
+   Warm light pooled on driftwood. Glass is for objects
+   (cards, nav, pills, tiles); paper stays for reading.
+   ============================================================ */
+
+:root {
+  --glass-bg: rgba(237, 230, 218, 0.022);
+  --glass-bg-hover: rgba(237, 230, 218, 0.045);
+  --glass-border: rgba(212, 184, 150, 0.14);
+  --glass-border-top: rgba(232, 213, 188, 0.24);
+  --glass-specular: rgba(237, 230, 218, 0.05);
+  --glass-caustic: rgba(212, 184, 150, 0.035);
+  --glass-shimmer: 237 230 218;
+  --glass-shadow:
+    0 1px 0 0 rgba(232, 213, 188, 0.09) inset,
+    0 0 40px 0 rgba(212, 184, 150, 0.02) inset,
+    0 20px 50px -12px rgba(212, 184, 150, 0.05),
+    0 12px 40px rgba(0, 0, 0, 0.35),
+    0 4px 12px rgba(0, 0, 0, 0.22);
+  --glass-shadow-hover:
+    0 1px 0 0 rgba(232, 213, 188, 0.14) inset,
+    0 0 60px 0 rgba(212, 184, 150, 0.035) inset,
+    0 24px 60px -14px rgba(212, 184, 150, 0.08),
+    0 18px 50px rgba(0, 0, 0, 0.4),
+    0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+[data-theme="light"] {
+  --glass-bg: rgba(255, 253, 248, 0.4);
+  --glass-bg-hover: rgba(255, 253, 248, 0.62);
+  --glass-border: rgba(36, 30, 21, 0.10);
+  --glass-border-top: rgba(255, 255, 255, 0.75);
+  --glass-specular: rgba(255, 255, 255, 0.45);
+  --glass-caustic: rgba(168, 135, 93, 0.05);
+  --glass-shimmer: 255 255 255;
+  --glass-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.6) inset,
+    0 0 40px 0 rgba(212, 184, 150, 0.05) inset,
+    0 16px 40px -10px rgba(93, 74, 48, 0.13),
+    0 4px 12px rgba(93, 74, 48, 0.06);
+  --glass-shadow-hover:
+    0 1px 0 0 rgba(255, 255, 255, 0.75) inset,
+    0 0 60px 0 rgba(212, 184, 150, 0.08) inset,
+    0 22px 52px -12px rgba(93, 74, 48, 0.18),
+    0 6px 16px rgba(93, 74, 48, 0.08);
+}
+
+/* Shimmer intensity animates through a registered custom property */
+@property --shimmer-o {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
+.glass {
+  position: relative;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-top-color: var(--glass-border-top);
+  border-radius: 18px;
+  backdrop-filter: blur(28px) saturate(135%) brightness(1.03);
+  -webkit-backdrop-filter: blur(28px) saturate(135%) brightness(1.03);
+  box-shadow: var(--glass-shadow);
+  transition:
+    background var(--duration-base) var(--ease-signature),
+    border-color var(--duration-base) var(--ease-signature),
+    box-shadow var(--duration-base) var(--ease-signature),
+    --shimmer-o 1.2s var(--ease-signature);
+}
+
+/* Specular sheet + cursor shimmer — light on the surface of the water */
+.glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    radial-gradient(
+      420px circle at var(--mx, 50%) var(--my, -30%),
+      rgb(var(--glass-shimmer) / calc(0.08 * var(--shimmer-o, 0))),
+      transparent 55%
+    ),
+    linear-gradient(180deg, var(--glass-specular) 0%, transparent 45%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Caustics — refracted light concentrating inside the glass */
+.glass::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    radial-gradient(ellipse 80% 50% at 22% 8%, var(--glass-caustic), transparent 55%),
+    radial-gradient(ellipse 55% 40% at 78% 18%, var(--glass-caustic), transparent 55%);
+  mix-blend-mode: screen;
+  opacity: 0.8;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Content sits above the light layers */
+.glass > * { position: relative; z-index: 2; }
+
+@media (hover: hover) and (pointer: fine) {
+  .glass:hover {
+    --shimmer-o: 1;
+    background: var(--glass-bg-hover);
+    box-shadow: var(--glass-shadow-hover);
+  }
+}
+
+/* Pill variant — nav chips, CTAs, toggles */
+.glass-pill {
+  border-radius: 100px;
+}
+.glass-pill::before,
+.glass-pill::after {
+  border-radius: 100px;
+}
+
+/* Quiet variant — same material, half the voice (list tiles, dense grids) */
+.glass-quiet {
+  backdrop-filter: blur(16px) saturate(120%);
+  -webkit-backdrop-filter: blur(16px) saturate(120%);
+  box-shadow:
+    0 1px 0 0 rgba(232, 213, 188, 0.06) inset,
+    0 8px 24px rgba(0, 0, 0, 0.22);
+}
+[data-theme="light"] .glass-quiet {
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.5) inset,
+    0 8px 20px rgba(93, 74, 48, 0.08);
+}
+
+/* The room the glass lives in — ambient light so blur has something to bend */
+.ambient-field {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+.ambient-field .orb-gold,
+.ambient-field .orb-ocean {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+}
+.ambient-field .orb-gold {
+  width: min(44vw, 560px);
+  height: min(44vw, 560px);
+  top: -8%;
+  right: -6%;
+  background: radial-gradient(circle, rgba(212, 184, 150, 0.07) 0%, transparent 65%);
+  animation: floatSlow 26s ease-in-out infinite;
+}
+.ambient-field .orb-ocean {
+  width: min(36vw, 460px);
+  height: min(36vw, 460px);
+  bottom: -10%;
+  left: -8%;
+  background: radial-gradient(circle, rgba(150, 184, 212, 0.05) 0%, transparent 65%);
+  animation: floatSlow 32s ease-in-out infinite reverse;
+}
+[data-theme="light"] .ambient-field .orb-gold {
+  background: radial-gradient(circle, rgba(168, 135, 93, 0.10) 0%, transparent 65%);
+}
+[data-theme="light"] .ambient-field .orb-ocean {
+  background: radial-gradient(circle, rgba(78, 115, 150, 0.07) 0%, transparent 65%);
+}
+
+/* Cursor veil — a faint light that travels with the pointer (fine pointers only) */
+.cursor-veil {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 560px;
+  height: 560px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(var(--glass-shimmer) / 0.028) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  will-change: transform;
+}
+.cursor-veil.on { opacity: 1; }
+@media (hover: none), (pointer: coarse) {
+  .cursor-veil { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glass::before { background: linear-gradient(180deg, var(--glass-specular) 0%, transparent 45%); }
+  .cursor-veil { display: none; }
+  .ambient-field .orb-gold, .ambient-field .orb-ocean { animation: none; }
+}
+
+@keyframes floatSlow {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(18px, -24px) scale(1.03); }
+  66% { transform: translate(-12px, 14px) scale(0.98); }
+}
+
+/* Dense grids: glass look without per-tile blur cost (48-card grids) */
+.glass-noblur,
+.glass-noblur.glass-quiet {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: color-mix(in srgb, var(--color-bg-elevated) 88%, transparent);
+}

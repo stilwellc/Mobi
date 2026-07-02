@@ -131,21 +131,39 @@ export default function Nav() {
   return (
     <>
       <header
+        className={condensed ? 'site-header is-condensed' : 'site-header'}
         style={{
           position: 'fixed',
           top: 0,
           left: 0,
           right: 0,
           zIndex: 50,
-          background: condensed ? 'var(--color-nav-bg)' : 'transparent',
-          backdropFilter: condensed ? 'blur(14px)' : 'none',
-          WebkitBackdropFilter: condensed ? 'blur(14px)' : 'none',
-          borderBottom: condensed
-            ? '1px solid var(--color-border)'
-            : '1px solid transparent',
-          transition: `background var(--duration-base) var(--ease-signature), border-color var(--duration-base) var(--ease-signature), padding var(--duration-base) var(--ease-signature)`,
         }}
       >
+        {/* Condensed = a glass slab: the bottom edge of the header is the
+            meniscus here, so no top highlight — just body, blur, and a
+            soft drop into the page. */}
+        <style>{`
+          .site-header {
+            background: transparent;
+            border-bottom: 1px solid transparent;
+            transition:
+              background var(--duration-base) var(--ease-signature),
+              border-color var(--duration-base) var(--ease-signature),
+              box-shadow var(--duration-base) var(--ease-signature),
+              padding var(--duration-base) var(--ease-signature);
+          }
+          .site-header.is-condensed {
+            background: var(--glass-bg-hover, var(--color-nav-bg));
+            backdrop-filter: blur(28px) saturate(135%);
+            -webkit-backdrop-filter: blur(28px) saturate(135%);
+            border-bottom-color: var(--glass-border, var(--color-border));
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+          }
+          [data-theme=light] .site-header.is-condensed {
+            box-shadow: 0 12px 32px rgba(93, 74, 48, 0.08);
+          }
+        `}</style>
         <nav
           aria-label="Primary"
           style={{
@@ -212,10 +230,8 @@ export default function Nav() {
                 aria-expanded={menuOpen}
                 aria-controls="mobile-menu"
                 aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+                className="glass glass-pill glass-quiet"
                 style={{
-                  background: 'none',
-                  border: '1px solid var(--color-border-mid)',
-                  borderRadius: '50%',
                   width: 32,
                   height: 32,
                   display: 'flex',
@@ -276,7 +292,16 @@ export default function Nav() {
             padding: '0 var(--space-4)',
           }}
         >
-          <nav aria-label="Mobile" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
+          <nav
+            aria-label="Mobile"
+            className="glass"
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 'var(--space-3)',
+              padding: 'var(--space-4) var(--space-3)',
+            }}
+          >
             {links.map((link, i) => {
               const active = isActive(link.href);
               return (

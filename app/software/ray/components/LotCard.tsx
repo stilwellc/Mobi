@@ -91,20 +91,14 @@ export default function LotCard({
   }, [lot, allLots, isUpcoming]);
 
   const cardContent = (
-    <div className="ray-lot-card" style={{
-      position: 'relative',
-      borderRadius: 16,
+    <div className="ray-lot-card glass glass-quiet glass-noblur" style={{
       overflow: 'hidden',
-      background: 'var(--color-bg-elevated)',
-      border: '1px solid var(--color-border)',
-      transition: 'border-color var(--duration-fast) var(--ease-signature)',
       cursor: 'pointer',
       height: '100%',
       display: 'flex',
       flexDirection: 'column',
     }}>
       <style>{`
-        .ray-lot-card:hover { border-color: var(--color-accent-ocean) !important; }
         .ray-lot-img { height: 200px; }
         .ray-remind-btn:hover { opacity: 0.85; }
         .ray-save-btn { transition: background var(--duration-fast) var(--ease-signature); }
@@ -126,7 +120,7 @@ export default function LotCard({
             border: 'none',
             padding: 0,
             cursor: 'pointer',
-            borderRadius: 16,
+            borderRadius: 18,
           }}
         />
       ) : (
@@ -139,12 +133,16 @@ export default function LotCard({
             position: 'absolute',
             inset: 0,
             zIndex: 1,
-            borderRadius: 16,
+            borderRadius: 18,
           }}
         />
       )}
+      {/* zIndex auto keeps the stretched link (z1) clickable above this
+          content while save/remind buttons (z2) stay above the link —
+          overrides the .glass > * z-index:2 rule. */}
       <div className="ray-lot-img" style={{
         position: 'relative',
+        zIndex: 'auto',
         width: '100%',
         background: `linear-gradient(135deg, var(--color-bg-elevated) 0%, var(--color-bg) 100%)`,
         display: 'flex',
@@ -237,7 +235,7 @@ export default function LotCard({
         )}
       </div>
 
-      <div style={{ padding: '14px 18px 18px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+      <div style={{ padding: '14px 18px 18px', flex: 1, display: 'flex', flexDirection: 'column', zIndex: 'auto' }}>
         <div style={{
           display: 'flex',
           alignItems: 'center',
