@@ -345,18 +345,19 @@ export default function DirectorySection({ mobile, tablet, isVisible, sectionRef
                 </p>
 
                 {section.id === 'physical' && !mobile ? (
-                  <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gridTemplateRows: 'auto auto', gap: 18 }}>
-                    <div style={{ gridRow: 'span 2' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 18 }}>
+                    <div style={{ gridRow: `span ${Math.max(section.items.length - 1, 1)}` }}>
                       {renderCard(section, section.items[0], 0, { tall: true, fontSize: 42 })}
                     </div>
                     {section.items.slice(1).map((item, i) => renderCard(section, item, i + 1))}
                   </div>
                 ) : section.id === 'digital' && !mobile ? (
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 18 }}>
-                    {renderCard(section, section.items[3], 0, { wide: false, fontSize: 38 })}
-                    {renderCard(section, section.items[0], 1, { wide: false, fontSize: 38 })}
-                    {renderCard(section, section.items[1], 2)}
-                    {renderCard(section, section.items[2], 3)}
+                    {section.items.map((item, i) => renderCard(section, item, i,
+                      i < 2
+                        ? { fontSize: 38 }
+                        : (i === section.items.length - 1 && section.items.length % 2 === 1 ? { wide: true } : undefined)
+                    ))}
                   </div>
                 ) : section.id === 'shop' && !mobile ? (
                   <div>

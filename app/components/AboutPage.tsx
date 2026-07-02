@@ -7,8 +7,8 @@ import { useTheme } from './ThemeProvider';
 
 const PRINCIPLES = [
   {
-    title: 'Modern Design',
-    text: 'Cutting-edge design with timeless elegance — spaces and experiences that are both contemporary and enduring.',
+    title: 'Design-First Software',
+    text: 'Products that feel good to use, where every detail is considered and nothing is accidental — from auction intelligence to event discovery.',
     icon: (
       <svg viewBox="0 0 48 48" fill="none" style={{ width: 32, height: 32 }}>
         <rect x="8" y="12" width="32" height="24" rx="2" stroke="var(--color-accent-gold)" strokeWidth="1" opacity="0.5" />
@@ -19,8 +19,8 @@ const PRINCIPLES = [
     ),
   },
   {
-    title: 'Optimized Experiences',
-    text: 'Designs that maximize functionality, comfort, and aesthetics. Advanced technology creating spaces that enhance the human experience.',
+    title: 'Physical Craft',
+    text: 'Spaces, restorations, and fabricated objects — design leaving the screen and entering the room, refined through obsession.',
     icon: (
       <svg viewBox="0 0 48 48" fill="none" style={{ width: 32, height: 32 }}>
         <circle cx="24" cy="24" r="14" stroke="var(--color-accent-gold)" strokeWidth="0.8" opacity="0.35" />
@@ -34,8 +34,8 @@ const PRINCIPLES = [
     ),
   },
   {
-    title: 'Balanced Innovation',
-    text: 'Smart technology, sustainable practices, and timeless aesthetics integrated into a harmonious whole.',
+    title: 'Security as Craft',
+    text: 'A decade of security engineering underneath everything — systems built to be trusted, not just admired.',
     icon: (
       <svg viewBox="0 0 48 48" fill="none" style={{ width: 32, height: 32 }}>
         <path d="M12 36L24 12L36 36" stroke="var(--color-accent-gold)" strokeWidth="0.8" opacity="0.4" strokeLinejoin="round" />
@@ -47,10 +47,10 @@ const PRINCIPLES = [
 ];
 
 const HELPS = [
-  { title: 'Augmenting Everyday Life', text: 'Mobi creates designs that amplify human potential. From smart homes to collaborative workspaces, our design solutions support and enhance the way you live, work, and connect with others.' },
-  { title: 'Sustainable Innovation', text: 'Our sustainable design solutions seamlessly incorporate eco-friendly materials and energy-efficient technologies into all spaces, reducing your environmental footprint without compromising style or comfort.' },
-  { title: 'Smart Integration', text: 'We integrate technology in a way that enhances your lifestyle without disrupting it. From automated systems that enhance comfort to innovative tools that make life easier, our design flows with you.' },
-  { title: 'Community & Connectivity', text: 'Mobi believes design should foster connection. We design spaces that bring people together, whether at home, in the office, or in public spaces, fostering collaboration, creativity, and community.' },
+  { title: 'Working at Thirty Madison', text: 'Senior Product Security Engineer — building an application security program that works as an enabler of engineering speed, not a blocking function.' },
+  { title: 'Previously at Podium', text: 'Application Security Engineer — securing Elixir at scale, contributing Semgrep rules for the Ash Framework and open-source secure coding training.' },
+  { title: 'Studied at NYU', text: 'M.S. Cyber Security as a Cyber Fellow — the technical foundation under the studio’s software wing.' },
+  { title: 'Writing', text: 'Essays on security and design engineering at collinsthoughts.substack.com — most recently, a four-legged framework for application security programs that actually work.' },
 ];
 
 export default function AboutPage({ mobile, tablet, navigate }: {
@@ -224,7 +224,7 @@ export default function AboutPage({ mobile, tablet, navigate }: {
           transition: 'all 1s cubic-bezier(0.23,1,0.32,1) 0.1s',
           position: 'relative', zIndex: 1,
         }}>
-          About <span style={{ fontStyle: 'italic', color: 'var(--color-accent-gold)' }}>mobi</span>
+          About <span style={{ fontStyle: 'italic', color: 'var(--color-accent-gold)' }}>co.stil</span>
         </h1>
 
         {/* Intro text - two column on desktop */}
@@ -239,10 +239,10 @@ export default function AboutPage({ mobile, tablet, navigate }: {
           position: 'relative', zIndex: 1,
         }}>
           <p style={{ fontSize: mobile ? 15 : 17, lineHeight: 1.9, color: 'var(--color-text-muted)', fontWeight: 400 }}>
-            Mobi draws inspiration from the Möbius strip — a symbol of infinity and seamless continuity. Just as the Möbius strip weaves unexpected elements into a continuous flow, Mobi integrates diverse design principles into a harmonious, fluid experience.
+            co.stil is the studio practice of Collin Stilwell. It draws its shape from the Möbius strip — a surface with one side and one boundary — because the work refuses a divide: software designed like objects, objects informed by software, one continuous loop between the two.
           </p>
           <p style={{ fontSize: mobile ? 15 : 17, lineHeight: 1.9, color: 'var(--color-text-muted)', fontWeight: 400 }}>
-            We believe design goes beyond the home. It is about enhancing the way we live, work, and interact with the world around us. Our goal is to create design that flows effortlessly through all aspects of life.
+            By day, a security engineer who cares about craft. The rest of the time, a builder of things that feel good to use — currently interested in security tooling, design systems, and the space between code and art.
           </p>
         </div>
       </section>
@@ -401,14 +401,14 @@ export default function AboutPage({ mobile, tablet, navigate }: {
               fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase',
               color: 'var(--color-text-label)', fontWeight: 600,
               display: 'block', marginBottom: 20,
-            }}>Our Approach</span>
+            }}>Currently</span>
             <h2 style={{
               fontFamily: "'Cormorant Garamond', serif",
               fontSize: mobile ? 36 : 56, fontWeight: 300, letterSpacing: '-0.03em',
               lineHeight: 0.95,
             }}>
-              How We{' '}
-              <span style={{ fontStyle: 'italic', color: 'var(--color-accent-gold)' }}>Help</span>
+              The{' '}
+              <span style={{ fontStyle: 'italic', color: 'var(--color-accent-gold)' }}>Person</span>
             </h2>
           </div>
 
@@ -509,7 +509,7 @@ export default function AboutPage({ mobile, tablet, navigate }: {
               fontSize: mobile ? 15 : 18, lineHeight: 1.9, color: 'var(--color-text-muted)',
               fontWeight: 400, maxWidth: 700,
             }}>
-              To redefine the way we experience design by weaving together sustainability, modern aesthetics, and cutting-edge technology in a way that enhances life at every level. Like the Möbius strip, our designs aim to create a seamless, continuous flow, augmenting the spaces where we live, work, and play.
+              To build things that feel inevitable — software with the weight and finish of a physical object, and objects with the intelligence of software. Like the Möbius strip, the practice has no seam: security work sharpens the design, design work humanizes the engineering, and every project feeds the next.
             </p>
           </div>
         </div>

@@ -42,10 +42,10 @@ export default function FooterSection({ mobile, isVisible, footerRef, navigate }
               fontFamily: "'Syne', sans-serif", fontSize: 28, fontWeight: 700,
               letterSpacing: '-0.04em', marginBottom: 12,
             }}>
-              mobi<span style={{ color: 'var(--color-accent-gold)' }}>.</span>
+              co<span style={{ color: 'var(--color-accent-gold)' }}>.</span>stil
             </div>
             <p style={{ fontSize: 13, color: 'var(--color-text-muted)', fontWeight: 400, lineHeight: 1.7, maxWidth: 260 }}>
-              Where design transcends boundaries — physical spaces, digital products, cultural connections.
+              The studio of Collin Stilwell — design-first software and physical objects, one continuous practice.
             </p>
           </div>
 
@@ -64,7 +64,7 @@ export default function FooterSection({ mobile, isVisible, footerRef, navigate }
           </nav>
 
           <nav aria-label="Social links">
-            <div className="footer-col-title">Social</div>
+            <div className="footer-col-title">Elsewhere</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               {sections.filter(s => s.id === 'social').flatMap(s => s.items).map(item => (
                 <a key={item.name} href={item.url} target="_blank" rel="noopener noreferrer" className="footer-link">
@@ -97,7 +97,7 @@ export default function FooterSection({ mobile, isVisible, footerRef, navigate }
           transition: 'opacity 0.8s ease 0.3s',
         }}>
           <span style={{ fontSize: 10, color: 'var(--color-text-ghost)', fontWeight: 500, letterSpacing: '0.1em' }}>
-            &copy; {new Date().getFullYear()} MOBI DESIGN STUDIO
+            &copy; {new Date().getFullYear()} CO.STIL &mdash; COLLIN STILWELL
           </span>
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
             <div style={{ width: 3, height: 3, borderRadius: '50%', background: 'var(--color-accent-gold)', opacity: 0.4 }} aria-hidden="true" />

@@ -52,7 +52,7 @@ export default function AnalyticsPage() {
           fontWeight: 700,
           letterSpacing: '-0.04em',
         }}>
-          mobi<span style={{ color: 'var(--color-accent-gold)' }}>.</span>
+          co<span style={{ color: 'var(--color-accent-gold)' }}>.</span>stil
         </Link>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           <ThemeToggle />

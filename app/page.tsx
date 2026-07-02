@@ -14,15 +14,15 @@ import FooterSection from './components/FooterSection';
 
 
 const PAGE_TITLES: Record<string, string> = {
-  home: 'Mobi — Design Studio',
-  physical: 'Physical — Mobi',
-  digital: 'Digital — Mobi',
-  shop: 'Shop — Mobi',
-  social: 'Social — Mobi',
-  about: 'About — Mobi',
+  home: 'co.stil — Software & Physical Design',
+  physical: 'Physical — co.stil',
+  digital: 'Software — co.stil',
+  shop: 'Shop — co.stil',
+  social: 'Connect — co.stil',
+  about: 'About — co.stil',
 };
 
-export default function MobiSite() {
+export default function CoStilSite() {
   const [loaded, setLoaded] = useState(false);
   const [phase, setPhase] = useState(0);
   const [page, setPage] = useState('home');
@@ -56,7 +56,7 @@ export default function MobiSite() {
   }, [menuOpen]);
 
   useEffect(() => {
-    document.title = PAGE_TITLES[page] || 'Mobi — Design Studio';
+    document.title = PAGE_TITLES[page] || 'co.stil — Software & Physical Design';
   }, [page]);
 
   const navigate = (target: string) => {
@@ -187,8 +187,8 @@ export default function MobiSite() {
           fontFamily: "'Syne', sans-serif",
           fontSize: mobile ? 22 : 26, fontWeight: 700,
           color: 'var(--color-fg)', letterSpacing: '-0.04em', lineHeight: 1,
-        }} role="button" tabIndex={0} onKeyDown={e => e.key === 'Enter' && navigate('home')} aria-label="Mobi home">
-          mobi<span style={{ color: 'var(--color-accent-gold)' }}>.</span>
+        }} role="button" tabIndex={0} onKeyDown={e => e.key === 'Enter' && navigate('home')} aria-label="co.stil home">
+          co<span style={{ color: 'var(--color-accent-gold)' }}>.</span>stil
         </div>
 
         {!mobile && (

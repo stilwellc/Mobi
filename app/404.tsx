@@ -7,7 +7,7 @@ export default function Custom404() {
   const router = useRouter();
 
   useEffect(() => {
-    router.replace('/mobi');
+    router.replace('/');
   }, [router]);
 
   return null;

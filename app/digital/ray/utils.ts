@@ -62,11 +62,11 @@ export function makeAuctionIcs(lot: {
   return [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//Mobi Ray//EN',
+    'PRODID:-//co.stil Ray//EN',
     'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH',
     'BEGIN:VEVENT',
-    `UID:ray-${lot.id}@mobi`,
+    `UID:ray-${lot.id}@costil`,
     `DTSTART;VALUE=DATE:${fmtDate(lot.saleDate)}`,
     `DTEND;VALUE=DATE:${fmtDate(nextDay.toISOString())}`,
     `SUMMARY:${summary}`,

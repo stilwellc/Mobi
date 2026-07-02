@@ -9,9 +9,9 @@ interface PhilosophySectionProps {
 }
 
 const PRINCIPLES = [
-  { num: '01', title: 'Seamless', desc: 'Design that flows naturally between physical spaces and digital experiences.' },
-  { num: '02', title: 'Continuous', desc: 'Every project builds on the last — an evolving body of interconnected work.' },
-  { num: '03', title: 'Infinite', desc: 'No boundaries between disciplines. Architecture informs software. Software reshapes space.' },
+  { num: '01', title: 'Seamless', desc: 'Design that flows naturally between physical objects and digital products — one surface, no seams.' },
+  { num: '02', title: 'Considered', desc: 'Every detail deliberate, nothing accidental. Software built with the same care as a restored chair.' },
+  { num: '03', title: 'Infinite', desc: 'No boundaries between disciplines. Security informs design. Architecture informs software. Software reshapes space.' },
 ];
 
 export default function PhilosophySection({ mobile, tablet, isVisible, sectionRef, navigate }: PhilosophySectionProps) {
@@ -54,7 +54,7 @@ export default function PhilosophySection({ mobile, tablet, isVisible, sectionRe
               The infinite<br /><span style={{ fontStyle: 'italic', fontWeight: 400, color: 'var(--color-accent-gold)' }}>loop</span>
             </h2>
             <p style={{ fontSize: mobile ? 14 : 16, lineHeight: 1.85, color: 'var(--color-text-subtle)', fontWeight: 400, marginBottom: 24 }}>
-              Named after the Möbius strip — a surface with only one side and one boundary. It represents our belief that great design has no beginning or end, no separation between form and function, no divide between physical and digital.
+              Built on the Möbius strip — a surface with only one side and one boundary. It represents the belief that great design has no beginning or end: no separation between form and function, no divide between the code and the object it becomes.
             </p>
             <button className="hero-cta magnetic-btn" onClick={() => navigate('about')} style={{ marginTop: 8 }}>
               Learn More

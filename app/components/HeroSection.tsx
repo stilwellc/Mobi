@@ -36,25 +36,25 @@ export default function HeroSection({ mobile, tablet, phase, scrollY, theme }: H
         position: 'relative', zIndex: 2,
       }}>
         <div style={{ width: 8, height: 8, borderRadius: '50%', border: '1px solid var(--color-accent-gold)', opacity: 0.5 }} aria-hidden="true" />
-        <span className="section-label-sm">Design Studio &mdash; Hoboken, NJ</span>
+        <span className="section-label-sm">The Studio of Collin Stilwell &mdash; Hoboken, NJ</span>
       </div>
 
       <h1 style={{
         fontFamily: "'Cormorant Garamond', serif", fontWeight: 300,
         fontSize: mobile ? 48 : tablet ? 72 : 'clamp(80px, 9vw, 140px)',
         lineHeight: mobile ? 1 : 0.9, letterSpacing: '-0.03em',
-        maxWidth: mobile ? '100%' : '65%',
+        maxWidth: mobile ? '100%' : '68%',
         opacity: phase >= 1 ? 1 : 0, transform: phase >= 1 ? 'translateY(0)' : 'translateY(50px)',
         transition: 'all 1.2s cubic-bezier(0.23, 1, 0.32, 1) 0.15s',
         position: 'relative', zIndex: 2,
       }}>
-        <span style={{ display: 'block' }}>Where design</span>
+        <span style={{ display: 'block' }}>Software</span>
         <span style={{
           display: 'block', fontStyle: 'italic', fontWeight: 400,
           background: 'linear-gradient(135deg, #D4B896 0%, #E8D5BC 40%, #D4B896 70%, #C4A886 100%)',
           WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-        }}>transcends</span>
-        <span style={{ display: 'block', color: 'var(--color-fg-half)' }}>boundaries</span>
+        }}>&amp; matter,</span>
+        <span style={{ display: 'block', color: 'var(--color-fg-half)' }}>one practice</span>
       </h1>
 
       <div style={{
@@ -65,8 +65,9 @@ export default function HeroSection({ mobile, tablet, phase, scrollY, theme }: H
         transition: 'all 1s cubic-bezier(0.23, 1, 0.32, 1)',
         position: 'relative', zIndex: 2,
       }}>
-        <p style={{ maxWidth: mobile ? '100%' : 380, fontSize: mobile ? 14 : 15, lineHeight: 1.85, color: 'var(--color-text-muted)', fontWeight: 400 }}>
-          Physical spaces, digital products, and cultural connections — designed with intention, built with craft, refined through obsession.
+        <p style={{ maxWidth: mobile ? '100%' : 400, fontSize: mobile ? 14 : 15, lineHeight: 1.85, color: 'var(--color-text-muted)', fontWeight: 400 }}>
+          Design-first software and physical objects from a single continuous surface —
+          where every detail is considered and nothing is accidental.
         </p>
         <button className="hero-cta magnetic-btn" onClick={() => { const el = document.getElementById('directory'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }}>
           Explore

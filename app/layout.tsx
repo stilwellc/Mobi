@@ -4,20 +4,20 @@ import './globals.css'
 import ThemeProvider from './components/ThemeProvider'
 
 export const metadata: Metadata = {
-  title: 'Mobi — Design Studio',
-  description: 'Where design transcends boundaries — physical spaces, digital products, cultural connections.',
+  title: 'co.stil — Software & Physical Design',
+  description: 'The studio of Collin Stilwell — design-first software and physical objects, one continuous practice.',
   openGraph: {
-    title: 'Mobi — Design Studio',
-    description: 'Where design transcends boundaries — physical spaces, digital products, cultural connections.',
-    siteName: 'Mobi',
+    title: 'co.stil — Software & Physical Design',
+    description: 'The studio of Collin Stilwell — design-first software and physical objects, one continuous practice.',
+    siteName: 'co.stil',
     type: 'website',
     locale: 'en_US',
-    images: [{ url: '/images/mobi-logo.png', width: 512, height: 512, alt: 'Mobi Design Studio' }],
+    images: [{ url: '/images/mobi-logo.png', width: 512, height: 512, alt: 'co.stil studio' }],
   },
   twitter: {
     card: 'summary',
-    title: 'Mobi — Design Studio',
-    description: 'Where design transcends boundaries — physical spaces, digital products, cultural connections.',
+    title: 'co.stil — Software & Physical Design',
+    description: 'The studio of Collin Stilwell — design-first software and physical objects, one continuous practice.',
     images: ['/images/mobi-logo.png'],
   },
   icons: {

@@ -1,6 +1,11 @@
-# Mobi Website
+# co.stil
 
-This is the source code for the Mobi website, available at [stilwellc.github.io/mobi](https://stilwellc.github.io/mobi).
+The studio of Collin Stilwell — design-first software and physical objects, one continuous practice.
+
+co.stil is the merger of two projects: **collin** (a personal portfolio for security engineering work) and **Mobi** (a design studio for physical spaces, objects, and digital products). The result is a single super app with two wings:
+
+- **Software** — Ray (auction market intelligence), Soirée (NYC event discovery), SecMCPHub, Elixir security tooling
+- **Physical** — Project 1122, 3D-printed fabrications, curation, and restoration work
 
 ## Development
 
@@ -15,37 +20,23 @@ npm run dev
 npm run build
 ```
 
-## Features
-
-- Modern, responsive design
-- Smooth animations and transitions
-- Möbius strip-inspired UI elements
-- Dynamic navigation experience
-- Optimized performance
-
 ## Tech Stack
 
-- Next.js 14
-- React 18
+- Next.js 14 / React 18 / TypeScript
 - Tailwind CSS
+- Three.js (Möbius strip hero, STL viewers)
 - Framer Motion
-- TypeScript
 
 ## Project Structure
 
-- `/app` - Next.js app directory containing pages and layouts
-- `/components` - Reusable React components
-- `/public` - Static assets
-- `/styles` - Global styles and Tailwind configuration
+- `/app` — Next.js app directory (home, `/digital/ray`, `/digital/3d-prints`, `/physical/1122`, `/shop`)
+- `/app/components` — shared components; `sections.ts` is the data core driving the directory, nav, and footer
+- `/public` — static assets and STL models
 
 ## Design Philosophy
 
-Mobi embodies the concept of seamless design through:
-- Fluid transitions and animations
-- Organic curves and layered elements
-- A dynamic navigation experience
-- A carefully curated color palette featuring burgundy, cream, black, and white
+Built on the Möbius strip — a surface with one side and one boundary. No divide between the code and the object it becomes: software designed like objects, objects informed by software.
 
 ## License
 
-MIT 
+MIT
