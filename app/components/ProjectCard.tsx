@@ -39,6 +39,34 @@ export default function ProjectCard({ item, accent, index, flagship = false }: P
         padding: flagship ? 'var(--space-4)' : 'var(--space-3)',
       }}
     >
+      {item.image && (
+        <div
+          style={{
+            aspectRatio: flagship ? '21 / 9' : '16 / 10',
+            borderRadius: 10,
+            overflow: 'hidden',
+            marginBottom: 'var(--space-2)',
+            border: '1px solid var(--color-border)',
+          }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={item.image}
+            alt={item.imageAlt ?? ''}
+            loading="lazy"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              objectPosition: 'top',
+              display: 'block',
+              transform: hovered ? 'scale(1.03)' : 'scale(1)',
+              filter: hovered ? 'brightness(1.05)' : 'brightness(1)',
+              transition: 'transform var(--duration-slow) var(--ease-signature), filter var(--duration-slow) var(--ease-signature)',
+            }}
+          />
+        </div>
+      )}
       <div
         style={{
           display: 'flex',

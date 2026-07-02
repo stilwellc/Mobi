@@ -5,6 +5,8 @@ export interface SectionItem {
   href?: string;
   url?: string;
   handle?: string;
+  image?: string;
+  imageAlt?: string;
   logoStyle?: Record<string, string | number>;
   meta?: {
     year?: string;

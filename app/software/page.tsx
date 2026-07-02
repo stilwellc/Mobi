@@ -31,6 +31,9 @@ const rowCss = `
 @media (prefers-reduced-motion: reduce) {
   .sw-row, .sw-row .sw-arrow { transition: none; }
 }
+@media (max-width: 768px) {
+  .sw-thumb { display: none; }
+}
 `;
 
 function metaLine(item: SectionItem): string {
@@ -53,7 +56,7 @@ function Row({
     <div
       style={{
         display: 'grid',
-        gridTemplateColumns: 'auto 1fr auto',
+        gridTemplateColumns: item.image ? 'auto 1fr auto auto' : 'auto 1fr auto',
         gap: 'var(--space-3)',
         alignItems: 'baseline',
         padding: flagship ? 'var(--space-4) 0' : 'var(--space-3) 0',
@@ -110,10 +113,32 @@ function Row({
         )}
       </div>
 
+      {item.image && (
+        <div
+          className="sw-thumb"
+          style={{
+            width: flagship ? 220 : 168,
+            aspectRatio: '16 / 10',
+            borderRadius: 10,
+            overflow: 'hidden',
+            border: '1px solid var(--color-border)',
+            alignSelf: 'center',
+          }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={item.image}
+            alt=""
+            loading="lazy"
+            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', display: 'block' }}
+          />
+        </div>
+      )}
+
       <span
         className="sw-arrow"
         aria-hidden="true"
-        style={{ fontSize: 16, color: 'var(--color-text-muted)' }}
+        style={{ fontSize: 16, color: 'var(--color-text-muted)', alignSelf: 'center' }}
       >
         {item.url ? '↗' : '→'}
       </span>
