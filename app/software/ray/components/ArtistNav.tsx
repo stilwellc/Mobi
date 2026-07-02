@@ -81,7 +81,7 @@ export default function ArtistNav({ activeSlug, savedCount = 0, upcomingCounts =
           transition: color var(--duration-fast) var(--ease-signature);
         }
         .ray-back-link:hover,
-        .ray-back-link:focus-visible { color: var(--color-accent-wine); }
+        .ray-back-link:focus-visible { color: var(--color-accent-wine-text); }
         .ray-artist-select-wrap {
           position: relative;
           flex: 1;
@@ -145,7 +145,7 @@ export default function ArtistNav({ activeSlug, savedCount = 0, upcomingCounts =
         .ray-artist-dropdown-item:last-child { border-bottom: none; }
         .ray-artist-dropdown-item:hover {
           background: color-mix(in srgb, var(--color-accent-wine) 6%, transparent);
-          color: var(--color-accent-wine);
+          color: var(--color-accent-wine-text);
         }
         /* NOTE: keep this style block free of quotes and angle brackets.
            React HTML-escapes them in server-rendered style text, but the
@@ -153,14 +153,14 @@ export default function ArtistNav({ activeSlug, savedCount = 0, upcomingCounts =
            element - the text node then differs between server and client
            and hydration fails. */
         .ray-artist-dropdown-item[data-active=true] {
-          color: var(--color-accent-wine);
+          color: var(--color-accent-wine-text);
           font-weight: 600;
         }
         .ray-artist-count {
           font-size: 12px;
           font-weight: 600;
-          color: #060606;
-          background: var(--color-accent-wine);
+          color: var(--color-bg);
+          background: var(--color-fg);
           border-radius: 100px;
           padding: 1px 7px;
           margin-left: 8px;

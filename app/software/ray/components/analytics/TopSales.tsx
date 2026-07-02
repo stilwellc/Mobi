@@ -122,11 +122,12 @@ export default function TopSales({ allLots }: Props) {
                 : null;
               return (
                 <tr key={lot.id} className="ray-top-row">
+                  {/* Rank 1 is the single wine record marker for this view */}
                   <td className="ray-top-td" style={{
                     fontFamily: "var(--font-serif), serif",
                     fontSize: 20,
                     fontWeight: 300,
-                    color: 'var(--color-text-faint)',
+                    color: i === 0 ? 'var(--color-accent-wine-text)' : 'var(--color-text-faint)',
                   }}>
                     {i + 1}
                   </td>
@@ -164,7 +165,7 @@ export default function TopSales({ allLots }: Props) {
                     textAlign: 'right',
                     fontWeight: 500,
                     fontSize: 15,
-                    color: 'var(--color-accent-wine)',
+                    color: 'var(--color-fg)',
                     whiteSpace: 'nowrap',
                   }}>
                     {formatPrice(lot.priceUsd || 0)}
@@ -176,9 +177,7 @@ export default function TopSales({ allLots }: Props) {
                     whiteSpace: 'nowrap',
                     color: overEst === null
                       ? 'var(--color-text-muted)'
-                      : overEst >= 0
-                        ? 'var(--color-accent-gold)'
-                        : 'var(--color-accent-coral)',
+                      : 'var(--color-text-secondary)',
                   }}>
                     {overEst === null
                       ? '\u2014'
@@ -195,7 +194,7 @@ export default function TopSales({ allLots }: Props) {
                     }}>
                       <span style={{
                         width: 6, height: 6, borderRadius: '50%',
-                        background: houseColors[lot.auctionHouse] || 'var(--color-accent-wine)',
+                        background: houseColors[lot.auctionHouse] || 'var(--color-text-muted)',
                         opacity: 0.7, flexShrink: 0,
                       }} />
                       {lot.auctionHouse}

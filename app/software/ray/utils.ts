@@ -1,39 +1,42 @@
-// Golden-hour palette: every house sits inside the wine/gold family.
-// Theme-aware var() references (defined in globals.css) so 12px labels stay
-// readable in both themes. Use with color-mix() when alpha is needed.
+// Neutral ivory ramp: houses are distinguished by LIGHTNESS, not hue — hue is
+// reserved for meaning (wine = emphasis, gold = site primary). Each step mixes
+// the warm foreground into the background, so the ramp tracks both themes and
+// 12px labels stay AA-readable (floor is 65% fg, above text-muted). Use with
+// color-mix() when alpha is needed.
 export const houseColors: Record<string, string> = {
-  'Phillips': 'var(--ray-house-phillips)',
-  "Sotheby's": 'var(--ray-house-sothebys)',
-  "Christie's": 'var(--ray-house-christies)',
-  'Rago': 'var(--ray-house-rago)',
-  'Wright': 'var(--ray-house-wright)',
-  'Heritage': 'var(--ray-house-heritage)',
-  'Bonhams': 'var(--ray-house-bonhams)',
-  'Hindman': 'var(--ray-house-hindman)',
+  'Phillips': 'var(--color-fg)',
+  "Sotheby's": 'color-mix(in srgb, var(--color-fg) 95%, var(--color-bg))',
+  "Christie's": 'color-mix(in srgb, var(--color-fg) 90%, var(--color-bg))',
+  'Rago': 'color-mix(in srgb, var(--color-fg) 85%, var(--color-bg))',
+  'Wright': 'color-mix(in srgb, var(--color-fg) 80%, var(--color-bg))',
+  'Heritage': 'color-mix(in srgb, var(--color-fg) 75%, var(--color-bg))',
+  'Bonhams': 'color-mix(in srgb, var(--color-fg) 70%, var(--color-bg))',
+  'Hindman': 'color-mix(in srgb, var(--color-fg) 65%, var(--color-bg))',
 };
 
 // Concrete hexes per theme — ONLY for recharts/SVG fills, where var() is not
 // reliable in presentation attributes. Swap via useTheme() at the call site.
+// Same neutral fg-into-bg ramp as houseColors, precomputed per theme.
 export const houseColorsHex: Record<'dark' | 'light', Record<string, string>> = {
   dark: {
-    'Phillips': '#C1666B',
-    "Sotheby's": '#D4B896',
-    "Christie's": '#C9BEAC',
-    'Rago': '#B89A6E',
-    'Wright': '#7A9CB8',
-    'Heritage': '#AEC4D4',
-    'Bonhams': '#C4A265',
-    'Hindman': '#9A8F7D',
+    'Phillips': '#EDE6DA',
+    "Sotheby's": '#E2DBD0',
+    "Christie's": '#D7D0C5',
+    'Rago': '#CBC5BB',
+    'Wright': '#C0BAB0',
+    'Heritage': '#B5AFA6',
+    'Bonhams': '#AAA49B',
+    'Hindman': '#9F9991',
   },
   light: {
-    'Phillips': '#3E6488',
-    "Sotheby's": '#7D6140',
-    "Christie's": '#6B6150',
-    'Rago': '#75603A',
-    'Wright': '#3D607F',
-    'Heritage': '#48657A',
-    'Bonhams': '#7A6236',
-    'Hindman': '#665C4C',
+    'Phillips': '#241E15',
+    "Sotheby's": '#2E291F',
+    "Christie's": '#39332A',
+    'Rago': '#433E34',
+    'Wright': '#4E483F',
+    'Heritage': '#585349',
+    'Bonhams': '#635D54',
+    'Hindman': '#6D685E',
   },
 };
 
@@ -66,32 +69,34 @@ export const categoryLabels: Record<string, string> = {
   unknown: 'Unknown',
 };
 
+// Neutral ivory ramp — same doctrine as houseColors: categories are coded by
+// lightness, hue stays reserved for meaning.
 export const categoryColors: Record<string, string> = {
-  original: 'var(--ray-cat-original)',
-  print: 'var(--ray-cat-print)',
-  photograph: 'var(--ray-cat-photograph)',
-  sculpture: 'var(--ray-cat-sculpture)',
-  design: 'var(--ray-cat-design)',
-  unknown: 'var(--ray-cat-unknown)',
+  original: 'var(--color-fg)',
+  print: 'color-mix(in srgb, var(--color-fg) 93%, var(--color-bg))',
+  photograph: 'color-mix(in srgb, var(--color-fg) 86%, var(--color-bg))',
+  sculpture: 'color-mix(in srgb, var(--color-fg) 79%, var(--color-bg))',
+  design: 'color-mix(in srgb, var(--color-fg) 72%, var(--color-bg))',
+  unknown: 'color-mix(in srgb, var(--color-fg) 65%, var(--color-bg))',
 };
 
 // Concrete hexes per theme — ONLY for recharts/SVG fills. See houseColorsHex.
 export const categoryColorsHex: Record<'dark' | 'light', Record<string, string>> = {
   dark: {
-    original: '#D4B896',
-    print: '#C1666B',
-    photograph: '#7A9CB8',
-    sculpture: '#C4A265',
-    design: '#C9BEAC',
-    unknown: '#9A8F7D',
+    original: '#EDE6DA',
+    print: '#DDD7CB',
+    photograph: '#CEC7BD',
+    sculpture: '#BEB8AE',
+    design: '#AEA99F',
+    unknown: '#9F9991',
   },
   light: {
-    original: '#7D6140',
-    print: '#3E6488',
-    photograph: '#3D607F',
-    sculpture: '#7A6236',
-    design: '#6B6150',
-    unknown: '#665C4C',
+    original: '#241E15',
+    print: '#332D24',
+    photograph: '#413B32',
+    sculpture: '#504A41',
+    design: '#5F5950',
+    unknown: '#6D685E',
   },
 };
 

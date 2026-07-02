@@ -145,7 +145,7 @@ export default function RayPage() {
                     fontFamily: 'var(--font-serif), serif',
                     fontSize: 34,
                     fontWeight: 300,
-                    color: 'var(--color-accent-wine)',
+                    color: 'var(--color-fg)',
                     lineHeight: 1,
                     marginBottom: 8,
                   }}>
@@ -187,7 +187,7 @@ export default function RayPage() {
                     fontWeight: 300,
                     letterSpacing: '-0.02em',
                   }}>
-                    Upcoming <span style={{ fontStyle: 'italic', color: 'var(--color-accent-wine)' }}>Lots</span>
+                    Upcoming <span style={{ fontStyle: 'italic' }}>Lots</span>
                   </h2>
                   <span style={{
                     fontFamily: 'var(--font-mono), monospace',

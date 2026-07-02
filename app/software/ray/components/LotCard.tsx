@@ -19,7 +19,7 @@ function formatEstimate(lot: AuctionLot): string {
 }
 
 /** Compute a quick buy signal: median comp price vs estimate midpoint */
-function computeBuySignal(lot: AuctionLot, allLots: AuctionLot[]): { label: string; color: string; pct: number } | null {
+function computeBuySignal(lot: AuctionLot, allLots: AuctionLot[]): { label: string; pct: number } | null {
   if (!lot.estimateLow || !lot.estimateHigh) return null;
   const estMid = (lot.estimateLow + lot.estimateHigh) / 2;
   // Get same-artist sold lots in same category
@@ -37,8 +37,8 @@ function computeBuySignal(lot: AuctionLot, allLots: AuctionLot[]): { label: stri
     : prices[Math.floor(prices.length / 2)];
   const ratio = median / estMid;
   // Only show signal when there's a meaningful gap
-  if (ratio >= 1.2) return { label: 'Below Market', color: 'var(--color-accent-gold)', pct: Math.round((ratio - 1) * 100) };
-  if (ratio <= 0.75) return { label: 'Above Market', color: 'var(--color-accent-coral)', pct: Math.round((1 - ratio) * 100) };
+  if (ratio >= 1.2) return { label: 'Below Market', pct: Math.round((ratio - 1) * 100) };
+  if (ratio <= 0.75) return { label: 'Above Market', pct: Math.round((1 - ratio) * 100) };
   return null;
 }
 
@@ -58,7 +58,7 @@ export default function LotCard({
   onToggleSave?: (lotId: string) => void;
 }) {
   const [modalOpen, setModalOpen] = useState(false);
-  const color = houseColors[lot.auctionHouse] || 'var(--color-accent-wine)';
+  const color = houseColors[lot.auctionHouse] || 'var(--color-text-secondary)';
 
   function handleAddToCalendar(e: React.MouseEvent) {
     e.preventDefault();
@@ -110,8 +110,8 @@ export default function LotCard({
         .ray-lot-img img[data-error=true] { opacity: 0; }
         .ray-remind-btn {
           background: transparent;
-          border: 1px solid color-mix(in srgb, var(--color-accent-wine) 45%, transparent);
-          color: var(--color-accent-wine);
+          border: 1px solid var(--color-border-mid);
+          color: var(--color-text-secondary);
           transition:
             background var(--duration-fast) var(--ease-signature),
             border-color var(--duration-fast) var(--ease-signature),
@@ -121,7 +121,7 @@ export default function LotCard({
         .ray-remind-btn:focus-visible {
           background: var(--color-accent-wine);
           border-color: var(--color-accent-wine);
-          color: #060606;
+          color: var(--color-bg);
         }
         .ray-save-btn:hover { opacity: 0.85; }
         @media (max-width: 768px) {
@@ -216,19 +216,19 @@ export default function LotCard({
             gap: 6,
             padding: '3px 10px',
             borderRadius: 100,
-            border: '1px solid color-mix(in srgb, var(--color-accent-wine) 55%, transparent)',
+            border: '1px solid color-mix(in srgb, var(--color-fg) 30%, transparent)',
             background: 'color-mix(in srgb, var(--color-bg) 68%, transparent)',
             fontSize: 12,
             letterSpacing: '0.12em',
             textTransform: 'uppercase',
-            color: 'var(--color-accent-wine)',
+            color: 'var(--color-fg)',
             fontWeight: 600,
           }}>
             <span aria-hidden="true" style={{
               width: 5,
               height: 5,
               borderRadius: '50%',
-              background: 'var(--color-accent-wine)',
+              background: 'var(--color-fg)',
               flexShrink: 0,
             }} />
             Live
@@ -241,11 +241,12 @@ export default function LotCard({
             right: onToggleSave ? 46 : 10,
             padding: '3px 9px',
             borderRadius: 100,
-            background: buySignal.color,
+            background: 'color-mix(in srgb, var(--color-bg) 68%, transparent)',
+            border: '1px solid color-mix(in srgb, var(--color-fg) 30%, transparent)',
             fontSize: 12,
             letterSpacing: '0.08em',
             textTransform: 'uppercase',
-            color: '#060606',
+            color: 'var(--color-fg)',
             fontWeight: 600,
           }}>
             {buySignal.label}
@@ -276,8 +277,8 @@ export default function LotCard({
             <svg width="12" height="14" viewBox="0 0 12 14" fill="none" aria-hidden="true">
               <path
                 d="M1 1.5C1 1.22386 1.22386 1 1.5 1H10.5C10.7761 1 11 1.22386 11 1.5V12.5C11 12.6894 10.8862 12.8625 10.7096 12.9472C10.533 13.0319 10.3239 13.0136 10.1646 12.8994L6 9.91421L1.83541 12.8994C1.67614 13.0136 1.46698 13.0319 1.29037 12.9472C1.11377 12.8625 1 12.6894 1 12.5V1.5Z"
-                fill={saved ? '#060606' : '#F0EDE8'}
-                stroke={saved ? '#060606' : '#F0EDE8'}
+                fill={saved ? 'var(--color-bg)' : '#F0EDE8'}
+                stroke={saved ? 'var(--color-bg)' : '#F0EDE8'}
                 strokeWidth="0.8"
               />
             </svg>
@@ -353,7 +354,7 @@ export default function LotCard({
         }}>
           <span style={{
             fontSize: 14,
-            color: 'var(--color-accent-wine)',
+            color: 'var(--color-fg)',
             fontWeight: 500,
             fontVariantNumeric: 'tabular-nums',
           }}>

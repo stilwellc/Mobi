@@ -249,7 +249,7 @@ export default function ComparableModal({
     return { median, low, high, aboveEst, total: prices.length, hammerVsEst };
   }, [comparables, lot]);
 
-  const houseColor = houseColors[lot.auctionHouse] || 'var(--color-accent-wine)';
+  const houseColor = houseColors[lot.auctionHouse] || 'var(--color-text-secondary)';
   const catLabel = categoryLabels[lot.category] || null;
   const catColor = categoryColors[lot.category] || 'var(--color-text-faint)';
 
@@ -452,7 +452,7 @@ export default function ComparableModal({
               </div>
             )}
 
-            <div style={{ fontSize: 16, color: 'var(--color-accent-wine)', fontWeight: 500, marginBottom: 3 }}>
+            <div style={{ fontSize: 16, color: 'var(--color-fg)', fontWeight: 500, marginBottom: 3 }}>
               {formatEstimate(lot)}
             </div>
             <div style={{ fontSize: 12, color: 'var(--color-text-faint)' }}>
@@ -472,7 +472,7 @@ export default function ComparableModal({
                 padding: '8px 20px',
                 borderRadius: 100,
                 background: 'var(--color-accent-wine)',
-                color: '#060606',
+                color: 'var(--color-bg)',
                 fontSize: 12,
                 fontWeight: 600,
                 letterSpacing: '0.08em',
@@ -520,7 +520,7 @@ export default function ComparableModal({
                     fontSize: 18,
                     fontWeight: 500,
                     fontFamily: "var(--font-serif), serif",
-                    color: compStats.hammerVsEst >= 1 ? 'var(--color-accent-gold)' : 'var(--color-accent-coral)',
+                    color: 'var(--color-fg)',
                   }}>
                     {compStats.hammerVsEst >= 1 ? '+' : ''}{((compStats.hammerVsEst - 1) * 100).toFixed(0)}%
                   </div>
@@ -558,7 +558,7 @@ export default function ComparableModal({
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
               {comparables.map(({ lot: comp, score }, i) => {
-                const compHouseColor = houseColors[comp.auctionHouse] || 'var(--color-accent-wine)';
+                const compHouseColor = houseColors[comp.auctionHouse] || 'var(--color-text-secondary)';
                 const estMid = lot.estimateLow && lot.estimateHigh
                   ? (lot.estimateLow + lot.estimateHigh) / 2
                   : null;
@@ -672,7 +672,7 @@ export default function ComparableModal({
                         {ratio !== null && (
                           <div style={{
                             fontSize: 12,
-                            color: ratio >= 1 ? 'var(--color-accent-gold)' : 'var(--color-accent-coral)',
+                            color: 'var(--color-text-secondary)',
                             fontWeight: 500,
                           }}>
                             {ratio >= 1 ? '+' : ''}{((ratio - 1) * 100).toFixed(0)}% est.

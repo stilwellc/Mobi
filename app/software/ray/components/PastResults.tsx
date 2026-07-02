@@ -97,14 +97,14 @@ export default function PastResults({ lots, showArtist = false, categoryFilter: 
         }
         .ray-sort-pill:hover {
           border-color: var(--color-accent-wine);
-          color: var(--color-accent-wine);
+          color: var(--color-accent-wine-text);
         }
         /* Quote-free selector on purpose - quotes in server-rendered style
            text get HTML-escaped and break hydration. */
         .ray-sort-pill[data-active=true] {
           background: var(--color-accent-wine);
           border-color: var(--color-accent-wine);
-          color: #060606;
+          color: var(--color-bg);
         }
         @media (max-width: 768px) {
           .ray-results { padding-block: 32px 80px; }
@@ -129,7 +129,7 @@ export default function PastResults({ lots, showArtist = false, categoryFilter: 
               fontWeight: 300,
               letterSpacing: '-0.02em',
             }}>
-              Recent <span style={{ fontStyle: 'italic', color: 'var(--color-accent-wine)' }}>Results</span>
+              Recent <span style={{ fontStyle: 'italic' }}>Results</span>
             </h2>
             <p style={{ fontSize: 12, color: 'var(--color-text-muted)', fontWeight: 400, marginTop: 6 }}>
               {filtered.length.toLocaleString()} sold lots
@@ -185,7 +185,7 @@ export default function PastResults({ lots, showArtist = false, categoryFilter: 
         overflow: 'hidden',
       }}>
         {shown.map((lot, i) => {
-          const color = houseColors[lot.auctionHouse] || 'var(--color-accent-wine)';
+          const color = houseColors[lot.auctionHouse] || 'var(--color-text-secondary)';
           const catColor = (lot.category && lot.category !== 'unknown') ? categoryColors[lot.category] : null;
           return (
             <div
@@ -249,7 +249,7 @@ export default function PastResults({ lots, showArtist = false, categoryFilter: 
                 <div style={{
                   fontSize: 15,
                   fontWeight: 500,
-                  color: 'var(--color-accent-wine)',
+                  color: 'var(--color-fg)',
                   lineHeight: 1.3,
                 }}>
                   {lot.priceUsd ? formatPrice(lot.priceUsd) : '—'}
@@ -316,8 +316,8 @@ export default function PastResults({ lots, showArtist = false, categoryFilter: 
                   <svg width="10" height="12" viewBox="0 0 12 14" fill="none" aria-hidden="true">
                     <path
                       d="M1 1.5C1 1.22386 1.22386 1 1.5 1H10.5C10.7761 1 11 1.22386 11 1.5V12.5C11 12.6894 10.8862 12.8625 10.7096 12.9472C10.533 13.0319 10.3239 13.0136 10.1646 12.8994L6 9.91421L1.83541 12.8994C1.67614 13.0136 1.46698 13.0319 1.29037 12.9472C1.11377 12.8625 1 12.6894 1 12.5V1.5Z"
-                      fill={savedIds.includes(lot.id) ? '#060606' : 'var(--color-text-faint)'}
-                      stroke={savedIds.includes(lot.id) ? '#060606' : 'var(--color-text-faint)'}
+                      fill={savedIds.includes(lot.id) ? 'var(--color-bg)' : 'var(--color-text-faint)'}
+                      stroke={savedIds.includes(lot.id) ? 'var(--color-bg)' : 'var(--color-text-faint)'}
                       strokeWidth="0.8"
                     />
                   </svg>

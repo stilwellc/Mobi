@@ -216,10 +216,10 @@ export default function ArtistRankingsTable({ statsByArtist, allLots }: Props) {
                     {row.label}
                   </Link>
                 </td>
-                <td className="ray-rankings-td ray-rankings-hide-mobile" style={{ textAlign: 'right', color: 'var(--color-accent-wine)' }}>
+                <td className="ray-rankings-td ray-rankings-hide-mobile" style={{ textAlign: 'right', color: 'var(--color-fg)' }}>
                   {formatPrice(row.totalRevenue)}
                 </td>
-                <td className="ray-rankings-td" style={{ textAlign: 'right', color: 'var(--color-accent-wine)' }}>
+                <td className="ray-rankings-td" style={{ textAlign: 'right', color: 'var(--color-fg)' }}>
                   {row.avgPrice > 0 ? formatPrice(row.avgPrice) : '\u2014'}
                 </td>
                 <td className="ray-rankings-td ray-rankings-hide-mobile" style={{ textAlign: 'right' }}>
@@ -228,11 +228,9 @@ export default function ArtistRankingsTable({ statsByArtist, allLots }: Props) {
                 <td className="ray-rankings-td" style={{
                   textAlign: 'right',
                   fontWeight: 500,
-                  color: row.appreciation > 0
-                    ? 'var(--color-accent-gold)'
-                    : row.appreciation < 0
-                      ? 'var(--color-accent-coral)'
-                      : 'var(--color-text-muted)',
+                  color: row.appreciation === 0
+                    ? 'var(--color-text-muted)'
+                    : 'var(--color-text-secondary)',
                 }}>
                   {row.appreciation > 0 && '\u25B2 +'}
                   {row.appreciation < 0 && '\u25BC '}
@@ -241,11 +239,9 @@ export default function ArtistRankingsTable({ statsByArtist, allLots }: Props) {
                 <td className="ray-rankings-td" style={{
                   textAlign: 'right',
                   fontWeight: 500,
-                  color: row.overEstimate > 0
-                    ? 'var(--color-accent-gold)'
-                    : row.overEstimate < 0 && row.overEstimate > -999
-                      ? 'var(--color-accent-coral)'
-                      : 'var(--color-text-muted)',
+                  color: row.overEstimate <= -999
+                    ? 'var(--color-text-muted)'
+                    : 'var(--color-text-secondary)',
                 }}>
                   {row.overEstimate <= -999 ? '\u2014' : `${row.overEstimate >= 0 ? '+' : ''}${row.overEstimate.toFixed(1)}%`}
                 </td>

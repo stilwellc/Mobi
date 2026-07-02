@@ -64,7 +64,7 @@ export default function ArtistDetailPage() {
           }}>
             Artist not found
           </h2>
-          <Link href="/software/ray" className="link-action" style={{ color: 'var(--color-accent-wine)' }}>
+          <Link href="/software/ray" className="link-action" style={{ color: 'var(--color-accent-wine-text)' }}>
             <span className="arrow" data-dir="back">&#8592;</span> Back to overview
           </Link>
         </div>

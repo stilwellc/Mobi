@@ -62,7 +62,7 @@ function SparkTooltip({ active, payload }: { active?: boolean; payload?: Array<{
       <div style={{ fontSize: 12, color: 'var(--color-text-muted)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 3 }}>
         {d.date}
       </div>
-      <div style={{ fontSize: 12, color: 'var(--color-accent-wine)', fontWeight: 500 }}>
+      <div style={{ fontSize: 12, color: 'var(--color-fg)', fontWeight: 500 }}>
         {formatAxis(d.avgPrice)}
       </div>
     </div>
@@ -83,9 +83,6 @@ interface ArtistCardData {
 function ArtistCard({ artist }: { artist: ArtistCardData }) {
   const drawRef = useChartDraw();
   const hasChart = artist.sparkData.length >= 2;
-  const trendUp = hasChart
-    ? artist.sparkData[artist.sparkData.length - 1].avgPrice >= artist.sparkData[0].avgPrice
-    : true;
 
   return (
     <Link
@@ -116,7 +113,7 @@ function ArtistCard({ artist }: { artist: ArtistCardData }) {
           <div style={{
             fontSize: 12,
             fontWeight: 600,
-            color: artist.appreciation > 0 ? 'var(--color-accent-gold)' : 'var(--color-accent-coral)',
+            color: 'var(--color-text-secondary)',
             whiteSpace: 'nowrap',
           }}>
             {artist.appreciation > 0 ? '\u25B2' : '\u25BC'} {artist.appreciation > 0 ? '+' : ''}{artist.appreciation.toFixed(1)}%
@@ -130,8 +127,8 @@ function ArtistCard({ artist }: { artist: ArtistCardData }) {
             <AreaChart data={artist.sparkData} margin={{ top: 2, right: 0, left: 0, bottom: 0 }}>
               <defs>
                 <linearGradient id={`spark-${artist.slug}`} x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor={trendUp ? 'var(--color-accent-wine)' : 'var(--color-accent-coral)'} stopOpacity={0.25} />
-                  <stop offset="100%" stopColor={trendUp ? 'var(--color-accent-wine)' : 'var(--color-accent-coral)'} stopOpacity={0.02} />
+                  <stop offset="0%" stopColor="var(--color-fg)" stopOpacity={0.1} />
+                  <stop offset="100%" stopColor="var(--color-fg)" stopOpacity={0.01} />
                 </linearGradient>
               </defs>
               <YAxis hide domain={['dataMin', 'dataMax']} />
@@ -139,11 +136,11 @@ function ArtistCard({ artist }: { artist: ArtistCardData }) {
               <Area
                 type="monotone"
                 dataKey="avgPrice"
-                stroke={trendUp ? 'var(--color-accent-wine)' : 'var(--color-accent-coral)'}
+                stroke="var(--color-fg)"
                 strokeWidth={1.5}
                 fill={`url(#spark-${artist.slug})`}
                 dot={false}
-                activeDot={{ r: 2, fill: trendUp ? 'var(--color-accent-wine)' : 'var(--color-accent-coral)', stroke: 'var(--color-bg-elevated)', strokeWidth: 1.5 }}
+                activeDot={{ r: 2, fill: 'var(--color-fg)', stroke: 'var(--color-bg-elevated)', strokeWidth: 1.5 }}
               />
             </AreaChart>
           </ResponsiveContainer>
@@ -172,7 +169,7 @@ function ArtistCard({ artist }: { artist: ArtistCardData }) {
           <div style={{ fontSize: 12, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--color-text-faint)', fontWeight: 600, marginBottom: 3 }}>
             Sales Value
           </div>
-          <div style={{ fontSize: 14, fontWeight: 500, color: 'var(--color-accent-wine)' }}>
+          <div style={{ fontSize: 14, fontWeight: 500, color: 'var(--color-fg)' }}>
             {formatPrice(artist.totalRevenue)}
           </div>
         </div>
@@ -193,9 +190,7 @@ function ArtistCard({ artist }: { artist: ArtistCardData }) {
             fontWeight: 500,
             color: artist.overEstimate <= -999
               ? 'var(--color-text-muted)'
-              : artist.overEstimate >= 0
-                ? 'var(--color-accent-gold)'
-                : 'var(--color-accent-coral)',
+              : 'var(--color-text-secondary)',
           }}>
             {artist.overEstimate <= -999
               ? '\u2014'
