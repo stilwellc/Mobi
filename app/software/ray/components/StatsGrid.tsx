@@ -80,9 +80,9 @@ export default function StatsGrid({ stats, lots, categoryFilter = 'all' }: Props
   ];
 
   return (
-    <section className="ray-stats" style={{ maxWidth: 1100, margin: '0 auto' }}>
+    <section className="ray-stats rail">
       <style>{`
-        .ray-stats { padding: 40px 56px; }
+        .ray-stats { padding-block: 40px; }
         .ray-stats-grid {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
@@ -99,7 +99,7 @@ export default function StatsGrid({ stats, lots, categoryFilter = 'all' }: Props
           margin-bottom: 8px;
         }
         @media (max-width: 768px) {
-          .ray-stats { padding: 32px 20px; }
+          .ray-stats { padding-block: 32px; }
           .ray-stats-grid {
             grid-template-columns: 1fr 1fr;
           }

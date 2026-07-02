@@ -20,6 +20,36 @@ export default function RayLayout({ children }: { children: React.ReactNode }) {
         @media (max-width: 768px) {
           .ray-shell { padding-top: 64px; }
         }
+        /* THE MARKET DRAWS ITSELF — chart bodies wipe in left to
+           right along the time axis on first intersection (attribute
+           set by useChartDraw, one shared IO). Only the series groups
+           are clipped; axes, grid and labels stay outside the clip.
+           Category-filter changes never replay (fired flag on hook).
+           NOTE: keep this style block free of quotes, apostrophes
+           and angle brackets - React escapes them server-side and
+           hydration of raw-text elements then fails. */
+        .ray-chart-draw .recharts-area,
+        .ray-chart-draw .recharts-line {
+          clip-path: inset(0 100% 0 0);
+        }
+        .ray-chart-draw[data-drawn=true] .recharts-area,
+        .ray-chart-draw[data-drawn=true] .recharts-line {
+          clip-path: inset(0 0 0 0);
+          transition: clip-path 800ms var(--ease-signature);
+        }
+        /* Bookmark press — 0.88 scale on press, 120ms back */
+        .ray-save-btn {
+          transition:
+            background var(--duration-fast) var(--ease-signature),
+            border-color var(--duration-fast) var(--ease-signature),
+            transform 120ms var(--ease-signature);
+        }
+        .ray-save-btn:active { transform: scale(0.88); }
+        @media (prefers-reduced-motion: reduce) {
+          .ray-chart-draw .recharts-area,
+          .ray-chart-draw .recharts-line { clip-path: none; }
+          .ray-save-btn:active { transform: none; }
+        }
       `}</style>
       {children}
     </div>

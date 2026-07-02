@@ -10,6 +10,9 @@ interface RayData {
   sources: string[];
   loading: boolean;
   error: string | null;
+  /** true when the module cache was already warm at mount —
+      revisits render instantly, no arrival choreography. */
+  fromCache: boolean;
 }
 
 interface RayPayload {
@@ -70,6 +73,7 @@ function loadRayData(): Promise<RayPayload> {
 
 export function useRayData(): RayData {
   const [data, setData] = useState<RayPayload | null>(cached);
+  const [fromCache] = useState(() => cached !== null);
 
   useEffect(() => {
     let active = true;
@@ -86,5 +90,6 @@ export function useRayData(): RayData {
     sources: data?.sources || [],
     loading: data === null,
     error: data?.error || null,
+    fromCache,
   };
 }

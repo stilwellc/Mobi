@@ -67,28 +67,21 @@ export default function ArtistNav({ activeSlug, savedCount = 0, upcomingCounts =
           backdrop-filter: blur(30px);
           -webkit-backdrop-filter: blur(30px);
           border-bottom: 1px solid var(--color-border);
-          padding: 8px 56px;
+          padding-block: 8px;
         }
         .ray-artist-nav-inner {
-          max-width: 1100px;
-          margin: 0 auto;
           position: relative;
           display: flex;
           align-items: center;
           gap: 12px;
         }
         .ray-back-link {
-          font-family: var(--font-mono), monospace;
-          font-size: 12px;
-          font-weight: 500;
-          letter-spacing: 0.1em;
-          text-transform: uppercase;
           color: var(--color-text-muted);
-          text-decoration: none;
           white-space: nowrap;
           transition: color var(--duration-fast) var(--ease-signature);
         }
-        .ray-back-link:hover { color: var(--color-accent-gold); }
+        .ray-back-link:hover,
+        .ray-back-link:focus-visible { color: var(--color-accent-ocean); }
         .ray-artist-select-wrap {
           position: relative;
           flex: 1;
@@ -111,7 +104,12 @@ export default function ArtistNav({ activeSlug, savedCount = 0, upcomingCounts =
            NOTE: keep this style block free of quotes, apostrophes and
            angle brackets; React escapes them server-side and hydration
            of raw-text elements then fails. */
+        @keyframes rayDropIn {
+          from { opacity: 0; transform: translateY(-6px); }
+          to { opacity: 1; transform: none; }
+        }
         .ray-artist-select-wrap .ray-artist-dropdown {
+          animation: rayDropIn 200ms var(--ease-signature) both;
           position: absolute;
           left: 0;
           right: 0;
@@ -184,13 +182,13 @@ export default function ArtistNav({ activeSlug, savedCount = 0, upcomingCounts =
           border-bottom: 1px solid var(--color-border);
         }
         @media (max-width: 768px) {
-          .ray-artist-nav { padding: 8px 20px; top: 52px; }
+          .ray-artist-nav { top: 52px; }
         }
       `}</style>
 
-      <div className="ray-artist-nav-inner">
-        <Link href="/software" className="ray-back-link">
-          &#8592; Software
+      <div className="ray-artist-nav-inner rail">
+        <Link href="/software" className="link-action ray-back-link">
+          <span className="arrow" data-dir="back">&#8592;</span> Software
         </Link>
 
         <div className="ray-artist-select-wrap">

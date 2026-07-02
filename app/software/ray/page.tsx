@@ -8,11 +8,14 @@ import { formatDate, formatPrice, getUpcomingCounts } from './utils';
 import ArtistNav from './components/ArtistNav';
 import LotCard from './components/LotCard';
 import PastResults from './components/PastResults';
+import RayHero from './components/RayHero';
+import RayEntrance, { RayLoading } from './components/RayEntrance';
+import SectionMark from '../../components/SectionMark';
 
 const PAGE_SIZE = 48;
 
 export default function RayPage() {
-  const { allLots, statsByArtist, sources, lastCrawl, loading, error } = useRayData();
+  const { allLots, statsByArtist, sources, lastCrawl, loading, error, fromCache } = useRayData();
   const { toggle, isSaved, savedIds } = useSavedLots();
   const [visibleUpcoming, setVisibleUpcoming] = useState(PAGE_SIZE);
 
@@ -83,70 +86,27 @@ export default function RayPage() {
           grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
           gap: 16px;
         }
+        .ray-overview-stats-section { padding-block: 40px 0; }
+        .ray-upcoming-section { padding-block: 40px 48px; }
         @media (max-width: 768px) {
           .ray-overview-stats { grid-template-columns: repeat(2, 1fr); }
           .ray-overview-stats .ray-stat-card { padding: 20px 18px; }
           .ray-upcoming-grid { grid-template-columns: 1fr; gap: 14px; }
+          .ray-overview-stats-section { padding-block: 32px 0; }
+          .ray-upcoming-section { padding-block: 32px; }
         }
       `}</style>
 
       <ArtistNav activeSlug={null} savedCount={savedIds.length} upcomingCounts={upcomingCounts} />
 
-      <section className="ray-hero" style={{ maxWidth: 1100, margin: '0 auto' }}>
-        <span style={{
-          display: 'inline-block',
-          fontSize: 12,
-          letterSpacing: '0.18em',
-          textTransform: 'uppercase',
-          color: 'var(--color-text-muted)',
-          fontWeight: 600,
-          marginBottom: 16,
-        }}>
-          Market Intelligence
-        </span>
-        <h1 style={{
-          fontFamily: 'var(--font-serif), serif',
-          fontSize: 'clamp(40px, 6vw, 72px)',
-          fontWeight: 300,
-          letterSpacing: '-0.03em',
-          lineHeight: 0.95,
-          marginBottom: 16,
-        }}>
-          <span style={{ fontStyle: 'italic', color: 'var(--color-accent-ocean)' }}>Ray</span>
-        </h1>
-        <p style={{
-          fontSize: 14,
-          lineHeight: 1.7,
-          color: 'var(--color-text-muted)',
-          fontWeight: 400,
-          maxWidth: 500,
-        }}>
-          Tracking {ARTISTS.length} artists across {houseCount} auction houses.
-        </p>
-
-        {lastCrawl && (
-          <span style={{
-            display: 'inline-block',
-            marginTop: 14,
-            fontFamily: 'var(--font-mono), monospace',
-            fontSize: 12,
-            letterSpacing: '0.1em',
-            textTransform: 'uppercase',
-            color: 'var(--color-text-faint)',
-            fontWeight: 400,
-          }}>
-            Updated {formatDate(lastCrawl)}
-          </span>
-        )}
-      </section>
-
-      <div className="ray-divider-wrap" style={{ maxWidth: 1100, margin: '0 auto' }}>
-        <div style={{
-          width: '100%',
-          height: 1,
-          background: 'linear-gradient(90deg, var(--color-border-mid), transparent 80%)',
-        }} />
-      </div>
+      <RayHero
+        eyebrow="Market Intelligence"
+        title={<span style={{ fontStyle: 'italic', color: 'var(--color-accent-ocean)' }}>Ray</span>}
+        sub={loading
+          ? '\u00A0' /* reserve the line — no zero-count flash while the crawl delivers */
+          : <>Tracking {ARTISTS.length} artists across {houseCount} auction houses.</>}
+        timestamp={lastCrawl ? formatDate(lastCrawl) : undefined}
+      />
 
       {error ? (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '120px 20px', gap: 12 }}>
@@ -164,26 +124,10 @@ export default function RayPage() {
           </button>
         </div>
       ) : loading ? (
-        <div style={{ display: 'flex', justifyContent: 'center', padding: 120 }}>
-          <span style={{
-            fontFamily: 'var(--font-mono), monospace',
-            fontSize: 12,
-            letterSpacing: '0.18em',
-            textTransform: 'uppercase',
-            color: 'var(--color-text-faint)',
-          }}>
-            Loading
-          </span>
-        </div>
+        <RayLoading />
       ) : (
-        <>
-          <section style={{ maxWidth: 1100, margin: '0 auto', padding: '40px 56px 0' }} className="ray-overview-stats-section">
-            <style>{`
-              @media (max-width: 768px) {
-                .ray-overview-stats-section { padding: 32px 20px 0 !important; }
-                .ray-upcoming-section { padding: 32px 20px 32px !important; }
-              }
-            `}</style>
+        <RayEntrance animate={!fromCache}>
+          <section className="ray-overview-stats-section ray-enter rail">
             <div className="ray-overview-stats">
               {overviewStats.map((card) => (
                 <div key={card.label} className="ray-stat-card glass glass-quiet">
@@ -220,36 +164,57 @@ export default function RayPage() {
           </section>
 
           {upcoming.length > 0 && (
-            <section className="ray-upcoming-section" style={{ maxWidth: 1100, margin: '0 auto', padding: '40px 56px 48px' }}>
-              <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, marginBottom: 24 }}>
-                <h2 style={{
-                  fontFamily: 'var(--font-serif), serif',
-                  fontSize: 32,
-                  fontWeight: 300,
-                  letterSpacing: '-0.02em',
-                }}>
-                  Upcoming <span style={{ fontStyle: 'italic', color: 'var(--color-accent-ocean)' }}>Lots</span>
-                </h2>
-                <span style={{
-                  fontFamily: 'var(--font-mono), monospace',
-                  fontSize: 12,
-                  color: 'var(--color-text-faint)',
-                }}>
-                  {upcoming.length.toLocaleString()} lots
-                </span>
+            <section className="ray-upcoming-section rail">
+              {/* Ghost ordinal clipped to the header band — never under the cards */}
+              <div style={{ position: 'relative', overflow: 'hidden', marginBottom: 16 }}>
+                <SectionMark n="01" style={{ fontSize: 'clamp(96px, 12vw, 150px)' }} />
+                <div
+                  className="ray-enter"
+                  style={{
+                    '--enter-delay': '90ms',
+                    position: 'relative',
+                    display: 'flex',
+                    alignItems: 'baseline',
+                    justifyContent: 'space-between',
+                    flexWrap: 'wrap',
+                    gap: 12,
+                    padding: '16px 0 12px',
+                  } as React.CSSProperties}
+                >
+                  <h2 style={{
+                    fontFamily: 'var(--font-serif), serif',
+                    fontSize: 32,
+                    fontWeight: 300,
+                    letterSpacing: '-0.02em',
+                  }}>
+                    Upcoming <span style={{ fontStyle: 'italic', color: 'var(--color-accent-ocean)' }}>Lots</span>
+                  </h2>
+                  <span style={{
+                    fontFamily: 'var(--font-mono), monospace',
+                    fontSize: 12,
+                    color: 'var(--color-text-faint)',
+                  }}>
+                    {upcoming.length.toLocaleString()} lots
+                  </span>
+                </div>
               </div>
 
               <div className="ray-upcoming-grid">
-                {upcoming.slice(0, visibleUpcoming).map(lot => (
-                  <LotCard
+                {upcoming.slice(0, visibleUpcoming).map((lot, i) => (
+                  <div
                     key={lot.id}
-                    lot={lot}
-                    showArtist
-                    allLots={allLots}
-                    stats={statsByArtist[lot.artist]}
-                    saved={isSaved(lot.id)}
-                    onToggleSave={toggle}
-                  />
+                    className="ray-enter-card"
+                    style={{ '--enter-delay': `${90 + Math.min(i, 8) * 60}ms` } as React.CSSProperties}
+                  >
+                    <LotCard
+                      lot={lot}
+                      showArtist
+                      allLots={allLots}
+                      stats={statsByArtist[lot.artist]}
+                      saved={isSaved(lot.id)}
+                      onToggleSave={toggle}
+                    />
+                  </div>
                 ))}
               </div>
 
@@ -280,9 +245,11 @@ export default function RayPage() {
           )}
 
           {sold.length > 0 && (
-            <PastResults lots={sold} showArtist savedIds={savedIds} onToggleSave={toggle} />
+            <div className="ray-enter" style={{ '--enter-delay': '180ms' } as React.CSSProperties}>
+              <PastResults lots={sold} showArtist savedIds={savedIds} onToggleSave={toggle} mark="02" />
+            </div>
           )}
-        </>
+        </RayEntrance>
       )}
     </div>
   );

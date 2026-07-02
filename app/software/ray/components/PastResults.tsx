@@ -5,6 +5,7 @@ import { AuctionLot } from '../types';
 import type { LotCategory } from '../types';
 import { ARTIST_LABEL } from '../constants';
 import { houseColors, formatDate, formatPrice, categoryLabels, categoryColors } from '../utils';
+import SectionMark from '../../../components/SectionMark';
 
 type SortMode = 'date' | 'price';
 type CategoryFilter = 'all' | LotCategory;
@@ -16,9 +17,11 @@ interface Props {
   onCategoryChange?: (cat: CategoryFilter) => void;
   savedIds?: string[];
   onToggleSave?: (lotId: string) => void;
+  /** ghost ordinal behind the h2 band (headers only) */
+  mark?: string;
 }
 
-export default function PastResults({ lots, showArtist = false, categoryFilter: externalFilter, onCategoryChange, savedIds = [], onToggleSave }: Props) {
+export default function PastResults({ lots, showArtist = false, categoryFilter: externalFilter, onCategoryChange, savedIds = [], onToggleSave, mark }: Props) {
   const [visible, setVisible] = useState(20);
   const [sortBy, setSortBy] = useState<SortMode>('date');
   const [internalFilter, setInternalFilter] = useState<CategoryFilter>('all');
@@ -63,9 +66,9 @@ export default function PastResults({ lots, showArtist = false, categoryFilter: 
   const shown = sorted.slice(0, visible);
 
   return (
-    <section className="ray-results" style={{ maxWidth: 1100, margin: '0 auto' }}>
+    <section className="ray-results rail">
       <style>{`
-        .ray-results { padding: 40px 56px 120px; }
+        .ray-results { padding-block: 40px 120px; }
         .ray-result-row {
           position: relative;
           display: grid;
@@ -104,7 +107,7 @@ export default function PastResults({ lots, showArtist = false, categoryFilter: 
           color: #060606;
         }
         @media (max-width: 768px) {
-          .ray-results { padding: 32px 20px 80px; }
+          .ray-results { padding-block: 32px 80px; }
           .ray-result-row {
             grid-template-columns: 1fr auto;
             gap: 8px;
@@ -115,7 +118,10 @@ export default function PastResults({ lots, showArtist = false, categoryFilter: 
       `}</style>
 
       <div style={{ marginBottom: 28 }}>
-        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
+        {/* Ghost ordinal clipped to the header band — never under the table */}
+        <div style={{ position: 'relative', overflow: 'hidden' }}>
+          {mark && <SectionMark n={mark} style={{ fontSize: 'clamp(96px, 12vw, 150px)' }} />}
+          <div style={{ position: 'relative', display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16, padding: '16px 0 4px' }}>
           <div>
             <h2 style={{
               fontFamily: "var(--font-serif), serif",
@@ -145,6 +151,7 @@ export default function PastResults({ lots, showArtist = false, categoryFilter: 
             >
               Price
             </button>
+          </div>
           </div>
         </div>
 
@@ -287,6 +294,7 @@ export default function PastResults({ lots, showArtist = false, categoryFilter: 
 
               {onToggleSave && (
                 <button
+                  className="ray-save-btn"
                   onClick={(e) => { e.preventDefault(); e.stopPropagation(); onToggleSave(lot.id); }}
                   style={{
                     width: 32,
@@ -300,7 +308,6 @@ export default function PastResults({ lots, showArtist = false, categoryFilter: 
                     cursor: 'pointer',
                     padding: 0,
                     flexShrink: 0,
-                    transition: 'background var(--duration-fast) var(--ease-signature), border-color var(--duration-fast) var(--ease-signature)',
                     position: 'relative',
                     zIndex: 2,
                   }}

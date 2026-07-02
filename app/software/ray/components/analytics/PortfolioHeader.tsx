@@ -46,9 +46,9 @@ export default function PortfolioHeader({ statsByArtist, allLots }: Props) {
   }, [statsByArtist, allLots]);
 
   return (
-    <section className="ray-portfolio-header" style={{ maxWidth: 1100, margin: '0 auto' }}>
+    <section className="ray-portfolio-header rail">
       <style>{`
-        .ray-portfolio-header { padding: 40px 56px; }
+        .ray-portfolio-header { padding-block: 40px; }
         .ray-portfolio-grid {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
@@ -68,7 +68,7 @@ export default function PortfolioHeader({ statsByArtist, allLots }: Props) {
           overflow-wrap: anywhere;
         }
         @media (max-width: 768px) {
-          .ray-portfolio-header { padding: 32px 20px; }
+          .ray-portfolio-header { padding-block: 32px; }
           .ray-portfolio-grid { grid-template-columns: 1fr 1fr; }
           .ray-portfolio-card { padding: 20px 18px; }
           .ray-portfolio-value { font-size: 26px; }

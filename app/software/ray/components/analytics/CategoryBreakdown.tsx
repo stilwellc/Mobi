@@ -70,11 +70,11 @@ export default function CategoryBreakdown({ allLots }: Props) {
   if (categoryData.length === 0) return null;
 
   return (
-    <section className="ray-category" style={{ maxWidth: 1100, margin: '0 auto' }}>
+    <section className="ray-category rail">
       <style>{`
-        .ray-category { padding: 40px 56px 48px; }
+        .ray-category { padding-block: 40px 48px; }
         @media (max-width: 768px) {
-          .ray-category { padding: 32px 20px 32px; }
+          .ray-category { padding-block: 32px 32px; }
         }
       `}</style>
 

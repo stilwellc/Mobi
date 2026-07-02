@@ -59,12 +59,12 @@ export default function PriceDistribution({ allLots }: Props) {
   if (!hasData) return null;
 
   return (
-    <section className="ray-price-dist" style={{ maxWidth: 1100, margin: '0 auto' }}>
+    <section className="ray-price-dist rail">
       <style>{`
-        .ray-price-dist { padding: 40px 56px 48px; }
+        .ray-price-dist { padding-block: 40px 48px; }
         .ray-price-dist-chart { height: 280px; }
         @media (max-width: 768px) {
-          .ray-price-dist { padding: 32px 20px 32px; }
+          .ray-price-dist { padding-block: 32px 32px; }
           .ray-price-dist-chart { height: 200px; }
         }
       `}</style>

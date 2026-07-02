@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Reveal from './Reveal';
 import { SectionItem } from './types';
 
 interface ProjectCardProps {
@@ -40,7 +41,13 @@ export default function ProjectCard({ item, accent, index, flagship = false }: P
       }}
     >
       {item.image && (
-        <div
+        /* Editorial unveil on the plate; the hover scale rides a
+           separate layer so it never fights the unveil transform
+           (.unveil img owns the img transform). Height chain
+           (.pc-media div) lives in Index.tsx CSS. */
+        <Reveal
+          variant="unveil"
+          className="pc-media"
           style={{
             aspectRatio: '16 / 10',
             borderRadius: 10,
@@ -49,23 +56,29 @@ export default function ProjectCard({ item, accent, index, flagship = false }: P
             border: '1px solid var(--color-border)',
           }}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={item.image}
-            alt={item.imageAlt ?? ''}
-            loading="lazy"
+          <div
+            className="pc-hover"
             style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              objectPosition: 'top',
-              display: 'block',
               transform: hovered ? 'scale(1.03)' : 'scale(1)',
               filter: hovered ? 'brightness(1.05)' : 'brightness(1)',
               transition: 'transform var(--duration-slow) var(--ease-signature), filter var(--duration-slow) var(--ease-signature)',
             }}
-          />
-        </div>
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={item.image}
+              alt={item.imageAlt ?? ''}
+              loading="lazy"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: 'top',
+                display: 'block',
+              }}
+            />
+          </div>
+        </Reveal>
       )}
       <div
         style={{

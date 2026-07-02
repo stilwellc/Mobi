@@ -5,6 +5,9 @@ export interface Print3D {
   notes: string;
   stlPath: string;
   downloadable: boolean;
+  /** Static 16:10 studio poster render of the STL (shown on the prints index). */
+  image: string;
+  imageAlt: string;
   details: {
     material?: string;
     dimensions?: string;
@@ -24,6 +27,8 @@ export const prints: Print3D[] = [
       'I wanted the print itself to be the finished object — the shell is the diffuser, so there is no glass, no fabric, no post-processing. Most of the work was in the wall thickness: thin enough to glow, thick enough to hide the bulb.',
     stlPath: '/models/wall_sconce.stl',
     downloadable: true,
+    image: '/images/3d-prints/wall-sconce.jpg',
+    imageAlt: 'Wall sconce shade — studio render of the printed shell',
     details: {
       material: 'PLA',
       dimensions: '199 × 140 × 191 mm',
@@ -38,6 +43,8 @@ export const prints: Print3D[] = [
       'I printed this to understand the Tolomeo’s balance-arm mechanism in my hands instead of on a screen — how the pivot spacing and proportions actually resolve. It’s a study of a protected design, so it stays a study: you can look at it here, but I don’t distribute the file.',
     stlPath: '/models/tolomeo_fullsize_scaled_143.stl',
     downloadable: false,
+    image: '/images/3d-prints/tolomeo-scaled.jpg',
+    imageAlt: 'Tolomeo study — studio render of the balance-arm geometry at desk-model size',
     details: {
       material: 'PLA',
       dimensions: '57 × 23 × 65 mm',
@@ -52,6 +59,8 @@ export const prints: Print3D[] = [
       'One of the leveling feet on my Haller unit needed replacing, and the thread is the whole problem — I measured it, modeled it, and printed until it screwed in like the original. The clearance tuning taught me more about FDM tolerances than anything I had printed before.',
     stlPath: '/models/USM_Haller_thread_foot.stl',
     downloadable: true,
+    image: '/images/3d-prints/usm-haller-thread-foot.jpg',
+    imageAlt: 'USM Haller replacement foot — studio render of the threaded leveling foot',
     details: {
       material: 'PLA',
       dimensions: '36 × 36 × 32 mm',

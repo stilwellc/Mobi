@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
-import type { CSSProperties } from 'react';
-import Link from 'next/link';
 import Horizon from '../components/Horizon';
+import IndexSpread from '../components/IndexSpread';
+import RevealLines from '../components/RevealLines';
+import SectionMark from '../components/SectionMark';
 import { sections } from '../components/sections';
-import type { SectionItem } from '../components/types';
 import { ARTISTS } from './ray/constants';
 
 export const metadata: Metadata = {
@@ -13,215 +13,87 @@ export const metadata: Metadata = {
 };
 
 const software = sections.find((s) => s.id === 'software')!;
-const accent = software.accent;
-
-const rowCss = `
-.sw-row {
-  text-decoration: none;
-  display: block;
-  border-bottom: 1px solid var(--color-border);
-  transition: border-color var(--duration-fast) var(--ease-signature);
-}
-.sw-row:first-of-type { border-top: 1px solid var(--color-border); }
-.sw-row:hover { border-bottom-color: ${accent}66; }
-.sw-row .sw-arrow {
-  transition: transform var(--duration-fast) var(--ease-signature), color var(--duration-fast) var(--ease-signature);
-}
-.sw-row:hover .sw-arrow { transform: translateX(2px); color: ${accent}; }
-@media (prefers-reduced-motion: reduce) {
-  .sw-row, .sw-row .sw-arrow { transition: none; }
-}
-@media (max-width: 768px) {
-  .sw-thumb { display: none; }
-}
-`;
-
-function metaLine(item: SectionItem): string {
-  if (!item.meta) return '';
-  return [item.meta.year, item.meta.stack, item.meta.status].filter(Boolean).join(' · ');
-}
-
-function Row({
-  item,
-  index,
-  flagship = false,
-  children,
-}: {
-  item: SectionItem;
-  index: number;
-  flagship?: boolean;
-  children?: React.ReactNode;
-}) {
-  const inner = (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: item.image ? 'auto 1fr auto auto' : 'auto 1fr auto',
-        gap: 'var(--space-3)',
-        alignItems: 'baseline',
-        padding: flagship ? 'var(--space-4) 0' : 'var(--space-3) 0',
-      }}
-    >
-      <span
-        style={{
-          fontFamily: 'var(--font-mono), monospace',
-          fontSize: 12,
-          color: 'var(--color-text-faint)',
-        }}
-      >
-        {String(index + 1).padStart(2, '0')}
-      </span>
-
-      <div>
-        <h2
-          style={{
-            margin: 0,
-            marginBottom: 'var(--space-1)',
-            fontSize: flagship ? 'clamp(2rem, 4vw, 3rem)' : 'clamp(1.5rem, 2.5vw, 2rem)',
-            lineHeight: 1.1,
-            color: 'var(--color-fg)',
-            fontFamily: 'var(--font-sans), sans-serif',
-            ...(item.logoStyle as CSSProperties),
-          }}
-        >
-          {item.name}
-        </h2>
-        {children ?? (
-          <p
-            style={{
-              margin: 0,
-              marginBottom: 'var(--space-1)',
-              fontSize: 15,
-              lineHeight: 1.65,
-              color: 'var(--color-text-secondary)',
-              maxWidth: 'var(--prose-max)',
-            }}
-          >
-            {item.description}
-          </p>
-        )}
-        {item.meta && (
-          <span
-            style={{
-              fontFamily: 'var(--font-mono), monospace',
-              fontSize: 12,
-              color: 'var(--color-text-muted)',
-            }}
-          >
-            {metaLine(item)}
-          </span>
-        )}
-      </div>
-
-      {item.image && (
-        <div
-          className="sw-thumb"
-          style={{
-            width: flagship ? 220 : 168,
-            aspectRatio: '16 / 10',
-            borderRadius: 10,
-            overflow: 'hidden',
-            border: '1px solid var(--color-border)',
-            alignSelf: 'center',
-          }}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={item.image}
-            alt=""
-            loading="lazy"
-            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', display: 'block' }}
-          />
-        </div>
-      )}
-
-      <span
-        className="sw-arrow"
-        aria-hidden="true"
-        style={{ fontSize: 16, color: 'var(--color-text-muted)', alignSelf: 'center' }}
-      >
-        {item.url ? '↗' : '→'}
-      </span>
-    </div>
-  );
-
-  if (item.href) {
-    return (
-      <Link href={item.href} className="sw-row">
-        {inner}
-      </Link>
-    );
-  }
-  return (
-    <a href={item.url} target="_blank" rel="noopener noreferrer" className="sw-row">
-      {inner}
-    </a>
-  );
-}
+const [ray, soiree] = software.items;
 
 export default function SoftwarePage() {
   return (
-    <div
-      style={{
-        maxWidth: 'var(--content-max)',
-        margin: '0 auto',
-        padding: 'var(--space-7) var(--space-3)',
-      }}
-    >
-      <style>{rowCss}</style>
-
-      <h1
+    <div style={{ minHeight: '100vh' }}>
+      {/* Ritual header — eyebrow, masked h1 over the route numeral, intro, ocean horizon */}
+      <section
+        className="rail"
         style={{
-          margin: 0,
-          marginBottom: 'var(--space-2)',
-          fontFamily: 'var(--font-serif), serif',
-          fontWeight: 300,
-          fontSize: 'var(--text-display)',
-          lineHeight: 1.05,
-          letterSpacing: '-0.02em',
-          color: 'var(--color-fg)',
+          position: 'relative',
+          overflow: 'hidden',
+          paddingTop: 'clamp(120px, 18vh, 200px)',
+          paddingBottom: 'var(--space-4)',
         }}
       >
-        Software
-      </h1>
-      <p
-        style={{
-          margin: 0,
-          marginBottom: 'var(--space-4)',
-          fontSize: 'var(--text-body)',
-          lineHeight: 1.65,
-          color: 'var(--color-text-secondary)',
-          maxWidth: 'var(--prose-max)',
-        }}
-      >
-        I build software the way I build objects — considered, deliberate, nothing accidental.
-      </p>
+        <SectionMark
+          n="01"
+          align="right"
+          style={{ fontSize: 'clamp(180px, 22vw, 320px)' }}
+        />
+        <span
+          className="eyebrow"
+          style={{ display: 'block', marginBottom: 'var(--space-2)', position: 'relative' }}
+        >
+          {software.tagline}
+        </span>
+        <RevealLines
+          as="h1"
+          trigger="mount"
+          delay={250}
+          lines={['Software']}
+          style={{
+            margin: '0 0 var(--space-3)',
+            fontFamily: 'var(--font-serif), serif',
+            fontWeight: 300,
+            fontSize: 'var(--text-display)',
+            lineHeight: 1.05,
+            letterSpacing: '-0.02em',
+            color: 'var(--color-fg)',
+            position: 'relative',
+          }}
+        />
+        <p
+          style={{
+            margin: '0 0 var(--space-4)',
+            fontSize: 'var(--text-body)',
+            lineHeight: 1.65,
+            color: 'var(--color-text-secondary)',
+            maxWidth: 'var(--prose-max)',
+            position: 'relative',
+          }}
+        >
+          I build software the way I build objects — considered, deliberate, nothing accidental.
+        </p>
+        <Horizon variant="ocean" />
+      </section>
 
-      <Horizon variant="ocean" style={{ marginBottom: 'var(--space-4)' }} />
-
-      <div>
-        {software.items.map((item, i) =>
-          item.name === 'Ray' ? (
-            <Row key={item.name} item={item} index={i} flagship>
-              <p
-                style={{
-                  margin: 0,
-                  marginBottom: 'var(--space-1)',
-                  fontSize: 17,
-                  lineHeight: 1.65,
-                  color: 'var(--color-text-secondary)',
-                  maxWidth: 'var(--prose-max)',
-                }}
-              >
-                Auction intelligence for the art market — the flagship. Tracks {ARTISTS.length} artists
-                across 5 auction houses, automatically.
-              </p>
-            </Row>
-          ) : (
-            <Row key={item.name} item={item} index={i} />
-          )
-        )}
-      </div>
+      {/* The two rooms — editorial spreads, ocean accent, alternating sides */}
+      <section className="rail" style={{ paddingBottom: 'var(--space-6)' }}>
+        <IndexSpread
+          index="01"
+          title={ray.name}
+          titleStyle={ray.logoStyle as React.CSSProperties}
+          description={`Auction intelligence for the art market — the flagship. Tracks ${ARTISTS.length} artists across 5 auction houses, automatically.`}
+          meta={`${ray.meta!.year} · ${ray.meta!.stack} · ${ray.meta!.status}`}
+          href={ray.href!}
+          accent="ocean"
+          image={{ src: ray.image!, alt: ray.imageAlt! }}
+        />
+        <IndexSpread
+          index="02"
+          title={soiree.name}
+          titleStyle={soiree.logoStyle as React.CSSProperties}
+          description={soiree.description}
+          meta={`${soiree.meta!.year} · ${soiree.meta!.stack}`}
+          href={soiree.url!}
+          accent="ocean"
+          reverse
+          image={{ src: soiree.image!, alt: soiree.imageAlt! }}
+        />
+      </section>
     </div>
   );
 }

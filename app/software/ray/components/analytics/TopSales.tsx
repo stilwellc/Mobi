@@ -20,9 +20,9 @@ export default function TopSales({ allLots }: Props) {
   if (topSales.length === 0) return null;
 
   return (
-    <section className="ray-top-sales" style={{ maxWidth: 1100, margin: '0 auto' }}>
+    <section className="ray-top-sales rail">
       <style>{`
-        .ray-top-sales { padding: 40px 56px 48px; }
+        .ray-top-sales { padding-block: 40px 48px; }
         .ray-top-row {
           transition: background var(--duration-fast) var(--ease-signature);
         }
@@ -36,7 +36,7 @@ export default function TopSales({ allLots }: Props) {
           vertical-align: middle;
         }
         @media (max-width: 768px) {
-          .ray-top-sales { padding: 32px 20px 32px; }
+          .ray-top-sales { padding-block: 32px 32px; }
           .ray-top-hide-mobile { display: none; }
           .ray-top-td { padding: 12px 12px; font-size: 12px; }
         }

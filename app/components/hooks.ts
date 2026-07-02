@@ -25,6 +25,27 @@ export function usePrefersReducedMotion(): boolean {
   return reduced;
 }
 
+/**
+ * Generic one-shot IntersectionObserver — fires once, disconnects.
+ * Prefer the motion primitives (Reveal/RevealLines) for standard
+ * entrances; use this only for bespoke, spec-sanctioned choreography.
+ */
+export function useOneShotInView<T extends HTMLElement = HTMLDivElement>(threshold = 0.15) {
+  const ref = useRef<T | null>(null);
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setInView(true); observer.disconnect(); } },
+      { threshold }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [threshold]);
+  return { ref, inView };
+}
+
 export function useScrollReveal(threshold = 0.15) {
   const ref = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);

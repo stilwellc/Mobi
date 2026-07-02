@@ -5,6 +5,8 @@ import { ResponsiveContainer, AreaChart, Area, Line, XAxis, YAxis, CartesianGrid
 import { PricePoint, AuctionLot } from '../types';
 import type { LotCategory } from '../types';
 import { formatPrice, categoryLabels, categoryColors } from '../utils';
+import { useChartDraw } from '../hooks/useChartDraw';
+import SectionMark from '../../../components/SectionMark';
 
 type CategoryFilter = 'all' | LotCategory;
 
@@ -79,9 +81,12 @@ interface Props {
   categoryFilter?: CategoryFilter;
   onCategoryChange?: (cat: CategoryFilter) => void;
   fallbackData?: PricePoint[];
+  /** ghost ordinal behind the h2 band (headers only) */
+  mark?: string;
 }
 
-export default function PriceChart({ lots, allLots, categoryFilter = 'all', onCategoryChange, fallbackData }: Props) {
+export default function PriceChart({ lots, allLots, categoryFilter = 'all', onCategoryChange, fallbackData, mark }: Props) {
+  const drawRef = useChartDraw();
   const data = useMemo(() => {
     const filtered = categoryFilter === 'all' ? lots : lots.filter(l => l.category === categoryFilter);
     const computed = computePriceHistory(filtered);
@@ -125,9 +130,9 @@ export default function PriceChart({ lots, allLots, categoryFilter = 'all', onCa
   const totalLots = (allLots || lots).length;
 
   return (
-    <section className="ray-market" style={{ maxWidth: 1100, margin: '0 auto' }}>
+    <section className="ray-market rail">
       <style>{`
-        .ray-market { padding: 40px 56px 48px; }
+        .ray-market { padding-block: 40px 48px; }
         .ray-market-card {
           overflow: hidden;
         }
@@ -148,7 +153,7 @@ export default function PriceChart({ lots, allLots, categoryFilter = 'all', onCa
           margin: 0 20px;
         }
         @media (max-width: 768px) {
-          .ray-market { padding: 32px 20px 32px; }
+          .ray-market { padding-block: 32px 32px; }
           .ray-chart-container { height: 200px; }
           .ray-cat-record-col { display: none; }
           .ray-cat-td { padding: 10px 16px; font-size: 12px; }
@@ -156,12 +161,16 @@ export default function PriceChart({ lots, allLots, categoryFilter = 'all', onCa
         }
       `}</style>
 
-      <div style={{ marginBottom: 20 }}>
+      {/* Ghost ordinal clipped to the header band — never under the chart */}
+      <div style={{ position: 'relative', overflow: 'hidden', marginBottom: 12 }}>
+        {mark && <SectionMark n={mark} style={{ fontSize: 'clamp(96px, 12vw, 150px)' }} />}
         <h2 style={{
+          position: 'relative',
           fontFamily: "var(--font-serif), serif",
           fontSize: 32,
           fontWeight: 300,
           letterSpacing: '-0.02em',
+          padding: '16px 0 12px',
         }}>
           Price <span style={{ fontStyle: 'italic', color: 'var(--color-accent-ocean)' }}>History</span>
           {filterLabel && (
@@ -194,7 +203,7 @@ export default function PriceChart({ lots, allLots, categoryFilter = 'all', onCa
                 </span>
               </div>
             </div>
-            <div className="ray-chart-container">
+            <div className="ray-chart-container ray-chart-draw" ref={drawRef}>
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={data} margin={{ top: 4, right: 16, left: 8, bottom: 0 }}>
                   <defs>

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import STLViewer from '../../../components/STLViewer';
 import Horizon from '../../../components/Horizon';
+import RevealLines from '../../../components/RevealLines';
 import { prints } from '../data';
 
 const mono: React.CSSProperties = {
@@ -27,35 +28,32 @@ export default function PrintDetailPage() {
   const params = useParams();
   const print = prints.find((p) => p.id === params.id);
   const [modelLoaded, setModelLoaded] = useState(false);
-  const [dimensions, setDimensions] = useState<string | null>(null);
+  const [measured, setMeasured] = useState<string | null>(null);
 
   if (!print) {
     return (
-      <div
-        style={{
-          background: 'var(--color-bg)',
-          color: 'var(--color-fg)',
-          padding: 'var(--space-6) var(--space-4)',
-          maxWidth: 'var(--content-max)',
-          margin: '0 auto',
-        }}
-      >
+      <div className="rail" style={{ paddingBlock: 'var(--space-6)' }}>
         <h1 style={{ fontFamily: 'var(--font-serif), serif', fontSize: 36, fontWeight: 300 }}>
           Print not found
         </h1>
         <Link
           href="/physical/prints"
-          style={{ ...mono, textDecoration: 'none', marginTop: 'var(--space-2)', display: 'inline-block' }}
+          className="link-action"
+          style={{ color: 'var(--color-text-muted)', marginTop: 'var(--space-2)', display: 'inline-block' }}
         >
-          &#8592; Back to prints
+          <span className="arrow" data-dir="back">&#8592;</span> Prints
         </Link>
       </div>
     );
   }
 
+  // Dimensions are seeded from the record; the STL measurement
+  // silently confirms them once the model is in hand.
+  const dimensions = measured ?? print.details.dimensions ?? null;
+
   const specs: Array<{ term: string; value: string }> = [
     print.details.material ? { term: 'Material', value: print.details.material } : null,
-    { term: 'Dimensions', value: dimensions ?? 'Measuring…' },
+    dimensions ? { term: 'Dimensions', value: dimensions } : null,
     print.details.status ? { term: 'Status', value: print.details.status } : null,
     print.details.printTime ? { term: 'Print time', value: print.details.printTime } : null,
     print.details.layerHeight ? { term: 'Layer height', value: print.details.layerHeight } : null,
@@ -63,42 +61,29 @@ export default function PrintDetailPage() {
   ].filter((s): s is { term: string; value: string } => s !== null);
 
   return (
-    <div style={{ background: 'var(--color-bg)', color: 'var(--color-fg)' }}>
-      <section
-        style={{
-          maxWidth: 'var(--content-max)',
-          margin: '0 auto',
-          padding: 'var(--space-5) var(--space-4) var(--space-4)',
-        }}
-      >
-        <Link
-          href="/physical/prints"
-          style={{
-            ...mono,
-            textDecoration: 'none',
-            textTransform: 'uppercase',
-            letterSpacing: '0.18em',
-            display: 'inline-block',
-            marginBottom: 'var(--space-4)',
-          }}
-        >
-          &#8592; Prints
-        </Link>
+    <div className="rail" style={{ paddingBlock: 'var(--space-5) var(--space-6)' }}>
+      {/* Ritual header */}
+      <header style={{ marginBottom: 'var(--space-4)' }}>
+        <p className="eyebrow" style={{ margin: '0 0 var(--space-2)' }}>
+          <Link href="/physical" className="link-draw" style={{ color: 'inherit' }}>
+            Physical
+          </Link>
+          {' — Print'}
+        </p>
 
-        <p style={label}>Physical &mdash; Print</p>
-
-        <h1
+        <RevealLines
+          as="h1"
+          trigger="mount"
+          lines={[print.name]}
           style={{
             fontFamily: 'var(--font-serif), serif',
             fontSize: 'clamp(2.25rem, 5vw, 4rem)',
             fontWeight: 300,
-            lineHeight: 1.05,
+            lineHeight: 1.1,
             letterSpacing: '-0.02em',
             margin: '0 0 var(--space-2)',
           }}
-        >
-          {print.name}
-        </h1>
+        />
 
         <p
           style={{
@@ -111,20 +96,12 @@ export default function PrintDetailPage() {
         >
           {print.description}
         </p>
-      </section>
+      </header>
 
-      <div style={{ maxWidth: 'var(--content-max)', margin: '0 auto', padding: '0 var(--space-4)' }}>
-        <Horizon variant="gold" />
-      </div>
+      <Horizon variant="gold" />
 
-      {/* Full-width viewer — this is where the 3D belongs */}
-      <section
-        style={{
-          maxWidth: 'var(--content-max)',
-          margin: '0 auto',
-          padding: 'var(--space-4) var(--space-4) 0',
-        }}
-      >
+      {/* Full-width viewer — arrives when the model does */}
+      <section style={{ padding: 'var(--space-4) 0 0' }}>
         <div
           className="glass"
           style={{
@@ -135,46 +112,80 @@ export default function PrintDetailPage() {
             overflow: 'hidden',
           }}
         >
-          <STLViewer
-            stlPath={print.stlPath}
-            onLoad={() => setModelLoaded(true)}
-            onDimensions={({ x, y, z }) =>
-              setDimensions(`${Math.round(x)} × ${Math.round(y)} × ${Math.round(z)} mm`)
-            }
-          />
-          {modelLoaded && (
-            <div
-              style={{
-                ...mono,
-                position: 'absolute',
-                bottom: 'var(--space-2)',
-                left: 'var(--space-2)',
-                textTransform: 'uppercase',
-                letterSpacing: '0.18em',
-                pointerEvents: 'none',
-              }}
-            >
-              Drag to rotate &middot; Scroll to zoom
-            </div>
-          )}
+          <div
+            style={{
+              width: '100%',
+              height: '100%',
+              opacity: modelLoaded ? 1 : 0,
+              transform: modelLoaded ? 'scale(1)' : 'scale(0.98)',
+              transition:
+                'opacity 600ms var(--ease-signature), transform 600ms var(--ease-signature)',
+            }}
+          >
+            <STLViewer
+              stlPath={print.stlPath}
+              onLoad={() => setModelLoaded(true)}
+              onDimensions={({ x, y, z }) =>
+                setMeasured(`${Math.round(x)} × ${Math.round(y)} × ${Math.round(z)} mm`)
+              }
+            />
+          </div>
+
+          {/* Loading label sits outside the arrival wrapper so it stays visible */}
+          <div
+            aria-hidden={modelLoaded}
+            style={{
+              ...mono,
+              position: 'absolute',
+              inset: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              textTransform: 'uppercase',
+              letterSpacing: '0.18em',
+              opacity: modelLoaded ? 0 : 1,
+              transition: 'opacity 300ms var(--ease-signature)',
+              pointerEvents: 'none',
+            }}
+          >
+            Loading model
+          </div>
+
+          {/* The hint follows the arrival, one beat behind */}
+          <div
+            style={{
+              ...mono,
+              position: 'absolute',
+              bottom: 'var(--space-2)',
+              left: 'var(--space-2)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.18em',
+              opacity: modelLoaded ? 1 : 0,
+              transition: 'opacity 600ms var(--ease-signature) 600ms',
+              pointerEvents: 'none',
+            }}
+          >
+            Drag to rotate &middot; Scroll to zoom
+          </div>
         </div>
       </section>
 
       <section
         style={{
-          maxWidth: 'var(--content-max)',
-          margin: '0 auto',
-          padding: 'var(--space-4) var(--space-4) var(--space-6)',
+          padding: 'var(--space-4) 0 0',
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
           gap: 'var(--space-4)',
           alignItems: 'start',
         }}
       >
-        {/* Specs — real data only; dimensions are measured from the STL at load */}
-        <dl className="glass glass-quiet" style={{ display: 'grid', gap: 'var(--space-2)', margin: 0, padding: 'var(--space-3)', alignContent: 'start' }}>
+        {/* Specs — real data only; rows hold their height while the STL confirms */}
+        <dl
+          className="glass glass-quiet"
+          style={{ display: 'grid', gap: 'var(--space-2)', margin: 0, padding: 'var(--space-3)', alignContent: 'start' }}
+        >
           {specs.map(({ term, value }) => (
-            <div key={term}>
+            <div key={term} style={{ minHeight: 44 }}>
               <dt style={label}>{term}</dt>
               <dd style={{ ...mono, color: 'var(--color-text-secondary)', margin: 0 }}>{value}</dd>
             </div>
@@ -195,25 +206,25 @@ export default function PrintDetailPage() {
             {print.notes}
           </p>
 
-          {print.downloadable && (
-            <a
-              href={print.stlPath}
-              download={`${print.id}.stl`}
-              style={{
-                ...mono,
-                display: 'inline-block',
-                color: 'var(--color-accent-gold)',
-                textDecoration: 'none',
-                textTransform: 'uppercase',
-                letterSpacing: '0.18em',
-                padding: 'var(--space-1) var(--space-2)',
-                border: '1px solid var(--color-border-mid)',
-                borderRadius: 4,
-              }}
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: 'var(--space-4)', flexWrap: 'wrap' }}>
+            {print.downloadable && (
+              <a
+                href={print.stlPath}
+                download={`${print.id}.stl`}
+                className="link-action"
+                style={{ color: 'var(--color-accent-gold-text)' }}
+              >
+                Download STL <span className="arrow">&#8595;</span>
+              </a>
+            )}
+            <Link
+              href="/physical/prints"
+              className="link-action"
+              style={{ color: 'var(--color-text-muted)' }}
             >
-              Download STL &#8595;
-            </a>
-          )}
+              <span className="arrow" data-dir="back">&#8592;</span> Prints
+            </Link>
+          </div>
         </div>
       </section>
     </div>

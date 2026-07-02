@@ -1,15 +1,27 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 
 /**
  * The light in the room. One delegated listener drives:
  * - per-card shimmer: writes --mx/--my onto the .glass element under the cursor
  * - the cursor veil: a faint traveling light, lerped via rAF, transform-only
  * Renders the ambient orbs + veil; no React re-renders after mount.
+ *
+ * Route-aware ambient: each orb is two stacked gradient layers; the
+ * data-ambient attribute retints the field to the section you entered
+ * (ocean in software's rooms, gold in physical, neutral elsewhere) —
+ * opacity-only transitions, CSS owned by globals.css.
  */
 export default function GlassEffects() {
   const veilRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+  const ambient = pathname.startsWith('/software')
+    ? 'ocean'
+    : pathname.startsWith('/physical')
+      ? 'gold'
+      : 'neutral';
 
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -67,9 +79,15 @@ export default function GlassEffects() {
 
   return (
     <>
-      <div className="ambient-field" aria-hidden="true">
-        <div className="orb-gold" />
-        <div className="orb-ocean" />
+      <div className="ambient-field" data-ambient={ambient} aria-hidden="true">
+        <div className="orb orb-a">
+          <div className="orb-layer-gold" />
+          <div className="orb-layer-ocean" />
+        </div>
+        <div className="orb orb-b">
+          <div className="orb-layer-gold" />
+          <div className="orb-layer-ocean" />
+        </div>
       </div>
       <div ref={veilRef} className="cursor-veil" aria-hidden="true" />
     </>

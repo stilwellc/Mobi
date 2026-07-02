@@ -81,7 +81,7 @@ export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
     // Satin main surface — champagne bronze, never cold gray
     const geo = createMobiusGeometry(240, 0.4);
     const surfMat = new THREE.MeshStandardMaterial({
-      color: isLight ? 0xb49b78 : 0x241a10,
+      color: isLight ? 0xb49b78 : 0x2e2214,
       metalness: 0.8,
       roughness: isLight ? 0.28 : 0.32,
       transparent: true, opacity: 0.55, side: THREE.DoubleSide,
@@ -90,7 +90,7 @@ export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
 
     // One golden emissive edge (LineBasicMaterial is unlit — self-luminous)
     const edgeGeo = createEdgeGeometry(0.4);
-    const edgeMat = new THREE.LineBasicMaterial({ color: gold, transparent: true, opacity: isLight ? 0.6 : 0.55 });
+    const edgeMat = new THREE.LineBasicMaterial({ color: gold, transparent: true, opacity: isLight ? 0.6 : 0.65 });
     const edge = new THREE.Line(edgeGeo, edgeMat);
 
     const group = new THREE.Group();
@@ -102,14 +102,30 @@ export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
     let raf = 0, t = 0;
     let inView = true;
 
+    // The strip acknowledges the visitor: pointer targets lerped into
+    // rotation offsets inside the existing loop (max +/-0.05 rad).
+    // One window pointermove storing targets only; gated on
+    // (pointer: fine) and not-reduced-motion — else zero listeners.
+    let offX = 0, offZ = 0, targetX = 0, targetZ = 0;
+    const finePointer = window.matchMedia('(pointer: fine)').matches;
+    const onPointer = (e: PointerEvent) => {
+      const nx = (e.clientX / window.innerWidth) * 2 - 1;
+      const ny = (e.clientY / window.innerHeight) * 2 - 1;
+      targetX = ny * 0.05;
+      targetZ = -nx * 0.05;
+    };
+    if (finePointer && !reduced) window.addEventListener('pointermove', onPointer, { passive: true });
+
     const renderFrame = () => renderer.render(scene, camera);
 
     const tick = () => {
       raf = requestAnimationFrame(tick);
       t += 0.0024; // ~20% slower drift
+      offX += (targetX - offX) * 0.04;
+      offZ += (targetZ - offZ) * 0.04;
       group.rotation.y = t;
-      group.rotation.x = 0.5 + Math.sin(t * 0.4) * 0.1;
-      group.rotation.z = 0.15 + Math.cos(t * 0.3) * 0.05;
+      group.rotation.x = 0.5 + Math.sin(t * 0.4) * 0.1 + offX;
+      group.rotation.z = 0.15 + Math.cos(t * 0.3) * 0.05 + offZ;
       renderFrame();
     };
 
@@ -140,6 +156,7 @@ export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
 
     return () => {
       stop();
+      if (finePointer && !reduced) window.removeEventListener('pointermove', onPointer);
       io.disconnect();
       document.removeEventListener('visibilitychange', onVisibility);
       window.removeEventListener('resize', onResize);
@@ -155,10 +172,12 @@ export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
   return (
     <>
       <style>{`
-        .mobius-wrap{position:absolute;top:50%;right:2%;transform:translateY(-50%);z-index:0;opacity:0.85;pointer-events:none;width:min(600px,42vw);max-width:100%;aspect-ratio:1/1}
+        /* Base opacity 0.85 lives on the hero scroll layer (HeroSection),
+           which scrubs it to 0 as the strip lifts. Mobile: 0.41 x 0.85 = 0.35. */
+        .mobius-wrap{position:absolute;top:50%;right:2%;transform:translateY(-50%);z-index:0;pointer-events:none;width:min(600px,42vw);max-width:100%;aspect-ratio:1/1}
         .mobius-wrap canvas{display:block;width:100%;height:100%}
         @media (max-width: 767px) {
-          .mobius-wrap{width:min(70vw,320px);right:8%;top:38%;opacity:0.35}
+          .mobius-wrap{width:min(70vw,320px);right:8%;top:38%;opacity:0.41}
         }
       `}</style>
       <div ref={mountRef} aria-hidden="true" className="mobius-wrap" />

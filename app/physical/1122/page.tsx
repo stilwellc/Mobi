@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Horizon from '../../components/Horizon';
+import Reveal from '../../components/Reveal';
+import RevealLines from '../../components/RevealLines';
+import SectionMark from '../../components/SectionMark';
 
 export const metadata: Metadata = {
   title: 'Project 1122 — co.stil',
@@ -88,6 +91,7 @@ const rooms: Room[] = [
 const label: React.CSSProperties = {
   fontFamily: mono,
   fontSize: 12,
+  fontWeight: 600,
   letterSpacing: '0.18em',
   textTransform: 'uppercase',
   color: 'var(--color-text-muted)',
@@ -111,32 +115,55 @@ const imgStyle: React.CSSProperties = {
   border: '1px solid var(--color-border)',
 };
 
+/* Chapter head band — the ghost numeral is clipped to this band
+   only (never underlapping the photographs or captions). */
+function ChapterHead({ n, kicker, title }: { n: string; kicker: string; title: string }) {
+  return (
+    <div style={{ position: 'relative', overflow: 'hidden', marginBottom: 'var(--space-2)' }}>
+      <SectionMark n={n} align="right" />
+      <div style={{ position: 'relative' }}>
+        <p className="eyebrow" style={{ margin: '0 0 var(--space-1)' }}>{kicker}</p>
+        <h2 style={chapterHeading}>{title}</h2>
+      </div>
+    </div>
+  );
+}
+
 export default function Project1122() {
   return (
-    <article
-      style={{
-        maxWidth: 'var(--content-max)',
-        margin: '0 auto',
-        padding: 'var(--space-6) var(--space-3) var(--space-6)',
-      }}
-    >
+    <article className="rail" style={{ paddingBlock: 'var(--space-6)' }}>
+      <style>{`
+        .room-pairs {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: var(--space-2);
+        }
+        @media (max-width: 640px) {
+          .room-pairs { grid-template-columns: 1fr; }
+        }
+      `}</style>
+
       {/* Header */}
       <header style={{ marginBottom: 'var(--space-5)' }}>
-        <p style={{ ...label, color: 'var(--color-accent-gold)', marginBottom: 'var(--space-3)' }}>
-          Physical — Residence
+        <p className="eyebrow" style={{ margin: '0 0 var(--space-3)' }}>
+          <Link href="/physical" className="link-draw" style={{ color: 'inherit' }}>
+            Physical
+          </Link>
+          {' — Residence'}
         </p>
-        <h1
+        <RevealLines
+          as="h1"
+          trigger="mount"
+          lines={['Project 1122']}
           style={{
             fontFamily: serif,
             fontSize: 'var(--text-display)',
             fontWeight: 300,
-            lineHeight: 1.05,
+            lineHeight: 1.1,
             letterSpacing: '-0.02em',
             margin: '0 0 var(--space-3)',
           }}
-        >
-          Project 1122
-        </h1>
+        />
         <p
           style={{
             fontSize: 'var(--text-body)',
@@ -175,8 +202,7 @@ export default function Project1122() {
 
       {/* Chapter I — As found */}
       <section style={{ padding: 'var(--space-5) 0' }}>
-        <p style={{ ...label, marginBottom: 'var(--space-1)' }}>Chapter I</p>
-        <h2 style={{ ...chapterHeading, marginBottom: 'var(--space-2)' }}>As found</h2>
+        <ChapterHead n="01" kicker="Chapter I" title="As found" />
         <p
           style={{
             fontSize: 'var(--text-body)',
@@ -191,53 +217,65 @@ export default function Project1122() {
           exactly as it was handed over — nothing staged, nothing retouched.
         </p>
 
-        {rooms.map((room) => (
-          <div key={room.name} style={{ marginBottom: 'var(--space-5)' }}>
-            <h3
-              style={{
-                fontFamily: serif,
-                fontSize: '1.375rem',
-                fontWeight: 400,
-                letterSpacing: '-0.01em',
-                margin: '0 0 var(--space-1)',
-                color: 'var(--color-fg)',
-              }}
-            >
-              {room.name}
-            </h3>
-            <p
-              style={{
-                fontSize: '0.9375rem',
-                lineHeight: 1.65,
-                color: 'var(--color-text-muted)',
-                maxWidth: 'var(--prose-max)',
-                margin: '0 0 var(--space-3)',
-              }}
-            >
-              {room.caption}
-            </p>
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-                gap: 'var(--space-2)',
-              }}
-            >
-              {room.images.map((img) => (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img key={img.src} src={img.src} alt={img.alt} loading="lazy" style={imgStyle} />
-              ))}
+        {rooms.map((room) => {
+          const [lead, ...rest] = room.images;
+          return (
+            <div key={room.name} style={{ marginBottom: 'var(--space-5)' }}>
+              <h3
+                style={{
+                  fontFamily: serif,
+                  fontSize: '1.375rem',
+                  fontWeight: 400,
+                  letterSpacing: '-0.01em',
+                  margin: '0 0 var(--space-1)',
+                  color: 'var(--color-fg)',
+                }}
+              >
+                {room.name}
+              </h3>
+              <p
+                style={{
+                  fontSize: '0.9375rem',
+                  lineHeight: 1.65,
+                  color: 'var(--color-text-muted)',
+                  maxWidth: 'var(--prose-max)',
+                  margin: '0 0 var(--space-3)',
+                }}
+              >
+                {room.caption}
+              </p>
+
+              {/* Lead plate — full column, unveils */}
+              <Reveal
+                variant="unveil"
+                as="figure"
+                style={{ margin: 0, marginBottom: rest.length ? 'var(--space-2)' : 0 }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={lead.src} alt={lead.alt} loading="lazy" style={imgStyle} />
+              </Reveal>
+
+              {/* Remaining photographs — 2-up pair grid, rising */}
+              {rest.length > 0 && (
+                <div className="room-pairs">
+                  {rest.map((img, i) => (
+                    <Reveal key={img.src} delay={(i % 2) * 90}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={img.src} alt={img.alt} loading="lazy" style={imgStyle} />
+                    </Reveal>
+                  ))}
+                </div>
+              )}
             </div>
-          </div>
-        ))}
+          );
+        })}
       </section>
 
       <Horizon variant="gold" />
 
       {/* Chapter II — The plan */}
       <section style={{ padding: 'var(--space-5) 0' }}>
-        <p style={{ ...label, marginBottom: 'var(--space-1)' }}>Chapter II</p>
-        <h2 style={{ ...chapterHeading, marginBottom: 'var(--space-2)' }}>The plan</h2>
+        <ChapterHead n="02" kicker="Chapter II" title="The plan" />
         <p
           style={{
             fontSize: 'var(--text-body)',
@@ -256,6 +294,7 @@ export default function Project1122() {
           continuous, and let light travel the full length of it.
         </p>
 
+        {/* The set-piece: as found unveils first, intent follows 200ms behind */}
         <div
           style={{
             display: 'grid',
@@ -265,25 +304,29 @@ export default function Project1122() {
         >
           <figure style={{ margin: 0 }}>
             <div className="glass glass-quiet" style={{ padding: 'var(--space-2)' }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/images/1122/1122beforeBP.png"
-                alt="Floor plan as found: railroad layout with master bedroom, living room, dining room, bathroom and bedroom-office"
-                loading="lazy"
-                style={{ width: '100%', height: 'auto', display: 'block', borderRadius: 8 }}
-              />
+              <Reveal variant="unveil">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/images/1122/1122beforeBP.png"
+                  alt="Floor plan as found: railroad layout with master bedroom, living room, dining room, bathroom and bedroom-office"
+                  loading="lazy"
+                  style={{ width: '100%', height: 'auto', display: 'block', borderRadius: 8 }}
+                />
+              </Reveal>
             </div>
             <figcaption style={{ ...label, marginTop: 'var(--space-1)' }}>Plan — as found</figcaption>
           </figure>
           <figure style={{ margin: 0 }}>
             <div className="glass glass-quiet" style={{ padding: 'var(--space-2)' }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/images/1122/1122afterBP.png"
-                alt="Floor plan as intended: consolidated master closet, widened living room opening, extended kitchen counter and new built-in at the bedroom-office"
-                loading="lazy"
-                style={{ width: '100%', height: 'auto', display: 'block', borderRadius: 8 }}
-              />
+              <Reveal variant="unveil" delay={200}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/images/1122/1122afterBP.png"
+                  alt="Floor plan as intended: consolidated master closet, widened living room opening, extended kitchen counter and new built-in at the bedroom-office"
+                  loading="lazy"
+                  style={{ width: '100%', height: 'auto', display: 'block', borderRadius: 8 }}
+                />
+              </Reveal>
             </div>
             <figcaption style={{ ...label, marginTop: 'var(--space-1)' }}>Plan — intent</figcaption>
           </figure>
@@ -307,16 +350,10 @@ export default function Project1122() {
         </p>
         <Link
           href="/physical"
-          style={{
-            fontFamily: mono,
-            fontSize: 12,
-            letterSpacing: '0.18em',
-            textTransform: 'uppercase',
-            color: 'var(--color-accent-gold)',
-            textDecoration: 'none',
-          }}
+          className="link-action"
+          style={{ color: 'var(--color-accent-gold-text)' }}
         >
-          ← Physical
+          <span className="arrow" data-dir="back">&#8592;</span> Physical
         </Link>
       </footer>
     </article>

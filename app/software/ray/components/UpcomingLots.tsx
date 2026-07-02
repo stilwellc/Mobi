@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { AuctionLot, MarketStats } from '../types';
 import LotCard from './LotCard';
+import SectionMark from '../../../components/SectionMark';
 
 export default function UpcomingLots({
   lots,
@@ -11,6 +12,8 @@ export default function UpcomingLots({
   stats,
   savedIds = [],
   onToggleSave,
+  mark,
+  enterDelay = 0,
 }: {
   lots: AuctionLot[];
   showArtist?: boolean;
@@ -18,19 +21,23 @@ export default function UpcomingLots({
   stats?: MarketStats;
   savedIds?: string[];
   onToggleSave?: (lotId: string) => void;
+  /** ghost ordinal behind the h2 band (headers only) */
+  mark?: string;
+  /** base transition-delay (ms) for the arrival choreography */
+  enterDelay?: number;
 }) {
   const [visible, setVisible] = useState(48);
   return (
-    <section className="ray-upcoming" style={{ maxWidth: 1100, margin: '0 auto' }}>
+    <section className="ray-upcoming rail">
       <style>{`
-        .ray-upcoming { padding: 40px 56px 48px; }
+        .ray-upcoming { padding-block: 40px 48px; }
         .ray-upcoming-grid {
           display: grid;
           grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
           gap: 16px;
         }
         @media (max-width: 768px) {
-          .ray-upcoming { padding: 32px 20px 32px; }
+          .ray-upcoming { padding-block: 32px 32px; }
           .ray-upcoming-grid {
             grid-template-columns: 1fr;
             gap: 14px;
@@ -38,28 +45,41 @@ export default function UpcomingLots({
         }
       `}</style>
 
-      <div style={{ marginBottom: 24 }}>
-        <h2 style={{
-          fontFamily: "var(--font-serif), serif",
-          fontSize: 32,
-          fontWeight: 300,
-          letterSpacing: '-0.02em',
-        }}>
+      {/* Ghost ordinal clipped to the header band — never under the cards */}
+      <div style={{ position: 'relative', overflow: 'hidden', marginBottom: 16 }}>
+        {mark && <SectionMark n={mark} style={{ fontSize: 'clamp(96px, 12vw, 150px)' }} />}
+        <h2
+          className="ray-enter"
+          style={{
+            '--enter-delay': `${enterDelay}ms`,
+            position: 'relative',
+            fontFamily: 'var(--font-serif), serif',
+            fontSize: 32,
+            fontWeight: 300,
+            letterSpacing: '-0.02em',
+            padding: '16px 0 12px',
+          } as React.CSSProperties}
+        >
           Upcoming <span style={{ fontStyle: 'italic', color: 'var(--color-accent-ocean)' }}>Lots</span>
         </h2>
       </div>
 
       <div className="ray-upcoming-grid">
-        {lots.slice(0, visible).map((lot) => (
-          <LotCard
+        {lots.slice(0, visible).map((lot, i) => (
+          <div
             key={lot.id}
-            lot={lot}
-            showArtist={showArtist}
-            allLots={allLots}
-            stats={stats}
-            saved={savedIds.includes(lot.id)}
-            onToggleSave={onToggleSave}
-          />
+            className="ray-enter-card"
+            style={{ '--enter-delay': `${enterDelay + Math.min(i, 8) * 60}ms` } as React.CSSProperties}
+          >
+            <LotCard
+              lot={lot}
+              showArtist={showArtist}
+              allLots={allLots}
+              stats={stats}
+              saved={savedIds.includes(lot.id)}
+              onToggleSave={onToggleSave}
+            />
+          </div>
         ))}
       </div>
 

@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import Horizon from '../components/Horizon';
-import Reveal from './Reveal';
+import Reveal from '../components/Reveal';
+import RevealLines from '../components/RevealLines';
+import SectionMark from '../components/SectionMark';
 
 export const metadata: Metadata = {
   title: 'About — co.stil',
@@ -8,7 +10,7 @@ export const metadata: Metadata = {
     "I'm Collin Stilwell — a security engineer who cares about craft. Why the studio is shaped like a Möbius strip, and what I'm building now.",
 };
 
-const PRINCIPLES = [
+const PRACTICE = [
   {
     number: '01',
     title: 'Design-first software',
@@ -40,21 +42,6 @@ const CURRENTLY = [
   },
 ];
 
-const container: React.CSSProperties = {
-  maxWidth: 'var(--content-max)',
-  margin: '0 auto',
-  padding: '0 clamp(20px, 5vw, 56px)',
-};
-
-const label: React.CSSProperties = {
-  fontFamily: 'var(--font-sans), sans-serif',
-  fontSize: 'var(--text-label)',
-  fontWeight: 600,
-  letterSpacing: '0.18em',
-  textTransform: 'uppercase',
-  color: 'var(--color-text-faint)',
-};
-
 const mono12: React.CSSProperties = {
   fontFamily: 'var(--font-mono), monospace',
   fontSize: 12,
@@ -65,34 +52,77 @@ export default function AboutRoute() {
   return (
     <div style={{ minHeight: '100vh' }}>
       <style>{`
-        .about-intro { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); max-width: 940px; }
-        .about-principles { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-2); }
+        .about-intro { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); max-width: 940px; position: relative; }
         .about-row { display: grid; grid-template-columns: 180px 1fr; gap: var(--space-3); padding: var(--space-3) 0; border-bottom: 1px solid var(--color-border); }
         .about-row:last-of-type { border-bottom: none; }
-        @media (max-width: 900px) {
-          .about-principles { grid-template-columns: 1fr; }
-        }
+        .about-ledger-row { position: relative; overflow: hidden; display: grid; grid-template-columns: minmax(220px, 1fr) 1.7fr; gap: var(--space-3) var(--space-5); align-items: start; padding: var(--space-4) 0; border-bottom: 1px solid var(--color-border); }
         @media (max-width: 640px) {
           .about-intro { grid-template-columns: 1fr; gap: var(--space-2); }
           .about-row { grid-template-columns: 1fr; gap: var(--space-1); }
+          .about-ledger-row { grid-template-columns: 1fr; }
         }
-        .about-link { color: var(--color-text-secondary); text-decoration: underline; text-decoration-color: var(--color-border-mid); text-underline-offset: 3px; transition: color var(--duration-fast) var(--ease-signature); }
-        .about-link:hover { color: var(--color-accent-gold); }
-        .about-cta { display: inline-flex; align-items: baseline; gap: var(--space-1); color: var(--color-accent-gold); text-decoration: none; }
-        @media (max-width: 768px) {
-          /* ~44px touch target on phones */
-          .about-cta { padding: 8px 0; }
-        }
-        .about-cta .about-cta-arrow { display: inline-block; transition: transform var(--duration-fast) var(--ease-signature); }
-        .about-cta:hover .about-cta-arrow { transform: translateX(2px); }
-        .about-beat-1 { animation: pageIn var(--duration-slow) var(--ease-signature) both; }
-        .about-beat-2 { animation: pageIn var(--duration-slow) var(--ease-signature) 150ms both; }
       `}</style>
 
-      {/* 1 — Hero */}
-      <section style={{ ...container, paddingTop: 'clamp(120px, 18vh, 200px)', paddingBottom: 'var(--space-5)' }}>
-        <h1
-          className="about-beat-1"
+      {/* 1 — Manifesto hero (the ghost Möbius is this page's mark; no route numeral) */}
+      <section
+        className="rail"
+        style={{
+          position: 'relative',
+          overflow: 'hidden',
+          paddingTop: 'clamp(120px, 18vh, 200px)',
+          paddingBottom: 'var(--space-5)',
+        }}
+      >
+        {/* Ghost Möbius — static, formal reference only. 1px stroke, 3.5% opacity. */}
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 520 320"
+          fill="none"
+          style={{
+            position: 'absolute',
+            top: '4%',
+            right: '-8%',
+            width: '40vw',
+            minWidth: 340,
+            opacity: 0.035,
+            color: 'var(--color-fg)',
+            pointerEvents: 'none',
+            userSelect: 'none',
+          }}
+        >
+          <path
+            d="M40 160 C40 68 176 68 260 160 C344 252 480 252 480 160 C480 68 344 68 260 160 C176 252 40 252 40 160 Z"
+            stroke="currentColor"
+            strokeWidth="1"
+            vectorEffect="non-scaling-stroke"
+          />
+          <path
+            d="M78 160 C78 96 188 96 260 160 C332 224 442 224 442 160 C442 96 332 96 260 160 C188 224 78 224 78 160 Z"
+            stroke="currentColor"
+            strokeWidth="1"
+            vectorEffect="non-scaling-stroke"
+          />
+        </svg>
+
+        <span
+          className="eyebrow"
+          style={{ display: 'block', marginBottom: 'var(--space-2)', position: 'relative' }}
+        >
+          About
+        </span>
+        <RevealLines
+          as="h1"
+          trigger="mount"
+          delay={250}
+          lines={[
+            'One surface,',
+            <span
+              key="seam"
+              style={{ fontStyle: 'italic', color: 'var(--color-accent-gold)' }}
+            >
+              no seam.
+            </span>,
+          ]}
           style={{
             fontFamily: 'var(--font-serif), serif',
             fontSize: 'var(--text-display)',
@@ -101,48 +131,41 @@ export default function AboutRoute() {
             letterSpacing: '-0.02em',
             margin: '0 0 var(--space-4)',
             color: 'var(--color-fg)',
+            position: 'relative',
           }}
-        >
-          About{' '}
-          <span style={{ fontStyle: 'italic', color: 'var(--color-accent-gold)' }}>co.stil</span>
-        </h1>
+        />
 
-        <div className="about-intro about-beat-2">
-          <p style={{ margin: 0, fontSize: 'var(--text-body)', lineHeight: 1.65, color: 'var(--color-text-secondary)', maxWidth: 'var(--prose-max)' }}>
-            co.stil is my studio practice. It takes its shape from the Möbius strip — one side,
-            one boundary — because the work refuses a divide: software designed like objects,
-            objects informed by software, one surface with no seam between them.
-          </p>
-          <p style={{ margin: 0, fontSize: 'var(--text-body)', lineHeight: 1.65, color: 'var(--color-text-secondary)', maxWidth: 'var(--prose-max)' }}>
-            By day I&rsquo;m a security engineer who cares about craft. The rest of the time I build
-            things that feel good to use — security tooling, design systems, lighting, furniture,
-            and the space between code and art.
-          </p>
-        </div>
+        <Reveal delay={90}>
+          <div className="about-intro">
+            <p style={{ margin: 0, fontSize: 'var(--text-body)', lineHeight: 1.65, color: 'var(--color-text-secondary)', maxWidth: 'var(--prose-max)' }}>
+              co.stil is my studio practice. It takes its shape from the Möbius strip — one side,
+              one boundary — because the work refuses a divide: software designed like objects,
+              objects informed by software, one surface with no seam between them.
+            </p>
+            <p style={{ margin: 0, fontSize: 'var(--text-body)', lineHeight: 1.65, color: 'var(--color-text-secondary)', maxWidth: 'var(--prose-max)' }}>
+              By day I&rsquo;m a security engineer who cares about craft. The rest of the time I build
+              things that feel good to use — security tooling, design systems, lighting, furniture,
+              and the space between code and art.
+            </p>
+          </div>
+        </Reveal>
       </section>
 
       {/* 2 — Horizon */}
-      <div style={container}>
+      <div className="rail">
         <Horizon variant="gold" />
       </div>
 
-      {/* 3 — Principles */}
-      <section style={{ ...container, paddingTop: 'var(--space-5)', paddingBottom: 'var(--space-5)' }}>
-        <Reveal>
-          <span style={{ ...label, display: 'block', marginBottom: 'var(--space-4)' }}>Principles</span>
-          <div className="about-principles">
-            {PRINCIPLES.map((p) => (
-              <div
-                key={p.number}
-                className="glass"
-                style={{
-                  padding: 'var(--space-4) var(--space-3)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 'var(--space-2)',
-                }}
-              >
-                <span style={mono12}>{p.number}</span>
+      {/* 3 — The Practice ledger */}
+      <section className="rail" style={{ paddingTop: 'var(--space-5)', paddingBottom: 'var(--space-5)' }}>
+        <span className="eyebrow" style={{ display: 'block', marginBottom: 'var(--space-3)' }}>
+          Practice
+        </span>
+        <div>
+          {PRACTICE.map((p, i) => (
+            <Reveal key={p.number} delay={i * 90}>
+              <div className="about-ledger-row">
+                <SectionMark n={p.number} style={{ fontSize: 'clamp(6.5rem, 11vw, 9.5rem)' }} />
                 <h2
                   style={{
                     fontFamily: 'var(--font-serif), serif',
@@ -152,23 +175,35 @@ export default function AboutRoute() {
                     lineHeight: 1.15,
                     margin: 0,
                     color: 'var(--color-fg)',
+                    position: 'relative',
                   }}
                 >
                   {p.title}
                 </h2>
-                <p style={{ margin: 0, fontSize: 14, lineHeight: 1.65, color: 'var(--color-text-muted)' }}>
+                <p
+                  style={{
+                    margin: 0,
+                    fontSize: 'var(--text-body)',
+                    lineHeight: 1.65,
+                    color: 'var(--color-text-secondary)',
+                    maxWidth: 'var(--prose-max)',
+                    position: 'relative',
+                  }}
+                >
                   {p.text}
                 </p>
               </div>
-            ))}
-          </div>
-        </Reveal>
+            </Reveal>
+          ))}
+        </div>
       </section>
 
       {/* 4 — Currently */}
-      <section style={{ ...container, paddingBottom: 'var(--space-6)' }}>
+      <section className="rail" style={{ paddingBottom: 'var(--space-6)' }}>
         <Reveal>
-          <span style={{ ...label, display: 'block', marginBottom: 'var(--space-3)' }}>Currently</span>
+          <span className="eyebrow" style={{ display: 'block', marginBottom: 'var(--space-3)' }}>
+            Currently
+          </span>
           <div style={{ maxWidth: 820 }}>
             {CURRENTLY.map((row) => (
               <div key={row.label} className="about-row">
@@ -177,10 +212,11 @@ export default function AboutRoute() {
                   {row.text}
                   {row.link && (
                     <a
-                      className="about-link"
+                      className="link-draw"
                       href={row.link.href}
                       target={row.link.href.startsWith('http') ? '_blank' : undefined}
                       rel={row.link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                      style={{ color: 'var(--color-text-secondary)' }}
                     >
                       {row.link.label}
                     </a>
@@ -192,37 +228,38 @@ export default function AboutRoute() {
         </Reveal>
       </section>
 
-      {/* 5 — Closing */}
-      <section style={{ ...container, paddingBottom: 'var(--space-6)' }}>
-        <Reveal>
-          <div
-            className="glass"
-            style={{
-              padding: 'clamp(28px, 5vw, 64px)',
-            }}
-          >
-            <span style={{ ...label, display: 'block', marginBottom: 'var(--space-3)' }}>
-              What I&rsquo;m after
-            </span>
-            <p
-              style={{
-                fontFamily: 'var(--font-serif), serif',
-                fontSize: 'var(--text-title)',
-                fontWeight: 300,
-                lineHeight: 1.3,
-                margin: '0 0 var(--space-4)',
-                color: 'var(--color-fg)',
-                maxWidth: '28ch',
-              }}
-            >
-              Things that feel inevitable — software with the weight of an object, objects with
-              the intelligence of software.
-            </p>
-            <a className="about-cta" href="mailto:cstilwell117@gmail.com" style={{ fontSize: 'var(--text-body)', fontWeight: 600 }}>
-              Say hello <span className="about-cta-arrow" aria-hidden="true">→</span>
-            </a>
-          </div>
-        </Reveal>
+      {/* 5 — Closing pull-quote */}
+      <section className="rail" style={{ paddingBottom: 'var(--space-6)' }}>
+        <Horizon variant="sunset" draw style={{ marginBottom: 'var(--space-5)' }} />
+        <span className="eyebrow" style={{ display: 'block', marginBottom: 'var(--space-3)' }}>
+          What I&rsquo;m after
+        </span>
+        <RevealLines
+          as="p"
+          lines={[
+            'Things that feel inevitable —',
+            <span key="l2">
+              software with the <span style={{ fontStyle: 'italic', color: 'var(--color-accent-gold)' }}>weight of an object</span>,
+            </span>,
+            'objects with the intelligence of software.',
+          ]}
+          style={{
+            fontFamily: 'var(--font-serif), serif',
+            fontSize: 'clamp(2rem, 4.2vw, 3.4rem)',
+            fontWeight: 300,
+            lineHeight: 1.2,
+            letterSpacing: '-0.01em',
+            margin: '0 0 var(--space-4)',
+            color: 'var(--color-fg)',
+          }}
+        />
+        <a
+          className="link-action"
+          href="mailto:cstilwell117@gmail.com"
+          style={{ color: 'var(--color-accent-gold-text)' }}
+        >
+          Say hello <span className="arrow" aria-hidden="true">→</span>
+        </a>
       </section>
     </div>
   );

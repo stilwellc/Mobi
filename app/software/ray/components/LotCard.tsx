@@ -100,8 +100,29 @@ export default function LotCard({
     }}>
       <style>{`
         .ray-lot-img { height: 200px; }
-        .ray-remind-btn:hover { opacity: 0.85; }
-        .ray-save-btn { transition: background var(--duration-fast) var(--ease-signature); }
+        .ray-lot-img img {
+          opacity: 0;
+          transition: opacity 400ms var(--ease-signature);
+        }
+        .ray-lot-img img[data-loaded=true] { opacity: 1; }
+        /* hotlink-blocked or dead images stay invisible — the serif
+           initial sits in flow behind and reads instead */
+        .ray-lot-img img[data-error=true] { opacity: 0; }
+        .ray-remind-btn {
+          background: transparent;
+          border: 1px solid color-mix(in srgb, var(--color-accent-ocean) 45%, transparent);
+          color: var(--color-accent-ocean);
+          transition:
+            background var(--duration-fast) var(--ease-signature),
+            border-color var(--duration-fast) var(--ease-signature),
+            color var(--duration-fast) var(--ease-signature);
+        }
+        .ray-remind-btn:hover,
+        .ray-remind-btn:focus-visible {
+          background: var(--color-accent-ocean);
+          border-color: var(--color-accent-ocean);
+          color: #060606;
+        }
         .ray-save-btn:hover { opacity: 0.85; }
         @media (max-width: 768px) {
           .ray-lot-img { height: 170px; }
@@ -149,38 +170,67 @@ export default function LotCard({
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        {lot.imageUrl ? (
+        {/* serif initial — the honest fallback while the image loads,
+            and the permanent face when it never arrives (many houses
+            hotlink-block via CORP/ORB). The img paints over it. */}
+        <div aria-hidden={lot.imageUrl ? 'true' : undefined} style={{
+          fontFamily: "var(--font-serif), serif",
+          fontSize: 42,
+          fontWeight: 300,
+          color: 'var(--color-text-faint)',
+          opacity: 0.3,
+          fontStyle: 'italic',
+        }}>
+          {lot.title.charAt(0)}
+        </div>
+        {lot.imageUrl && (
           <img
             src={lot.imageUrl}
             alt={lot.title}
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            // cache hits never fire onLoad/onError — check complete at
+            // attach; complete with zero naturalWidth is a cached failure
+            ref={(el) => {
+              if (!el || !el.complete) return;
+              if (el.naturalWidth > 0) {
+                el.setAttribute('data-loaded', 'true');
+              } else {
+                el.removeAttribute('data-loaded');
+                el.setAttribute('data-error', 'true');
+              }
+            }}
+            onLoad={(e) => e.currentTarget.setAttribute('data-loaded', 'true')}
+            onError={(e) => {
+              e.currentTarget.removeAttribute('data-loaded');
+              e.currentTarget.setAttribute('data-error', 'true');
+            }}
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
           />
-        ) : (
-          <div style={{
-            fontFamily: "var(--font-serif), serif",
-            fontSize: 42,
-            fontWeight: 300,
-            color: 'var(--color-text-faint)',
-            opacity: 0.3,
-            fontStyle: 'italic',
-          }}>
-            {lot.title.charAt(0)}
-          </div>
         )}
         {isUpcoming && (
           <div style={{
             position: 'absolute',
             top: 10,
             left: 10,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
             padding: '3px 10px',
             borderRadius: 100,
-            background: 'var(--color-accent-ocean)',
+            border: '1px solid color-mix(in srgb, var(--color-accent-ocean) 55%, transparent)',
+            background: 'color-mix(in srgb, var(--color-bg) 68%, transparent)',
             fontSize: 12,
             letterSpacing: '0.12em',
             textTransform: 'uppercase',
-            color: '#060606',
+            color: 'var(--color-accent-ocean)',
             fontWeight: 600,
           }}>
+            <span aria-hidden="true" style={{
+              width: 5,
+              height: 5,
+              borderRadius: '50%',
+              background: 'var(--color-accent-ocean)',
+              flexShrink: 0,
+            }} />
             Live
           </div>
         )}
@@ -333,15 +383,11 @@ export default function LotCard({
               gap: 6,
               padding: '10px 0',
               borderRadius: 8,
-              border: 'none',
-              background: 'var(--color-accent-ocean)',
-              color: '#060606',
               fontSize: 12,
               fontWeight: 700,
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
               cursor: 'pointer',
-              transition: 'opacity var(--duration-fast) var(--ease-signature)',
               fontFamily: "var(--font-sans), sans-serif",
               position: 'relative',
               zIndex: 2,

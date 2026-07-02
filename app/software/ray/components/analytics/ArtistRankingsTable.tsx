@@ -114,9 +114,9 @@ export default function ArtistRankingsTable({ statsByArtist, allLots }: Props) {
     sortKey === key ? (sortDir === 'asc' ? 'ascending' : 'descending') : undefined;
 
   return (
-    <section id="artist-rankings" className="ray-rankings" style={{ maxWidth: 1100, margin: '0 auto' }}>
+    <section id="artist-rankings" className="ray-rankings rail">
       <style>{`
-        .ray-rankings { padding: 40px 56px 48px; }
+        .ray-rankings { padding-block: 40px 48px; }
         .ray-rankings-row {
           transition: background var(--duration-fast) var(--ease-signature);
         }
@@ -130,7 +130,7 @@ export default function ArtistRankingsTable({ statsByArtist, allLots }: Props) {
           white-space: nowrap;
         }
         @media (max-width: 768px) {
-          .ray-rankings { padding: 32px 20px 32px; }
+          .ray-rankings { padding-block: 32px 32px; }
           .ray-rankings-hide-mobile { display: none; }
           .ray-rankings-td { padding: 10px 12px; font-size: 12px; }
         }

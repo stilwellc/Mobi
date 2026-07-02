@@ -14,6 +14,8 @@ import ArtistNav from '../components/ArtistNav';
 import StatsGrid from '../components/StatsGrid';
 import UpcomingLots from '../components/UpcomingLots';
 import PastResults from '../components/PastResults';
+import RayHero from '../components/RayHero';
+import RayEntrance, { RayLoading } from '../components/RayEntrance';
 
 const PriceChart = dynamic(() => import('../components/PriceChart'), { ssr: false });
 
@@ -22,7 +24,7 @@ type CategoryFilter = 'all' | LotCategory;
 export default function ArtistDetailPage() {
   const params = useParams();
   const slug = params.artist as string;
-  const { statsByArtist, allLots, lastCrawl, loading } = useRayData();
+  const { statsByArtist, allLots, lastCrawl, loading, fromCache } = useRayData();
   const { toggle, savedIds } = useSavedLots();
   const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>('all');
 
@@ -62,92 +64,66 @@ export default function ArtistDetailPage() {
           }}>
             Artist not found
           </h2>
-          <Link href="/software/ray" style={{
-            color: 'var(--color-accent-ocean)',
-            fontSize: 14,
-            textDecoration: 'none',
-          }}>
-            &#8592; Back to overview
+          <Link href="/software/ray" className="link-action" style={{ color: 'var(--color-accent-ocean)' }}>
+            <span className="arrow" data-dir="back">&#8592;</span> Back to overview
           </Link>
         </div>
       ) : (
         <>
-          <section className="ray-hero" style={{ maxWidth: 1100, margin: '0 auto' }}>
-            <span style={{
-              display: 'inline-block',
-              fontSize: 12,
-              letterSpacing: '0.18em',
-              textTransform: 'uppercase',
-              color: 'var(--color-text-muted)',
-              fontWeight: 600,
-              marginBottom: 16,
-            }}>
-              Artist Detail
-            </span>
-            <h1 style={{
-              fontFamily: "var(--font-serif), serif",
-              fontSize: 'clamp(40px, 6vw, 72px)',
-              fontWeight: 300,
-              letterSpacing: '-0.03em',
-              lineHeight: 0.95,
-              marginBottom: 16,
-            }}>
-              <span style={{ fontStyle: 'italic', color: 'var(--color-accent-ocean)' }}>{label}</span>
-            </h1>
-            <p style={{
-              fontSize: 14,
-              lineHeight: 1.7,
-              color: 'var(--color-text-muted)',
-              fontWeight: 400,
-              maxWidth: 500,
-            }}>
-              {lots.length} lots across{' '}
-              {stats?.houseDistribution?.length || 0} auction houses.
-            </p>
-
-            {lastCrawl && (
-              <span style={{
-                display: 'inline-block',
-                marginTop: 14,
-                fontFamily: 'var(--font-mono), monospace',
-                fontSize: 12,
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase',
-                color: 'var(--color-text-faint)',
-                fontWeight: 400,
-              }}>
-                Updated {formatDate(lastCrawl)}
-              </span>
-            )}
-          </section>
-
-          <div className="ray-divider-wrap" style={{ maxWidth: 1100, margin: '0 auto' }}>
-            <div style={{
-              width: '100%',
-              height: 1,
-              background: 'linear-gradient(90deg, var(--color-border-mid), transparent 80%)',
-            }} />
-          </div>
+          <RayHero
+            eyebrow="Artist Detail"
+            title={<span style={{ fontStyle: 'italic', color: 'var(--color-accent-ocean)' }}>{label}</span>}
+            sub={loading
+              ? '\u00A0' /* reserve the line — no zero-count flash while the crawl delivers */
+              : <>{lots.length} lots across {stats?.houseDistribution?.length || 0} auction houses.</>}
+            timestamp={lastCrawl ? formatDate(lastCrawl) : undefined}
+          />
 
           {loading ? (
-            <div style={{ display: 'flex', justifyContent: 'center', padding: 120 }}>
-              <span style={{
-                fontFamily: 'var(--font-mono), monospace',
-                fontSize: 12,
-                letterSpacing: '0.18em',
-                textTransform: 'uppercase',
-                color: 'var(--color-text-faint)',
-              }}>
-                Loading
-              </span>
-            </div>
+            <RayLoading />
           ) : (
-            <>
-              {stats && <StatsGrid stats={stats} lots={lots} categoryFilter={categoryFilter} />}
-              {sold.length > 0 && <PriceChart lots={sold} allLots={lots} categoryFilter={categoryFilter} onCategoryChange={setCategoryFilter} fallbackData={stats?.priceHistory} />}
-              {upcoming.length > 0 && <UpcomingLots lots={upcoming} allLots={allLots} stats={stats || undefined} savedIds={savedIds} onToggleSave={toggle} />}
-              {sold.length > 0 && <PastResults lots={sold} categoryFilter={categoryFilter} onCategoryChange={setCategoryFilter} savedIds={savedIds} onToggleSave={toggle} />}
-            </>
+            <RayEntrance animate={!fromCache}>
+              {stats && (
+                <div className="ray-enter">
+                  <StatsGrid stats={stats} lots={lots} categoryFilter={categoryFilter} />
+                </div>
+              )}
+              {sold.length > 0 && (
+                <div className="ray-enter" style={{ '--enter-delay': '90ms' } as React.CSSProperties}>
+                  <PriceChart
+                    lots={sold}
+                    allLots={lots}
+                    categoryFilter={categoryFilter}
+                    onCategoryChange={setCategoryFilter}
+                    fallbackData={stats?.priceHistory}
+                    mark="01"
+                  />
+                </div>
+              )}
+              {upcoming.length > 0 && (
+                <UpcomingLots
+                  lots={upcoming}
+                  allLots={allLots}
+                  stats={stats || undefined}
+                  savedIds={savedIds}
+                  onToggleSave={toggle}
+                  mark="02"
+                  enterDelay={180}
+                />
+              )}
+              {sold.length > 0 && (
+                <div className="ray-enter" style={{ '--enter-delay': '270ms' } as React.CSSProperties}>
+                  <PastResults
+                    lots={sold}
+                    categoryFilter={categoryFilter}
+                    onCategoryChange={setCategoryFilter}
+                    savedIds={savedIds}
+                    onToggleSave={toggle}
+                    mark="03"
+                  />
+                </div>
+              )}
+            </RayEntrance>
           )}
         </>
       )}

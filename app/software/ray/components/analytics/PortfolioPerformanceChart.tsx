@@ -3,6 +3,7 @@
 import { useMemo } from 'react';
 import { ResponsiveContainer, AreaChart, Area, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { MarketStats } from '../../types';
+import { useChartDraw } from '../../hooks/useChartDraw';
 
 interface Props {
   statsByArtist: Record<string, MarketStats>;
@@ -40,6 +41,7 @@ function CustomTooltip({ active, payload, label }: { active?: boolean; payload?:
 }
 
 export default function PortfolioPerformanceChart({ statsByArtist }: Props) {
+  const drawRef = useChartDraw();
   const data = useMemo(() => {
     const quarterMap: Record<string, { weightedSum: number; totalHigh: number; totalSales: number }> = {};
 
@@ -76,12 +78,12 @@ export default function PortfolioPerformanceChart({ statsByArtist }: Props) {
   if (data.length < 2) return null;
 
   return (
-    <section className="ray-perf-chart" style={{ maxWidth: 1100, margin: '0 auto' }}>
+    <section className="ray-perf-chart rail">
       <style>{`
-        .ray-perf-chart { padding: 40px 56px 48px; }
+        .ray-perf-chart { padding-block: 40px 48px; }
         .ray-perf-chart-container { height: 300px; }
         @media (max-width: 768px) {
-          .ray-perf-chart { padding: 32px 20px 32px; }
+          .ray-perf-chart { padding-block: 32px 32px; }
           .ray-perf-chart-container { height: 200px; }
         }
       `}</style>
@@ -121,7 +123,7 @@ export default function PortfolioPerformanceChart({ statsByArtist }: Props) {
               </span>
             </div>
           </div>
-          <div className="ray-perf-chart-container">
+          <div className="ray-perf-chart-container ray-chart-draw" ref={drawRef}>
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={data} margin={{ top: 4, right: 16, left: 8, bottom: 0 }}>
                 <defs>

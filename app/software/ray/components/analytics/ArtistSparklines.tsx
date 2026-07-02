@@ -6,6 +6,7 @@ import { ResponsiveContainer, AreaChart, Area, YAxis, Tooltip } from 'recharts';
 import { MarketStats, AuctionLot } from '../../types';
 import { formatPrice } from '../../utils';
 import { ARTISTS } from '../../constants';
+import { useChartDraw } from '../../hooks/useChartDraw';
 
 interface Props {
   statsByArtist: Record<string, MarketStats>;
@@ -80,6 +81,7 @@ interface ArtistCardData {
 }
 
 function ArtistCard({ artist }: { artist: ArtistCardData }) {
+  const drawRef = useChartDraw();
   const hasChart = artist.sparkData.length >= 2;
   const trendUp = hasChart
     ? artist.sparkData[artist.sparkData.length - 1].avgPrice >= artist.sparkData[0].avgPrice
@@ -123,7 +125,7 @@ function ArtistCard({ artist }: { artist: ArtistCardData }) {
       </div>
 
       {hasChart ? (
-        <div style={{ height: 80, marginLeft: -8, marginRight: -8 }}>
+        <div className="ray-chart-draw" ref={drawRef} style={{ height: 80, marginLeft: -8, marginRight: -8 }}>
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={artist.sparkData} margin={{ top: 2, right: 0, left: 0, bottom: 0 }}>
               <defs>
@@ -237,9 +239,9 @@ export default function ArtistSparklines({ statsByArtist, allLots }: Props) {
   }, [statsByArtist, allLots]);
 
   return (
-    <section className="ray-sparklines" style={{ maxWidth: 1100, margin: '0 auto' }}>
+    <section className="ray-sparklines rail">
       <style>{`
-        .ray-sparklines { padding: 40px 56px 48px; }
+        .ray-sparklines { padding-block: 40px 48px; }
         .ray-spark-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
@@ -252,7 +254,7 @@ export default function ArtistSparklines({ statsByArtist, allLots }: Props) {
           .ray-spark-grid { grid-template-columns: repeat(2, 1fr); }
         }
         @media (max-width: 768px) {
-          .ray-sparklines { padding: 32px 20px 32px; }
+          .ray-sparklines { padding-block: 32px 32px; }
           .ray-spark-grid { grid-template-columns: 1fr; }
           .ray-spark-card { padding: 16px; }
         }

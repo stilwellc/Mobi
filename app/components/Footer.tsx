@@ -12,12 +12,13 @@ const colTitle: React.CSSProperties = {
   marginBottom: 'var(--space-2)',
 };
 
-const linkStyle: React.CSSProperties = {
-  fontFamily: 'var(--font-sans), sans-serif',
-  fontSize: 14,
+const actionStyle: React.CSSProperties = {
   color: 'var(--color-text-secondary)',
-  textDecoration: 'none',
-  transition: 'color var(--duration-fast) var(--ease-signature)',
+};
+
+const arrowStyle: React.CSSProperties = {
+  marginLeft: 8,
+  color: 'var(--color-text-muted)',
 };
 
 const navigateLinks = [
@@ -37,47 +38,78 @@ export default function Footer() {
   return (
     <footer role="contentinfo" style={{ marginTop: 'var(--space-6)' }}>
       <div
+        className="rail"
         style={{
-          maxWidth: 'var(--content-max)',
-          margin: '0 auto',
-          padding: 'var(--space-5) var(--space-3) var(--space-4)',
+          position: 'relative',
+          overflow: 'hidden',
+          paddingTop: 'var(--space-5)',
+          paddingBottom: 'var(--space-4)',
         }}
       >
+        {/* Ghost wordmark — behind the columns, never above 4% */}
+        <span
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            right: 0,
+            bottom: '-0.08em',
+            fontFamily: 'var(--font-serif), serif',
+            fontWeight: 300,
+            fontStyle: 'italic',
+            lineHeight: 0.8,
+            fontSize: 'clamp(6rem, 16vw, 13rem)',
+            letterSpacing: '-0.04em',
+            color: 'var(--color-fg)',
+            opacity: 0.03,
+            pointerEvents: 'none',
+            userSelect: 'none',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          co.stil
+        </span>
+
+        {/* The email — the largest type on the page, its own row */}
+        <div style={{ position: 'relative', marginBottom: 'var(--space-5)' }}>
+          <div style={colTitle}>Say hello</div>
+          <a
+            href="mailto:cstilwell117@gmail.com"
+            className="footer-email link-draw"
+            style={{
+              fontFamily: 'var(--font-serif), serif',
+              fontWeight: 300,
+              fontSize: 'clamp(1.75rem, 4vw, 3rem)',
+              lineHeight: 1.1,
+              letterSpacing: '-0.01em',
+              color: 'var(--color-fg)',
+            }}
+          >
+            cstilwell117@gmail.com
+          </a>
+        </div>
+
         <div
           style={{
+            position: 'relative',
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
             gap: 'var(--space-4)',
-            marginBottom: 'var(--space-5)',
           }}
         >
-          <div>
-            <div style={colTitle}>Say hello</div>
-            <a
-              href="mailto:cstilwell117@gmail.com"
-              className="footer-email"
-              style={{
-                fontFamily: 'var(--font-serif), serif',
-                fontWeight: 400,
-                fontSize: 22,
-                letterSpacing: '-0.01em',
-                color: 'var(--color-fg)',
-                textDecoration: 'none',
-                borderBottom: '1px solid var(--color-border-mid)',
-                paddingBottom: 2,
-                transition: 'border-color var(--duration-fast) var(--ease-signature)',
-              }}
-            >
-              cstilwell117@gmail.com
-            </a>
-          </div>
-
           <nav aria-label="Footer">
             <div style={colTitle}>Navigate</div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-1)' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-1)', alignItems: 'flex-start' }}>
               {navigateLinks.map(link => (
-                <Link key={link.href} href={link.href} className="footer-link" style={linkStyle}>
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="footer-link link-action"
+                  style={actionStyle}
+                >
                   {link.label}
+                  <span className="arrow" aria-hidden="true" style={arrowStyle}>
+                    &rarr;
+                  </span>
                 </Link>
               ))}
             </div>
@@ -85,17 +117,20 @@ export default function Footer() {
 
           <nav aria-label="Elsewhere">
             <div style={colTitle}>Elsewhere</div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-1)' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-1)', alignItems: 'flex-start' }}>
               {elsewhereLinks.map(link => (
                 <a
                   key={link.label}
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="footer-link"
-                  style={linkStyle}
+                  className="footer-link link-action"
+                  style={actionStyle}
                 >
                   {link.label}
+                  <span className="arrow" aria-hidden="true" style={arrowStyle}>
+                    &#8599;
+                  </span>
                 </a>
               ))}
             </div>
@@ -103,15 +138,10 @@ export default function Footer() {
         </div>
       </div>
 
-      <Horizon variant="sunset" />
+      {/* The sunset closes every page — draws in center-out on arrival */}
+      <Horizon variant="sunset" draw />
 
-      <div
-        style={{
-          maxWidth: 'var(--content-max)',
-          margin: '0 auto',
-          padding: 'var(--space-3)',
-        }}
-      >
+      <div className="rail" style={{ paddingBlock: 'var(--space-3)' }}>
         <div
           style={{
             display: 'flex',

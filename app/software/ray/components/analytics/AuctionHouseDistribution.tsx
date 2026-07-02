@@ -65,12 +65,12 @@ export default function AuctionHouseDistribution({ statsByArtist }: Props) {
   if (houseData.length === 0) return null;
 
   return (
-    <section className="ray-house-dist" style={{ maxWidth: 1100, margin: '0 auto' }}>
+    <section className="ray-house-dist rail">
       <style>{`
-        .ray-house-dist { padding: 40px 56px 48px; }
+        .ray-house-dist { padding-block: 40px 48px; }
         .ray-house-chart { height: 300px; }
         @media (max-width: 768px) {
-          .ray-house-dist { padding: 32px 20px 32px; }
+          .ray-house-dist { padding-block: 32px 32px; }
           .ray-house-chart { height: 220px; }
         }
       `}</style>
