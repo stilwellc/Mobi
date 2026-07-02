@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Cormorant_Garamond, Syne, Space_Mono } from 'next/font/google';
 import './globals.css';
 import ThemeProvider from './components/ThemeProvider';
@@ -29,6 +29,7 @@ const spaceMono = Space_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://mobi-lovat.vercel.app'),
   title: 'co.stil — Software & Physical Design',
   description:
     "I'm Collin Stilwell. co.stil is my studio — design-first software and physical objects, one continuous practice.",
@@ -39,13 +40,22 @@ export const metadata: Metadata = {
     siteName: 'co.stil',
     type: 'website',
     locale: 'en_US',
+    images: [{ url: '/og.png', width: 1200, height: 630, alt: 'co.stil — software & matter, one practice' }],
   },
   twitter: {
-    card: 'summary',
+    card: 'summary_large_image',
     title: 'co.stil — Software & Physical Design',
     description:
       "I'm Collin Stilwell. co.stil is my studio — design-first software and physical objects, one continuous practice.",
+    images: ['/og.png'],
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: dark)', color: '#0D0B08' },
+    { media: '(prefers-color-scheme: light)', color: '#F5F0E6' },
+  ],
 };
 
 export default function RootLayout({

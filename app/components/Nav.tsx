@@ -28,7 +28,10 @@ export default function Nav() {
   // Condensed state with hysteresis — no scrollY re-renders
   const [condensed, setCondensed] = useState(false);
   const condensedRef = useRef(false);
+  // The traveling horizon: scroll progress written straight to the DOM via rAF
+  const progressRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
+    let raf = 0;
     const onScroll = () => {
       const y = window.scrollY;
       if (!condensedRef.current && y > 80) {
@@ -38,10 +41,21 @@ export default function Nav() {
         condensedRef.current = false;
         setCondensed(false);
       }
+      if (!raf) {
+        raf = requestAnimationFrame(() => {
+          raf = 0;
+          const max = document.documentElement.scrollHeight - window.innerHeight;
+          const p = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
+          if (progressRef.current) progressRef.current.style.transform = `scaleX(${p})`;
+        });
+      }
     };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
   }, []);
 
   // Mobile menu
@@ -224,6 +238,22 @@ export default function Nav() {
             )}
           </div>
         </nav>
+        <div
+          ref={progressRef}
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            bottom: -1,
+            left: 0,
+            right: 0,
+            height: 1,
+            background: 'var(--color-accent-gold)',
+            opacity: 0.5,
+            transform: 'scaleX(0)',
+            transformOrigin: 'left center',
+            pointerEvents: 'none',
+          }}
+        />
       </header>
 
       {mobile && menuOpen && (

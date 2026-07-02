@@ -78,19 +78,19 @@ export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
     rim.position.set(-2, 3, -4);
     scene.add(key, fill, rim);
 
-    // Satin main surface
+    // Satin main surface — champagne bronze, never cold gray
     const geo = createMobiusGeometry(240, 0.4);
     const surfMat = new THREE.MeshStandardMaterial({
-      color: isLight ? 0x8a8078 : 0x0c0c0c,
-      metalness: 0.85,
-      roughness: isLight ? 0.3 : 0.35,
+      color: isLight ? 0xb49b78 : 0x241a10,
+      metalness: 0.8,
+      roughness: isLight ? 0.28 : 0.32,
       transparent: true, opacity: 0.55, side: THREE.DoubleSide,
     });
     const surf = new THREE.Mesh(geo, surfMat);
 
     // One golden emissive edge (LineBasicMaterial is unlit — self-luminous)
     const edgeGeo = createEdgeGeometry(0.4);
-    const edgeMat = new THREE.LineBasicMaterial({ color: gold, transparent: true, opacity: isLight ? 0.45 : 0.4 });
+    const edgeMat = new THREE.LineBasicMaterial({ color: gold, transparent: true, opacity: isLight ? 0.6 : 0.55 });
     const edge = new THREE.Line(edgeGeo, edgeMat);
 
     const group = new THREE.Group();

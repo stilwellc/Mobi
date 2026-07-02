@@ -112,16 +112,36 @@ export default function Footer() {
           padding: 'var(--space-3)',
         }}
       >
-        <span
+        <div
           style={{
-            fontFamily: 'var(--font-mono), monospace',
-            fontSize: 12,
-            color: 'var(--color-text-muted)',
-            letterSpacing: '0.02em',
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'space-between',
+            alignItems: 'baseline',
+            gap: 'var(--space-2)',
           }}
         >
-          &copy; {new Date().getFullYear()} co.stil &mdash; the studio of Collin Stilwell
-        </span>
+          <span
+            style={{
+              fontFamily: 'var(--font-mono), monospace',
+              fontSize: 12,
+              color: 'var(--color-text-muted)',
+              letterSpacing: '0.02em',
+            }}
+          >
+            &copy; {new Date().getFullYear()} co.stil &mdash; the studio of Collin Stilwell
+          </span>
+          <span
+            style={{
+              fontFamily: 'var(--font-mono), monospace',
+              fontSize: 12,
+              color: 'var(--color-text-faint)',
+              letterSpacing: '0.02em',
+            }}
+          >
+            Designed &amp; built with Claude &middot; Set in Cormorant Garamond, Syne &amp; Space Mono
+          </span>
+        </div>
       </div>
     </footer>
   );

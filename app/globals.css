@@ -282,3 +282,13 @@ body {
     text-wrap: balance;
   }
 }
+
+/* Display headings never orphan a single word */
+h1 {
+  text-wrap: balance;
+}
+
+/* Anchor targets clear the fixed nav */
+#directory-index {
+  scroll-margin-top: 96px;
+}
