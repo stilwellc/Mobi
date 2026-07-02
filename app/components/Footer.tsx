@@ -29,6 +29,8 @@ const navigateLinks = [
 ];
 
 const elsewhereLinks = [
+  { label: 'Instagram', url: 'https://instagram.com/col.stil' },
+  { label: 'TikTok', url: 'https://tiktok.com/@co.stil' },
   { label: 'Substack', url: 'https://collinsthoughts.substack.com' },
   { label: 'GitHub', url: 'https://github.com/stilwellc' },
   { label: 'LinkedIn', url: 'https://www.linkedin.com/in/collin-stilwell/' },
