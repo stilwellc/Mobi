@@ -62,7 +62,7 @@ function SparkTooltip({ active, payload }: { active?: boolean; payload?: Array<{
       <div style={{ fontSize: 12, color: 'var(--color-text-muted)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 3 }}>
         {d.date}
       </div>
-      <div style={{ fontSize: 12, color: 'var(--color-accent-ocean)', fontWeight: 500 }}>
+      <div style={{ fontSize: 12, color: 'var(--color-accent-wine)', fontWeight: 500 }}>
         {formatAxis(d.avgPrice)}
       </div>
     </div>
@@ -130,8 +130,8 @@ function ArtistCard({ artist }: { artist: ArtistCardData }) {
             <AreaChart data={artist.sparkData} margin={{ top: 2, right: 0, left: 0, bottom: 0 }}>
               <defs>
                 <linearGradient id={`spark-${artist.slug}`} x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor={trendUp ? 'var(--color-accent-ocean)' : 'var(--color-accent-coral)'} stopOpacity={0.25} />
-                  <stop offset="100%" stopColor={trendUp ? 'var(--color-accent-ocean)' : 'var(--color-accent-coral)'} stopOpacity={0.02} />
+                  <stop offset="0%" stopColor={trendUp ? 'var(--color-accent-wine)' : 'var(--color-accent-coral)'} stopOpacity={0.25} />
+                  <stop offset="100%" stopColor={trendUp ? 'var(--color-accent-wine)' : 'var(--color-accent-coral)'} stopOpacity={0.02} />
                 </linearGradient>
               </defs>
               <YAxis hide domain={['dataMin', 'dataMax']} />
@@ -139,11 +139,11 @@ function ArtistCard({ artist }: { artist: ArtistCardData }) {
               <Area
                 type="monotone"
                 dataKey="avgPrice"
-                stroke={trendUp ? 'var(--color-accent-ocean)' : 'var(--color-accent-coral)'}
+                stroke={trendUp ? 'var(--color-accent-wine)' : 'var(--color-accent-coral)'}
                 strokeWidth={1.5}
                 fill={`url(#spark-${artist.slug})`}
                 dot={false}
-                activeDot={{ r: 2, fill: trendUp ? 'var(--color-accent-ocean)' : 'var(--color-accent-coral)', stroke: 'var(--color-bg-elevated)', strokeWidth: 1.5 }}
+                activeDot={{ r: 2, fill: trendUp ? 'var(--color-accent-wine)' : 'var(--color-accent-coral)', stroke: 'var(--color-bg-elevated)', strokeWidth: 1.5 }}
               />
             </AreaChart>
           </ResponsiveContainer>
@@ -172,7 +172,7 @@ function ArtistCard({ artist }: { artist: ArtistCardData }) {
           <div style={{ fontSize: 12, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--color-text-faint)', fontWeight: 600, marginBottom: 3 }}>
             Sales Value
           </div>
-          <div style={{ fontSize: 14, fontWeight: 500, color: 'var(--color-accent-ocean)' }}>
+          <div style={{ fontSize: 14, fontWeight: 500, color: 'var(--color-accent-wine)' }}>
             {formatPrice(artist.totalRevenue)}
           </div>
         </div>

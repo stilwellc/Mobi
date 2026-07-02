@@ -56,7 +56,7 @@ const OPTICAL: Record<string, React.CSSProperties> = {
 const SECTION_MARKS: Record<string, string> = { software: '01', physical: '02' };
 
 function accentVar(sectionId: string) {
-  return sectionId === 'software' ? 'var(--color-accent-ocean-text)' : 'var(--color-accent-gold-text)';
+  return sectionId === 'software' ? 'var(--color-accent-wine-text)' : 'var(--color-accent-gold-text)';
 }
 
 function slugOf(name: string) {
@@ -98,7 +98,7 @@ const css = `
 .tc-branch{position:relative}
 .tc-node{position:absolute;left:-4px;top:50%;width:9px;height:9px;border-radius:50%;transform:translate(0,-50%);border:1px solid var(--color-border-mid);background:var(--color-bg);z-index:2;transition:background var(--duration-base) var(--ease-signature),border-color var(--duration-base) var(--ease-signature),box-shadow var(--duration-base) var(--ease-signature)}
 .tc-litwatch[data-lit=true] .tc-node{background:var(--color-accent-gold);border-color:var(--color-accent-gold);box-shadow:0 0 12px color-mix(in srgb, var(--color-accent-gold) 55%, transparent)}
-.tc-sec[data-accent=ocean] .tc-litwatch[data-lit=true] .tc-node{background:var(--color-accent-ocean);border-color:var(--color-accent-ocean);box-shadow:0 0 12px color-mix(in srgb, var(--color-accent-ocean) 55%, transparent)}
+.tc-sec[data-accent=wine] .tc-litwatch[data-lit=true] .tc-node{background:var(--color-accent-wine);border-color:var(--color-accent-wine);box-shadow:0 0 12px color-mix(in srgb, var(--color-accent-wine) 55%, transparent)}
 
 .tc-secbody{position:relative;overflow:hidden;padding:var(--space-4) 0 var(--space-5) var(--tc-g)}
 .tc-eyebrow{font-family:var(--font-mono),monospace;font-size:12px;font-weight:400;letter-spacing:0.18em;text-transform:uppercase;color:var(--color-text-muted)}
@@ -129,7 +129,7 @@ const css = `
 .tc-sbody{display:grid;grid-template-columns:1fr 44%;gap:clamp(28px,4vw,56px);align-items:stretch;padding-left:var(--tc-g);margin-top:var(--space-3)}
 .tc-stext{display:flex;flex-direction:column;gap:var(--space-2);padding-top:6px}
 .tc-tag{font-family:var(--font-mono),monospace;font-size:12px;font-weight:400;letter-spacing:0.18em;text-transform:uppercase}
-.tc-sec[data-accent=ocean] .tc-tag{color:var(--color-accent-ocean-text)}
+.tc-sec[data-accent=wine] .tc-tag{color:var(--color-accent-wine-text)}
 .tc-sec[data-accent=gold] .tc-tag{color:var(--color-accent-gold-text)}
 .tc-desc{margin:0;max-width:44ch;font-size:15px;line-height:1.7;color:var(--color-text-secondary)}
 .tc-meta{margin:auto 0 0;border-bottom:1px solid var(--color-border)}
@@ -140,7 +140,7 @@ const css = `
 .tc-foot{display:flex;justify-content:flex-end;margin-top:var(--space-2)}
 .tc-stext .tc-meta + .tc-foot{margin-top:var(--space-2)}
 .tc-go{font-family:var(--font-mono),monospace;font-size:12px;font-weight:400;letter-spacing:0.18em;text-transform:uppercase}
-.tc-sec[data-accent=ocean] .tc-go{color:var(--color-accent-ocean-text)}
+.tc-sec[data-accent=wine] .tc-go{color:var(--color-accent-wine-text)}
 .tc-sec[data-accent=gold] .tc-go{color:var(--color-accent-gold-text)}
 .tc-arrow{display:inline-block;margin-left:8px;transition:transform var(--duration-fast) var(--ease-signature)}
 
@@ -153,14 +153,14 @@ const css = `
   .tc-station:hover .tc-arrow{transform:translateX(3px)}
   .tc-station:hover .tc-trail{background:var(--color-border-mid)}
   .tc-station:hover .tc-lead{background:var(--color-accent-gold)}
-  .tc-sec[data-accent=ocean] .tc-station:hover .tc-lead{background:var(--color-accent-ocean)}
+  .tc-sec[data-accent=wine] .tc-station:hover .tc-lead{background:var(--color-accent-wine)}
   .tc-toccell:hover{border-bottom-color:var(--tc-accent)}
 }
 .tc-station:focus-visible .tc-mat{background:var(--glass-bg-hover);box-shadow:var(--glass-shadow-hover)}
 .tc-station:focus-visible .tc-mat img{transform:scale(1.03);filter:brightness(1.05)}
 .tc-station:focus-visible .tc-arrow{transform:translateX(3px)}
 .tc-station:focus-visible .tc-lead{background:var(--color-accent-gold)}
-.tc-sec[data-accent=ocean] .tc-station:focus-visible .tc-lead{background:var(--color-accent-ocean)}
+.tc-sec[data-accent=wine] .tc-station:focus-visible .tc-lead{background:var(--color-accent-wine)}
 .tc-toccell:focus-visible{border-bottom-color:var(--tc-accent)}
 
 .tc-terminus{position:relative;height:140px}
@@ -433,7 +433,7 @@ export default function Index() {
         <Toc />
 
         {sections.map((section) => {
-          const accent = section.id === 'software' ? 'ocean' : 'gold';
+          const accent = section.id === 'software' ? 'wine' : 'gold';
           return (
             <section
               key={section.id}
@@ -445,7 +445,7 @@ export default function Index() {
               <div className="tc-litwatch" data-lit="false">
                 <div className="tc-branch">
                   <span className="tc-node" aria-hidden="true" />
-                  <Horizon variant={accent === 'ocean' ? 'ocean' : 'gold'} draw origin="left" />
+                  <Horizon variant={accent === 'wine' ? 'wine' : 'gold'} draw origin="left" />
                 </div>
                 <div className="tc-secbody">
                   <SectionMark

@@ -9,7 +9,7 @@ export type IndexSpreadProps = {
   description: string;
   meta?: string;
   href: string;
-  accent?: 'gold' | 'ocean';        // default 'gold'
+  accent?: 'gold' | 'wine';        // default 'gold'
   reverse?: boolean;                // image side alternates at >=768px
   image: { src: string; alt: string }; // composed 16:10
 };

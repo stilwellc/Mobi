@@ -15,7 +15,7 @@ function formatAxis(value: number): string {
   return `$${value}`;
 }
 
-const tooltipColors: Record<string, string> = { avgPrice: 'var(--color-accent-ocean)', highPrice: 'var(--color-accent-gold)', trendline: 'var(--color-text-secondary)' };
+const tooltipColors: Record<string, string> = { avgPrice: 'var(--color-accent-wine)', highPrice: 'var(--color-accent-gold)', trendline: 'var(--color-text-secondary)' };
 const tooltipLabels: Record<string, string> = { avgPrice: 'Avg', highPrice: 'High', trendline: 'Trend' };
 
 function CustomTooltip({ active, payload, label }: { active?: boolean; payload?: Array<{ value: number; dataKey: string }>; label?: string }) {
@@ -32,7 +32,7 @@ function CustomTooltip({ active, payload, label }: { active?: boolean; payload?:
         {label}
       </div>
       {payload.filter(e => e.value != null).map((entry) => (
-        <div key={entry.dataKey} style={{ fontSize: 13, color: tooltipColors[entry.dataKey] || 'var(--color-accent-ocean)', marginBottom: 1, fontWeight: 500 }}>
+        <div key={entry.dataKey} style={{ fontSize: 13, color: tooltipColors[entry.dataKey] || 'var(--color-accent-wine)', marginBottom: 1, fontWeight: 500 }}>
           {tooltipLabels[entry.dataKey] || entry.dataKey}: {formatAxis(entry.value)}
         </div>
       ))}
@@ -105,7 +105,7 @@ export default function PortfolioPerformanceChart({ statsByArtist }: Props) {
         <div style={{ padding: '20px 8px 0 0' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '0 20px 12px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-              <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--color-accent-ocean)', flexShrink: 0 }} />
+              <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--color-accent-wine)', flexShrink: 0 }} />
               <span style={{ fontSize: 12, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--color-text-faint)', fontWeight: 600 }}>
                 Avg
               </span>
@@ -128,8 +128,8 @@ export default function PortfolioPerformanceChart({ statsByArtist }: Props) {
               <AreaChart data={data} margin={{ top: 4, right: 16, left: 8, bottom: 0 }}>
                 <defs>
                   <linearGradient id="perfBlueGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="var(--color-accent-ocean)" stopOpacity={0.2} />
-                    <stop offset="100%" stopColor="var(--color-accent-ocean)" stopOpacity={0.01} />
+                    <stop offset="0%" stopColor="var(--color-accent-wine)" stopOpacity={0.2} />
+                    <stop offset="100%" stopColor="var(--color-accent-wine)" stopOpacity={0.01} />
                   </linearGradient>
                   <linearGradient id="perfGoldGrad" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" stopColor="var(--color-accent-gold)" stopOpacity={0.1} />
@@ -164,11 +164,11 @@ export default function PortfolioPerformanceChart({ statsByArtist }: Props) {
                 <Area
                   type="monotone"
                   dataKey="avgPrice"
-                  stroke="var(--color-accent-ocean)"
+                  stroke="var(--color-accent-wine)"
                   strokeWidth={2}
                   fill="url(#perfBlueGrad)"
                   dot={false}
-                  activeDot={{ r: 3, fill: 'var(--color-accent-ocean)', stroke: 'var(--color-bg)', strokeWidth: 2 }}
+                  activeDot={{ r: 3, fill: 'var(--color-accent-wine)', stroke: 'var(--color-bg)', strokeWidth: 2 }}
                 />
                 <Line
                   type="monotone"

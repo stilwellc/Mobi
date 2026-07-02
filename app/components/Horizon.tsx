@@ -1,11 +1,11 @@
 import React from 'react';
 import HorizonDraw from './motion/HorizonDraw';
 
-export type HorizonVariant = 'gold' | 'ocean' | 'sunset';
+export type HorizonVariant = 'gold' | 'wine' | 'sunset';
 
 export const horizonGradients: Record<HorizonVariant, string> = {
   gold: 'linear-gradient(90deg, transparent, var(--color-accent-gold) 30%, var(--color-accent-gold) 70%, transparent)',
-  ocean: 'linear-gradient(90deg, transparent, var(--color-accent-ocean) 30%, var(--color-accent-ocean) 70%, transparent)',
+  wine: 'linear-gradient(90deg, transparent, var(--color-accent-wine) 30%, var(--color-accent-wine) 70%, transparent)',
   sunset: 'linear-gradient(90deg, transparent, var(--color-accent-coral) 25%, var(--color-accent-gold) 70%, transparent)',
 };
 

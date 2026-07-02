@@ -11,7 +11,7 @@ import { usePrefersReducedMotion } from './hooks';
  * (reflection sampled from a sunset gradient that exists only in
  * math), carrying two counter-traveling pulses: the gold Traveler,
  * which is a true moving light source illuminating the surface as
- * it walks the one side, and a quieter ocean pulse running the
+ * it walks the one side, and a quieter wine pulse running the
  * other way — software and matter passing through each other twice
  * per lap. The mesh is liquid: cursor raycasts spawn damped ripple
  * waves, clicks detonate deep shockwaves, and the surface REMEMBERS
@@ -82,7 +82,7 @@ const SURF_FRAG = /* glsl */ `
   uniform float uTime;
   uniform vec3 uBase;
   uniform vec3 uGold;
-  uniform vec3 uOcean;
+  uniform vec3 uWine;
   uniform float uOpacity;
   uniform float uScroll;
   uniform vec3 uTravel;              // the gold pulse, object space
@@ -138,10 +138,10 @@ const SURF_FRAG = /* glsl */ `
     float tl = length(vPos - uTravel);
     col += uGold * (0.55 / (1.0 + tl * tl * 9.0));
 
-    // The counter-pulse — ocean, opposite direction, quieter
+    // The counter-pulse — wine, opposite direction, quieter
     float ou = fract(vUv.x + uTime * 0.03 + 0.5);
     float oband = smoothstep(0.035, 0.0, min(ou, 1.0 - ou));
-    col += uOcean * oband * 0.55;
+    col += uWine * oband * 0.55;
 
     // The strip remembers: fading lights where the cursor has been
     for (int i = 0; i < ${TRAIL}; i++) {
@@ -190,7 +190,7 @@ const PART_VERT = /* glsl */ `
   attribute float aV;     // lane across the width
   attribute float aLift;  // ride height above the surface
   attribute float aSpeed; // angular speed along the current
-  attribute float aDir;   // +1 gold current, -1 ocean counter-current
+  attribute float aDir;   // +1 gold current, -1 wine counter-current
   attribute float aPhase;
   attribute float aSize;
   varying float vAlpha;
@@ -249,7 +249,7 @@ const PART_VERT = /* glsl */ `
 
 const PART_FRAG = /* glsl */ `
   uniform vec3 uGold;
-  uniform vec3 uOcean;
+  uniform vec3 uWine;
   varying float vAlpha;
   varying float vDir;
   void main() {
@@ -257,7 +257,7 @@ const PART_FRAG = /* glsl */ `
     float d = length(c);
     if (d > 0.5) discard;
     float soft = smoothstep(0.5, 0.05, d);
-    vec3 stream = vDir > 0.0 ? uGold : uOcean;
+    vec3 stream = vDir > 0.0 ? uGold : uWine;
     gl_FragColor = vec4(mix(stream * 0.55, stream, soft), soft * vAlpha * 0.14);
   }
 `;
@@ -409,7 +409,7 @@ export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
 
     const isLight = theme === 'light';
     const gold = new THREE.Color(isLight ? 0xa8875d : 0xd4b896);
-    const ocean = new THREE.Color(isLight ? 0x4e7396 : 0x96b8d4);
+    const wine = new THREE.Color(isLight ? 0x8f4149 : 0xc1666b);
     const base = new THREE.Color(isLight ? 0xb49b78 : 0x2e2214);
 
     const mobile = window.matchMedia('(max-width: 767px)').matches;
@@ -431,7 +431,7 @@ export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
       uTrailT: { value: trailTs },
       uBase: { value: base },
       uGold: { value: gold },
-      uOcean: { value: ocean },
+      uWine: { value: wine },
       uOpacity: { value: isLight ? 0.62 : 0.7 },
       uScroll: { value: 0 },
       uLight: { value: isLight ? 1 : 0 },
@@ -469,7 +469,7 @@ export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
       uBurstTime: { value: -10 },
       uPixel: { value: pixelRatio },
       uGold: { value: gold },
-      uOcean: { value: ocean },
+      uWine: { value: wine },
     };
     let partGeo: THREE.BufferGeometry | null = null;
     let partMat: THREE.ShaderMaterial | null = null;

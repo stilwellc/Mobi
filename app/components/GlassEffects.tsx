@@ -11,14 +11,14 @@ import { usePathname } from 'next/navigation';
  *
  * Route-aware ambient: each orb is two stacked gradient layers; the
  * data-ambient attribute retints the field to the section you entered
- * (ocean in software's rooms, gold in physical, neutral elsewhere) —
+ * (wine in software's rooms, gold in physical, neutral elsewhere) —
  * opacity-only transitions, CSS owned by globals.css.
  */
 export default function GlassEffects() {
   const veilRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const ambient = pathname.startsWith('/software')
-    ? 'ocean'
+    ? 'wine'
     : pathname.startsWith('/physical')
       ? 'gold'
       : 'neutral';
@@ -82,11 +82,11 @@ export default function GlassEffects() {
       <div className="ambient-field" data-ambient={ambient} aria-hidden="true">
         <div className="orb orb-a">
           <div className="orb-layer-gold" />
-          <div className="orb-layer-ocean" />
+          <div className="orb-layer-wine" />
         </div>
         <div className="orb orb-b">
           <div className="orb-layer-gold" />
-          <div className="orb-layer-ocean" />
+          <div className="orb-layer-wine" />
         </div>
       </div>
       <div ref={veilRef} className="cursor-veil" aria-hidden="true" />

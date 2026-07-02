@@ -30,7 +30,7 @@ function HouseTooltip({ active, payload }: { active?: boolean; payload?: Array<{
       <div style={{ fontSize: 12, color: 'var(--color-text-muted)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 6 }}>
         {d.house}
       </div>
-      <div style={{ fontSize: 13, color: houseColors[d.house] || 'var(--color-accent-ocean)', fontWeight: 500, marginBottom: 1 }}>
+      <div style={{ fontSize: 13, color: houseColors[d.house] || 'var(--color-accent-wine)', fontWeight: 500, marginBottom: 1 }}>
         Value: {formatPrice(d.totalValue)}
       </div>
       <div style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>
@@ -57,7 +57,7 @@ export default function AuctionHouseDistribution({ statsByArtist }: Props) {
         count: d.count,
         totalValue: d.totalValue,
         // Recharts fills need concrete hexes, swapped per theme.
-        fill: houseColorsHex[theme][house] || (theme === 'light' ? '#3E6488' : '#96B8D4'),
+        fill: houseColorsHex[theme][house] || (theme === 'light' ? '#3E6488' : '#C1666B'),
       }))
       .sort((a, b) => b.totalValue - a.totalValue);
   }, [statsByArtist, theme]);

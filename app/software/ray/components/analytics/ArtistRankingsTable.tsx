@@ -216,10 +216,10 @@ export default function ArtistRankingsTable({ statsByArtist, allLots }: Props) {
                     {row.label}
                   </Link>
                 </td>
-                <td className="ray-rankings-td ray-rankings-hide-mobile" style={{ textAlign: 'right', color: 'var(--color-accent-ocean)' }}>
+                <td className="ray-rankings-td ray-rankings-hide-mobile" style={{ textAlign: 'right', color: 'var(--color-accent-wine)' }}>
                   {formatPrice(row.totalRevenue)}
                 </td>
-                <td className="ray-rankings-td" style={{ textAlign: 'right', color: 'var(--color-accent-ocean)' }}>
+                <td className="ray-rankings-td" style={{ textAlign: 'right', color: 'var(--color-accent-wine)' }}>
                   {row.avgPrice > 0 ? formatPrice(row.avgPrice) : '\u2014'}
                 </td>
                 <td className="ray-rankings-td ray-rankings-hide-mobile" style={{ textAlign: 'right' }}>

@@ -1,4 +1,4 @@
-// Golden-hour palette: every house sits inside the ocean/gold family.
+// Golden-hour palette: every house sits inside the wine/gold family.
 // Theme-aware var() references (defined in globals.css) so 12px labels stay
 // readable in both themes. Use with color-mix() when alpha is needed.
 export const houseColors: Record<string, string> = {
@@ -16,7 +16,7 @@ export const houseColors: Record<string, string> = {
 // reliable in presentation attributes. Swap via useTheme() at the call site.
 export const houseColorsHex: Record<'dark' | 'light', Record<string, string>> = {
   dark: {
-    'Phillips': '#96B8D4',
+    'Phillips': '#C1666B',
     "Sotheby's": '#D4B896',
     "Christie's": '#C9BEAC',
     'Rago': '#B89A6E',
@@ -79,7 +79,7 @@ export const categoryColors: Record<string, string> = {
 export const categoryColorsHex: Record<'dark' | 'light', Record<string, string>> = {
   dark: {
     original: '#D4B896',
-    print: '#96B8D4',
+    print: '#C1666B',
     photograph: '#7A9CB8',
     sculpture: '#C4A265',
     design: '#C9BEAC',

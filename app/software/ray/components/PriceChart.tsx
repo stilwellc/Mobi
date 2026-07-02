@@ -23,7 +23,7 @@ function formatAxis(value: number): string {
   return `$${value}`;
 }
 
-const tooltipColors: Record<string, string> = { avgPrice: 'var(--color-accent-ocean)', highPrice: 'var(--color-accent-gold)', trendline: 'var(--color-text-secondary)' };
+const tooltipColors: Record<string, string> = { avgPrice: 'var(--color-accent-wine)', highPrice: 'var(--color-accent-gold)', trendline: 'var(--color-text-secondary)' };
 const tooltipLabels: Record<string, string> = { avgPrice: 'Avg', highPrice: 'High', trendline: 'Trend' };
 
 function CustomTooltip({ active, payload, label }: { active?: boolean; payload?: Array<{ value: number; dataKey: string }>; label?: string }) {
@@ -40,7 +40,7 @@ function CustomTooltip({ active, payload, label }: { active?: boolean; payload?:
         {label}
       </div>
       {payload.filter(e => e.value != null).map((entry) => (
-        <div key={entry.dataKey} style={{ fontSize: 13, color: tooltipColors[entry.dataKey] || 'var(--color-accent-ocean)', marginBottom: 1, fontWeight: 500 }}>
+        <div key={entry.dataKey} style={{ fontSize: 13, color: tooltipColors[entry.dataKey] || 'var(--color-accent-wine)', marginBottom: 1, fontWeight: 500 }}>
           {tooltipLabels[entry.dataKey] || entry.dataKey}: {formatAxis(entry.value)}
         </div>
       ))}
@@ -172,7 +172,7 @@ export default function PriceChart({ lots, allLots, categoryFilter = 'all', onCa
           letterSpacing: '-0.02em',
           padding: '16px 0 12px',
         }}>
-          Price <span style={{ fontStyle: 'italic', color: 'var(--color-accent-ocean)' }}>History</span>
+          Price <span style={{ fontStyle: 'italic', color: 'var(--color-accent-wine)' }}>History</span>
           {filterLabel && (
             <span style={{ fontSize: 18, color: 'var(--color-text-muted)', fontStyle: 'normal', marginLeft: 8 }}>{filterLabel}</span>
           )}
@@ -185,7 +185,7 @@ export default function PriceChart({ lots, allLots, categoryFilter = 'all', onCa
           <div style={{ padding: '20px 8px 0 0' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '0 20px 12px', }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--color-accent-ocean)', flexShrink: 0 }} />
+                <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--color-accent-wine)', flexShrink: 0 }} />
                 <span style={{ fontSize: 12, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--color-text-faint)', fontWeight: 600 }}>
                   Avg
                 </span>
@@ -208,8 +208,8 @@ export default function PriceChart({ lots, allLots, categoryFilter = 'all', onCa
                 <AreaChart data={data} margin={{ top: 4, right: 16, left: 8, bottom: 0 }}>
                   <defs>
                     <linearGradient id="blueGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="var(--color-accent-ocean)" stopOpacity={0.2} />
-                      <stop offset="100%" stopColor="var(--color-accent-ocean)" stopOpacity={0.01} />
+                      <stop offset="0%" stopColor="var(--color-accent-wine)" stopOpacity={0.2} />
+                      <stop offset="100%" stopColor="var(--color-accent-wine)" stopOpacity={0.01} />
                     </linearGradient>
                     <linearGradient id="goldGrad" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="0%" stopColor="var(--color-accent-gold)" stopOpacity={0.1} />
@@ -244,11 +244,11 @@ export default function PriceChart({ lots, allLots, categoryFilter = 'all', onCa
                   <Area
                     type="monotone"
                     dataKey="avgPrice"
-                    stroke="var(--color-accent-ocean)"
+                    stroke="var(--color-accent-wine)"
                     strokeWidth={2}
                     fill="url(#blueGrad)"
                     dot={false}
-                    activeDot={{ r: 3, fill: 'var(--color-accent-ocean)', stroke: 'var(--color-bg)', strokeWidth: 2 }}
+                    activeDot={{ r: 3, fill: 'var(--color-accent-wine)', stroke: 'var(--color-bg)', strokeWidth: 2 }}
                   />
                   <Line
                     type="monotone"
@@ -343,7 +343,7 @@ export default function PriceChart({ lots, allLots, categoryFilter = 'all', onCa
                       width: 7,
                       height: 7,
                       borderRadius: '50%',
-                      background: categoryFilter === 'all' ? 'var(--color-accent-ocean)' : 'var(--color-text-faint)',
+                      background: categoryFilter === 'all' ? 'var(--color-accent-wine)' : 'var(--color-text-faint)',
                       marginRight: 10,
                       verticalAlign: 'middle',
                       opacity: categoryFilter === 'all' ? 1 : 0.35,
@@ -351,7 +351,7 @@ export default function PriceChart({ lots, allLots, categoryFilter = 'all', onCa
                     }} />
                     <span style={{
                       fontWeight: categoryFilter === 'all' ? 600 : 400,
-                      color: categoryFilter === 'all' ? 'var(--color-accent-ocean)' : 'var(--color-fg)',
+                      color: categoryFilter === 'all' ? 'var(--color-accent-wine)' : 'var(--color-fg)',
                       transition: 'color var(--duration-fast) var(--ease-signature)',
                     }}>
                       All
@@ -360,7 +360,7 @@ export default function PriceChart({ lots, allLots, categoryFilter = 'all', onCa
                   <td className="ray-cat-td ray-cat-td-right" style={{ color: 'var(--color-text-muted)' }}>
                     {totalLots}
                   </td>
-                  <td className="ray-cat-td ray-cat-td-right" style={{ fontWeight: 500, color: 'var(--color-accent-ocean)' }}>
+                  <td className="ray-cat-td ray-cat-td-right" style={{ fontWeight: 500, color: 'var(--color-accent-wine)' }}>
                     —
                   </td>
                   <td className="ray-cat-td ray-cat-td-right ray-cat-record-col" style={{ fontWeight: 500 }}>
@@ -402,7 +402,7 @@ export default function PriceChart({ lots, allLots, categoryFilter = 'all', onCa
                       <td className="ray-cat-td ray-cat-td-right" style={{ color: 'var(--color-text-muted)' }}>
                         {cat.count}
                       </td>
-                      <td className="ray-cat-td ray-cat-td-right" style={{ fontWeight: 500, color: 'var(--color-accent-ocean)' }}>
+                      <td className="ray-cat-td ray-cat-td-right" style={{ fontWeight: 500, color: 'var(--color-accent-wine)' }}>
                         {cat.avgPrice > 0 ? formatPrice(cat.avgPrice) : '—'}
                       </td>
                       <td className="ray-cat-td ray-cat-td-right ray-cat-record-col" style={{ fontWeight: 500 }}>

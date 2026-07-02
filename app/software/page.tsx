@@ -18,7 +18,7 @@ const [ray, soiree] = software.items;
 export default function SoftwarePage() {
   return (
     <div style={{ minHeight: '100vh' }}>
-      {/* Ritual header — eyebrow, masked h1 over the route numeral, intro, ocean horizon */}
+      {/* Ritual header — eyebrow, masked h1 over the route numeral, intro, wine horizon */}
       <section
         className="rail"
         style={{
@@ -67,10 +67,10 @@ export default function SoftwarePage() {
         >
           I build software the way I build objects — considered, deliberate, nothing accidental.
         </p>
-        <Horizon variant="ocean" />
+        <Horizon variant="wine" />
       </section>
 
-      {/* The two rooms — editorial spreads, ocean accent, alternating sides */}
+      {/* The two rooms — editorial spreads, wine accent, alternating sides */}
       <section className="rail" style={{ paddingBottom: 'var(--space-6)' }}>
         <IndexSpread
           index="01"
@@ -79,7 +79,7 @@ export default function SoftwarePage() {
           description={`Auction intelligence for the art market — the flagship. Tracks ${ARTISTS.length} artists across 5 auction houses, automatically.`}
           meta={`${ray.meta!.year} · ${ray.meta!.stack} · ${ray.meta!.status}`}
           href={ray.href!}
-          accent="ocean"
+          accent="wine"
           image={{ src: ray.image!, alt: ray.imageAlt! }}
         />
         <IndexSpread
@@ -89,7 +89,7 @@ export default function SoftwarePage() {
           description={soiree.description}
           meta={`${soiree.meta!.year} · ${soiree.meta!.stack}`}
           href={soiree.url!}
-          accent="ocean"
+          accent="wine"
           reverse
           image={{ src: soiree.image!, alt: soiree.imageAlt! }}
         />

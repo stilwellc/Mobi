@@ -6,7 +6,7 @@ import { horizonGradients } from './components/Horizon';
 
 /**
  * THE ROUTE RITUAL — every click is the same gesture: horizon,
- * then light. One drawn 1px line (ocean in software's rooms, gold
+ * then light. One drawn 1px line (wine in software's rooms, gold
  * everywhere else), then content rises 20px into place. Next.js
  * remounts template.tsx per navigation, so the ritual fires on
  * every route change (and once on first load — that IS the beat 1
@@ -23,7 +23,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
   const pathname = usePathname() ?? '/';
   const isRay = pathname.startsWith('/software/ray');
   const gradient = pathname.startsWith('/software')
-    ? horizonGradients.ocean
+    ? horizonGradients.wine
     : horizonGradients.gold;
 
   return (

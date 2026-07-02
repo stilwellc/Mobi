@@ -58,7 +58,7 @@ export default function LotCard({
   onToggleSave?: (lotId: string) => void;
 }) {
   const [modalOpen, setModalOpen] = useState(false);
-  const color = houseColors[lot.auctionHouse] || 'var(--color-accent-ocean)';
+  const color = houseColors[lot.auctionHouse] || 'var(--color-accent-wine)';
 
   function handleAddToCalendar(e: React.MouseEvent) {
     e.preventDefault();
@@ -110,8 +110,8 @@ export default function LotCard({
         .ray-lot-img img[data-error=true] { opacity: 0; }
         .ray-remind-btn {
           background: transparent;
-          border: 1px solid color-mix(in srgb, var(--color-accent-ocean) 45%, transparent);
-          color: var(--color-accent-ocean);
+          border: 1px solid color-mix(in srgb, var(--color-accent-wine) 45%, transparent);
+          color: var(--color-accent-wine);
           transition:
             background var(--duration-fast) var(--ease-signature),
             border-color var(--duration-fast) var(--ease-signature),
@@ -119,8 +119,8 @@ export default function LotCard({
         }
         .ray-remind-btn:hover,
         .ray-remind-btn:focus-visible {
-          background: var(--color-accent-ocean);
-          border-color: var(--color-accent-ocean);
+          background: var(--color-accent-wine);
+          border-color: var(--color-accent-wine);
           color: #060606;
         }
         .ray-save-btn:hover { opacity: 0.85; }
@@ -216,19 +216,19 @@ export default function LotCard({
             gap: 6,
             padding: '3px 10px',
             borderRadius: 100,
-            border: '1px solid color-mix(in srgb, var(--color-accent-ocean) 55%, transparent)',
+            border: '1px solid color-mix(in srgb, var(--color-accent-wine) 55%, transparent)',
             background: 'color-mix(in srgb, var(--color-bg) 68%, transparent)',
             fontSize: 12,
             letterSpacing: '0.12em',
             textTransform: 'uppercase',
-            color: 'var(--color-accent-ocean)',
+            color: 'var(--color-accent-wine)',
             fontWeight: 600,
           }}>
             <span aria-hidden="true" style={{
               width: 5,
               height: 5,
               borderRadius: '50%',
-              background: 'var(--color-accent-ocean)',
+              background: 'var(--color-accent-wine)',
               flexShrink: 0,
             }} />
             Live
@@ -264,7 +264,7 @@ export default function LotCard({
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              background: saved ? 'var(--color-accent-ocean)' : 'rgba(0,0,0,0.45)',
+              background: saved ? 'var(--color-accent-wine)' : 'rgba(0,0,0,0.45)',
               border: 'none',
               borderRadius: 8,
               cursor: 'pointer',
@@ -353,7 +353,7 @@ export default function LotCard({
         }}>
           <span style={{
             fontSize: 14,
-            color: 'var(--color-accent-ocean)',
+            color: 'var(--color-accent-wine)',
             fontWeight: 500,
             fontVariantNumeric: 'tabular-nums',
           }}>

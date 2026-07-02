@@ -9,7 +9,7 @@ export type IndexRowProps = {
   meta?: string;                  // mono meta line: 'year · stack'
   href: string;
   external?: boolean;
-  accent?: 'gold' | 'ocean';      // default 'gold'
+  accent?: 'gold' | 'wine';      // default 'gold'
   media?: { src: string; alt: string };  // optional 16:10 plate
   flagship?: boolean;
 };

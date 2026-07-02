@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from 'react';
 /**
  * The crawl delivers — Ray's loading + arrival choreography.
  *
- * RayLoading: one 1px ocean hairline (~120px) in the content column,
+ * RayLoading: one 1px wine hairline (~120px) in the content column,
  * looping scaleX 0.2 -> 1 origin-left over 1.2s. Reduced motion:
  * static full line + the mono label.
  *
@@ -99,7 +99,7 @@ export function RayLoading() {
         .ray-loading-line {
           width: 120px;
           height: 1px;
-          background: var(--color-accent-ocean);
+          background: var(--color-accent-wine);
           transform-origin: left;
           animation: rayCrawl 1.2s var(--ease-signature) infinite;
         }

@@ -14,7 +14,7 @@ interface ProjectCardProps {
 
 /** hex accent → theme-aware, AA-safe token for any small TEXT usage (light gold fails AA at 12px, so gold text uses the -text variant) */
 function accentText(accent: string) {
-  return accent === '#96B8D4' ? 'var(--color-accent-ocean)' : 'var(--color-accent-gold-text)';
+  return accent === '#C1666B' ? 'var(--color-accent-wine)' : 'var(--color-accent-gold-text)';
 }
 
 export default function ProjectCard({ item, accent, index, flagship = false }: ProjectCardProps) {

@@ -96,14 +96,14 @@ export default function PastResults({ lots, showArtist = false, categoryFilter: 
           transition: border-color var(--duration-fast) var(--ease-signature), color var(--duration-fast) var(--ease-signature), background var(--duration-fast) var(--ease-signature);
         }
         .ray-sort-pill:hover {
-          border-color: var(--color-accent-ocean);
-          color: var(--color-accent-ocean);
+          border-color: var(--color-accent-wine);
+          color: var(--color-accent-wine);
         }
         /* Quote-free selector on purpose - quotes in server-rendered style
            text get HTML-escaped and break hydration. */
         .ray-sort-pill[data-active=true] {
-          background: var(--color-accent-ocean);
-          border-color: var(--color-accent-ocean);
+          background: var(--color-accent-wine);
+          border-color: var(--color-accent-wine);
           color: #060606;
         }
         @media (max-width: 768px) {
@@ -129,7 +129,7 @@ export default function PastResults({ lots, showArtist = false, categoryFilter: 
               fontWeight: 300,
               letterSpacing: '-0.02em',
             }}>
-              Recent <span style={{ fontStyle: 'italic', color: 'var(--color-accent-ocean)' }}>Results</span>
+              Recent <span style={{ fontStyle: 'italic', color: 'var(--color-accent-wine)' }}>Results</span>
             </h2>
             <p style={{ fontSize: 12, color: 'var(--color-text-muted)', fontWeight: 400, marginTop: 6 }}>
               {filtered.length.toLocaleString()} sold lots
@@ -185,7 +185,7 @@ export default function PastResults({ lots, showArtist = false, categoryFilter: 
         overflow: 'hidden',
       }}>
         {shown.map((lot, i) => {
-          const color = houseColors[lot.auctionHouse] || 'var(--color-accent-ocean)';
+          const color = houseColors[lot.auctionHouse] || 'var(--color-accent-wine)';
           const catColor = (lot.category && lot.category !== 'unknown') ? categoryColors[lot.category] : null;
           return (
             <div
@@ -249,7 +249,7 @@ export default function PastResults({ lots, showArtist = false, categoryFilter: 
                 <div style={{
                   fontSize: 15,
                   fontWeight: 500,
-                  color: 'var(--color-accent-ocean)',
+                  color: 'var(--color-accent-wine)',
                   lineHeight: 1.3,
                 }}>
                   {lot.priceUsd ? formatPrice(lot.priceUsd) : '—'}
@@ -302,7 +302,7 @@ export default function PastResults({ lots, showArtist = false, categoryFilter: 
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    background: savedIds.includes(lot.id) ? 'var(--color-accent-ocean)' : 'transparent',
+                    background: savedIds.includes(lot.id) ? 'var(--color-accent-wine)' : 'transparent',
                     border: savedIds.includes(lot.id) ? 'none' : '1px solid var(--color-border)',
                     borderRadius: 8,
                     cursor: 'pointer',

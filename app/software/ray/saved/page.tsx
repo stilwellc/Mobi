@@ -104,7 +104,7 @@ export default function SavedPage() {
             <Link
               href="/software/ray"
               className="link-action"
-              style={{ color: 'var(--color-accent-ocean)' }}
+              style={{ color: 'var(--color-accent-wine)' }}
             >
               Browse upcoming lots <span className="arrow">&#8594;</span>
             </Link>
@@ -124,7 +124,7 @@ export default function SavedPage() {
                   marginBottom: 24,
                 }}
               >
-                Upcoming <span style={{ fontStyle: 'italic', color: 'var(--color-accent-ocean)' }}>Lots</span>
+                Upcoming <span style={{ fontStyle: 'italic', color: 'var(--color-accent-wine)' }}>Lots</span>
               </h2>
 
               <div className="ray-saved-grid">

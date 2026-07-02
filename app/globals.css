@@ -22,8 +22,8 @@
      NOTE: --color-text-faint is large-text-only (3.80:1 on bg / 3.64:1 on elevated). */
   --color-accent-gold: #D4B896;
   --color-accent-gold-text: #D4B896; /* AA-safe gold for small text (9.95:1 on elevated) */
-  --color-accent-ocean: #96B8D4;
-  --color-accent-ocean-text: #96B8D4; /* AA-safe ocean for small text (9.46:1 on bg) */
+  --color-accent-wine: #C1666B;
+  --color-accent-wine-text: #CF7F83; /* AA-safe wine for small text (6.57:1 on bg) */
   --color-accent-coral: #E08D6D;
 
   /* Borders & chrome */
@@ -73,8 +73,8 @@
      (or --color-text-secondary) for small gold text. */
   --color-accent-gold: #A8875D;
   --color-accent-gold-text: #7D6140; /* AA-safe gold for small text (5.4:1 on elevated) */
-  --color-accent-ocean: #4E7396; /* display/graphics only in light (4.38:1) */
-  --color-accent-ocean-text: #456685; /* AA-safe ocean for small text (5.3:1 on bg) */
+  --color-accent-wine: #8F4149; /* display/graphics only in light (4.38:1) */
+  --color-accent-wine-text: #7A343C; /* AA-safe wine for small text (7.76:1 on bg) */
   --color-accent-coral: #C06A47;
 
   --color-border: rgba(36, 30, 21, 0.10);
@@ -102,7 +102,7 @@
    Dark values are the golden-hour originals; light values are darkened
    so 12px labels pass WCAG AA (>= 4.5:1) on --color-bg-elevated. */
 :root {
-  --ray-house-phillips: #96B8D4;
+  --ray-house-phillips: #C1666B;
   --ray-house-sothebys: #D4B896;
   --ray-house-christies: #C9BEAC;
   --ray-house-rago: #B89A6E;
@@ -111,7 +111,7 @@
   --ray-house-bonhams: #C4A265;
   --ray-house-hindman: #9A8F7D;
   --ray-cat-original: #D4B896;
-  --ray-cat-print: #96B8D4;
+  --ray-cat-print: #C1666B;
   --ray-cat-photograph: #7A9CB8;
   --ray-cat-sculpture: #C4A265;
   --ray-cat-design: #C9BEAC;
@@ -442,7 +442,7 @@ h1 {
   overflow: hidden;
 }
 .ambient-field .orb-gold,
-.ambient-field .orb-ocean {
+.ambient-field .orb-wine {
   position: absolute;
   border-radius: 50%;
   filter: blur(90px);
@@ -455,19 +455,19 @@ h1 {
   background: radial-gradient(circle, rgba(212, 184, 150, 0.07) 0%, transparent 65%);
   animation: floatSlow 26s ease-in-out infinite;
 }
-.ambient-field .orb-ocean {
+.ambient-field .orb-wine {
   width: min(36vw, 460px);
   height: min(36vw, 460px);
   bottom: -10%;
   left: -8%;
-  background: radial-gradient(circle, rgba(150, 184, 212, 0.05) 0%, transparent 65%);
+  background: radial-gradient(circle, rgba(193, 102, 107, 0.05) 0%, transparent 65%);
   animation: floatSlow 32s ease-in-out infinite reverse;
 }
 [data-theme="light"] .ambient-field .orb-gold {
   background: radial-gradient(circle, rgba(168, 135, 93, 0.10) 0%, transparent 65%);
 }
-[data-theme="light"] .ambient-field .orb-ocean {
-  background: radial-gradient(circle, rgba(78, 115, 150, 0.07) 0%, transparent 65%);
+[data-theme="light"] .ambient-field .orb-wine {
+  background: radial-gradient(circle, rgba(143, 65, 73, 0.07) 0%, transparent 65%);
 }
 
 /* Cursor veil — a faint light that travels with the pointer (fine pointers only) */
@@ -494,7 +494,7 @@ h1 {
 @media (prefers-reduced-motion: reduce) {
   .glass::before { background: linear-gradient(180deg, var(--glass-specular) 0%, transparent 45%); }
   .cursor-veil { display: none; }
-  .ambient-field .orb-gold, .ambient-field .orb-ocean { animation: none; }
+  .ambient-field .orb-gold, .ambient-field .orb-wine { animation: none; }
 }
 
 @keyframes floatSlow {
@@ -794,13 +794,13 @@ h1 {
   transform: translateX(2px);
   color: var(--color-accent-gold-text);
 }
-.index-row[data-accent=ocean]:hover,
-.index-row[data-accent=ocean]:focus-visible {
-  border-bottom-color: var(--color-accent-ocean);
+.index-row[data-accent=wine]:hover,
+.index-row[data-accent=wine]:focus-visible {
+  border-bottom-color: var(--color-accent-wine);
 }
-.index-row[data-accent=ocean]:hover .index-row-arrow,
-.index-row[data-accent=ocean]:focus-visible .index-row-arrow {
-  color: var(--color-accent-ocean);
+.index-row[data-accent=wine]:hover .index-row-arrow,
+.index-row[data-accent=wine]:focus-visible .index-row-arrow {
+  color: var(--color-accent-wine);
 }
 
 /* Spread — image is DOM-first so it stacks ABOVE text on mobile */
@@ -873,22 +873,22 @@ h1 {
   transform: translateX(2px);
   color: var(--color-accent-gold-text);
 }
-.index-spread[data-accent=ocean]:hover,
-.index-spread[data-accent=ocean]:focus-visible {
-  border-bottom-color: var(--color-accent-ocean);
+.index-spread[data-accent=wine]:hover,
+.index-spread[data-accent=wine]:focus-visible {
+  border-bottom-color: var(--color-accent-wine);
 }
-.index-spread[data-accent=ocean]:hover .index-spread-arrow,
-.index-spread[data-accent=ocean]:focus-visible .index-spread-arrow {
-  color: var(--color-accent-ocean);
+.index-spread[data-accent=wine]:hover .index-spread-arrow,
+.index-spread[data-accent=wine]:focus-visible .index-spread-arrow {
+  color: var(--color-accent-wine);
 }
 
 /* ============================================================
    ROUTE-AWARE AMBIENT — each orb is two stacked gradient layers;
    ONLY opacity transitions (never background). Shell applier
    renders: .ambient-field > .orb.orb-a / .orb.orb-b, each
-   containing .orb-layer-gold + .orb-layer-ocean, and sets
-   data-ambient=neutral|ocean|gold on the field div.
-   Legacy single-layer .orb-gold/.orb-ocean rules above remain
+   containing .orb-layer-gold + .orb-layer-wine, and sets
+   data-ambient=neutral|wine|gold on the field div.
+   Legacy single-layer .orb-gold/.orb-wine rules above remain
    until Shell migrates the markup.
    ============================================================ */
 .ambient-field .orb {
@@ -911,7 +911,7 @@ h1 {
   animation: floatSlow 32s ease-in-out infinite reverse;
 }
 .ambient-field .orb-layer-gold,
-.ambient-field .orb-layer-ocean {
+.ambient-field .orb-layer-wine {
   position: absolute;
   inset: 0;
   border-radius: 50%;
@@ -920,30 +920,30 @@ h1 {
 .ambient-field .orb-layer-gold {
   background: radial-gradient(circle, rgba(212, 184, 150, 0.07) 0%, transparent 65%);
 }
-.ambient-field .orb-layer-ocean {
-  background: radial-gradient(circle, rgba(150, 184, 212, 0.05) 0%, transparent 65%);
+.ambient-field .orb-layer-wine {
+  background: radial-gradient(circle, rgba(193, 102, 107, 0.05) 0%, transparent 65%);
 }
 [data-theme=light] .ambient-field .orb-layer-gold {
   background: radial-gradient(circle, rgba(168, 135, 93, 0.10) 0%, transparent 65%);
 }
-[data-theme=light] .ambient-field .orb-layer-ocean {
-  background: radial-gradient(circle, rgba(78, 115, 150, 0.07) 0%, transparent 65%);
+[data-theme=light] .ambient-field .orb-layer-wine {
+  background: radial-gradient(circle, rgba(143, 65, 73, 0.07) 0%, transparent 65%);
 }
-/* Default = current balance: gold top-right, ocean bottom-left */
+/* Default = current balance: gold top-right, wine bottom-left */
 .ambient-field .orb-a .orb-layer-gold { opacity: 1; }
-.ambient-field .orb-a .orb-layer-ocean { opacity: 0; }
+.ambient-field .orb-a .orb-layer-wine { opacity: 0; }
 .ambient-field .orb-b .orb-layer-gold { opacity: 0; }
-.ambient-field .orb-b .orb-layer-ocean { opacity: 1; }
+.ambient-field .orb-b .orb-layer-wine { opacity: 1; }
 /* Section tints */
-.ambient-field[data-ambient=ocean] .orb .orb-layer-ocean { opacity: 1; }
-.ambient-field[data-ambient=ocean] .orb .orb-layer-gold { opacity: 0.35; }
+.ambient-field[data-ambient=wine] .orb .orb-layer-wine { opacity: 1; }
+.ambient-field[data-ambient=wine] .orb .orb-layer-gold { opacity: 0.35; }
 .ambient-field[data-ambient=gold] .orb .orb-layer-gold { opacity: 1; }
-.ambient-field[data-ambient=gold] .orb .orb-layer-ocean { opacity: 0.35; }
+.ambient-field[data-ambient=gold] .orb .orb-layer-wine { opacity: 0.35; }
 /* Neutral restores the default balance (wins on specificity) */
 .ambient-field[data-ambient=neutral] .orb-a .orb-layer-gold { opacity: 1; }
-.ambient-field[data-ambient=neutral] .orb-a .orb-layer-ocean { opacity: 0; }
+.ambient-field[data-ambient=neutral] .orb-a .orb-layer-wine { opacity: 0; }
 .ambient-field[data-ambient=neutral] .orb-b .orb-layer-gold { opacity: 0; }
-.ambient-field[data-ambient=neutral] .orb-b .orb-layer-ocean { opacity: 1; }
+.ambient-field[data-ambient=neutral] .orb-b .orb-layer-wine { opacity: 1; }
 
 @media (prefers-reduced-motion: reduce) {
   .ambient-field .orb { animation: none; }

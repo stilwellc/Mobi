@@ -11,7 +11,7 @@ import Horizon from '../../../components/Horizon';
  *   2. h1 reveals through a single-line overflow mask
  *   3. sub rises 12px + fades
  *   4. mono timestamp fades alone ~350ms later — the closing beat
- * The bespoke gradient divider is replaced by the shared Horizon (ocean).
+ * The bespoke gradient divider is replaced by the shared Horizon (wine).
  *
  * NOTE: keep the style block below free of quotes, apostrophes and
  * angle brackets — React escapes them server-side and hydration of
@@ -105,7 +105,7 @@ export default function RayHero({
       </section>
 
       <div className="ray-divider-wrap rail">
-        <Horizon variant="ocean" />
+        <Horizon variant="wine" />
       </div>
     </>
   );

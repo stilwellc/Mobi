@@ -164,7 +164,7 @@ export default function TopSales({ allLots }: Props) {
                     textAlign: 'right',
                     fontWeight: 500,
                     fontSize: 15,
-                    color: 'var(--color-accent-ocean)',
+                    color: 'var(--color-accent-wine)',
                     whiteSpace: 'nowrap',
                   }}>
                     {formatPrice(lot.priceUsd || 0)}
@@ -195,7 +195,7 @@ export default function TopSales({ allLots }: Props) {
                     }}>
                       <span style={{
                         width: 6, height: 6, borderRadius: '50%',
-                        background: houseColors[lot.auctionHouse] || 'var(--color-accent-ocean)',
+                        background: houseColors[lot.auctionHouse] || 'var(--color-accent-wine)',
                         opacity: 0.7, flexShrink: 0,
                       }} />
                       {lot.auctionHouse}

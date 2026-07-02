@@ -122,7 +122,7 @@ export default function StatsGrid({ stats, lots, categoryFilter = 'all' }: Props
               {card.label}
             </div>
             <div className="ray-stat-value" style={{
-              color: 'var(--color-accent-ocean)',
+              color: 'var(--color-accent-wine)',
             }}>
               {card.value}
             </div>

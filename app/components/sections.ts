@@ -3,7 +3,7 @@ import { ARTISTS } from '../software/ray/constants';
 
 export const sections: Section[] = [
   {
-    id: 'software', label: 'Software', accent: '#96B8D4',
+    id: 'software', label: 'Software', accent: '#C1666B',
     tagline: 'Design-First Products',
     description: 'Products I build like objects — considered, deliberate, nothing accidental.',
     items: [

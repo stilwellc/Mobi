@@ -102,7 +102,7 @@ export default function PriceDistribution({ allLots }: Props) {
                 width={40}
               />
               <Tooltip content={<DistributionTooltip />} cursor={{ fill: 'var(--color-hover-item)' }} />
-              <Bar dataKey="count" fill="var(--color-accent-ocean)" fillOpacity={0.7} radius={[4, 4, 0, 0]} />
+              <Bar dataKey="count" fill="var(--color-accent-wine)" fillOpacity={0.7} radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>

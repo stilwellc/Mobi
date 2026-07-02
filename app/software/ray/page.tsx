@@ -101,7 +101,7 @@ export default function RayPage() {
 
       <RayHero
         eyebrow="Market Intelligence"
-        title={<span style={{ fontStyle: 'italic', color: 'var(--color-accent-ocean)' }}>Ray</span>}
+        title={<span style={{ fontStyle: 'italic', color: 'var(--color-accent-wine)' }}>Ray</span>}
         sub={loading
           ? '\u00A0' /* reserve the line — no zero-count flash while the crawl delivers */
           : <>Tracking {ARTISTS.length} artists across {houseCount} auction houses.</>}
@@ -145,7 +145,7 @@ export default function RayPage() {
                     fontFamily: 'var(--font-serif), serif',
                     fontSize: 34,
                     fontWeight: 300,
-                    color: 'var(--color-accent-ocean)',
+                    color: 'var(--color-accent-wine)',
                     lineHeight: 1,
                     marginBottom: 8,
                   }}>
@@ -187,7 +187,7 @@ export default function RayPage() {
                     fontWeight: 300,
                     letterSpacing: '-0.02em',
                   }}>
-                    Upcoming <span style={{ fontStyle: 'italic', color: 'var(--color-accent-ocean)' }}>Lots</span>
+                    Upcoming <span style={{ fontStyle: 'italic', color: 'var(--color-accent-wine)' }}>Lots</span>
                   </h2>
                   <span style={{
                     fontFamily: 'var(--font-mono), monospace',

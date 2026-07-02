@@ -80,7 +80,7 @@ export default function STLViewer({ stlPath, onLoad, onDimensions }: STLViewerPr
     key.shadow.bias = -0.0005;
     scene.add(key);
 
-    const fill = new THREE.DirectionalLight(isLight ? 0x4e7396 : 0x96b8d4, 0.25);
+    const fill = new THREE.DirectionalLight(isLight ? 0x8f4149 : 0xc1666b, 0.25);
     fill.position.set(-3, 1.5, -2);
     scene.add(fill);
 
