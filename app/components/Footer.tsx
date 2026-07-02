@@ -159,7 +159,8 @@ export default function Footer() {
               letterSpacing: '0.02em',
             }}
           >
-            &copy; {new Date().getFullYear()} co.stil &mdash; the studio of Collin Stilwell
+            &copy; {new Date().getFullYear()} co.stil &mdash; the studio of{' '}
+            <span style={{ whiteSpace: 'nowrap' }}>Collin Stilwell</span>
           </span>
           <span
             style={{

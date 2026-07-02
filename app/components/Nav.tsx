@@ -231,7 +231,12 @@ export default function Nav() {
               box-shadow var(--duration-base) var(--ease-signature);
           }
           .site-header.is-condensed {
-            background: var(--glass-bg-hover, var(--color-nav-bg));
+            background: linear-gradient(
+              180deg,
+              var(--color-bg) 0%,
+              var(--color-bg) 68%,
+              color-mix(in srgb, var(--color-bg) 72%, transparent) 100%
+            );
             backdrop-filter: blur(28px) saturate(135%);
             -webkit-backdrop-filter: blur(28px) saturate(135%);
             border-bottom-color: var(--glass-border, var(--color-border));

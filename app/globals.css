@@ -23,6 +23,7 @@
   --color-accent-gold: #D4B896;
   --color-accent-gold-text: #D4B896; /* AA-safe gold for small text (9.95:1 on elevated) */
   --color-accent-ocean: #96B8D4;
+  --color-accent-ocean-text: #96B8D4; /* AA-safe ocean for small text (9.46:1 on bg) */
   --color-accent-coral: #E08D6D;
 
   /* Borders & chrome */
@@ -72,7 +73,8 @@
      (or --color-text-secondary) for small gold text. */
   --color-accent-gold: #A8875D;
   --color-accent-gold-text: #7D6140; /* AA-safe gold for small text (5.4:1 on elevated) */
-  --color-accent-ocean: #4E7396;
+  --color-accent-ocean: #4E7396; /* display/graphics only in light (4.38:1) */
+  --color-accent-ocean-text: #456685; /* AA-safe ocean for small text (5.3:1 on bg) */
   --color-accent-coral: #C06A47;
 
   --color-border: rgba(36, 30, 21, 0.10);
