@@ -2,117 +2,142 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================================
+   co.stil — Golden Hour tokens
+   Foundation-owned. Everyone consumes; nobody redefines.
+   ============================================================ */
+
 :root {
-  /* Core surfaces */
-  --color-bg: #060606;
-  --color-bg-card: #0c0c0c;
-  --color-fg: #F0EDE8;
+  /* Surfaces */
+  --color-bg: #0D0B08;
+  --color-bg-elevated: #14110D;
+  --color-fg: #EDE6DA;
 
   /* Text scale */
-  --color-text-primary: #F0EDE8;
-  --color-text-secondary: #777;
-  --color-text-muted: #555;
-  --color-text-subtle: #444;
-  --color-text-faint: #333;
-  --color-text-ghost: #2a2a2a;
-  --color-text-label: #3a3a3a;
-  --color-text-detail: #888;
+  --color-text-secondary: #C9BEAC;
+  --color-text-muted: #9A8F7D;
+  --color-text-faint: #756C5D;
 
-  /* Borders & dividers */
-  --color-border: rgba(255,255,255,0.04);
-  --color-border-mid: rgba(255,255,255,0.06);
-  --color-border-strong: rgba(255,255,255,0.08);
-  --color-divider: #222;
-  --color-chip-border: #1a1a1a;
-
-  /* Overlays & hover */
-  --color-overlay-light: rgba(255,255,255,0.03);
-  --color-overlay-lighter: rgba(255,255,255,0.05);
-  --color-hover-surface: rgba(255,255,255,0.008);
-  --color-hover-item: rgba(255,255,255,0.015);
-
-  /* Nav & modal backdrops */
-  --color-nav-bg: rgba(6,6,6,0.85);
-  --color-modal-bg: rgba(6,6,6,0.95);
-  --color-modal-bg-deep: rgba(6,6,6,0.97);
-
-  /* Image overlay */
-  --color-image-overlay: rgba(12,12,12,0.8);
-
-  /* Foreground variants */
-  --color-fg-half: rgba(240,237,232,0.5);
-  --color-fg-soft: rgba(240,237,232,0.65);
-  --color-fg-dim: rgba(240,237,232,0.7);
-
-  /* Scrollbar */
-  --color-scrollbar-track: #060606;
-  --color-scrollbar-thumb: #222;
-
-  /* Accent colors (same in both themes) */
+  /* Accents.
+     NOTE: --color-text-faint is large-text-only (3.80:1 on bg / 3.64:1 on elevated). */
   --color-accent-gold: #D4B896;
-  --color-accent-blue: #96B8D4;
-  --color-accent-green: #B8D496;
-  --color-accent-pink: #D496B8;
+  --color-accent-gold-text: #D4B896; /* AA-safe gold for small text (9.95:1 on elevated) */
+  --color-accent-ocean: #96B8D4;
+  --color-accent-coral: #E08D6D;
 
-  /* Shadows */
-  --shadow-card-hover: 0 20px 60px rgba(0,0,0,0.25), 0 0 0 1px rgba(255,255,255,0.05);
-  --shadow-btn-hover: 0 12px 40px rgba(212,184,150,0.15);
+  /* Borders & chrome */
+  --color-border: rgba(212, 184, 150, 0.10);
+  --color-border-mid: rgba(212, 184, 150, 0.18);
+  --color-nav-bg: rgba(13, 11, 8, 0.78);
 
-  /* Misc */
-  --color-wip: #444;
+  /* Type scale */
+  --text-display: clamp(3rem, 8vw, 6.5rem);   /* Cormorant 300, lh 1.05, ls -0.02em */
+  --text-title: clamp(1.75rem, 3vw, 2.5rem);
+  --text-body: 1.0625rem;                      /* Syne, lh 1.65, max 65ch */
+  --text-label: 0.75rem;                       /* 600, ls 0.18em, uppercase */
+
+  /* Motion — one easing, three durations */
+  --ease-signature: cubic-bezier(0.23, 1, 0.32, 1);
+  --duration-fast: 200ms;
+  --duration-base: 500ms;
+  --duration-slow: 800ms;
+
+  /* Space — 8px rhythm */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 40px;
+  --space-5: 64px;
+  --space-6: 104px;
+  --space-7: 168px;
+  --content-max: 1200px;
+  --prose-max: 65ch;
+
   --grain-opacity: 0.03;
 
-  /* RGB triplets */
-  --foreground-rgb: 240, 237, 232;
-  --background-rgb: 6, 6, 6;
+  color-scheme: dark;
 }
 
 [data-theme="light"] {
-  --color-bg: #F5F3EF;
-  --color-bg-card: #FFFFFF;
-  --color-fg: #1a1a1a;
+  --color-bg: #F5F0E6;
+  --color-bg-elevated: #FBF8F1;
+  --color-fg: #241E15;
 
-  --color-text-primary: #1a1a1a;
-  --color-text-secondary: #555;
-  --color-text-muted: #666;
-  --color-text-subtle: #777;
-  --color-text-faint: #999;
-  --color-text-ghost: #bbb;
-  --color-text-label: #888;
-  --color-text-detail: #666;
+  --color-text-secondary: #4A4133;
+  --color-text-muted: #6E6353;
+  --color-text-faint: #948A79;
 
-  --color-border: rgba(0,0,0,0.06);
-  --color-border-mid: rgba(0,0,0,0.08);
-  --color-border-strong: rgba(0,0,0,0.12);
-  --color-divider: #ddd;
-  --color-chip-border: #ddd;
+  /* NOTE: light --color-accent-gold (3.15:1), --color-accent-coral (3.43:1) and
+     --color-text-faint (3.00:1) are large-text-only — use --color-accent-gold-text
+     (or --color-text-secondary) for small gold text. */
+  --color-accent-gold: #A8875D;
+  --color-accent-gold-text: #7D6140; /* AA-safe gold for small text (5.4:1 on elevated) */
+  --color-accent-ocean: #4E7396;
+  --color-accent-coral: #C06A47;
 
-  --color-overlay-light: rgba(0,0,0,0.02);
-  --color-overlay-lighter: rgba(0,0,0,0.04);
-  --color-hover-surface: rgba(0,0,0,0.015);
-  --color-hover-item: rgba(0,0,0,0.025);
+  --color-border: rgba(36, 30, 21, 0.10);
+  --color-border-mid: rgba(36, 30, 21, 0.18);
+  --color-nav-bg: rgba(245, 240, 230, 0.82);
 
-  --color-nav-bg: rgba(245,243,239,0.88);
-  --color-modal-bg: rgba(245,243,239,0.95);
-  --color-modal-bg-deep: rgba(245,243,239,0.97);
-
-  --color-image-overlay: rgba(255,255,255,0.6);
-
-  --color-fg-half: rgba(26,26,26,0.5);
-  --color-fg-soft: rgba(26,26,26,0.65);
-  --color-fg-dim: rgba(26,26,26,0.7);
-
-  --color-scrollbar-track: #F5F3EF;
-  --color-scrollbar-thumb: #ccc;
-
-  --shadow-card-hover: 0 20px 60px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.06);
-  --shadow-btn-hover: 0 12px 40px rgba(212,184,150,0.12);
-
-  --color-wip: #bbb;
   --grain-opacity: 0.015;
 
-  --foreground-rgb: 26, 26, 26;
-  --background-rgb: 245, 243, 239;
+  color-scheme: light;
+}
+
+/* Row-hover wash used by Ray tables and chart cursors. */
+:root {
+  --color-hover-item: rgba(212, 184, 150, 0.04);
+}
+[data-theme="light"] {
+  --color-hover-item: rgba(36, 30, 21, 0.04);
+}
+[data-theme="light"] {
+  --color-hover-item: rgba(36, 30, 21, 0.03);
+  --color-overlay-light: rgba(36, 30, 21, 0.03);
+}
+
+/* Ray house/category palette — theme-aware.
+   Dark values are the golden-hour originals; light values are darkened
+   so 12px labels pass WCAG AA (>= 4.5:1) on --color-bg-elevated. */
+:root {
+  --ray-house-phillips: #96B8D4;
+  --ray-house-sothebys: #D4B896;
+  --ray-house-christies: #C9BEAC;
+  --ray-house-rago: #B89A6E;
+  --ray-house-wright: #7A9CB8;
+  --ray-house-heritage: #AEC4D4;
+  --ray-house-bonhams: #C4A265;
+  --ray-house-hindman: #9A8F7D;
+  --ray-cat-original: #D4B896;
+  --ray-cat-print: #96B8D4;
+  --ray-cat-photograph: #7A9CB8;
+  --ray-cat-sculpture: #C4A265;
+  --ray-cat-design: #C9BEAC;
+  --ray-cat-unknown: #9A8F7D;
+}
+[data-theme="light"] {
+  --ray-house-phillips: #3E6488;
+  --ray-house-sothebys: #7D6140;
+  --ray-house-christies: #6B6150;
+  --ray-house-rago: #75603A;
+  --ray-house-wright: #3D607F;
+  --ray-house-heritage: #48657A;
+  --ray-house-bonhams: #7A6236;
+  --ray-house-hindman: #665C4C;
+  --ray-cat-original: #7D6140;
+  --ray-cat-print: #3E6488;
+  --ray-cat-photograph: #3D607F;
+  --ray-cat-sculpture: #7A6236;
+  --ray-cat-design: #6B6150;
+  --ray-cat-unknown: #665C4C;
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -121,20 +146,14 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
-  font-family: 'Syne', sans-serif;
-}
-
-html {
-  scroll-behavior: smooth;
+  font-family: var(--font-sans), sans-serif;
+  font-size: var(--text-body);
+  line-height: 1.65;
 }
 
 ::selection {
-  background: rgba(212, 184, 150, 0.25);
-  color: #fff;
-}
-
-[data-theme="light"] ::selection {
-  color: #1a1a1a;
+  background: rgba(212, 184, 150, 0.3);
+  color: var(--color-fg);
 }
 
 ::-webkit-scrollbar {
@@ -142,11 +161,11 @@ html {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-scrollbar-track);
+  background: var(--color-bg);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-scrollbar-thumb);
+  background: var(--color-border-mid);
   border-radius: 3px;
 }
 
@@ -154,26 +173,63 @@ html {
   background: var(--color-accent-gold);
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
+:focus-visible {
+  outline: 1px solid var(--color-accent-gold);
+  outline-offset: 3px;
 }
 
-@keyframes grainShift{0%,100%{transform:translate(0,0)}10%{transform:translate(-5%,-10%)}30%{transform:translate(7%,-25%)}50%{transform:translate(-15%,10%)}70%{transform:translate(0%,15%)}90%{transform:translate(-10%,10%)}}
-@keyframes floatSlow{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(15px,-20px) scale(1.02)}66%{transform:translate(-10px,10px) scale(0.98)}}
-@keyframes floatOrb{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(15px,-20px) scale(1.03)}66%{transform:translate(-10px,12px) scale(0.97)}}
-@keyframes wipPulse{0%,100%{opacity:0.3}50%{opacity:0.8}}
-@keyframes menuReveal{from{opacity:0;transform:translateY(20px) scale(0.95)}to{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes pageIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-@keyframes cardReveal{from{opacity:0;transform:translateY(24px) scale(0.97)}to{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
-@keyframes expandLine{from{transform:scaleX(0)}to{transform:scaleX(1)}}
-@keyframes scrollReveal{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeOut{to{opacity:0;transform:scale(0.98) translateY(-10px)}}
-@keyframes pulseGlow{0%,100%{opacity:0.3;transform:scale(1)}50%{opacity:0.7;transform:scale(1.15)}}
-@keyframes driftLine{0%,100%{transform:translateX(0) scaleX(1)}50%{transform:translateX(20px) scaleX(1.3)}}
+/* Skip link — visually hidden until focused */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: var(--space-2);
+  z-index: 200;
+  padding: var(--space-1) var(--space-2);
+  background: var(--color-bg-elevated);
+  color: var(--color-fg);
+  border: 1px solid var(--color-border-mid);
+  font-size: var(--text-label);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: top var(--duration-fast) var(--ease-signature);
+}
 
-/* Shared Ray layout classes — defined once, used across all Ray pages */
+.skip-link:focus {
+  top: var(--space-2);
+}
+
+/* Static grain — no animation, ever */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 200px 200px;
+}
+
+/* ============================================================
+   Keyframes — only what earns its place
+   ============================================================ */
+
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes menuReveal {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   Shared Ray layout classes — used across all Ray pages
+   ============================================================ */
+
 .ray-nav { padding: 24px 56px; }
 .ray-hero { padding: 60px 56px 40px; }
 .ray-divider-wrap { padding: 0 56px; }
@@ -184,10 +240,17 @@ html {
   .ray-divider-wrap { padding: 0 20px; }
 }
 
+/* ============================================================
+   Reduced motion — everything stops
+   ============================================================ */
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
-  .grain-overlay { display: none !important; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 @layer utilities {

@@ -4,40 +4,51 @@ import Link from 'next/link';
 import Horizon from '../components/Horizon';
 import { sections } from '../components/sections';
 import type { SectionItem } from '../components/types';
+import { ARTISTS } from './ray/constants';
 
 export const metadata: Metadata = {
-  title: 'Physical — co.stil',
+  title: 'Software — co.stil',
   description:
-    'Physical design from the studio of Collin Stilwell — the Project 1122 residence and 3D-printed lighting and furniture.',
+    'Design-first software from the studio of Collin Stilwell — Ray auction intelligence, Soirée, SecMCPHub, and Elixir security tooling.',
 };
 
-const physical = sections.find((s) => s.id === 'physical')!;
-const accent = physical.accent;
+const software = sections.find((s) => s.id === 'software')!;
+const accent = software.accent;
 
 const rowCss = `
-.ph-row {
+.sw-row {
   text-decoration: none;
   display: block;
   border-bottom: 1px solid var(--color-border);
   transition: border-color var(--duration-fast) var(--ease-signature);
 }
-.ph-row:first-of-type { border-top: 1px solid var(--color-border); }
-.ph-row:hover { border-bottom-color: ${accent}66; }
-.ph-row .ph-arrow {
-  transition: transform var(--duration-fast) var(--ease-signature);
+.sw-row:first-of-type { border-top: 1px solid var(--color-border); }
+.sw-row:hover { border-bottom-color: ${accent}66; }
+.sw-row .sw-arrow {
+  transition: transform var(--duration-fast) var(--ease-signature), color var(--duration-fast) var(--ease-signature);
 }
-.ph-row:hover .ph-arrow { transform: translateX(2px); }
+.sw-row:hover .sw-arrow { transform: translateX(2px); color: ${accent}; }
 @media (prefers-reduced-motion: reduce) {
-  .ph-row, .ph-row .ph-arrow { transition: none; }
+  .sw-row, .sw-row .sw-arrow { transition: none; }
 }
 `;
 
 function metaLine(item: SectionItem): string {
   if (!item.meta) return '';
-  return [item.meta.year, item.meta.material, item.meta.status].filter(Boolean).join(' · ');
+  return [item.meta.year, item.meta.stack, item.meta.status].filter(Boolean).join(' · ');
 }
 
-function Row({ item, index }: { item: SectionItem; index: number }) {
+function Row({
+  item,
+  index,
+  flagship = false,
+  children,
+}: {
+  item: SectionItem;
+  index: number;
+  flagship?: boolean;
+  children?: React.ReactNode;
+}) {
   const inner = (
     <div
       style={{
@@ -45,7 +56,7 @@ function Row({ item, index }: { item: SectionItem; index: number }) {
         gridTemplateColumns: 'auto 1fr auto',
         gap: 'var(--space-3)',
         alignItems: 'baseline',
-        padding: 'var(--space-3) 0',
+        padding: flagship ? 'var(--space-4) 0' : 'var(--space-3) 0',
       }}
     >
       <span
@@ -63,7 +74,7 @@ function Row({ item, index }: { item: SectionItem; index: number }) {
           style={{
             margin: 0,
             marginBottom: 'var(--space-1)',
-            fontSize: 'clamp(1.5rem, 2.5vw, 2rem)',
+            fontSize: flagship ? 'clamp(2rem, 4vw, 3rem)' : 'clamp(1.5rem, 2.5vw, 2rem)',
             lineHeight: 1.1,
             color: 'var(--color-fg)',
             fontFamily: 'var(--font-sans), sans-serif',
@@ -72,18 +83,20 @@ function Row({ item, index }: { item: SectionItem; index: number }) {
         >
           {item.name}
         </h2>
-        <p
-          style={{
-            margin: 0,
-            marginBottom: 'var(--space-1)',
-            fontSize: 15,
-            lineHeight: 1.65,
-            color: 'var(--color-text-secondary)',
-            maxWidth: 'var(--prose-max)',
-          }}
-        >
-          {item.description}
-        </p>
+        {children ?? (
+          <p
+            style={{
+              margin: 0,
+              marginBottom: 'var(--space-1)',
+              fontSize: 15,
+              lineHeight: 1.65,
+              color: 'var(--color-text-secondary)',
+              maxWidth: 'var(--prose-max)',
+            }}
+          >
+            {item.description}
+          </p>
+        )}
         {item.meta && (
           <span
             style={{
@@ -98,7 +111,7 @@ function Row({ item, index }: { item: SectionItem; index: number }) {
       </div>
 
       <span
-        className="ph-arrow"
+        className="sw-arrow"
         aria-hidden="true"
         style={{ fontSize: 16, color: 'var(--color-text-muted)' }}
       >
@@ -109,19 +122,19 @@ function Row({ item, index }: { item: SectionItem; index: number }) {
 
   if (item.href) {
     return (
-      <Link href={item.href} className="ph-row">
+      <Link href={item.href} className="sw-row">
         {inner}
       </Link>
     );
   }
   return (
-    <a href={item.url} target="_blank" rel="noopener noreferrer" className="ph-row">
+    <a href={item.url} target="_blank" rel="noopener noreferrer" className="sw-row">
       {inner}
     </a>
   );
 }
 
-export default function PhysicalPage() {
+export default function SoftwarePage() {
   return (
     <div
       style={{
@@ -144,7 +157,7 @@ export default function PhysicalPage() {
           color: 'var(--color-fg)',
         }}
       >
-        Physical
+        Software
       </h1>
       <p
         style={{
@@ -156,16 +169,33 @@ export default function PhysicalPage() {
           maxWidth: 'var(--prose-max)',
         }}
       >
-        Design that leaves the screen — a residence rebuilt from the studs, and objects
-        printed into the world.
+        I build software the way I build objects — considered, deliberate, nothing accidental.
       </p>
 
-      <Horizon variant="gold" style={{ marginBottom: 'var(--space-4)' }} />
+      <Horizon variant="ocean" style={{ marginBottom: 'var(--space-4)' }} />
 
       <div>
-        {physical.items.map((item, i) => (
-          <Row key={item.name} item={item} index={i} />
-        ))}
+        {software.items.map((item, i) =>
+          item.name === 'Ray' ? (
+            <Row key={item.name} item={item} index={i} flagship>
+              <p
+                style={{
+                  margin: 0,
+                  marginBottom: 'var(--space-1)',
+                  fontSize: 17,
+                  lineHeight: 1.65,
+                  color: 'var(--color-text-secondary)',
+                  maxWidth: 'var(--prose-max)',
+                }}
+              >
+                Auction intelligence for the art market — the flagship. Tracks {ARTISTS.length} artists
+                across 5 auction houses, automatically.
+              </p>
+            </Row>
+          ) : (
+            <Row key={item.name} item={item} index={i} />
+          )
+        )}
       </div>
     </div>
   );

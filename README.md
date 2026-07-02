@@ -2,10 +2,10 @@
 
 The studio of Collin Stilwell — design-first software and physical objects, one continuous practice.
 
-co.stil is the merger of two projects: **collin** (a personal portfolio for security engineering work) and **Mobi** (a design studio for physical spaces, objects, and digital products). The result is a single super app with two wings:
+One continuous practice, two wings:
 
 - **Software** — Ray (auction market intelligence), Soirée (NYC event discovery), SecMCPHub, Elixir security tooling
-- **Physical** — Project 1122, 3D-printed fabrications, curation, and restoration work
+- **Physical** — Project 1122 (full residence), 3D-printed lighting and furniture
 
 ## Development
 
@@ -22,15 +22,14 @@ npm run build
 
 ## Tech Stack
 
-- Next.js 14 / React 18 / TypeScript
-- Tailwind CSS
+- Next.js 14 / React 18 / TypeScript (inline-style React + CSS custom properties)
 - Three.js (Möbius strip hero, STL viewers)
-- Framer Motion
+- Recharts (Ray analytics)
 
 ## Project Structure
 
-- `/app` — Next.js app directory (home, `/digital/ray`, `/digital/3d-prints`, `/physical/1122`, `/shop`)
-- `/app/components` — shared components; `sections.ts` is the data core driving the directory, nav, and footer
+- `/app` — Next.js app directory (home, `/software`, `/software/ray`, `/physical`, `/physical/1122`, `/physical/prints`, `/about`)
+- `/app/components` — shared components; `sections.ts` is the data core driving the index pages
 - `/public` — static assets and STL models
 
 ## Design Philosophy

@@ -15,13 +15,23 @@ const nextConfig = {
     }
     return config;
   },
-  // Remove basePath and assetPrefix as they're not needed for Vercel
-  // Remove trailingSlash as it's not needed for Vercel
-  // Keep other optimizations
+  async redirects() {
+    return [
+      { source: '/digital/ray/:path*', destination: '/software/ray/:path*', permanent: true },
+      { source: '/digital/3d-prints/:path*', destination: '/physical/prints/:path*', permanent: true },
+      { source: '/digital', destination: '/software', permanent: true },
+      { source: '/shop', destination: '/', permanent: true },
+      { source: '/shop/:path*', destination: '/', permanent: true },
+      { source: '/social', destination: '/', permanent: true },
+      { source: '/physical/1122/before', destination: '/physical/1122', permanent: true },
+      { source: '/physical/1122/after', destination: '/physical/1122', permanent: true },
+      { source: '/physical/1122/gallery', destination: '/physical/1122', permanent: true },
+    ]
+  },
   optimizeFonts: true,
   swcMinify: true,
   compress: true,
   generateEtags: true,
 }
 
-module.exports = nextConfig 
+module.exports = nextConfig

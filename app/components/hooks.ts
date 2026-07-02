@@ -13,6 +13,18 @@ export function useWindowSize() {
   return w;
 }
 
+export function usePrefersReducedMotion(): boolean {
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const h = () => setReduced(mq.matches);
+    h();
+    mq.addEventListener('change', h);
+    return () => mq.removeEventListener('change', h);
+  }, []);
+  return reduced;
+}
+
 export function useScrollReveal(threshold = 0.15) {
   const ref = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);

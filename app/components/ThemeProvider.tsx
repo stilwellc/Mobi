@@ -4,6 +4,9 @@ import { createContext, useContext, useEffect, useState, useCallback } from 'rea
 
 type Theme = 'dark' | 'light';
 
+const STORAGE_KEY = 'costil-theme';
+const LEGACY_KEY = 'mobi-theme';
+
 const ThemeContext = createContext<{
   theme: Theme;
   toggleTheme: () => void;
@@ -21,7 +24,16 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem('mobi-theme') as Theme | null;
+    let saved = localStorage.getItem(STORAGE_KEY) as Theme | null;
+    if (!saved) {
+      // one-time migration from the old key
+      const legacy = localStorage.getItem(LEGACY_KEY) as Theme | null;
+      if (legacy === 'light' || legacy === 'dark') {
+        saved = legacy;
+        localStorage.setItem(STORAGE_KEY, legacy);
+      }
+      localStorage.removeItem(LEGACY_KEY);
+    }
     if (saved === 'light' || saved === 'dark') {
       setTheme(saved);
     } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
@@ -33,7 +45,7 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
   useEffect(() => {
     if (!mounted) return;
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('mobi-theme', theme);
+    localStorage.setItem(STORAGE_KEY, theme);
   }, [theme, mounted]);
 
   const toggleTheme = useCallback(() => {

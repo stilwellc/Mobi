@@ -16,36 +16,48 @@ export default function Error({
 
   return (
     <div style={{
-      minHeight: '100vh', background: 'var(--color-bg)', color: 'var(--color-fg)',
-      fontFamily: "'Syne', sans-serif",
+      minHeight: '70vh',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
+      padding: 'clamp(120px, 18vh, 200px) clamp(20px, 5vw, 56px) var(--space-6)',
     }}>
-      <div style={{ textAlign: 'center' }}>
+      <div style={{ textAlign: 'center', maxWidth: 480 }}>
+        <div style={{
+          fontFamily: 'var(--font-mono), monospace', fontSize: 12,
+          letterSpacing: '0.18em', textTransform: 'uppercase',
+          color: 'var(--color-text-muted)', marginBottom: 'var(--space-2)',
+        }}>Error</div>
+
         <h1 style={{
-          fontFamily: "'Cormorant Garamond', serif",
-          fontSize: 48, fontWeight: 300, marginBottom: 16,
+          fontFamily: 'var(--font-serif), serif',
+          fontSize: 'var(--text-title)', fontWeight: 300,
+          lineHeight: 1.1, margin: '0 0 var(--space-2)',
         }}>Something went wrong</h1>
-        <p style={{ fontSize: 15, color: 'var(--color-text-muted)', marginBottom: 32 }}>
-          We&apos;re sorry, but there was an error loading this page.
+
+        <p style={{
+          fontFamily: 'var(--font-sans), sans-serif', fontSize: '1.0625rem',
+          lineHeight: 1.65, color: 'var(--color-text-secondary)',
+          margin: '0 auto var(--space-4)', maxWidth: '40ch',
+        }}>
+          This page hit an error while loading. Try again, or head back to the start.
         </p>
-        <div style={{ display: 'flex', gap: 24, justifyContent: 'center' }}>
+
+        <div style={{ display: 'flex', gap: 'var(--space-3)', justifyContent: 'center', alignItems: 'center' }}>
           <button
             onClick={reset}
             style={{
-              padding: '12px 28px', borderRadius: 60,
-              border: '1px solid rgba(212,184,150,0.3)', background: 'rgba(212,184,150,0.06)',
-              color: 'var(--color-accent-gold)', fontSize: 13, fontWeight: 600,
-              letterSpacing: '0.1em', textTransform: 'uppercase',
-              cursor: 'pointer', fontFamily: "'Syne', sans-serif",
+              padding: '12px 28px',
+              border: '1px solid var(--color-accent-gold)', borderRadius: 2,
+              background: 'transparent', color: 'var(--color-fg)',
+              fontFamily: 'var(--font-mono), monospace', fontSize: 12,
+              letterSpacing: '0.18em', textTransform: 'uppercase',
+              cursor: 'pointer',
             }}
           >Try again</button>
           <Link href="/" style={{
-            padding: '12px 28px', borderRadius: 60,
-            border: '1px solid var(--color-border)', background: 'transparent',
-            color: 'var(--color-text-secondary)', fontSize: 13, fontWeight: 600,
-            letterSpacing: '0.1em', textTransform: 'uppercase',
-            textDecoration: 'none', display: 'inline-block',
-          }}>Return Home</Link>
+            fontFamily: 'var(--font-mono), monospace', fontSize: 12,
+            letterSpacing: '0.18em', textTransform: 'uppercase',
+            color: 'var(--color-text-muted)', textDecoration: 'none',
+          }}>Back home</Link>
         </div>
       </div>
     </div>

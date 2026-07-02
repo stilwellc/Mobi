@@ -1,75 +1,110 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import MobiusStrip from './MobiusStrip';
+import Horizon from './Horizon';
+import { useTheme } from './ThemeProvider';
+import { useWindowSize, usePrefersReducedMotion } from './hooks';
 
-interface HeroSectionProps {
-  mobile: boolean;
-  tablet: boolean;
-  phase: number;
-  scrollY: number;
-  theme: 'dark' | 'light';
-}
+export default function HeroSection() {
+  const { theme } = useTheme();
+  const w = useWindowSize();
+  const mobile = w < 768;
+  const tablet = w < 1024;
+  const reduced = usePrefersReducedMotion();
+  const [beat, setBeat] = useState(0);
 
-export default function HeroSection({ mobile, tablet, phase, scrollY, theme }: HeroSectionProps) {
+  useEffect(() => {
+    if (reduced) {
+      setBeat(2);
+      return;
+    }
+    const t1 = setTimeout(() => setBeat(1), 200);
+    const t2 = setTimeout(() => setBeat(2), 900);
+    return () => { clearTimeout(t1); clearTimeout(t2); };
+  }, [reduced]);
+
+  const scrollToIndex = () => {
+    const el = document.getElementById('directory-index');
+    if (el) el.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' });
+  };
+
   return (
     <section
       aria-label="Hero"
       style={{
         minHeight: '100vh',
         display: 'flex', flexDirection: 'column', justifyContent: 'center',
-        position: 'relative', padding: mobile ? '120px 20px 80px' : '140px 56px 100px',
+        position: 'relative', zIndex: 1,
+        padding: mobile ? '120px 24px 80px' : '140px 56px 100px',
         overflow: 'hidden',
       }}
     >
+      <style>{`
+        .hero-cta{display:inline-flex;align-items:center;gap:12px;padding:16px 32px;border-radius:60px;border:1px solid var(--color-border-mid);background:transparent;color:var(--color-accent-gold);font-family:var(--font-sans),sans-serif;font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;transition:border-color var(--duration-base) var(--ease-signature);-webkit-tap-highlight-color:transparent}
+        .hero-cta:hover{border-color:var(--color-accent-gold)}
+        .hero-cta svg{transition:transform var(--duration-fast) var(--ease-signature)}
+        .hero-cta:hover svg{transform:translateX(2px)}
+      `}</style>
+
       <MobiusStrip mobile={mobile} theme={theme} />
 
+      {/* Beat 1 — eyebrow + headline */}
       <div style={{
-        position: 'absolute', top: mobile ? '18%' : '15%', left: mobile ? '5%' : '8%',
-        width: phase >= 1 ? (mobile ? 40 : 80) : 0, height: 1, background: 'var(--color-accent-gold)',
-        transition: 'width 1.2s cubic-bezier(0.23, 1, 0.32, 1) 0.5s', opacity: 0.4,
-      }} />
-
-      <div style={{
-        opacity: phase >= 1 ? 1 : 0, transform: phase >= 1 ? 'translateY(0)' : 'translateY(20px)',
-        transition: 'all 1s cubic-bezier(0.23, 1, 0.32, 1)',
-        marginBottom: mobile ? 24 : 36, display: 'flex', alignItems: 'center', gap: 16,
+        opacity: beat >= 1 ? 1 : 0,
+        transform: beat >= 1 ? 'translateY(0)' : 'translateY(24px)',
+        transition: 'opacity var(--duration-slow) var(--ease-signature), transform var(--duration-slow) var(--ease-signature)',
+        marginBottom: mobile ? 24 : 36,
         position: 'relative', zIndex: 2,
       }}>
-        <div style={{ width: 8, height: 8, borderRadius: '50%', border: '1px solid var(--color-accent-gold)', opacity: 0.5 }} aria-hidden="true" />
-        <span className="section-label-sm">The Studio of Collin Stilwell &mdash; Hoboken, NJ</span>
+        <span style={{
+          fontSize: 12, fontWeight: 600, letterSpacing: '0.18em',
+          textTransform: 'uppercase', color: 'var(--color-text-faint)',
+        }}>
+          The Studio of Collin Stilwell &mdash; Hoboken, NJ
+        </span>
       </div>
 
       <h1 style={{
-        fontFamily: "'Cormorant Garamond', serif", fontWeight: 300,
-        fontSize: mobile ? 48 : tablet ? 72 : 'clamp(80px, 9vw, 140px)',
-        lineHeight: mobile ? 1 : 0.9, letterSpacing: '-0.03em',
-        maxWidth: mobile ? '100%' : '68%',
-        opacity: phase >= 1 ? 1 : 0, transform: phase >= 1 ? 'translateY(0)' : 'translateY(50px)',
-        transition: 'all 1.2s cubic-bezier(0.23, 1, 0.32, 1) 0.15s',
+        fontFamily: 'var(--font-serif), serif', fontWeight: 300,
+        fontSize: 'var(--text-display)',
+        lineHeight: 1.05, letterSpacing: '-0.02em',
+        maxWidth: mobile ? '100%' : tablet ? '80%' : '68%',
+        margin: 0,
+        opacity: beat >= 1 ? 1 : 0,
+        transform: beat >= 1 ? 'translateY(0)' : 'translateY(24px)',
+        transition: 'opacity var(--duration-slow) var(--ease-signature) 100ms, transform var(--duration-slow) var(--ease-signature) 100ms',
         position: 'relative', zIndex: 2,
       }}>
         <span style={{ display: 'block' }}>Software</span>
         <span style={{
           display: 'block', fontStyle: 'italic', fontWeight: 400,
-          background: 'linear-gradient(135deg, #D4B896 0%, #E8D5BC 40%, #D4B896 70%, #C4A886 100%)',
+          background: 'linear-gradient(135deg, var(--color-accent-gold) 0%, color-mix(in srgb, var(--color-accent-gold) 65%, var(--color-fg)) 45%, var(--color-accent-gold) 100%)',
           WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
         }}>&amp; matter,</span>
-        <span style={{ display: 'block', color: 'var(--color-fg-half)' }}>one practice</span>
+        <span style={{ display: 'block', color: 'var(--color-text-muted)' }}>one practice</span>
       </h1>
 
+      {/* Beat 2 — sub-line + CTA */}
       <div style={{
-        marginTop: mobile ? 36 : 56, display: 'flex',
-        flexDirection: mobile ? 'column' : 'row', alignItems: mobile ? 'flex-start' : 'flex-end',
+        marginTop: mobile ? 40 : 64,
+        display: 'flex',
+        flexDirection: mobile ? 'column' : 'row',
+        alignItems: mobile ? 'flex-start' : 'flex-end',
         gap: mobile ? 32 : 80,
-        opacity: phase >= 2 ? 1 : 0, transform: phase >= 2 ? 'translateY(0)' : 'translateY(30px)',
-        transition: 'all 1s cubic-bezier(0.23, 1, 0.32, 1)',
+        opacity: beat >= 2 ? 1 : 0,
+        transform: beat >= 2 ? 'translateY(0)' : 'translateY(24px)',
+        transition: 'opacity var(--duration-slow) var(--ease-signature), transform var(--duration-slow) var(--ease-signature)',
         position: 'relative', zIndex: 2,
       }}>
-        <p style={{ maxWidth: mobile ? '100%' : 400, fontSize: mobile ? 14 : 15, lineHeight: 1.85, color: 'var(--color-text-muted)', fontWeight: 400 }}>
-          Design-first software and physical objects from a single continuous surface —
-          where every detail is considered and nothing is accidental.
+        <p style={{
+          maxWidth: mobile ? '100%' : 400, margin: 0,
+          fontSize: mobile ? 14 : 15, lineHeight: 1.65,
+          color: 'var(--color-text-muted)', fontWeight: 400,
+        }}>
+          I design and build across code and matter &mdash; one studio, one continuous surface.
         </p>
-        <button className="hero-cta magnetic-btn" onClick={() => { const el = document.getElementById('directory'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }}>
+        <button className="hero-cta" onClick={scrollToIndex}>
           Explore
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
             <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -77,16 +112,15 @@ export default function HeroSection({ mobile, tablet, phase, scrollY, theme }: H
         </button>
       </div>
 
-      {!mobile && (
-        <div style={{
-          position: 'absolute', bottom: 48, left: 56, right: 56,
-          display: 'flex', alignItems: 'center', gap: 24,
-          opacity: phase >= 3 ? 0.4 : 0, transition: 'opacity 1.5s ease',
-        }} aria-hidden="true">
-          <div style={{ flex: 1, height: 1, background: 'linear-gradient(90deg, var(--color-border-strong), transparent)' }} />
-          <span style={{ fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--color-text-faint)', fontWeight: 600 }}>Scroll to explore</span>
-        </div>
-      )}
+      {/* The Horizon — the hero's bottom edge. Deliberately full-bleed:
+          the single exception to the shared content-max Horizon rail. */}
+      <div style={{
+        position: 'absolute', bottom: 0, left: 0, right: 0,
+        opacity: beat >= 2 ? 1 : 0,
+        transition: 'opacity var(--duration-slow) var(--ease-signature)',
+      }}>
+        <Horizon variant="gold" />
+      </div>
     </section>
   );
 }

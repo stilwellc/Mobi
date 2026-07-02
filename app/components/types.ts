@@ -5,8 +5,13 @@ export interface SectionItem {
   href?: string;
   url?: string;
   handle?: string;
-  wip?: boolean;
   logoStyle?: Record<string, string | number>;
+  meta?: {
+    year?: string;
+    stack?: string;
+    material?: string;
+    status?: string;
+  };
 }
 
 export interface Section {

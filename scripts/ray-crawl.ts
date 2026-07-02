@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as cheerio from 'cheerio';
 
-// ── Types (mirrored from app/digital/ray/types.ts to avoid import issues in standalone script) ──
+// ── Types (mirrored from app/software/ray/types.ts to avoid import issues in standalone script) ──
 
 type AuctionHouse = 'Phillips' | "Sotheby's" | "Christie's" | 'Wright' | 'Rago' | 'Heritage' | 'Bonhams' | 'Hindman';
 type LotStatus = 'upcoming' | 'sold' | 'bought_in' | 'withdrawn';

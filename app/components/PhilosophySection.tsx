@@ -1,88 +1,104 @@
 'use client';
 
-interface PhilosophySectionProps {
-  mobile: boolean;
-  tablet: boolean;
-  isVisible: boolean;
-  sectionRef: React.RefObject<HTMLDivElement>;
-  navigate: (target: string) => void;
-}
+import Link from 'next/link';
+import Horizon from './Horizon';
+import { useWindowSize, useScrollReveal } from './hooks';
 
 const PRINCIPLES = [
-  { num: '01', title: 'Seamless', desc: 'Design that flows naturally between physical objects and digital products — one surface, no seams.' },
-  { num: '02', title: 'Considered', desc: 'Every detail deliberate, nothing accidental. Software built with the same care as a restored chair.' },
-  { num: '03', title: 'Infinite', desc: 'No boundaries between disciplines. Security informs design. Architecture informs software. Software reshapes space.' },
+  {
+    num: '01',
+    title: 'One practice',
+    desc: 'I ship TypeScript in the morning and sand a print in the evening. Same eye, same standards, different material.',
+  },
+  {
+    num: '02',
+    title: 'Deliberate',
+    desc: 'Nothing here happened by default. A type scale, a tolerance, an easing curve — each one is a decision I can defend.',
+  },
+  {
+    num: '03',
+    title: 'Continuous',
+    desc: 'The disciplines feed each other. Security work hardens my software; building a house changed how I structure code.',
+  },
 ];
 
-export default function PhilosophySection({ mobile, tablet, isVisible, sectionRef, navigate }: PhilosophySectionProps) {
+export default function PhilosophySection() {
+  const w = useWindowSize();
+  const mobile = w < 768;
+  const tablet = w < 1024;
+  const { ref, isVisible } = useScrollReveal(0.15);
+
   return (
-    <div
-      ref={sectionRef}
-      role="region"
+    <section
+      ref={ref}
       aria-label="Philosophy"
       style={{
-        padding: mobile ? '60px 20px 80px' : '100px 56px 160px',
+        padding: mobile ? '0 24px 80px' : '0 56px 160px',
         position: 'relative', zIndex: 1,
       }}
     >
-      <div style={{ maxWidth: 1100, margin: '0 auto 0', paddingBottom: mobile ? 40 : 64 }}>
-        <div style={{
-          display: 'flex', alignItems: 'center', gap: 20,
-          opacity: isVisible ? 1 : 0,
-          transition: 'opacity 1s ease 0.2s',
-        }} aria-hidden="true">
-          <div style={{ width: 40, height: 1, background: 'var(--color-accent-gold)', opacity: 0.3 }} />
-          <div style={{ width: 4, height: 4, borderRadius: '50%', background: 'var(--color-accent-gold)', opacity: 0.4 }} />
-          <div style={{ flex: 1, height: 1, background: 'linear-gradient(90deg, var(--color-border-mid), transparent 80%)' }} />
-        </div>
-      </div>
+      <style>{`
+        .about-link{display:inline-flex;align-items:center;gap:10px;color:var(--color-accent-gold);font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;transition:color var(--duration-base) var(--ease-signature)}
+        .about-link .about-link-arrow{display:inline-block;transition:transform var(--duration-fast) var(--ease-signature)}
+        .about-link:hover .about-link-arrow{transform:translateX(2px)}
+      `}</style>
 
-      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+      <div style={{ maxWidth: 'var(--content-max)', margin: '0 auto' }}>
+        <Horizon variant="gold" style={{ marginBottom: mobile ? 64 : 104 }} />
+
         <div style={{ display: 'grid', gridTemplateColumns: mobile ? '1fr' : '1fr 1fr', gap: mobile ? 40 : 80 }}>
           <div style={{
             opacity: isVisible ? 1 : 0,
-            transform: isVisible ? 'translateY(0)' : 'translateY(40px)',
-            transition: 'all 0.8s cubic-bezier(0.23,1,0.32,1)',
+            transform: isVisible ? 'translateY(0)' : 'translateY(24px)',
+            transition: 'opacity var(--duration-slow) var(--ease-signature), transform var(--duration-slow) var(--ease-signature)',
           }}>
-            <div className="section-label-sm" style={{ marginBottom: 16 }}>Philosophy</div>
+            <div style={{
+              fontSize: 12, fontWeight: 600, letterSpacing: '0.18em',
+              textTransform: 'uppercase', color: 'var(--color-text-faint)',
+              marginBottom: 16,
+            }}>Philosophy</div>
             <h2 style={{
-              fontFamily: "'Cormorant Garamond', serif",
+              fontFamily: 'var(--font-serif), serif',
               fontSize: mobile ? 36 : tablet ? 48 : 60,
-              fontWeight: 300, letterSpacing: '-0.03em', lineHeight: 1,
-              marginBottom: mobile ? 24 : 36,
+              fontWeight: 300, letterSpacing: '-0.02em', lineHeight: 1.05,
+              margin: `0 0 ${mobile ? 24 : 36}px`,
             }}>
-              The infinite<br /><span style={{ fontStyle: 'italic', fontWeight: 400, color: 'var(--color-accent-gold)' }}>loop</span>
+              One side.<br />
+              <span style={{ fontStyle: 'italic', fontWeight: 400, color: 'var(--color-accent-gold)' }}>One boundary.</span>
             </h2>
-            <p style={{ fontSize: mobile ? 14 : 16, lineHeight: 1.85, color: 'var(--color-text-subtle)', fontWeight: 400, marginBottom: 24 }}>
-              Built on the Möbius strip — a surface with only one side and one boundary. It represents the belief that great design has no beginning or end: no separation between form and function, no divide between the code and the object it becomes.
+            <p style={{
+              fontSize: mobile ? 14 : 16, lineHeight: 1.65,
+              color: 'var(--color-text-secondary)', fontWeight: 400,
+              maxWidth: 'var(--prose-max)', margin: '0 0 32px',
+            }}>
+              The M&ouml;bius strip has one side and one boundary &mdash; you can trace the entire
+              surface without ever lifting your finger. That is how I work: software and matter
+              are not two departments, they are one surface I keep traveling.
             </p>
-            <button className="hero-cta magnetic-btn" onClick={() => navigate('about')} style={{ marginTop: 8 }}>
-              Learn More
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
+            <Link href="/about" className="about-link">
+              About the studio <span className="about-link-arrow" aria-hidden="true">&rarr;</span>
+            </Link>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }} role="list" aria-label="Design principles">
             {PRINCIPLES.map((p, pi) => (
               <div key={p.num} role="listitem" style={{
                 padding: mobile ? 20 : 28, borderRadius: 16,
-                background: 'var(--color-bg-card)', border: '1px solid var(--color-border)',
+                background: 'var(--color-bg-elevated)', border: '1px solid var(--color-border)',
                 opacity: isVisible ? 1 : 0,
-                transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
-                transition: `all 0.7s cubic-bezier(0.23,1,0.32,1) ${0.15 + pi * 0.12}s`,
+                transform: isVisible ? 'translateY(0)' : 'translateY(24px)',
+                transition: `opacity var(--duration-slow) var(--ease-signature) ${0.1 + pi * 0.1}s, transform var(--duration-slow) var(--ease-signature) ${0.1 + pi * 0.1}s`,
               }}>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, marginBottom: 10 }}>
-                  <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 14, color: 'var(--color-accent-gold)', fontWeight: 400 }} aria-hidden="true">{p.num}</span>
+                  <span style={{ fontFamily: 'var(--font-mono), monospace', fontSize: 12, color: 'var(--color-accent-gold)' }} aria-hidden="true">{p.num}</span>
                   <span style={{ fontSize: mobile ? 16 : 18, fontWeight: 600, letterSpacing: '-0.01em' }}>{p.title}</span>
                 </div>
-                <p style={{ fontSize: mobile ? 13 : 14, color: 'var(--color-text-label)', fontWeight: 400, lineHeight: 1.7 }}>{p.desc}</p>
+                <p style={{ fontSize: mobile ? 13 : 14, color: 'var(--color-text-muted)', fontWeight: 400, lineHeight: 1.65, margin: 0 }}>{p.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
