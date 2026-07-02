@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Horizon from './Horizon';
+import { MOBIUS_EDGE } from './Logo';
 
 /**
  * The footer — after the sun sets, the studio is still on.
@@ -104,28 +105,49 @@ export default function Footer() {
           className="rail"
           style={{ position: 'relative', paddingTop: 'var(--space-5)', paddingBottom: 'var(--space-4)' }}
         >
-          {/* Ghost wordmark — behind everything, never above 4% */}
-          <span
+          {/* Ghost lockup — the mark above the wordmark, behind
+              everything, never above 4% */}
+          <div
             aria-hidden="true"
             style={{
               position: 'absolute',
               right: 0,
               bottom: '-0.08em',
-              fontFamily: 'var(--font-serif), serif',
-              fontWeight: 300,
-              fontStyle: 'italic',
-              lineHeight: 0.8,
-              fontSize: 'clamp(6rem, 16vw, 13rem)',
-              letterSpacing: '-0.04em',
-              color: 'var(--color-fg)',
-              opacity: 0.03,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-end',
               pointerEvents: 'none',
               userSelect: 'none',
-              whiteSpace: 'nowrap',
             }}
           >
-            co.stil
-          </span>
+            <svg
+              viewBox="0 0 100 100"
+              fill="none"
+              style={{
+                width: 'clamp(5rem, 12vw, 9.5rem)',
+                opacity: 0.035,
+                marginBottom: '-0.4em',
+                marginRight: '0.08em',
+              }}
+            >
+              <path d={MOBIUS_EDGE} stroke="var(--color-fg)" strokeWidth="2.5" />
+            </svg>
+            <span
+              style={{
+                fontFamily: 'var(--font-serif), serif',
+                fontWeight: 300,
+                fontStyle: 'italic',
+                lineHeight: 0.8,
+                fontSize: 'clamp(6rem, 16vw, 13rem)',
+                letterSpacing: '-0.04em',
+                color: 'var(--color-fg)',
+                opacity: 0.03,
+                whiteSpace: 'nowrap',
+              }}
+            >
+              co.stil
+            </span>
+          </div>
 
           <div className="ftr-grid">
             <nav aria-label="Footer">
