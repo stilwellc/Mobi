@@ -60,11 +60,28 @@ export default function PortfolioHeader({ statsByArtist, allLots }: Props) {
         .ray-portfolio-card {
           background: var(--color-bg-elevated);
           padding: 28px 24px;
+          min-width: 0;
+        }
+        .ray-portfolio-value {
+          font-family: var(--font-serif), serif;
+          font-size: 34px;
+          font-weight: 300;
+          color: var(--color-accent-gold);
+          line-height: 1.1;
+          margin-bottom: 8px;
+          overflow-wrap: anywhere;
         }
         @media (max-width: 768px) {
           .ray-portfolio-header { padding: 32px 20px; }
           .ray-portfolio-grid { grid-template-columns: 1fr 1fr; }
           .ray-portfolio-card { padding: 20px 18px; }
+          .ray-portfolio-value { font-size: 26px; }
+        }
+        @media (max-width: 480px) {
+          /* Big dollar values get cramped in two 150px-wide cells —
+             stack the stats in a single column on phones. */
+          .ray-portfolio-grid { grid-template-columns: 1fr; }
+          .ray-portfolio-value { font-size: 30px; }
         }
       `}</style>
 
@@ -81,14 +98,7 @@ export default function PortfolioHeader({ statsByArtist, allLots }: Props) {
             }}>
               {card.label}
             </div>
-            <div style={{
-              fontFamily: "var(--font-serif), serif",
-              fontSize: 34,
-              fontWeight: 300,
-              color: 'var(--color-accent-gold)',
-              lineHeight: 1,
-              marginBottom: 8,
-            }}>
+            <div className="ray-portfolio-value">
               {card.value}
             </div>
             <div style={{

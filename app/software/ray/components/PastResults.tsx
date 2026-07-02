@@ -4,7 +4,7 @@ import { useState, useMemo, useEffect } from 'react';
 import { AuctionLot } from '../types';
 import type { LotCategory } from '../types';
 import { ARTIST_LABEL } from '../constants';
-import { houseColors, formatPrice, categoryLabels, categoryColors } from '../utils';
+import { houseColors, formatDate, formatPrice, categoryLabels, categoryColors } from '../utils';
 
 type SortMode = 'date' | 'price';
 type CategoryFilter = 'all' | LotCategory;
@@ -96,7 +96,9 @@ export default function PastResults({ lots, showArtist = false, categoryFilter: 
           border-color: var(--color-accent-ocean);
           color: var(--color-accent-ocean);
         }
-        .ray-sort-pill[data-active="true"] {
+        /* Quote-free selector on purpose - quotes in server-rendered style
+           text get HTML-escaped and break hydration. */
+        .ray-sort-pill[data-active=true] {
           background: var(--color-accent-ocean);
           border-color: var(--color-accent-ocean);
           color: #060606;
@@ -246,7 +248,7 @@ export default function PastResults({ lots, showArtist = false, categoryFilter: 
                   {lot.priceUsd ? formatPrice(lot.priceUsd) : '—'}
                 </div>
                 <div style={{ fontSize: 12, color: 'var(--color-text-faint)', marginTop: 1 }}>
-                  {new Date(lot.saleDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+                  {formatDate(lot.saleDate, { month: 'short', year: 'numeric' })}
                 </div>
               </div>
 

@@ -54,8 +54,10 @@ function computePriceHistory(lots: AuctionLot[]): PricePoint[] {
   for (const lot of sold) {
     const d = new Date(lot.saleDate);
     if (isNaN(d.getTime())) continue;
-    const q = Math.floor(d.getMonth() / 3) + 1;
-    const key = `${d.getFullYear()} Q${q}`;
+    // UTC getters: saleDate is date-only (UTC midnight); local getters can
+    // shift a sale into the previous quarter/year depending on timezone.
+    const q = Math.floor(d.getUTCMonth() / 3) + 1;
+    const key = `${d.getUTCFullYear()} Q${q}`;
     if (!quarters[key]) quarters[key] = [];
     quarters[key].push(lot.priceUsd!);
   }

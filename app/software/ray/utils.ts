@@ -37,6 +37,20 @@ export const houseColorsHex: Record<'dark' | 'light', Record<string, string>> = 
   },
 };
 
+// Shared date formatter for the Ray suite. saleDate/lastCrawl are date-only
+// strings (YYYY-MM-DD) that JS parses as UTC midnight — formatting them in
+// the viewer's local timezone can shift the displayed day AND makes the
+// server-rendered text differ from the client's (hydration mismatch).
+// Always format in UTC so the output is identical everywhere.
+export function formatDate(
+  dateStr: string,
+  opts: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric', year: 'numeric' },
+): string {
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return dateStr;
+  return d.toLocaleDateString('en-US', { ...opts, timeZone: 'UTC' });
+}
+
 export function formatPrice(n: number): string {
   if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(2)}M`;
   if (n >= 1_000) return `$${(n / 1_000).toFixed(0)}K`;

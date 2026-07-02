@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 import { AuctionLot } from '../../types';
-import { formatPrice, houseColors } from '../../utils';
+import { formatDate, formatPrice, houseColors } from '../../utils';
 import { ARTIST_LABEL } from '../../constants';
 
 interface Props {
@@ -53,12 +53,15 @@ export default function TopSales({ allLots }: Props) {
         </h2>
       </div>
 
+      {/* The table keeps its natural min width and scrolls inside this
+          wrapper instead of widening the page on narrow viewports. */}
       <div style={{
         background: 'var(--color-bg-elevated)',
         border: '1px solid var(--color-border)',
         borderRadius: 16,
         overflow: 'hidden',
         overflowX: 'auto',
+        WebkitOverflowScrolling: 'touch',
       }}>
         <table style={{ borderCollapse: 'collapse', width: '100%', minWidth: 500 }}>
           <thead>
@@ -207,7 +210,7 @@ export default function TopSales({ allLots }: Props) {
                     color: 'var(--color-text-faint)',
                     whiteSpace: 'nowrap',
                   }}>
-                    {new Date(lot.saleDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+                    {formatDate(lot.saleDate, { month: 'short', year: 'numeric' })}
                   </td>
                 </tr>
               );

@@ -6,7 +6,7 @@ import { ARTISTS } from '../constants';
 import { useRayData } from '../hooks/useRayData';
 import { useSavedLots } from '../hooks/useSavedLots';
 import ArtistNav from '../components/ArtistNav';
-import { getUpcomingCounts } from '../utils';
+import { formatDate, getUpcomingCounts } from '../utils';
 import PortfolioHeader from '../components/analytics/PortfolioHeader';
 import ArtistRankingsTable from '../components/analytics/ArtistRankingsTable';
 import TopSales from '../components/analytics/TopSales';
@@ -81,9 +81,7 @@ export default function AnalyticsPage() {
             color: 'var(--color-text-faint)',
             fontWeight: 400,
           }}>
-            Updated {new Date(lastCrawl).toLocaleDateString('en-US', {
-              month: 'short', day: 'numeric', year: 'numeric',
-            })}
+            Updated {formatDate(lastCrawl)}
           </span>
         )}
       </section>

@@ -55,6 +55,7 @@ export default function Footer() {
             <div style={colTitle}>Say hello</div>
             <a
               href="mailto:cstilwell117@gmail.com"
+              className="footer-email"
               style={{
                 fontFamily: 'var(--font-serif), serif',
                 fontWeight: 400,
@@ -75,7 +76,7 @@ export default function Footer() {
             <div style={colTitle}>Navigate</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-1)' }}>
               {navigateLinks.map(link => (
-                <Link key={link.href} href={link.href} style={linkStyle}>
+                <Link key={link.href} href={link.href} className="footer-link" style={linkStyle}>
                   {link.label}
                 </Link>
               ))}
@@ -91,6 +92,7 @@ export default function Footer() {
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="footer-link"
                   style={linkStyle}
                 >
                   {link.label}

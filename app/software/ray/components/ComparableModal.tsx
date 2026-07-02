@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { AuctionLot } from '../types';
 import { ARTIST_LABEL } from '../constants';
-import { houseColors, categoryLabels, categoryColors, formatPrice } from '../utils';
+import { houseColors, categoryLabels, categoryColors, formatDate, formatPrice } from '../utils';
 
 function formatEstimate(lot: AuctionLot): string {
   const fmt = (n: number) => {
@@ -459,7 +459,7 @@ export default function ComparableModal({
               {formatEstimate(lot)}
             </div>
             <div style={{ fontSize: 12, color: 'var(--color-text-faint)' }}>
-              {new Date(lot.saleDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+              {formatDate(lot.saleDate, { month: 'long', day: 'numeric', year: 'numeric' })}
               {lot.saleName ? ` · ${lot.saleName}` : ''}
             </div>
 
@@ -642,7 +642,7 @@ export default function ComparableModal({
                         }}>
                           <span style={{ color: compHouseColor, fontWeight: 600 }}>{comp.auctionHouse}</span>
                           <span>&middot;</span>
-                          <span>{new Date(comp.saleDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}</span>
+                          <span>{formatDate(comp.saleDate, { month: 'short', year: 'numeric' })}</span>
                           {comp.medium && (
                             <>
                               <span>&middot;</span>

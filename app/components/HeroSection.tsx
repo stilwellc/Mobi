@@ -4,13 +4,10 @@ import { useState, useEffect } from 'react';
 import MobiusStrip from './MobiusStrip';
 import Horizon from './Horizon';
 import { useTheme } from './ThemeProvider';
-import { useWindowSize, usePrefersReducedMotion } from './hooks';
+import { usePrefersReducedMotion } from './hooks';
 
 export default function HeroSection() {
   const { theme } = useTheme();
-  const w = useWindowSize();
-  const mobile = w < 768;
-  const tablet = w < 1024;
   const reduced = usePrefersReducedMotion();
   const [beat, setBeat] = useState(0);
 
@@ -32,29 +29,43 @@ export default function HeroSection() {
   return (
     <section
       aria-label="Hero"
+      className="hero-section"
       style={{
         minHeight: '100vh',
         display: 'flex', flexDirection: 'column', justifyContent: 'center',
         position: 'relative', zIndex: 1,
-        padding: mobile ? '120px 24px 80px' : '140px 56px 100px',
         overflow: 'hidden',
       }}
     >
       <style>{`
+        .hero-section{padding:140px 56px 100px}
+        .hero-eyebrow{margin-bottom:36px}
+        .hero-headline{max-width:68%}
+        .hero-subrow{margin-top:64px;display:flex;flex-direction:row;align-items:flex-end;gap:80px}
+        .hero-sub{max-width:400px;font-size:15px}
+        @media (max-width: 1023px) {
+          .hero-headline{max-width:80%}
+        }
+        @media (max-width: 767px) {
+          .hero-section{padding:120px 24px 80px}
+          .hero-eyebrow{margin-bottom:24px}
+          .hero-headline{max-width:100%}
+          .hero-subrow{margin-top:40px;flex-direction:column;align-items:flex-start;gap:32px}
+          .hero-sub{max-width:100%;font-size:14px}
+        }
         .hero-cta{display:inline-flex;align-items:center;gap:12px;padding:16px 32px;border-radius:60px;border:1px solid var(--color-border-mid);background:transparent;color:var(--color-accent-gold);font-family:var(--font-sans),sans-serif;font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;transition:border-color var(--duration-base) var(--ease-signature);-webkit-tap-highlight-color:transparent}
         .hero-cta:hover{border-color:var(--color-accent-gold)}
         .hero-cta svg{transition:transform var(--duration-fast) var(--ease-signature)}
         .hero-cta:hover svg{transform:translateX(2px)}
       `}</style>
 
-      <MobiusStrip mobile={mobile} theme={theme} />
+      <MobiusStrip theme={theme} />
 
       {/* Beat 1 — eyebrow + headline */}
-      <div style={{
+      <div className="hero-eyebrow" style={{
         opacity: beat >= 1 ? 1 : 0,
         transform: beat >= 1 ? 'translateY(0)' : 'translateY(24px)',
         transition: 'opacity var(--duration-slow) var(--ease-signature), transform var(--duration-slow) var(--ease-signature)',
-        marginBottom: mobile ? 24 : 36,
         position: 'relative', zIndex: 2,
       }}>
         <span style={{
@@ -65,11 +76,10 @@ export default function HeroSection() {
         </span>
       </div>
 
-      <h1 style={{
+      <h1 className="hero-headline" style={{
         fontFamily: 'var(--font-serif), serif', fontWeight: 300,
         fontSize: 'var(--text-display)',
         lineHeight: 1.05, letterSpacing: '-0.02em',
-        maxWidth: mobile ? '100%' : tablet ? '80%' : '68%',
         margin: 0,
         opacity: beat >= 1 ? 1 : 0,
         transform: beat >= 1 ? 'translateY(0)' : 'translateY(24px)',
@@ -86,20 +96,14 @@ export default function HeroSection() {
       </h1>
 
       {/* Beat 2 — sub-line + CTA */}
-      <div style={{
-        marginTop: mobile ? 40 : 64,
-        display: 'flex',
-        flexDirection: mobile ? 'column' : 'row',
-        alignItems: mobile ? 'flex-start' : 'flex-end',
-        gap: mobile ? 32 : 80,
+      <div className="hero-subrow" style={{
         opacity: beat >= 2 ? 1 : 0,
         transform: beat >= 2 ? 'translateY(0)' : 'translateY(24px)',
         transition: 'opacity var(--duration-slow) var(--ease-signature), transform var(--duration-slow) var(--ease-signature)',
         position: 'relative', zIndex: 2,
       }}>
-        <p style={{
-          maxWidth: mobile ? '100%' : 400, margin: 0,
-          fontSize: mobile ? 14 : 15, lineHeight: 1.65,
+        <p className="hero-sub" style={{
+          margin: 0, lineHeight: 1.65,
           color: 'var(--color-text-muted)', fontWeight: 400,
         }}>
           I design and build across code and matter &mdash; one studio, one continuous surface.

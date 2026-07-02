@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import { AuctionLot, MarketStats } from '../types';
 import { ARTIST_LABEL } from '../constants';
-import { houseColors, categoryLabels, categoryColors, makeAuctionIcs } from '../utils';
+import { houseColors, categoryLabels, categoryColors, formatDate, makeAuctionIcs } from '../utils';
 import ComparableModal from './ComparableModal';
 
 function formatEstimate(lot: AuctionLot): string {
@@ -317,7 +317,7 @@ export default function LotCard({
             fontWeight: 500,
             whiteSpace: 'nowrap',
           }}>
-            {new Date(lot.saleDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+            {formatDate(lot.saleDate)}
           </span>
         </div>
 

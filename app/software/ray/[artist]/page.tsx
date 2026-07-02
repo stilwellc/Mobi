@@ -8,7 +8,7 @@ import { ARTISTS, ARTIST_LABEL } from '../constants';
 import type { LotCategory } from '../types';
 import { useRayData } from '../hooks/useRayData';
 import { useSavedLots } from '../hooks/useSavedLots';
-import { getUpcomingCounts } from '../utils';
+import { formatDate, getUpcomingCounts } from '../utils';
 
 import ArtistNav from '../components/ArtistNav';
 import StatsGrid from '../components/StatsGrid';
@@ -116,9 +116,7 @@ export default function ArtistDetailPage() {
                 color: 'var(--color-text-faint)',
                 fontWeight: 400,
               }}>
-                Updated {new Date(lastCrawl).toLocaleDateString('en-US', {
-                  month: 'short', day: 'numeric', year: 'numeric',
-                })}
+                Updated {formatDate(lastCrawl)}
               </span>
             )}
           </section>

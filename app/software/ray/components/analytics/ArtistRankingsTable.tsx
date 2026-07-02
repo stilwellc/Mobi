@@ -147,12 +147,15 @@ export default function ArtistRankingsTable({ statsByArtist, allLots }: Props) {
         </h2>
       </div>
 
+      {/* The table keeps its natural min width and scrolls inside this
+          wrapper instead of widening the page on narrow viewports. */}
       <div style={{
         background: 'var(--color-bg-elevated)',
         border: '1px solid var(--color-border)',
         borderRadius: 16,
         overflow: 'hidden',
         overflowX: 'auto',
+        WebkitOverflowScrolling: 'touch',
       }}>
         <table style={{ borderCollapse: 'collapse', width: '100%', minWidth: 600 }}>
           <thead>

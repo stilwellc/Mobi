@@ -44,19 +44,23 @@ function createEdgeGeometry(width = 0.4, steps = 800) {
   return new THREE.BufferGeometry().setFromPoints(pts);
 }
 
-export default function MobiusStrip({ mobile, theme }: { mobile: boolean; theme: 'dark' | 'light' }) {
+export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
   const mountRef = useRef<HTMLDivElement>(null);
   const reduced = usePrefersReducedMotion();
 
   useEffect(() => {
     const container = mountRef.current;
     if (!container) return;
-    const size = mobile ? 320 : 600;
+    // Canvas pixel size follows the CSS-sized wrapper — measured after mount,
+    // so it never touches server-rendered markup.
+    const measure = () => Math.max(1, Math.round(container.clientWidth));
+    const size = measure();
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
     camera.position.set(0, 0, 4.2);
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setSize(size, size);
+    // updateStyle=false: CSS keeps the canvas at 100% of the wrapper.
+    renderer.setSize(size, size, false);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setClearColor(0x000000, 0);
     container.appendChild(renderer.domElement);
@@ -128,8 +132,8 @@ export default function MobiusStrip({ mobile, theme }: { mobile: boolean; theme:
     start();
 
     const onResize = () => {
-      const s = mobile ? Math.min(320, window.innerWidth - 40) : Math.min(600, window.innerWidth * 0.42);
-      renderer.setSize(s, s);
+      const s = measure();
+      renderer.setSize(s, s, false);
       if (!raf) renderFrame();
     };
     window.addEventListener('resize', onResize);
@@ -146,17 +150,18 @@ export default function MobiusStrip({ mobile, theme }: { mobile: boolean; theme:
       if (container.contains(renderer.domElement)) container.removeChild(renderer.domElement);
       renderer.dispose();
     };
-  }, [mobile, theme, reduced]);
+  }, [theme, reduced]);
 
   return (
-    <div
-      ref={mountRef}
-      aria-hidden="true"
-      style={{
-        position: 'absolute', right: mobile ? '50%' : '2%', top: '50%',
-        transform: mobile ? 'translate(50%, -50%)' : 'translateY(-50%)',
-        zIndex: 0, opacity: 0.85, pointerEvents: 'none',
-      }}
-    />
+    <>
+      <style>{`
+        .mobius-wrap{position:absolute;top:50%;right:2%;transform:translateY(-50%);z-index:0;opacity:0.85;pointer-events:none;width:min(600px,42vw);max-width:100%;aspect-ratio:1/1}
+        .mobius-wrap canvas{display:block;width:100%;height:100%}
+        @media (max-width: 767px) {
+          .mobius-wrap{width:min(70vw,320px);right:8%;top:38%;opacity:0.35}
+        }
+      `}</style>
+      <div ref={mountRef} aria-hidden="true" className="mobius-wrap" />
+    </>
   );
 }

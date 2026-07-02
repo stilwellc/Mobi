@@ -81,6 +81,10 @@ export default function AboutRoute() {
         .about-link { color: var(--color-text-secondary); text-decoration: underline; text-decoration-color: var(--color-border-mid); text-underline-offset: 3px; transition: color var(--duration-fast) var(--ease-signature); }
         .about-link:hover { color: var(--color-accent-gold); }
         .about-cta { display: inline-flex; align-items: baseline; gap: var(--space-1); color: var(--color-accent-gold); text-decoration: none; }
+        @media (max-width: 768px) {
+          /* ~44px touch target on phones */
+          .about-cta { padding: 8px 0; }
+        }
         .about-cta .about-cta-arrow { display: inline-block; transition: transform var(--duration-fast) var(--ease-signature); }
         .about-cta:hover .about-cta-arrow { transform: translateX(2px); }
         .about-beat-1 { animation: pageIn var(--duration-slow) var(--ease-signature) both; }

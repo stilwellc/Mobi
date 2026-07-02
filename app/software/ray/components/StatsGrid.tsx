@@ -20,7 +20,9 @@ export default function StatsGrid({ stats, lots, categoryFilter = 'all' }: Props
         avgPrice: stats.avgPriceLast12Months,
         recordPrice: stats.recordPrice,
         recordTitle: stats.recordTitle,
-        recordYear: new Date(stats.recordDate).getFullYear(),
+        // UTC getter: date-only strings parse as UTC midnight, so local
+        // getFullYear() can report the previous year near Jan 1.
+        recordYear: new Date(stats.recordDate).getUTCFullYear(),
         lotsTracked: stats.totalLotsTracked,
       };
     }
@@ -38,7 +40,7 @@ export default function StatsGrid({ stats, lots, categoryFilter = 'all' }: Props
       avgPrice,
       recordPrice: record?.priceUsd || 0,
       recordTitle: recordTitle.length > 60 ? recordTitle.substring(0, 57) + '...' : recordTitle,
-      recordYear: record ? new Date(record.saleDate).getFullYear() : 0,
+      recordYear: record ? new Date(record.saleDate).getUTCFullYear() : 0,
       lotsTracked: filtered.length,
     };
   }, [categoryFilter, lots, stats]);

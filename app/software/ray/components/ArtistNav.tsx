@@ -149,7 +149,12 @@ export default function ArtistNav({ activeSlug, savedCount = 0, upcomingCounts =
           background: color-mix(in srgb, var(--color-accent-ocean) 6%, transparent);
           color: var(--color-accent-ocean);
         }
-        .ray-artist-dropdown-item[data-active="true"] {
+        /* NOTE: keep this style block free of quotes and angle brackets.
+           React HTML-escapes them in server-rendered style text, but the
+           browser keeps the escaped entity literally inside a raw-text
+           element - the text node then differs between server and client
+           and hydration fails. */
+        .ray-artist-dropdown-item[data-active=true] {
           color: var(--color-accent-ocean);
           font-weight: 600;
         }

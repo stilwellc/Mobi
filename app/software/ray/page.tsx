@@ -4,7 +4,7 @@ import React, { useMemo, useState } from 'react';
 import { ARTISTS } from './constants';
 import { useRayData } from './hooks/useRayData';
 import { useSavedLots } from './hooks/useSavedLots';
-import { formatPrice, getUpcomingCounts } from './utils';
+import { formatDate, formatPrice, getUpcomingCounts } from './utils';
 import ArtistNav from './components/ArtistNav';
 import LotCard from './components/LotCard';
 import PastResults from './components/PastResults';
@@ -139,9 +139,7 @@ export default function RayPage() {
             color: 'var(--color-text-faint)',
             fontWeight: 400,
           }}>
-            Updated {new Date(lastCrawl).toLocaleDateString('en-US', {
-              month: 'short', day: 'numeric', year: 'numeric',
-            })}
+            Updated {formatDate(lastCrawl)}
           </span>
         )}
       </section>
