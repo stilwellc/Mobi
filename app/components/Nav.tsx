@@ -298,7 +298,6 @@ export default function Nav() {
             transform-origin: left;
             animation: navMenuDraw 600ms var(--ease-signature) 480ms both;
           }
-          .nav-menu-email { animation: navMenuFade 400ms var(--ease-signature) 620ms both; }
         `}</style>
         <nav aria-label="Primary" className="rail nav-inner">
           <Link
@@ -512,20 +511,6 @@ export default function Nav() {
               }}
             />
 
-            <a
-              href="mailto:cstilwell117@gmail.com"
-              className="nav-menu-email link-draw"
-              style={{
-                display: 'inline-block',
-                marginTop: 'var(--space-3)',
-                fontFamily: 'var(--font-mono), monospace',
-                fontSize: 12,
-                letterSpacing: '0.08em',
-                color: 'var(--color-text-muted)',
-              }}
-            >
-              cstilwell117@gmail.com
-            </a>
           </div>
         </div>
       )}

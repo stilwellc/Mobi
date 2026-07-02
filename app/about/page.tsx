@@ -255,10 +255,12 @@ export default function AboutRoute() {
         />
         <a
           className="link-action"
-          href="mailto:cstilwell117@gmail.com"
+          href="https://www.linkedin.com/in/collin-stilwell/"
+          target="_blank"
+          rel="noopener noreferrer"
           style={{ color: 'var(--color-accent-gold-text)' }}
         >
-          Say hello <span className="arrow" aria-hidden="true">→</span>
+          Say hello <span className="arrow" aria-hidden="true">↗</span>
         </a>
       </section>
     </div>
