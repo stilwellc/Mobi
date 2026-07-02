@@ -556,12 +556,23 @@ h1 {
 }
 
 .link-action {
+  position: relative;
   font-family: var(--font-mono);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   text-decoration: none;
+}
+
+/* Invisible hit-area expander — inline links reach the 24px tap
+   minimum (WCAG 2.5.8) without moving a pixel of layout. Vertical
+   only, so neighboring links never overlap horizontally. */
+.link-draw::before,
+.link-action::before {
+  content: "";
+  position: absolute;
+  inset: -6px 0;
 }
 .link-action .arrow {
   display: inline-block;

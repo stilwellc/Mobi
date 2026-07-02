@@ -78,6 +78,8 @@ export default function ArtistNav({ activeSlug, savedCount = 0, upcomingCounts =
         .ray-back-link {
           color: var(--color-text-muted);
           white-space: nowrap;
+          padding: 8px 0;
+          margin: -8px 0;
           transition: color var(--duration-fast) var(--ease-signature);
         }
         .ray-back-link:hover,

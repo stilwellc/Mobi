@@ -139,7 +139,7 @@ const css = `
 .tc-tok{white-space:nowrap}
 .tc-foot{display:flex;justify-content:flex-end;margin-top:var(--space-2)}
 .tc-stext .tc-meta + .tc-foot{margin-top:var(--space-2)}
-.tc-go{font-family:var(--font-mono),monospace;font-size:12px;font-weight:400;letter-spacing:0.18em;text-transform:uppercase}
+.tc-go{font-family:var(--font-mono),monospace;font-size:12px;font-weight:400;letter-spacing:0.18em;text-transform:uppercase;padding:8px 0;margin:-8px 0}
 .tc-sec[data-accent=wine] .tc-go{color:var(--color-accent-wine-text)}
 .tc-sec[data-accent=gold] .tc-go{color:var(--color-accent-gold-text)}
 .tc-arrow{display:inline-block;margin-left:8px;transition:transform var(--duration-fast) var(--ease-signature)}
