@@ -42,7 +42,7 @@ export default function ProjectCard({ item, accent, index, flagship = false }: P
       {item.image && (
         <div
           style={{
-            aspectRatio: flagship ? '21 / 9' : '16 / 10',
+            aspectRatio: '16 / 10',
             borderRadius: 10,
             overflow: 'hidden',
             marginBottom: 'var(--space-2)',
