@@ -4,6 +4,7 @@ import { useEffect, useLayoutEffect, useRef, useState, useCallback } from 'react
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import ThemeToggle from './ThemeToggle';
+import Logo from './Logo';
 import { horizonGradients } from './Horizon';
 
 const links = [
@@ -299,6 +300,9 @@ export default function Nav() {
             href="/"
             aria-label="co.stil — home"
             style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 10,
               fontFamily: 'var(--font-sans), sans-serif',
               fontWeight: 700,
               fontSize: 20,
@@ -307,7 +311,8 @@ export default function Nav() {
               textDecoration: 'none',
             }}
           >
-            co<span style={{ color: 'var(--color-accent-gold)' }}>.</span>stil
+            <Logo size={24} />
+            <span>co<span style={{ color: 'var(--color-accent-gold)' }}>.</span>stil</span>
           </Link>
 
           <div className="nav-right">

@@ -1,0 +1,37 @@
+'use client';
+
+/**
+ * The co.stil mark — not drawn, derived: this is the actual boundary
+ * curve of the hero's Mobius strip (u: 0 to 4pi, one continuous
+ * line) projected at the strip's pose. The eye reads two loops; the
+ * traveling gold pulse proves it is one — it walks the entire curve
+ * and returns, crossing both apparent loops per lap. Reduced motion
+ * pins the pulse as a static period resting at the curve's lowest
+ * point: the dot in co.stil.
+ */
+
+const EDGE = 'M 88.6 45.4 Q 89.9 43.6 90.8 41.8 Q 91.8 40.0 92.5 38.3 Q 93.1 36.6 93.5 35.1 Q 93.9 33.5 93.9 32.0 Q 94.0 30.5 93.8 29.2 Q 93.5 27.8 93.0 26.7 Q 92.5 25.5 91.6 24.5 Q 90.8 23.6 89.7 22.8 Q 88.7 22.0 87.3 21.4 Q 86.0 20.8 84.4 20.5 Q 82.8 20.1 81.1 20.0 Q 79.3 19.9 77.4 19.9 Q 75.4 20.0 73.3 20.3 Q 71.2 20.7 69.1 21.2 Q 66.9 21.7 64.6 22.4 Q 62.3 23.2 60.0 24.1 Q 57.7 25.0 55.4 26.1 Q 53.1 27.2 50.8 28.5 Q 48.5 29.7 46.2 31.1 Q 44.0 32.5 41.9 34.0 Q 39.7 35.6 37.7 37.2 Q 35.7 38.8 33.8 40.5 Q 31.9 42.2 30.2 43.9 Q 28.5 45.6 27.0 47.4 Q 25.5 49.1 24.2 50.9 Q 22.9 52.6 21.8 54.3 Q 20.7 56.1 19.8 57.7 Q 18.9 59.4 18.3 61.0 Q 17.7 62.6 17.3 64.1 Q 16.9 65.7 16.7 67.1 Q 16.6 68.5 16.6 69.8 Q 16.7 71.0 17.0 72.2 Q 17.3 73.3 17.8 74.3 Q 18.3 75.3 19.1 76.1 Q 19.8 76.9 20.7 77.6 Q 21.6 78.3 22.6 78.8 Q 23.7 79.2 24.9 79.6 Q 26.2 79.9 27.5 80.0 Q 28.9 80.1 30.3 80.1 Q 31.8 80.1 33.4 79.9 Q 34.9 79.7 36.5 79.3 Q 38.2 78.9 39.8 78.4 Q 41.5 77.8 43.2 77.2 Q 44.9 76.5 46.6 75.7 Q 48.3 74.8 50.0 73.9 Q 51.7 72.9 53.3 71.9 Q 55.0 70.8 56.6 69.6 Q 58.2 68.5 59.7 67.2 Q 61.2 66.0 62.7 64.6 Q 64.1 63.3 65.4 61.9 Q 66.8 60.5 68.0 59.0 Q 69.2 57.6 70.3 56.1 Q 71.4 54.6 72.3 53.1 Q 73.3 51.6 74.1 50.1 Q 74.9 48.6 75.5 47.1 Q 76.1 45.6 76.6 44.2 Q 77.1 42.7 77.4 41.3 Q 77.6 39.8 77.8 38.5 Q 77.9 37.1 77.8 35.8 Q 77.7 34.5 77.5 33.3 Q 77.2 32.0 76.8 30.9 Q 76.4 29.8 75.8 28.7 Q 75.1 27.7 74.4 26.8 Q 73.6 25.9 72.6 25.1 Q 71.6 24.3 70.5 23.7 Q 69.4 23.0 68.1 22.5 Q 66.8 22.0 65.4 21.7 Q 64.0 21.4 62.4 21.2 Q 60.8 21.0 59.2 21.0 Q 57.5 20.9 55.7 21.1 Q 53.9 21.2 52.1 21.5 Q 50.2 21.8 48.3 22.3 Q 46.4 22.8 44.4 23.4 Q 42.5 24.0 40.5 24.8 Q 38.5 25.6 36.5 26.6 Q 34.5 27.5 32.6 28.6 Q 30.7 29.7 28.8 30.9 Q 26.9 32.2 25.1 33.5 Q 23.3 34.8 21.6 36.3 Q 19.9 37.7 18.3 39.2 Q 16.8 40.8 15.4 42.4 Q 14.0 44.0 12.7 45.6 Q 11.5 47.2 10.5 48.9 Q 9.5 50.6 8.7 52.2 Q 7.9 53.9 7.3 55.5 Q 6.7 57.2 6.4 58.8 Q 6.1 60.4 6.1 61.9 Q 6.0 63.5 6.2 64.9 Q 6.4 66.3 6.9 67.7 Q 7.4 69.0 8.2 70.2 Q 8.9 71.4 9.9 72.4 Q 11.0 73.5 12.2 74.3 Q 13.5 75.2 15.0 75.9 Q 16.6 76.6 18.3 77.0 Q 20.1 77.5 22.0 77.8 Q 24.0 78.1 26.1 78.1 Q 28.3 78.2 30.5 78.1 Q 32.8 77.9 35.3 77.5 Q 37.7 77.2 40.2 76.6 Q 42.7 76.0 45.3 75.2 Q 47.8 74.4 50.4 73.4 Q 53.0 72.4 55.6 71.3 Q 58.1 70.1 60.7 68.8 Q 63.2 67.5 65.6 66.0 Q 68.0 64.5 70.3 62.9 Q 72.7 61.3 74.8 59.6 Q 77.0 57.9 78.9 56.2 Q 80.9 54.4 82.6 52.6 Q 84.4 50.8 85.9 49.0 Q 87.4 47.2 88.6 45.4 Z';
+const LEN = 413;
+
+export default function Logo({ size = 22 }: { size?: number }) {
+  return (
+    <span className="logo-mark" style={{ width: size, height: size }} aria-hidden="true">
+      <style>{`
+        .logo-mark{display:inline-flex;flex-shrink:0}
+        .logo-mark svg{display:block;width:100%;height:100%;overflow:visible}
+        .logo-pulse{stroke-dasharray:26 ${LEN - 26};animation:logoTravel 7s linear infinite}
+        .logo-dot{display:none}
+        @keyframes logoTravel{to{stroke-dashoffset:-${LEN}px}}
+        @media (prefers-reduced-motion: reduce){
+          .logo-pulse{display:none}
+          .logo-dot{display:block}
+        }
+      `}</style>
+      <svg viewBox="0 0 100 100" fill="none">
+        <path d={EDGE} stroke="currentColor" strokeWidth="4" strokeLinecap="round" opacity="0.9" />
+        <path className="logo-pulse" d={EDGE} stroke="var(--color-accent-gold)" strokeWidth="5.5" strokeLinecap="round" />
+        <circle className="logo-dot" cx="30.3" cy="80.1" r="5" fill="var(--color-accent-gold)" />
+      </svg>
+    </span>
+  );
+}
