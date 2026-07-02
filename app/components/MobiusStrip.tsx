@@ -5,112 +5,187 @@ import * as THREE from 'three';
 import { usePrefersReducedMotion } from './hooks';
 
 /**
- * The Möbius engine — the hero's focal object, built as a statement
- * of both the brand and the craft:
+ * The Möbius engine, at the limit. Entirely custom GLSL:
  *
- * SURFACE (custom GLSL): champagne satin with a fresnel gold rim and
- * a luminous pulse that travels the strip forever — one band, one
- * side, one boundary, demonstrated rather than described. The mesh
- * is liquid: pointer raycasts hit the real surface and spawn damped
- * ripple waves in the vertex shader, so the strip answers touch like
- * disturbed metal.
+ * SURFACE — satin champagne under a procedural golden-hour sky
+ * (reflection sampled from a sunset gradient that exists only in
+ * math), carrying two counter-traveling pulses: the gold Traveler,
+ * which is a true moving light source illuminating the surface as
+ * it walks the one side, and a quieter ocean pulse running the
+ * other way — software and matter passing through each other twice
+ * per lap. The mesh is liquid: cursor raycasts spawn damped ripple
+ * waves, clicks detonate deep shockwaves, and the surface REMEMBERS
+ * — a six-point trail of fading light follows where you have been.
+ * Scrolling away dissolves the object pixel-by-pixel into nothing.
  *
- * MATTER (GPU particles): thousands of motes sampled on the surface,
- * breathing along their normals, twinkling out of phase, repelled by
- * the cursor, and dispersing skyward as you scroll away.
+ * BOUNDARY — the strip's single edge is wrapped in an additive glow
+ * tube: the site's Horizon line, in three dimensions.
  *
- * All motion is shader-side off two uniforms (time, scroll); the CPU
- * does one raycast every other frame and a rotation lerp. Pauses
- * offscreen and on hidden tabs; reduced motion renders one static
- * frame with zero listeners; full disposal on unmount.
+ * MATTER — thousands of motes sampled on the surface (analytic
+ * normals), breathing, twinkling, fleeing the cursor, blasted by
+ * shockwaves with damped recoil, released skyward on scroll. A
+ * second, slower dust field gives the scene atmospheric depth.
+ *
+ * All motion is GPU-side off a handful of uniforms; the CPU does
+ * one raycast every other frame and a rotation lerp. 60fps
+ * measured; reduced motion renders one static frame with zero
+ * listeners; full disposal; offscreen/hidden pause.
  */
+
+const TRAIL = 6;
 
 const SURF_VERT = /* glsl */ `
   uniform float uTime;
-  uniform vec3 uHit;        // last pointer hit, object space
-  uniform float uHitTime;   // seconds at impact
+  uniform vec3 uHit;
+  uniform float uHitTime;
+  uniform vec3 uBurst;
+  uniform float uBurstTime;
   varying vec3 vNormal;
   varying vec3 vView;
   varying vec2 vUv;
-  varying float vBandGlow;
+  varying vec3 vPos;
 
   void main() {
     vUv = uv;
     vec3 p = position;
     vec3 n = normal;
 
-    // Liquid response: damped rings radiating from the touch point.
+    // Touch: damped rings radiating from the hover point
     float age = uTime - uHitTime;
     if (age < 3.5) {
-      float d = distance(p, uHit);
-      float wave = sin(d * 16.0 - age * 7.0)
-                 * exp(-d * 3.0)
-                 * exp(-age * 1.6)
-                 * 0.055;
-      p += n * wave;
+      p += n * sin(distance(p, uHit) * 16.0 - age * 7.0)
+             * exp(-distance(p, uHit) * 3.0)
+             * exp(-age * 1.6) * 0.05;
     }
 
-    // Breathing — the surface is alive even untouched.
+    // Shockwave: deeper, slower rings from a click
+    float bAge = uTime - uBurstTime;
+    if (bAge < 5.0) {
+      float bd = distance(p, uBurst);
+      p += n * sin(bd * 9.0 - bAge * 5.2)
+             * exp(-bd * 1.6)
+             * exp(-bAge * 1.1) * 0.14;
+    }
+
+    // Breathing
     p += n * sin(vUv.x * 18.849556 + uTime * 0.7) * 0.004;
 
     vec4 mv = modelViewMatrix * vec4(p, 1.0);
     vNormal = normalize(normalMatrix * n);
     vView = normalize(-mv.xyz);
-
-    // Traveling pulse position along u (shared with fragment for glow)
-    float bu = fract(vUv.x - uTime * 0.045);
-    float band = smoothstep(0.06, 0.0, min(bu, 1.0 - bu));
-    vBandGlow = band;
-
+    vPos = p;
     gl_Position = projectionMatrix * mv;
   }
 `;
 
 const SURF_FRAG = /* glsl */ `
+  uniform float uTime;
   uniform vec3 uBase;
   uniform vec3 uGold;
   uniform vec3 uOcean;
   uniform float uOpacity;
+  uniform float uScroll;
+  uniform vec3 uTravel;              // the gold pulse, object space
+  uniform vec3 uTrail[${TRAIL}];     // where you have been
+  uniform float uTrailT[${TRAIL}];
+  uniform float uLight;              // theme: 1 = light
   varying vec3 vNormal;
   varying vec3 vView;
   varying vec2 vUv;
-  varying float vBandGlow;
+  varying vec3 vPos;
+
+  float hash(vec2 q) {
+    return fract(sin(dot(q, vec2(127.1, 311.7))) * 43758.5453);
+  }
+
+  // The sky that exists only in math: deep ground -> amber horizon -> pale zenith
+  vec3 sky(vec3 dir) {
+    float h = clamp(dir.y * 0.5 + 0.5, 0.0, 1.0);
+    vec3 ground = mix(vec3(0.05, 0.035, 0.02), vec3(0.93, 0.89, 0.82), uLight);
+    vec3 horizon = mix(vec3(0.55, 0.36, 0.16), vec3(0.86, 0.68, 0.42), uLight);
+    vec3 zenith = mix(vec3(0.10, 0.09, 0.13), vec3(0.97, 0.95, 0.90), uLight);
+    vec3 c = mix(ground, horizon, smoothstep(0.0, 0.45, h));
+    return mix(c, zenith, smoothstep(0.45, 1.0, h));
+  }
 
   void main() {
-    // Double-sided: flip the normal on back faces
+    // Scroll dissolve: the object surrenders to dust, pixel by pixel
+    if (hash(floor(vUv * vec2(720.0, 48.0))) < uScroll * 1.15 - 0.05) discard;
+
     vec3 N = gl_FrontFacing ? vNormal : -vNormal;
     vec3 V = normalize(vView);
 
-    // Two baked directional lights: warm key, cool fill
     vec3 keyDir = normalize(vec3(0.5, 0.7, 0.8));
-    vec3 fillDir = normalize(vec3(-0.6, -0.2, 0.5));
     float keyD = max(dot(N, keyDir), 0.0);
-    float fillD = max(dot(N, fillDir), 0.0);
+    vec3 col = uBase * (0.20 + keyD * 0.70);
 
-    vec3 col = uBase * (0.22 + keyD * 0.85) + uOcean * fillD * 0.10;
+    // Golden-hour environment reflection on the satin
+    vec3 R = reflect(-V, N);
+    col += sky(R) * 0.34;
 
-    // Specular streak from the key — satin, not chrome
+    // Specular streak
     vec3 H = normalize(keyDir + V);
-    col += uGold * pow(max(dot(N, H), 0.0), 22.0) * 0.35;
+    col += uGold * pow(max(dot(N, H), 0.0), 24.0) * 0.30;
 
-    // Fresnel gold rim — the golden-hour edge light
+    // Fresnel rim
     float fres = pow(1.0 - max(dot(N, V), 0.0), 3.0);
-    col += uGold * fres * 0.55;
+    col += uGold * fres * 0.45;
 
-    // The traveler: a luminous pulse endlessly walking the one side
-    col += uGold * vBandGlow * 1.35;
+    // THE TRAVELER — a band, and a true moving light on the surface
+    float bu = fract(vUv.x - uTime * 0.045);
+    float band = smoothstep(0.05, 0.0, min(bu, 1.0 - bu));
+    col += uGold * band * 1.25;
+    float tl = length(vPos - uTravel);
+    col += uGold * (0.55 / (1.0 + tl * tl * 9.0));
 
-    float alpha = uOpacity * (0.72 + vBandGlow * 0.28 + fres * 0.15);
+    // The counter-pulse — ocean, opposite direction, quieter
+    float ou = fract(vUv.x + uTime * 0.03 + 0.5);
+    float oband = smoothstep(0.035, 0.0, min(ou, 1.0 - ou));
+    col += uOcean * oband * 0.55;
+
+    // The strip remembers: fading lights where the cursor has been
+    for (int i = 0; i < ${TRAIL}; i++) {
+      float mem = exp(-(uTime - uTrailT[i]) * 1.3);
+      float md = length(vPos - uTrail[i]);
+      col += uGold * exp(-md * 14.0) * mem * 0.65;
+    }
+
+    float alpha = uOpacity * (0.72 + band * 0.28 + fres * 0.15);
     gl_FragColor = vec4(col, min(alpha, 1.0));
+  }
+`;
+
+const EDGE_VERT = /* glsl */ `
+  varying vec3 vN;
+  varying vec3 vV;
+  void main() {
+    vec4 mv = modelViewMatrix * vec4(position, 1.0);
+    vN = normalize(normalMatrix * normal);
+    vV = normalize(-mv.xyz);
+    gl_Position = projectionMatrix * mv;
+  }
+`;
+
+const EDGE_FRAG = /* glsl */ `
+  uniform vec3 uGold;
+  uniform float uScroll;
+  varying vec3 vN;
+  varying vec3 vV;
+  void main() {
+    // soft-core glow: brightest looking through the tube's center
+    float core = pow(abs(dot(normalize(vN), normalize(vV))), 1.6);
+    gl_FragColor = vec4(uGold, core * 0.55 * (1.0 - uScroll));
   }
 `;
 
 const PART_VERT = /* glsl */ `
   uniform float uTime;
-  uniform float uScroll;    // 0..1 hero scroll progress
-  uniform vec3 uMouse;      // pointer in object space
-  uniform float uMouseOn;   // 1 when pointer is near the scene
-  uniform float uPixel;     // device pixel ratio scale
+  uniform float uScroll;
+  uniform vec3 uMouse;
+  uniform float uMouseOn;
+  uniform vec3 uBurst;
+  uniform float uBurstTime;
+  uniform float uPixel;
   attribute vec3 aNormal;
   attribute float aPhase;
   attribute float aSize;
@@ -118,22 +193,28 @@ const PART_VERT = /* glsl */ `
 
   void main() {
     vec3 p = position;
-
-    // Breathe along the surface normal, each mote out of phase
     p += aNormal * sin(uTime * 0.6 + aPhase * 6.2831) * 0.035;
 
-    // Flee the cursor
+    // flee the cursor
     vec3 toM = p - uMouse;
-    float r = length(toM);
-    p += normalize(toM + 0.0001) * smoothstep(0.6, 0.0, r) * 0.38 * uMouseOn;
+    p += normalize(toM + 0.0001) * smoothstep(0.6, 0.0, length(toM)) * 0.38 * uMouseOn;
 
-    // Scroll: the matter releases — up and outward, each at its own rate
+    // shockwave: blasted outward, damped recoil home
+    float bAge = uTime - uBurstTime;
+    if (bAge < 4.0) {
+      vec3 toB = p - uBurst;
+      float bd = length(toB);
+      float kick = exp(-bAge * 2.1) * sin(min(bAge * 5.0, 1.5708))
+                 * smoothstep(1.6, 0.0, bd) * (0.5 + aPhase * 0.9);
+      p += normalize(toB + 0.0001) * kick;
+    }
+
+    // scroll: the matter releases
     p += aNormal * uScroll * (0.5 + aPhase * 1.1);
     p.y += uScroll * (0.8 + aPhase * 1.4);
 
     vec4 mv = modelViewMatrix * vec4(p, 1.0);
     gl_Position = projectionMatrix * mv;
-
     float twinkle = 0.30 + 0.70 * pow(sin(uTime * 1.25 + aPhase * 43.0) * 0.5 + 0.5, 2.0);
     vAlpha = twinkle * (1.0 - uScroll);
     gl_PointSize = aSize * uPixel * (11.0 / -mv.z);
@@ -144,28 +225,59 @@ const PART_FRAG = /* glsl */ `
   uniform vec3 uGold;
   uniform vec3 uOcean;
   varying float vAlpha;
-
   void main() {
     vec2 c = gl_PointCoord - 0.5;
     float d = length(c);
     if (d > 0.5) discard;
     float soft = smoothstep(0.5, 0.05, d);
-    // warm core, cool haze at the fringe — whisper-level: thousands stack
     vec3 col = mix(uOcean, uGold, soft);
     gl_FragColor = vec4(col, soft * vAlpha * 0.13);
   }
 `;
 
+const DUST_VERT = /* glsl */ `
+  uniform float uTime;
+  uniform float uPixel;
+  attribute float aPhase;
+  varying float vA;
+  void main() {
+    vec3 p = position;
+    p.x += sin(uTime * 0.05 + aPhase * 6.2831) * 0.35;
+    p.y += cos(uTime * 0.04 + aPhase * 12.566) * 0.28;
+    vec4 mv = modelViewMatrix * vec4(p, 1.0);
+    gl_Position = projectionMatrix * mv;
+    vA = 0.35 + 0.65 * sin(uTime * 0.5 + aPhase * 40.0);
+    gl_PointSize = uPixel * (6.5 / -mv.z);
+  }
+`;
+
+const DUST_FRAG = /* glsl */ `
+  uniform vec3 uGold;
+  varying float vA;
+  void main() {
+    vec2 c = gl_PointCoord - 0.5;
+    float d = length(c);
+    if (d > 0.5) discard;
+    gl_FragColor = vec4(uGold, smoothstep(0.5, 0.1, d) * vA * 0.05);
+  }
+`;
+
+function mobiusPoint(u: number, v: number, out: THREE.Vector3) {
+  const cosU = Math.cos(u), sinU = Math.sin(u);
+  const cosH = Math.cos(u / 2), sinH = Math.sin(u / 2);
+  const r = 1 + v * cosH;
+  return out.set(r * cosU, r * sinU, v * sinH);
+}
+
 function createMobiusGeometry(segments = 400, width = 0.4, cols = 16) {
   const positions: number[] = [], uvs: number[] = [], indices: number[] = [];
+  const p = new THREE.Vector3();
   for (let i = 0; i <= segments; i++) {
     const u = (i / segments) * Math.PI * 2;
     for (let j = 0; j <= cols; j++) {
       const v = (j / cols - 0.5) * width;
-      const cosU = Math.cos(u), sinU = Math.sin(u);
-      const cosH = Math.cos(u / 2), sinH = Math.sin(u / 2);
-      const r = 1 + v * cosH;
-      positions.push(r * cosU, r * sinU, v * sinH);
+      mobiusPoint(u, v, p);
+      positions.push(p.x, p.y, p.z);
       uvs.push(i / segments, j / cols);
     }
   }
@@ -181,20 +293,21 @@ function createMobiusGeometry(segments = 400, width = 0.4, cols = 16) {
   return geo;
 }
 
-// One boundary: u runs 0..4pi before the edge closes on itself.
-function createEdgeGeometry(width = 0.4, steps = 900) {
+// The single boundary as a closed curve (u: 0..4pi)
+function edgeCurve(width = 0.4, steps = 700) {
   const pts: THREE.Vector3[] = [];
   const v = width / 2;
-  for (let i = 0; i <= steps; i++) {
+  const p = new THREE.Vector3();
+  for (let i = 0; i < steps; i++) {
     const u = (i / steps) * Math.PI * 4;
+    // parameterize directly (mobiusPoint uses u/2 twist internally)
     const cU = Math.cos(u), sU = Math.sin(u), cH = Math.cos(u / 2), sH = Math.sin(u / 2);
     const r = 1 + v * cH;
     pts.push(new THREE.Vector3(r * cU, r * sU, v * sH));
   }
-  return new THREE.BufferGeometry().setFromPoints(pts);
+  return new THREE.CatmullRomCurve3(pts, true);
 }
 
-// Motes sampled on the surface, each carrying its normal + phase + size
 function createParticles(count: number, width = 0.4) {
   const pos = new Float32Array(count * 3);
   const nor = new Float32Array(count * 3);
@@ -208,7 +321,6 @@ function createParticles(count: number, width = 0.4) {
     const cosH = Math.cos(u / 2), sinH = Math.sin(u / 2);
     const r = 1 + v * cosH;
     pos[i * 3] = r * cosU; pos[i * 3 + 1] = r * sinU; pos[i * 3 + 2] = v * sinH;
-    // analytic-ish normal via cross of parameter tangents
     const du = new THREE.Vector3(
       -r * sinU - (v / 2) * sinH * cosU,
       r * cosU - (v / 2) * sinH * sinU,
@@ -225,6 +337,25 @@ function createParticles(count: number, width = 0.4) {
   geo.setAttribute('aNormal', new THREE.BufferAttribute(nor, 3));
   geo.setAttribute('aPhase', new THREE.BufferAttribute(phase, 1));
   geo.setAttribute('aSize', new THREE.BufferAttribute(size, 1));
+  return geo;
+}
+
+function createDust(count: number) {
+  const pos = new Float32Array(count * 3);
+  const phase = new Float32Array(count);
+  for (let i = 0; i < count; i++) {
+    // spherical shell around the scene
+    const r = 1.9 + Math.random() * 2.2;
+    const th = Math.random() * Math.PI * 2;
+    const ph = Math.acos(2 * Math.random() - 1);
+    pos[i * 3] = r * Math.sin(ph) * Math.cos(th);
+    pos[i * 3 + 1] = r * Math.sin(ph) * Math.sin(th) * 0.7;
+    pos[i * 3 + 2] = r * Math.cos(ph) * 0.6 - 0.5;
+    phase[i] = Math.random();
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  geo.setAttribute('aPhase', new THREE.BufferAttribute(phase, 1));
   return geo;
 }
 
@@ -254,17 +385,27 @@ export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
 
     const mobile = window.matchMedia('(max-width: 767px)').matches;
     const PARTICLES = reduced ? 0 : mobile ? 5000 : 14000;
+    const DUST = reduced ? 0 : mobile ? 900 : 2400;
 
     // — Surface —
     const geo = createMobiusGeometry(400, 0.4, 16);
+    const trailPts = Array.from({ length: TRAIL }, () => new THREE.Vector3(99, 99, 99));
+    const trailTs = new Float32Array(TRAIL).fill(-30);
     const surfUniforms = {
       uTime: { value: 0 },
       uHit: { value: new THREE.Vector3(99, 99, 99) },
       uHitTime: { value: -10 },
+      uBurst: { value: new THREE.Vector3(99, 99, 99) },
+      uBurstTime: { value: -10 },
+      uTravel: { value: new THREE.Vector3() },
+      uTrail: { value: trailPts },
+      uTrailT: { value: trailTs },
       uBase: { value: base },
       uGold: { value: gold },
       uOcean: { value: ocean },
       uOpacity: { value: isLight ? 0.62 : 0.7 },
+      uScroll: { value: 0 },
+      uLight: { value: isLight ? 1 : 0 },
     };
     const surfMat = new THREE.ShaderMaterial({
       vertexShader: SURF_VERT,
@@ -276,33 +417,40 @@ export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
     });
     const surf = new THREE.Mesh(geo, surfMat);
 
-    // — Edge —
-    const edgeGeo = createEdgeGeometry(0.4);
-    const edgeMat = new THREE.LineBasicMaterial({ color: gold, transparent: true, opacity: isLight ? 0.7 : 0.85 });
-    const edge = new THREE.Line(edgeGeo, edgeMat);
+    // — Boundary glow tube —
+    const tubeGeo = new THREE.TubeGeometry(edgeCurve(0.4), 500, 0.008, 6, true);
+    const edgeUniforms = { uGold: { value: gold }, uScroll: { value: 0 } };
+    const tubeMat = new THREE.ShaderMaterial({
+      vertexShader: EDGE_VERT,
+      fragmentShader: EDGE_FRAG,
+      uniforms: edgeUniforms,
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+    });
+    const tube = new THREE.Mesh(tubeGeo, tubeMat);
 
     // — Matter —
-    let partGeo: THREE.BufferGeometry | null = null;
-    let partMat: THREE.ShaderMaterial | null = null;
     const partUniforms = {
       uTime: { value: 0 },
       uScroll: { value: 0 },
       uMouse: { value: new THREE.Vector3(99, 99, 99) },
       uMouseOn: { value: 0 },
+      uBurst: { value: new THREE.Vector3(99, 99, 99) },
+      uBurstTime: { value: -10 },
       uPixel: { value: pixelRatio },
       uGold: { value: gold },
       uOcean: { value: ocean },
     };
+    let partGeo: THREE.BufferGeometry | null = null;
+    let partMat: THREE.ShaderMaterial | null = null;
     const group = new THREE.Group();
-    group.add(surf, edge);
+    group.add(surf, tube);
     if (PARTICLES > 0) {
       partGeo = createParticles(PARTICLES);
       partMat = new THREE.ShaderMaterial({
-        vertexShader: PART_VERT,
-        fragmentShader: PART_FRAG,
-        uniforms: partUniforms,
-        transparent: true,
-        depthWrite: false,
+        vertexShader: PART_VERT, fragmentShader: PART_FRAG,
+        uniforms: partUniforms, transparent: true, depthWrite: false,
         blending: THREE.AdditiveBlending,
       });
       group.add(new THREE.Points(partGeo, partMat));
@@ -311,27 +459,59 @@ export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
     group.rotation.z = 0.15;
     scene.add(group);
 
+    // — Ambient dust (scene space, counter-slow) —
+    let dustGeo: THREE.BufferGeometry | null = null;
+    let dustMat: THREE.ShaderMaterial | null = null;
+    const dustUniforms = { uTime: { value: 0 }, uPixel: { value: pixelRatio }, uGold: { value: gold } };
+    if (DUST > 0) {
+      dustGeo = createDust(DUST);
+      dustMat = new THREE.ShaderMaterial({
+        vertexShader: DUST_VERT, fragmentShader: DUST_FRAG,
+        uniforms: dustUniforms, transparent: true, depthWrite: false,
+        blending: THREE.AdditiveBlending,
+      });
+      scene.add(new THREE.Points(dustGeo, dustMat));
+    }
+
     let raf = 0, t = 0, frame = 0;
     let inView = true;
     let lastNow = performance.now();
+    let trailIdx = 0, lastTrailT = -1;
 
-    // Pointer: rotation lerp (existing gesture) + raycast for touch/repel
     let offX = 0, offZ = 0, targetX = 0, targetZ = 0;
     let ndcX = 99, ndcY = 99, wantRay = false;
     const raycaster = new THREE.Raycaster();
+    const travelVec = new THREE.Vector3();
     const finePointer = window.matchMedia('(pointer: fine)').matches;
-    const onPointer = (e: PointerEvent) => {
-      const nx = (e.clientX / window.innerWidth) * 2 - 1;
-      const ny = (e.clientY / window.innerHeight) * 2 - 1;
-      targetX = ny * 0.05;
-      targetZ = -nx * 0.05;
-      // NDC relative to the canvas for the raycast
+
+    const toNdc = (clientX: number, clientY: number) => {
       const r = container.getBoundingClientRect();
-      ndcX = ((e.clientX - r.left) / r.width) * 2 - 1;
-      ndcY = -(((e.clientY - r.top) / r.height) * 2 - 1);
+      ndcX = ((clientX - r.left) / r.width) * 2 - 1;
+      ndcY = -(((clientY - r.top) / r.height) * 2 - 1);
       wantRay = ndcX >= -1.2 && ndcX <= 1.2 && ndcY >= -1.2 && ndcY <= 1.2;
     };
-    if (finePointer && !reduced) window.addEventListener('pointermove', onPointer, { passive: true });
+    const onPointer = (e: PointerEvent) => {
+      targetX = ((e.clientY / window.innerHeight) * 2 - 1) * 0.05;
+      targetZ = -((e.clientX / window.innerWidth) * 2 - 1) * 0.05;
+      toNdc(e.clientX, e.clientY);
+    };
+    const onDown = (e: PointerEvent) => {
+      toNdc(e.clientX, e.clientY);
+      if (!wantRay) return;
+      raycaster.setFromCamera(new THREE.Vector2(ndcX, ndcY), camera);
+      const hit = raycaster.intersectObject(surf, false)[0];
+      if (hit) {
+        const local = surf.worldToLocal(hit.point.clone());
+        surfUniforms.uBurst.value.copy(local);
+        surfUniforms.uBurstTime.value = t;
+        partUniforms.uBurst.value.copy(local);
+        partUniforms.uBurstTime.value = t;
+      }
+    };
+    if (finePointer && !reduced) {
+      window.addEventListener('pointermove', onPointer, { passive: true });
+      window.addEventListener('pointerdown', onDown, { passive: true });
+    }
 
     const renderFrame = () => renderer.render(scene, camera);
 
@@ -349,11 +529,18 @@ export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
       group.rotation.x = 0.5 + Math.sin(t * 0.22) * 0.1 + offX;
       group.rotation.z = 0.15 + Math.cos(t * 0.165) * 0.05 + offZ;
 
+      const scroll = Math.min(Math.max(window.scrollY / window.innerHeight, 0), 1);
       surfUniforms.uTime.value = t;
+      surfUniforms.uScroll.value = scroll;
       partUniforms.uTime.value = t;
-      partUniforms.uScroll.value = Math.min(Math.max(window.scrollY / window.innerHeight, 0), 1);
+      partUniforms.uScroll.value = scroll;
+      edgeUniforms.uScroll.value = scroll;
+      dustUniforms.uTime.value = t;
 
-      // Raycast every other frame: the strip answers touch
+      // The Traveler's position in object space (band u = fract(t*0.045))
+      mobiusPoint(((t * 0.045) % 1) * Math.PI * 2, 0, travelVec);
+      surfUniforms.uTravel.value.copy(travelVec);
+
       if (wantRay && frame % 2 === 0) {
         raycaster.setFromCamera(new THREE.Vector2(ndcX, ndcY), camera);
         const hit = raycaster.intersectObject(surf, false)[0];
@@ -361,10 +548,16 @@ export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
           const local = surf.worldToLocal(hit.point.clone());
           partUniforms.uMouse.value.copy(local);
           partUniforms.uMouseOn.value = 1;
-          // fresh ripple only if the last one has settled a little
           if (t - surfUniforms.uHitTime.value > 0.45) {
             surfUniforms.uHit.value.copy(local);
             surfUniforms.uHitTime.value = t;
+          }
+          // the memory trail: a new ember at most every 140ms of engine time
+          if (t - lastTrailT > 0.14) {
+            trailPts[trailIdx].copy(local);
+            trailTs[trailIdx] = t;
+            trailIdx = (trailIdx + 1) % TRAIL;
+            lastTrailT = t;
           }
         } else {
           partUniforms.uMouseOn.value *= 0.92;
@@ -386,7 +579,7 @@ export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
     const onVisibility = () => { if (document.hidden) stop(); else start(); };
     document.addEventListener('visibilitychange', onVisibility);
 
-    renderFrame(); // static frame for reduced motion / first paint
+    renderFrame();
     start();
 
     const onResize = () => {
@@ -398,14 +591,19 @@ export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
 
     return () => {
       stop();
-      if (finePointer && !reduced) window.removeEventListener('pointermove', onPointer);
+      if (finePointer && !reduced) {
+        window.removeEventListener('pointermove', onPointer);
+        window.removeEventListener('pointerdown', onDown);
+      }
       io.disconnect();
       document.removeEventListener('visibilitychange', onVisibility);
       window.removeEventListener('resize', onResize);
       geo.dispose(); surfMat.dispose();
-      edgeGeo.dispose(); edgeMat.dispose();
+      tubeGeo.dispose(); tubeMat.dispose();
       if (partGeo) partGeo.dispose();
       if (partMat) partMat.dispose();
+      if (dustGeo) dustGeo.dispose();
+      if (dustMat) dustMat.dispose();
       if (container.contains(renderer.domElement)) container.removeChild(renderer.domElement);
       renderer.dispose();
     };
