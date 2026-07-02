@@ -177,7 +177,7 @@ export default function PrintsPage() {
             lineHeight: 1.65,
           }}
         >
-          The tooling behind some of these &mdash; a Claude Code skill for parametric,
+          The tooling behind some of these &mdash; an open-source toolkit for parametric,
           print-ready models with CadQuery. GitHub &#8594;
         </a>
       </section>

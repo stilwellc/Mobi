@@ -139,7 +139,7 @@ export default function Footer() {
               letterSpacing: '0.02em',
             }}
           >
-            Designed &amp; built with Claude &middot; Set in Cormorant Garamond, Syne &amp; Space Mono
+            Set in Cormorant Garamond, Syne &amp; Space Mono
           </span>
         </div>
       </div>

@@ -60,7 +60,7 @@ export const professional = {
       description: 'Security review dashboard that assembles itself — vulnerability, GRC, and incident data pulled over MCP into one self-contained report.',
       url: 'https://github.com/stilwellc/SecMCPHub',
       logoStyle: { fontFamily: 'var(--font-mono), monospace', fontWeight: 700, letterSpacing: '-0.02em' } as Record<string, string | number>,
-      meta: { year: '2026', stack: 'MCP · Claude Code' },
+      meta: { year: '2026', stack: 'MCP · automated reporting' },
     },
     {
       name: 'Elixir Security', tag: 'Open Source',
