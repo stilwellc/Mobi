@@ -134,11 +134,10 @@ export default function Footer() {
             </svg>
             <span
               style={{
-                fontFamily: 'var(--font-serif), serif',
-                fontWeight: 300,
-                fontStyle: 'italic',
+                fontFamily: 'var(--font-sans), sans-serif',
+                fontWeight: 700,
                 lineHeight: 0.8,
-                fontSize: 'clamp(6rem, 16vw, 13rem)',
+                fontSize: 'clamp(5rem, 13vw, 10.5rem)',
                 letterSpacing: '-0.04em',
                 color: 'var(--color-fg)',
                 opacity: 0.03,
