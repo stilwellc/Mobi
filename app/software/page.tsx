@@ -9,7 +9,7 @@ import { ARTISTS } from './ray/constants';
 export const metadata: Metadata = {
   title: 'Software — co.stil',
   description:
-    'Design-first software from the studio of Collin Stilwell — Ray auction intelligence, Soirée, SecMCPHub, and Elixir security tooling.',
+    'Design-first software from the studio of Collin Stilwell — Ray auction intelligence and Soirée event discovery.',
 };
 
 const software = sections.find((s) => s.id === 'software')!;

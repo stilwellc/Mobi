@@ -23,6 +23,7 @@ const linkStyle: React.CSSProperties = {
 const navigateLinks = [
   { label: 'Software', href: '/software' },
   { label: 'Physical', href: '/physical' },
+  { label: 'Professional', href: '/professional' },
   { label: 'About', href: '/about' },
 ];
 

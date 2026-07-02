@@ -9,6 +9,7 @@ import { useWindowSize } from './hooks';
 const links = [
   { label: 'Software', href: '/software' },
   { label: 'Physical', href: '/physical' },
+  { label: 'Professional', href: '/professional' },
   { label: 'About', href: '/about' },
 ];
 

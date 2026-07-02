@@ -27,9 +27,12 @@ const PRINCIPLES = [
 ];
 
 const CURRENTLY = [
-  { label: 'Now', text: 'Senior Product Security Engineer, Thirty Madison.' },
-  { label: 'Before', text: 'Application Security Engineer, Podium.' },
-  { label: 'Study', text: 'M.S. Cyber Security, NYU — Cyber Fellowship.' },
+  { label: 'Studio', text: 'Ray, Soirée, a residence in progress, and objects on the printer.' },
+  {
+    label: 'Work',
+    text: 'The professional record — career, security engineering, writing — lives at ',
+    link: { href: '/professional', label: '/professional' },
+  },
   {
     label: 'Writing',
     text: 'Essays on security and design engineering at ',
@@ -176,8 +179,8 @@ export default function AboutRoute() {
                     <a
                       className="about-link"
                       href={row.link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      target={row.link.href.startsWith('http') ? '_blank' : undefined}
+                      rel={row.link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                     >
                       {row.link.label}
                     </a>

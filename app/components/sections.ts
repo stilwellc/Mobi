@@ -5,7 +5,7 @@ export const sections: Section[] = [
   {
     id: 'software', label: 'Software', accent: '#96B8D4',
     tagline: 'Design-First Products',
-    description: 'Products and security tooling I build like objects — considered, deliberate, nothing accidental.',
+    description: 'Products I build like objects — considered, deliberate, nothing accidental.',
     items: [
       {
         name: 'Ray', tag: 'Market Intel',
@@ -20,20 +20,6 @@ export const sections: Section[] = [
         url: 'https://soiree.today',
         logoStyle: { fontFamily: 'var(--font-serif), serif', fontStyle: 'italic', fontWeight: 400, letterSpacing: '0.02em' },
         meta: { year: '2025', stack: 'Node.js · PostgreSQL' },
-      },
-      {
-        name: 'SecMCPHub', tag: 'Security',
-        description: 'Security review dashboard that assembles itself — vulnerability, GRC, and incident data pulled over MCP into one self-contained report.',
-        url: 'https://github.com/stilwellc/SecMCPHub',
-        logoStyle: { fontFamily: 'var(--font-mono), monospace', fontWeight: 700, letterSpacing: '-0.02em' },
-        meta: { year: '2026', stack: 'MCP · Claude Code' },
-      },
-      {
-        name: 'Elixir Security', tag: 'Open Source',
-        description: 'Semgrep rules for Ash Framework auth and contributions to Elixir secure coding training.',
-        url: 'https://github.com/stilwellc/ash-semgrep-rules',
-        logoStyle: { fontFamily: 'var(--font-mono), monospace', fontWeight: 400, letterSpacing: '-0.03em' },
-        meta: { year: '2025', stack: 'Semgrep · Ash Framework' },
       },
     ],
   },
@@ -59,3 +45,37 @@ export const sections: Section[] = [
     ],
   },
 ];
+
+// The professional record — separate from the studio practice.
+// Rendered only on /professional; the studio Index never shows this.
+export const professional = {
+  career: [
+    { label: 'Now', role: 'Senior Product Security Engineer', org: 'Thirty Madison', period: '2024 —' },
+    { label: 'Before', role: 'Application Security Engineer', org: 'Podium', period: '2021 — 2024' },
+    { label: 'Study', role: 'M.S. Cyber Security, Cyber Fellowship', org: 'NYU', period: '2021' },
+  ],
+  work: [
+    {
+      name: 'SecMCPHub', tag: 'Security',
+      description: 'Security review dashboard that assembles itself — vulnerability, GRC, and incident data pulled over MCP into one self-contained report.',
+      url: 'https://github.com/stilwellc/SecMCPHub',
+      logoStyle: { fontFamily: 'var(--font-mono), monospace', fontWeight: 700, letterSpacing: '-0.02em' } as Record<string, string | number>,
+      meta: { year: '2026', stack: 'MCP · Claude Code' },
+    },
+    {
+      name: 'Elixir Security', tag: 'Open Source',
+      description: 'Semgrep rules for Ash Framework auth and contributions to Elixir secure coding training.',
+      url: 'https://github.com/stilwellc/ash-semgrep-rules',
+      logoStyle: { fontFamily: 'var(--font-mono), monospace', fontWeight: 400, letterSpacing: '-0.03em' } as Record<string, string | number>,
+      meta: { year: '2025', stack: 'Semgrep · Ash Framework' },
+    },
+  ],
+  writing: [
+    {
+      title: 'Building an Application Security Program That Actually Works',
+      description: 'A four-legged framework for shifting security from a blocking function into an enabler of engineering speed.',
+      date: 'May 2026',
+      url: 'https://collinsthoughts.substack.com/p/building-an-application-security',
+    },
+  ],
+};
