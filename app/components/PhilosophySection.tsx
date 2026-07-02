@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Horizon from './Horizon';
 import Reveal from './Reveal';
 import RevealLines from './RevealLines';
+import { MOBIUS_EDGE } from './Logo';
 
 /**
  * The manifesto band — one statement, no cards. The Möbius thesis
@@ -15,13 +16,18 @@ export default function PhilosophySection() {
     <section
       aria-label="Philosophy"
       className="philo-section rail"
-      style={{ position: 'relative', zIndex: 1 }}
+      data-zone="close"
+      style={{ position: 'relative', zIndex: 1, overflow: 'hidden' }}
     >
       <style>{`
         .philo-section{padding-bottom:160px}
         .philo-horizon{margin-bottom:104px}
         .philo-h2{font-family:var(--font-serif),serif;font-size:clamp(2.5rem,5.5vw,4.75rem);font-weight:300;letter-spacing:-0.02em;line-height:1.08;margin:0 0 40px;max-width:18ch}
         .philo-lede{font-size:17px}
+        /* The mark as architecture — the boundary curve, monumental and
+           barely there, turning once every two minutes. */
+        .philo-shape{position:absolute;right:-14%;top:44%;width:min(56vw,640px);aspect-ratio:1/1;opacity:0.05;pointer-events:none;animation:philoTurn 140s linear infinite}
+        @keyframes philoTurn{to{transform:rotate(360deg)}}
         /* Arm guard — see HeroSection: staggered .rl-line delays must not
            hold a pending transition through the armed state. */
         .philo-h2:not(.rl-revealed) .rl-line{transition:none}
@@ -30,8 +36,16 @@ export default function PhilosophySection() {
           .philo-horizon{margin-bottom:64px}
           .philo-h2{margin:0 0 24px}
           .philo-lede{font-size:14px}
+          .philo-shape{width:80vw;right:-30%;top:52%}
+        }
+        @media (prefers-reduced-motion: reduce){
+          .philo-shape{animation:none}
         }
       `}</style>
+
+      <svg className="philo-shape" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+        <path d={MOBIUS_EDGE} stroke="var(--color-fg)" strokeWidth="0.8" />
+      </svg>
 
       <div className="philo-horizon">
         <Horizon variant="gold" />
