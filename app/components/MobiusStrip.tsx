@@ -69,12 +69,12 @@ export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
     const gold = isLight ? 0xa8875d : 0xd4b896;
     const ocean = isLight ? 0x4e7396 : 0x96b8d4;
 
-    scene.add(new THREE.AmbientLight(0xffffff, isLight ? 0.1 : 0.15));
-    const key = new THREE.DirectionalLight(gold, isLight ? 0.7 : 0.6);
+    scene.add(new THREE.AmbientLight(0xffffff, isLight ? 0.1 : 0.16));
+    const key = new THREE.DirectionalLight(gold, isLight ? 0.8 : 0.85);
     key.position.set(3, 4, 5);
-    const fill = new THREE.DirectionalLight(ocean, isLight ? 0.35 : 0.25);
+    const fill = new THREE.DirectionalLight(ocean, isLight ? 0.35 : 0.3);
     fill.position.set(-3, -1, 3);
-    const rim = new THREE.DirectionalLight(gold, isLight ? 0.45 : 0.35);
+    const rim = new THREE.DirectionalLight(gold, isLight ? 0.55 : 0.55);
     rim.position.set(-2, 3, -4);
     scene.add(key, fill, rim);
 
@@ -90,7 +90,7 @@ export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
 
     // One golden emissive edge (LineBasicMaterial is unlit — self-luminous)
     const edgeGeo = createEdgeGeometry(0.4);
-    const edgeMat = new THREE.LineBasicMaterial({ color: gold, transparent: true, opacity: isLight ? 0.6 : 0.65 });
+    const edgeMat = new THREE.LineBasicMaterial({ color: gold, transparent: true, opacity: isLight ? 0.7 : 0.85 });
     const edge = new THREE.Line(edgeGeo, edgeMat);
 
     const group = new THREE.Group();
@@ -172,12 +172,13 @@ export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
   return (
     <>
       <style>{`
-        /* Base opacity 0.85 lives on the hero scroll layer (HeroSection),
-           which scrubs it to 0 as the strip lifts. Mobile: 0.41 x 0.85 = 0.35. */
-        .mobius-wrap{position:absolute;top:50%;right:2%;transform:translateY(-50%);z-index:0;pointer-events:none;width:min(600px,42vw);max-width:100%;aspect-ratio:1/1}
+        /* The focal point. Full presence (opacity lives on the hero scroll
+           layer, which scrubs to 0 as the strip lifts). Bleeds off the
+           right edge — the section overflow crops it with intent. */
+        .mobius-wrap{position:absolute;top:50%;right:-7%;transform:translateY(-50%);z-index:0;pointer-events:none;width:min(880px,58vw);aspect-ratio:1/1}
         .mobius-wrap canvas{display:block;width:100%;height:100%}
         @media (max-width: 767px) {
-          .mobius-wrap{width:min(70vw,320px);right:8%;top:38%;opacity:0.41}
+          .mobius-wrap{width:min(88vw,420px);right:-16%;top:42%;opacity:0.5}
         }
       `}</style>
       <div ref={mountRef} aria-hidden="true" className="mobius-wrap" />

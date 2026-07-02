@@ -41,7 +41,7 @@ export default function HeroSection() {
     const mob = mobiusLayerRef.current;
     if (mob) {
       mob.style.transform = `translateY(${(-p * 90).toFixed(1)}px)`;
-      mob.style.opacity = (0.85 * (1 - p)).toFixed(3);
+      mob.style.opacity = (1 - p).toFixed(3);
     }
 
     // (b) The three headline lines parallax apart at differential rates
@@ -85,7 +85,11 @@ export default function HeroSection() {
       <style>{`
         .hero-section{padding-top:140px;padding-bottom:100px}
         .hero-inner{position:relative;z-index:2}
-        .hero-mobius-layer{position:absolute;inset:0;z-index:0;opacity:0.85;pointer-events:none}
+        .hero-mobius-layer{position:absolute;inset:0;z-index:0;opacity:1;pointer-events:none}
+        .hero-bloom{position:absolute;top:50%;right:-6%;width:min(980px,64vw);aspect-ratio:1/1;transform:translateY(-50%);border-radius:50%;background:radial-gradient(circle, color-mix(in srgb, var(--color-accent-gold) 9%, transparent) 0%, transparent 62%);filter:blur(50px);pointer-events:none}
+        @media (max-width: 767px) {
+          .hero-bloom{width:min(90vw,430px);right:-12%;top:40%}
+        }
         .hero-eyebrow{margin-bottom:36px}
         .hero-headline{max-width:68%}
         .hero-subrow{margin-top:64px;display:flex;flex-direction:row;align-items:flex-end;gap:80px}
@@ -113,15 +117,18 @@ export default function HeroSection() {
         .hero-cta:hover svg{transform:translateX(2px)}
       `}</style>
 
-      {/* Scroll-scrubbed layer: the strip lifts 90px and dissolves */}
+      {/* Scroll-scrubbed layer: the strip lifts 90px and dissolves.
+          A soft golden bloom sits behind it — the strip is the light
+          source of the page. */}
       <div ref={mobiusLayerRef} className="hero-mobius-layer" aria-hidden="true">
+        <div className="hero-bloom" />
         <MobiusStrip theme={theme} />
       </div>
 
       <div className="rail hero-inner">
         <div className="hero-eyebrow">
           <span className="eyebrow">
-            The Studio of Collin Stilwell &mdash; Hoboken, NJ
+            Hoboken, NJ
           </span>
         </div>
 
