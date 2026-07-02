@@ -88,7 +88,7 @@ export default function HeroSection() {
         .hero-mobius-layer{position:absolute;inset:0;z-index:0;opacity:1;pointer-events:none}
         .hero-bloom{position:absolute;top:50%;right:-6%;width:min(980px,64vw);aspect-ratio:1/1;transform:translateY(-50%);border-radius:50%;background:radial-gradient(circle, color-mix(in srgb, var(--color-accent-gold) 9%, transparent) 0%, transparent 62%);filter:blur(50px);pointer-events:none}
         @media (max-width: 767px) {
-          .hero-bloom{width:min(90vw,430px);right:-12%;top:40%}
+          .hero-bloom{width:min(115vw,560px);right:-20%;top:26%}
         }
         .hero-eyebrow{margin-bottom:36px}
         .hero-headline{max-width:68%}
@@ -98,10 +98,11 @@ export default function HeroSection() {
           .hero-headline{max-width:80%}
         }
         @media (max-width: 767px) {
-          .hero-section{padding-top:120px;padding-bottom:80px}
-          .hero-eyebrow{margin-bottom:24px}
+          /* The strip owns the upper half; the words anchor the lower third */
+          .hero-section{min-height:100svh;justify-content:flex-end;padding-top:96px;padding-bottom:88px}
+          .hero-eyebrow{margin-bottom:20px}
           .hero-headline{max-width:100%}
-          .hero-subrow{margin-top:40px;flex-direction:column;align-items:flex-start;gap:32px}
+          .hero-subrow{margin-top:32px;flex-direction:column;align-items:flex-start;gap:28px}
           .hero-sub{max-width:100%;font-size:14px}
         }
         @keyframes heroRise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}

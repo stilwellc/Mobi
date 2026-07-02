@@ -186,14 +186,40 @@ const PART_VERT = /* glsl */ `
   uniform vec3 uBurst;
   uniform float uBurstTime;
   uniform float uPixel;
-  attribute vec3 aNormal;
+  attribute float aU0;    // start angle on the strip
+  attribute float aV;     // lane across the width
+  attribute float aLift;  // ride height above the surface
+  attribute float aSpeed; // angular speed along the current
+  attribute float aDir;   // +1 gold current, -1 ocean counter-current
   attribute float aPhase;
   attribute float aSize;
   varying float vAlpha;
+  varying float vDir;
 
   void main() {
-    vec3 p = position;
-    p += aNormal * sin(uTime * 0.6 + aPhase * 6.2831) * 0.035;
+    // ADVECTION ON A ONE-SIDED SURFACE. The Mobius identity
+    // pos(u + 2pi, v) == pos(u, -v) means a mote that completes a lap
+    // must flip lanes to stay on the surface — so every particle
+    // genuinely crosses to the other face, forever. The whole surface
+    // is evaluated analytically here, per mote, per frame.
+    float total = aU0 + uTime * aSpeed * aDir;
+    float lap = floor(total / 6.2831853);
+    float u = total - lap * 6.2831853;
+    float flip = 1.0 - 2.0 * mod(lap, 2.0);
+    float v = aV * flip;
+
+    float cU = cos(u); float sU = sin(u);
+    float cH = cos(u * 0.5); float sH = sin(u * 0.5);
+    float r = 1.0 + v * cH;
+    vec3 p = vec3(r * cU, r * sU, v * sH);
+
+    // analytic normal from the parameter tangents
+    vec3 du = vec3(-r * sU - 0.5 * v * sH * cU, r * cU - 0.5 * v * sH * sU, 0.5 * v * cH);
+    vec3 dv = vec3(cH * cU, cH * sU, sH);
+    vec3 n = normalize(cross(du, dv));
+
+    // ride above the current with a gentle bob
+    p += n * (aLift + sin(uTime * 0.9 + aPhase * 6.2831) * 0.012);
 
     // flee the cursor
     vec3 toM = p - uMouse;
@@ -203,20 +229,20 @@ const PART_VERT = /* glsl */ `
     float bAge = uTime - uBurstTime;
     if (bAge < 4.0) {
       vec3 toB = p - uBurst;
-      float bd = length(toB);
       float kick = exp(-bAge * 2.1) * sin(min(bAge * 5.0, 1.5708))
-                 * smoothstep(1.6, 0.0, bd) * (0.5 + aPhase * 0.9);
+                 * smoothstep(1.6, 0.0, length(toB)) * (0.5 + aPhase * 0.9);
       p += normalize(toB + 0.0001) * kick;
     }
 
     // scroll: the matter releases
-    p += aNormal * uScroll * (0.5 + aPhase * 1.1);
+    p += n * uScroll * (0.5 + aPhase * 1.1);
     p.y += uScroll * (0.8 + aPhase * 1.4);
 
     vec4 mv = modelViewMatrix * vec4(p, 1.0);
     gl_Position = projectionMatrix * mv;
     float twinkle = 0.30 + 0.70 * pow(sin(uTime * 1.25 + aPhase * 43.0) * 0.5 + 0.5, 2.0);
     vAlpha = twinkle * (1.0 - uScroll);
+    vDir = aDir;
     gl_PointSize = aSize * uPixel * (11.0 / -mv.z);
   }
 `;
@@ -225,13 +251,14 @@ const PART_FRAG = /* glsl */ `
   uniform vec3 uGold;
   uniform vec3 uOcean;
   varying float vAlpha;
+  varying float vDir;
   void main() {
     vec2 c = gl_PointCoord - 0.5;
     float d = length(c);
     if (d > 0.5) discard;
     float soft = smoothstep(0.5, 0.05, d);
-    vec3 col = mix(uOcean, uGold, soft);
-    gl_FragColor = vec4(col, soft * vAlpha * 0.13);
+    vec3 stream = vDir > 0.0 ? uGold : uOcean;
+    gl_FragColor = vec4(mix(stream * 0.55, stream, soft), soft * vAlpha * 0.14);
   }
 `;
 
@@ -309,34 +336,36 @@ function edgeCurve(width = 0.4, steps = 700) {
 }
 
 function createParticles(count: number, width = 0.4) {
-  const pos = new Float32Array(count * 3);
-  const nor = new Float32Array(count * 3);
+  // The currents: everything but the seed lives in the vertex shader.
+  const u0 = new Float32Array(count);
+  const v = new Float32Array(count);
+  const lift = new Float32Array(count);
+  const speed = new Float32Array(count);
+  const dir = new Float32Array(count);
   const phase = new Float32Array(count);
   const size = new Float32Array(count);
-  const n = new THREE.Vector3();
+  // position attribute is required by three; the shader ignores it
+  const pos = new Float32Array(count * 3);
   for (let i = 0; i < count; i++) {
-    const u = Math.random() * Math.PI * 2;
-    const v = (Math.random() - 0.5) * width;
-    const cosU = Math.cos(u), sinU = Math.sin(u);
-    const cosH = Math.cos(u / 2), sinH = Math.sin(u / 2);
-    const r = 1 + v * cosH;
-    pos[i * 3] = r * cosU; pos[i * 3 + 1] = r * sinU; pos[i * 3 + 2] = v * sinH;
-    const du = new THREE.Vector3(
-      -r * sinU - (v / 2) * sinH * cosU,
-      r * cosU - (v / 2) * sinH * sinU,
-      (v / 2) * cosH
-    );
-    const dv = new THREE.Vector3(cosH * cosU, cosH * sinU, sinH);
-    n.crossVectors(du, dv).normalize();
-    nor[i * 3] = n.x; nor[i * 3 + 1] = n.y; nor[i * 3 + 2] = n.z;
+    u0[i] = Math.random() * Math.PI * 2;
+    v[i] = (Math.random() - 0.5) * width * 0.94;
+    lift[i] = 0.006 + Math.pow(Math.random(), 2) * 0.055;
+    speed[i] = 0.16 + Math.random() * 0.55;
+    dir[i] = Math.random() < 0.78 ? 1 : -1;
     phase[i] = Math.random();
-    size[i] = 0.5 + Math.random() * 1.1;
+    size[i] = 0.5 + Math.random() * 1.2;
   }
   const geo = new THREE.BufferGeometry();
   geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-  geo.setAttribute('aNormal', new THREE.BufferAttribute(nor, 3));
+  geo.setAttribute('aU0', new THREE.BufferAttribute(u0, 1));
+  geo.setAttribute('aV', new THREE.BufferAttribute(v, 1));
+  geo.setAttribute('aLift', new THREE.BufferAttribute(lift, 1));
+  geo.setAttribute('aSpeed', new THREE.BufferAttribute(speed, 1));
+  geo.setAttribute('aDir', new THREE.BufferAttribute(dir, 1));
   geo.setAttribute('aPhase', new THREE.BufferAttribute(phase, 1));
   geo.setAttribute('aSize', new THREE.BufferAttribute(size, 1));
+  // shader computes true positions; keep culling honest with a generous sphere
+  geo.boundingSphere = new THREE.Sphere(new THREE.Vector3(0, 0, 0), 4);
   return geo;
 }
 
@@ -384,7 +413,7 @@ export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
     const base = new THREE.Color(isLight ? 0xb49b78 : 0x2e2214);
 
     const mobile = window.matchMedia('(max-width: 767px)').matches;
-    const PARTICLES = reduced ? 0 : mobile ? 5000 : 14000;
+    const PARTICLES = reduced ? 0 : mobile ? 8000 : 20000;
     const DUST = reduced ? 0 : mobile ? 900 : 2400;
 
     // — Surface —
@@ -482,7 +511,6 @@ export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
     let ndcX = 99, ndcY = 99, wantRay = false;
     const raycaster = new THREE.Raycaster();
     const travelVec = new THREE.Vector3();
-    const finePointer = window.matchMedia('(pointer: fine)').matches;
 
     const toNdc = (clientX: number, clientY: number) => {
       const r = container.getBoundingClientRect();
@@ -508,7 +536,9 @@ export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
         partUniforms.uBurstTime.value = t;
       }
     };
-    if (finePointer && !reduced) {
+    // Touch is a first-class citizen: drag leaves the ember trail,
+    // tap detonates. Only reduced motion opts out entirely.
+    if (!reduced) {
       window.addEventListener('pointermove', onPointer, { passive: true });
       window.addEventListener('pointerdown', onDown, { passive: true });
     }
@@ -591,7 +621,7 @@ export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
 
     return () => {
       stop();
-      if (finePointer && !reduced) {
+      if (!reduced) {
         window.removeEventListener('pointermove', onPointer);
         window.removeEventListener('pointerdown', onDown);
       }
@@ -618,7 +648,9 @@ export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
         .mobius-wrap{position:absolute;top:50%;right:-7%;transform:translateY(-50%);z-index:0;pointer-events:none;width:min(880px,58vw);aspect-ratio:1/1}
         .mobius-wrap canvas{display:block;width:100%;height:100%}
         @media (max-width: 767px) {
-          .mobius-wrap{width:min(88vw,420px);right:-16%;top:42%;opacity:0.5}
+          /* Mobile owns the strip too: it crowns the top of the screen at
+             near-full presence; the headline anchors the lower third. */
+          .mobius-wrap{width:min(118vw,560px);right:-24%;top:28%;opacity:0.92}
         }
       `}</style>
       <div ref={mountRef} aria-hidden="true" className="mobius-wrap" />
