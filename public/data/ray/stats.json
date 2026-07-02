@@ -1,7 +1,7 @@
 {
   "george-condo": {
-    "lastUpdated": "2026-07-01T15:53:55.870Z",
-    "totalLotsTracked": 307,
+    "lastUpdated": "2026-07-02T15:28:21.961Z",
+    "totalLotsTracked": 310,
     "avgPriceLast12Months": 347138,
     "medianPriceLast12Months": 45150,
     "recordPrice": 12000000,
@@ -417,7 +417,7 @@
     ]
   },
   "futura-2000": {
-    "lastUpdated": "2026-07-01T15:53:55.879Z",
+    "lastUpdated": "2026-07-02T15:28:21.970Z",
     "totalLotsTracked": 69,
     "avgPriceLast12Months": 24113,
     "medianPriceLast12Months": 2432,
@@ -677,16 +677,16 @@
     ]
   },
   "kaws": {
-    "lastUpdated": "2026-07-01T15:53:55.880Z",
+    "lastUpdated": "2026-07-02T15:28:21.971Z",
     "totalLotsTracked": 591,
-    "avgPriceLast12Months": 25017,
-    "medianPriceLast12Months": 1270,
+    "avgPriceLast12Months": 25483,
+    "medianPriceLast12Months": 1280,
     "recordPrice": 3855000,
     "recordTitle": "IN THE WOODS",
     "recordDate": "2019-05-16",
     "recordHouse": "Christie's",
-    "appreciationRate": 6.1,
-    "totalAuctionRevenue": 40993817,
+    "appreciationRate": 5.9,
+    "totalAuctionRevenue": 41021977,
     "priceHistory": [
       {
         "date": "2008-Q4",
@@ -984,9 +984,9 @@
       },
       {
         "date": "2026-Q2",
-        "avgPrice": 43212,
+        "avgPrice": 42610,
         "medianPrice": 3328,
-        "totalSales": 24,
+        "totalSales": 25,
         "highPrice": 374100
       }
     ],
@@ -998,8 +998,8 @@
       },
       {
         "house": "Wright",
-        "count": 159,
-        "totalValue": 634715
+        "count": 160,
+        "totalValue": 662875
       },
       {
         "house": "Phillips",
@@ -1019,8 +1019,8 @@
     ]
   },
   "george-nakashima": {
-    "lastUpdated": "2026-07-01T15:53:55.881Z",
-    "totalLotsTracked": 600,
+    "lastUpdated": "2026-07-02T15:28:21.972Z",
+    "totalLotsTracked": 608,
     "avgPriceLast12Months": 30191,
     "medianPriceLast12Months": 21590,
     "recordPrice": 355600,
@@ -1419,8 +1419,8 @@
     ]
   },
   "charles-eames": {
-    "lastUpdated": "2026-07-01T15:53:55.882Z",
-    "totalLotsTracked": 797,
+    "lastUpdated": "2026-07-02T15:28:21.973Z",
+    "totalLotsTracked": 801,
     "avgPriceLast12Months": 2497,
     "medianPriceLast12Months": 1188,
     "recordPrice": 29375,
@@ -1982,8 +1982,8 @@
     ]
   },
   "andy-warhol": {
-    "lastUpdated": "2026-07-01T15:53:55.883Z",
-    "totalLotsTracked": 2635,
+    "lastUpdated": "2026-07-02T15:28:21.975Z",
+    "totalLotsTracked": 2638,
     "avgPriceLast12Months": 272488,
     "medianPriceLast12Months": 10560,
     "recordPrice": 195040000,
@@ -2669,7 +2669,7 @@
     ]
   },
   "tom-sachs": {
-    "lastUpdated": "2026-07-01T15:53:55.888Z",
+    "lastUpdated": "2026-07-02T15:28:21.979Z",
     "totalLotsTracked": 113,
     "avgPriceLast12Months": 14606,
     "medianPriceLast12Months": 5376,
@@ -3053,7 +3053,7 @@
     ]
   },
   "barry-mcgee": {
-    "lastUpdated": "2026-07-01T15:53:55.888Z",
+    "lastUpdated": "2026-07-02T15:28:21.979Z",
     "totalLotsTracked": 108,
     "avgPriceLast12Months": 12565,
     "medianPriceLast12Months": 5715,
@@ -3409,9 +3409,9 @@
     ]
   },
   "keith-haring": {
-    "lastUpdated": "2026-07-01T15:53:55.889Z",
-    "totalLotsTracked": 946,
-    "avgPriceLast12Months": 76386,
+    "lastUpdated": "2026-07-02T15:28:21.980Z",
+    "totalLotsTracked": 949,
+    "avgPriceLast12Months": 77161,
     "medianPriceLast12Months": 7680,
     "recordPrice": 5820000,
     "recordTitle": "Untitled",
@@ -3928,7 +3928,7 @@
     ]
   },
   "peter-saul": {
-    "lastUpdated": "2026-07-01T15:53:55.891Z",
+    "lastUpdated": "2026-07-02T15:28:21.981Z",
     "totalLotsTracked": 122,
     "avgPriceLast12Months": 15846,
     "medianPriceLast12Months": 1088,
@@ -4326,8 +4326,8 @@
     ]
   },
   "ed-ruscha": {
-    "lastUpdated": "2026-07-01T15:53:55.891Z",
-    "totalLotsTracked": 614,
+    "lastUpdated": "2026-07-02T15:28:21.981Z",
+    "totalLotsTracked": 616,
     "avgPriceLast12Months": 28089,
     "medianPriceLast12Months": 4915,
     "recordPrice": 1008375,
@@ -4798,7 +4798,7 @@
     ]
   },
   "r-crumb": {
-    "lastUpdated": "2026-07-01T15:53:55.892Z",
+    "lastUpdated": "2026-07-02T15:28:21.982Z",
     "totalLotsTracked": 64,
     "avgPriceLast12Months": 3334,
     "medianPriceLast12Months": 5715,
@@ -5037,10 +5037,10 @@
     ]
   },
   "raymond-pettibon": {
-    "lastUpdated": "2026-07-01T15:53:55.893Z",
+    "lastUpdated": "2026-07-02T15:28:21.983Z",
     "totalLotsTracked": 427,
-    "avgPriceLast12Months": 16417,
-    "medianPriceLast12Months": 7680,
+    "avgPriceLast12Months": 17122,
+    "medianPriceLast12Months": 9030,
     "recordPrice": 1865000,
     "recordTitle": "No Title (This left was...)",
     "recordDate": "2023-05-15",
@@ -5456,7 +5456,7 @@
     ]
   },
   "henri-matisse": {
-    "lastUpdated": "2026-07-01T15:53:55.894Z",
+    "lastUpdated": "2026-07-02T15:28:21.984Z",
     "totalLotsTracked": 991,
     "avgPriceLast12Months": 1082457,
     "medianPriceLast12Months": 5632,
@@ -6127,7 +6127,7 @@
     ]
   },
   "pablo-picasso": {
-    "lastUpdated": "2026-07-01T15:53:55.895Z",
+    "lastUpdated": "2026-07-02T15:28:21.985Z",
     "totalLotsTracked": 3211,
     "avgPriceLast12Months": 576024,
     "medianPriceLast12Months": 6828,
@@ -6805,7 +6805,7 @@
     ]
   },
   "fab-5-freddy": {
-    "lastUpdated": "2026-07-01T15:53:55.899Z",
+    "lastUpdated": "2026-07-02T15:28:21.989Z",
     "totalLotsTracked": 10,
     "avgPriceLast12Months": 704,
     "medianPriceLast12Months": 704,
@@ -6847,7 +6847,7 @@
     ]
   },
   "francesco-clemente": {
-    "lastUpdated": "2026-07-01T15:53:55.900Z",
+    "lastUpdated": "2026-07-02T15:28:21.989Z",
     "totalLotsTracked": 199,
     "avgPriceLast12Months": 28323,
     "medianPriceLast12Months": 30240,
@@ -7273,7 +7273,7 @@
     ]
   },
   "jean-prouve": {
-    "lastUpdated": "2026-07-01T15:53:55.900Z",
+    "lastUpdated": "2026-07-02T15:28:21.990Z",
     "totalLotsTracked": 405,
     "avgPriceLast12Months": 48578,
     "medianPriceLast12Months": 14630,
@@ -7727,8 +7727,8 @@
     ]
   },
   "pierre-jeanneret": {
-    "lastUpdated": "2026-07-01T15:53:55.901Z",
-    "totalLotsTracked": 589,
+    "lastUpdated": "2026-07-02T15:28:21.991Z",
+    "totalLotsTracked": 590,
     "avgPriceLast12Months": 13142,
     "medianPriceLast12Months": 8890,
     "recordPrice": 355600,
@@ -8071,7 +8071,7 @@
     ]
   },
   "eddie-martinez": {
-    "lastUpdated": "2026-07-01T15:53:55.903Z",
+    "lastUpdated": "2026-07-02T15:28:21.992Z",
     "totalLotsTracked": 88,
     "avgPriceLast12Months": 97925,
     "medianPriceLast12Months": 25800,
@@ -8291,7 +8291,7 @@
     ]
   },
   "kenny-scharf": {
-    "lastUpdated": "2026-07-01T15:53:55.903Z",
+    "lastUpdated": "2026-07-02T15:28:21.992Z",
     "totalLotsTracked": 261,
     "avgPriceLast12Months": 41977,
     "medianPriceLast12Months": 12255,
