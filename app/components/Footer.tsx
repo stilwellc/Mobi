@@ -200,8 +200,7 @@ export default function Footer() {
           >
             <div className="ftr-record">
               <span style={{ color: 'var(--color-text-muted)' }}>
-                &copy; {new Date().getFullYear()} co.stil &mdash; the studio of{' '}
-                <span style={{ whiteSpace: 'nowrap' }}>Collin Stilwell</span>
+                &copy; {new Date().getFullYear()} co.stil
               </span>
               <span style={{ color: 'var(--color-text-faint)' }}>
                 40.7440&deg; N, 74.0324&deg; W
