@@ -8,7 +8,7 @@ import { prints } from './data';
 
 export const metadata: Metadata = {
   title: 'Prints — co.stil',
-  description: 'Three 3D prints — a wall sconce, a Tolomeo study, and a USM Haller replacement foot — each with an inspectable model.',
+  description: 'An AI text-to-print pipeline and the library it produces — lighting, furniture parts, and design studies, each with an inspectable model.',
 };
 
 export default function PrintsPage() {
@@ -44,8 +44,9 @@ export default function PrintsPage() {
             margin: 0,
           }}
         >
-          Objects I&rsquo;ve designed, repaired, or studied through the printer. Some are original,
-          some are replacement parts, one is homework on a design I admire.
+          Describe an object in plain language; an AI pipeline turns it into a parametric,
+          print-ready model. This is the library it&rsquo;s building &mdash; lighting, furniture
+          parts, and design studies, printed and in use.
         </p>
       </header>
 
@@ -83,8 +84,8 @@ export default function PrintsPage() {
           margin: 0,
         }}
       >
-        The tooling behind some of these &mdash; an open-source toolkit for parametric,
-        print-ready models with CadQuery.{' '}
+        The pipeline is open source &mdash; text in, CadQuery parametric model out,
+        printable as-is.{' '}
         <a
           href="https://github.com/stilwellc/parametric-3d-printing"
           target="_blank"
