@@ -69,8 +69,18 @@ export default function PrintsPage() {
           .pipe-code code{font-family:var(--font-mono),monospace;font-size:12px;line-height:1.75;color:var(--color-text-secondary);white-space:pre}
           .pipe-img{position:relative;border:1px solid var(--color-border);border-radius:10px;overflow:hidden;aspect-ratio:16/10}
           .pipe-img img{width:100%;height:100%;object-fit:cover;display:block}
-          .pipe-foot{display:flex;justify-content:space-between;align-items:baseline;gap:var(--space-2);flex-wrap:wrap;padding:0 clamp(20px,2.2vw,32px) clamp(16px,1.8vw,24px)}
-          .pipe-note{margin:0;font-family:var(--font-mono),monospace;font-size:12px;letter-spacing:0.06em;color:var(--color-text-muted)}
+          .pipe-note{margin:0;font-family:var(--font-mono),monospace;font-size:12px;letter-spacing:0.06em;line-height:1.7;color:var(--color-text-muted);max-width:44ch}
+          .pipe-setup{border-top:1px solid var(--color-border);padding:clamp(16px,1.8vw,24px) clamp(20px,2.2vw,32px) clamp(18px,2vw,28px)}
+          .pipe-setup-head{display:flex;justify-content:space-between;align-items:flex-end;gap:var(--space-3);flex-wrap:wrap;margin-bottom:var(--space-3)}
+          .pipe-repo{display:inline-block;margin-top:10px;font-family:var(--font-mono),monospace;font-size:clamp(1rem,1.6vw,1.35rem);letter-spacing:0.01em;color:var(--color-fg)}
+          .pipe-files{display:grid;grid-template-columns:1fr 1fr;gap:0 var(--space-4)}
+          .pipe-file{display:grid;grid-template-columns:200px 1fr;gap:var(--space-2);padding:9px 0;border-bottom:1px solid var(--color-border);font-family:var(--font-mono),monospace;font-size:12px;line-height:1.6}
+          .pipe-file span:first-child{color:var(--color-accent-gold-text);white-space:nowrap}
+          .pipe-file span:last-child{color:var(--color-text-muted)}
+          @media (max-width: 900px){
+            .pipe-files{grid-template-columns:1fr}
+            .pipe-file{grid-template-columns:1fr;gap:2px}
+          }
           @media (max-width: 900px){
             .pipe-grid{grid-template-columns:1fr}
             .pipe-arrow{transform:rotate(90deg);align-self:flex-start;margin-left:2px}
@@ -110,19 +120,34 @@ cq.exporters.export(shade.union(plate), "sconce.3mf")`}</code></pre>
               </div>
             </div>
           </div>
-          <div className="pipe-foot">
-            <p className="pipe-note">
-              A sentence in, a watertight parametric model out &mdash; printable as-is.
-            </p>
-            <a
-              href="https://github.com/stilwellc/parametric-3d-printing"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="link-action"
-              style={{ color: 'var(--color-accent-gold-text)' }}
-            >
-              The pipeline is open source <span className="arrow" aria-hidden="true">&#8599;</span>
-            </a>
+          {/* THE SETUP — the repo IS the pipeline: everything stages
+              01–03 need, in one place. Real files, real one-liners. */}
+          <div className="pipe-setup">
+            <div className="pipe-setup-head">
+              <div>
+                <span className="pipe-label"><b>04</b>The Setup</span>
+                <a
+                  href="https://github.com/stilwellc/parametric-3d-printing"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="pipe-repo link-draw"
+                >
+                  stilwellc/parametric-3d-printing
+                </a>
+              </div>
+              <p className="pipe-note">
+                Everything the pipeline needs, open source &mdash; a sentence in,
+                a watertight parametric model out, printable as-is.
+              </p>
+            </div>
+            <div className="pipe-files">
+              <div className="pipe-file"><span>SKILL.md</span><span>the skill definition the AI follows &mdash; modes, triggers, print-safe design rules</span></div>
+              <div className="pipe-file"><span>run_cadquery_model.py</span><span>executes generated models, returns structured success or failure</span></div>
+              <div className="pipe-file"><span>preview.py</span><span>renders each STL so you see the object before the printer does</span></div>
+              <div className="pipe-file"><span>mesh_io.py</span><span>watertight validation &mdash; strict mode rejects unprintable meshes</span></div>
+              <div className="pipe-file"><span>stl_to_3mf.py</span><span>print-ready packaging for the slicer</span></div>
+              <div className="pipe-file"><span>tests/</span><span>the wrapper is tested like any other software here</span></div>
+            </div>
           </div>
         </div>
       </section>
