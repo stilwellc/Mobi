@@ -206,7 +206,7 @@ export default function Project1122() {
         <div style={{ borderRadius: 8, overflow: 'hidden' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/images/1122/building.png"
+            src="/images/1122/building-dusk.png"
             alt="No. 1122 — the building, drawn in isometric: four stories of brick, a blue awning over the stoop"
             style={{ width: '100%', height: 'auto', display: 'block' }}
           />
