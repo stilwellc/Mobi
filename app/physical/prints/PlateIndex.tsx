@@ -64,8 +64,8 @@ export default function PlateIndex({ items }: { items: PlateIndexItem[] }) {
   }, [items]);
 
   return (
-    <nav ref={navRef} className="f-index" aria-label="Plates">
-      <p className="f-index-title">Plates</p>
+    <nav ref={navRef} className="f-index" aria-label="On this page">
+      <p className="f-index-title">On this page</p>
       {items.map((item) => (
         <a key={item.id} href={`#${item.id}`} className="f-ientry">
           <span className="f-ientry-no">{item.no}</span>

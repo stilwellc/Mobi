@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 
 export type PlateProps = {
-  /** Folio numeral — 'I', 'II', … */
+  /** Step or item number — '01', '02', … */
   no: string;
   /** Role label — 'Describe', 'The Library', … */
   role: string;
@@ -38,7 +38,7 @@ export default function Plate({
   const inner = (
     <>
       <header className="plate-head">
-        <span className="plate-no">Plate {no}</span>
+        <span className="plate-no">{no}</span>
         <span className="plate-role">{role}</span>
       </header>
       <div className="plate-body">{children}</div>
