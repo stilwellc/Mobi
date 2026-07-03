@@ -198,6 +198,32 @@ export default function Project1122() {
         </dl>
       </header>
 
+      {/* Frontispiece — the subject itself, matted like the plates */}
+      <figure
+        className="glass glass-quiet"
+        style={{ margin: '0 0 var(--space-5)', padding: 'clamp(16px, 2vw, 28px)', maxWidth: 880 }}
+      >
+        <div style={{ borderRadius: 8, overflow: 'hidden' }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/1122/building.png"
+            alt="No. 1122 — the building, drawn in isometric: four stories of brick, a blue awning over the stoop"
+            style={{ width: '100%', height: 'auto', display: 'block' }}
+          />
+        </div>
+        <figcaption
+          style={{
+            fontFamily: mono,
+            fontSize: 12,
+            letterSpacing: '0.08em',
+            color: 'var(--color-text-muted)',
+            marginTop: 12,
+          }}
+        >
+          No. 1122 &mdash; the building
+        </figcaption>
+      </figure>
+
       <Horizon variant="gold" />
 
       {/* Chapter I — As found */}

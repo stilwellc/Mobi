@@ -37,7 +37,7 @@ export const sections: Section[] = [
         description: 'A residence taken back to the studs — redesigned room by room, documented as found and as intended.',
         href: '/physical/1122',
         image: '/images/work/1122.jpg',
-        imageAlt: 'Project 1122 as found — living room, original maple floors',
+        imageAlt: 'No. 1122 — the building, drawn in isometric',
         logoStyle: { fontFamily: 'var(--font-sans), sans-serif', fontWeight: 700, letterSpacing: '-0.04em' },
         meta: { year: '2024 —', material: 'Full residence', status: 'In progress' },
       },
