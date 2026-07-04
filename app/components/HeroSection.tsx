@@ -99,7 +99,7 @@ export default function HeroSection() {
         }
         @media (max-width: 767px) {
           /* The strip owns the upper half; the words anchor the lower third */
-          .hero-section{min-height:100svh;justify-content:flex-end;padding-top:96px;padding-bottom:88px}
+          .hero-section{min-height:100svh;justify-content:flex-end;padding-top:96px;padding-bottom:56px}
           .hero-eyebrow{margin-bottom:20px}
           .hero-headline{max-width:100%}
           .hero-subrow{margin-top:32px;flex-direction:column;align-items:flex-start;gap:28px}

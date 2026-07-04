@@ -179,7 +179,8 @@ const css = `
   .tc-meta{margin-top:var(--space-1)}
 }
 @media (max-width: 767px){
-  .tc-inner{padding-top:calc(var(--tc-drop) + 56px)}
+  .tc-root{--tc-drop:56px}
+  .tc-inner{padding-top:calc(var(--tc-drop) + 28px)}
   .tc-sec{margin-bottom:var(--space-6)}
   .tc-index{margin-bottom:var(--space-5)}
   .tc-stations{gap:var(--space-5)}
@@ -353,15 +354,18 @@ export default function Index() {
     const vh = window.innerHeight;
     const focus = y + vh * 0.72;
     const local = focus - topAbs;
-    const spineLen = Math.max(rect.height - DROP, 1);
+    // The drop is shorter on mobile (--tc-drop override), so measure the
+    // rendered segment rather than trusting the desktop constant.
+    const drop = dropLitRef.current?.parentElement?.offsetHeight || DROP;
+    const spineLen = Math.max(rect.height - drop, 1);
     const maxScroll = Math.max(document.documentElement.scrollHeight - vh, 1);
     const maxLocal = maxScroll + vh * 0.72 - topAbs;
     // Guarantee the thread completes by the time the page bottoms out.
-    const k = Math.max(1, spineLen / Math.max(maxLocal - DROP - BEND_RUN, 1));
+    const k = Math.max(1, spineLen / Math.max(maxLocal - drop - BEND_RUN, 1));
 
-    const pDrop = clamp01(local / DROP);
-    const pBend = clamp01((local - DROP) / BEND_RUN);
-    const litRaw = Math.min(Math.max((local - DROP - BEND_RUN) * k, 0), spineLen);
+    const pDrop = clamp01(local / drop);
+    const pBend = clamp01((local - drop) / BEND_RUN);
+    const litRaw = Math.min(Math.max((local - drop - BEND_RUN) * k, 0), spineLen);
 
     /* Terminus scrub is driven by where the terminus sits in the viewport —
        it completes when the sunset line crosses the same 72 percent focus
