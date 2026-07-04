@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Horizon from './Horizon';
+import Reveal from './Reveal';
 import { MOBIUS_EDGE } from './Logo';
 
 /**
@@ -78,11 +79,18 @@ export default function Footer() {
       <style>{`
         .ftr-room{position:relative;overflow:hidden;background:linear-gradient(180deg, transparent 0%, color-mix(in srgb, var(--color-bg) 60%, black) 140%)}
         [data-theme=light] .ftr-room{background:linear-gradient(180deg, transparent 0%, color-mix(in srgb, var(--color-accent-gold) 7%, transparent) 140%)}
+        .ftr-statement{margin:0 0 var(--space-5);font-family:var(--font-serif),serif;font-weight:300;font-size:clamp(1.6rem,2.8vw,2.25rem);line-height:1.25;letter-spacing:-0.015em;color:var(--color-fg);max-width:26ch}
+        .ftr-amp{font-style:italic;color:var(--color-accent-gold-text)}
+        .ftr-after{position:absolute;left:clamp(24px,5vw,56px);top:0;width:1px;height:140px;background:linear-gradient(180deg,var(--color-accent-coral),transparent);opacity:0.5;pointer-events:none}
+        .ftr-live{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--color-accent-gold);margin-right:8px;animation:ftrPulse 2.4s var(--ease-signature) infinite}
+        @keyframes ftrPulse{0%,100%{opacity:0.45;box-shadow:0 0 0 0 transparent}50%{opacity:1;box-shadow:0 0 9px 0 var(--color-accent-gold)}}
+        @media (prefers-reduced-motion: reduce){.ftr-live{animation:none;opacity:0.8}}
         .ftr-eyebrow{font-family:var(--font-sans),sans-serif;font-size:var(--text-label);font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--color-text-muted);margin-bottom:var(--space-2)}
         .ftr-grid{position:relative;display:grid;grid-template-columns:repeat(3,minmax(160px,1fr)) auto;gap:var(--space-4);align-items:start}
         .ftr-links{display:flex;flex-direction:column;gap:var(--space-1);align-items:flex-start}
         .ftr-fact{font-family:var(--font-mono),monospace;font-size:12px;letter-spacing:0.06em;color:var(--color-text-secondary);line-height:2}
-        .ftr-top{display:inline-flex;flex-direction:column;align-items:center;gap:8px;justify-self:end;padding:14px 12px;font-family:var(--font-mono),monospace;font-size:12px;letter-spacing:0.14em;color:var(--color-text-secondary);cursor:pointer;border-radius:100px}
+        .ftr-top{display:inline-flex;flex-direction:column;align-items:center;gap:8px;justify-self:end;padding:14px 12px;font-family:var(--font-mono),monospace;font-size:12px;letter-spacing:0.14em;color:var(--color-text-secondary);cursor:pointer;border-radius:100px;border:1px solid var(--color-border);transition:border-color var(--duration-base) var(--ease-signature),transform var(--duration-base) var(--ease-signature)}
+        .ftr-top:hover{border-color:var(--color-accent-gold-text);transform:translateY(-2px)}
         .ftr-top .ftr-top-arrow{display:inline-block;transition:transform var(--duration-fast) var(--ease-signature)}
         .ftr-top:hover .ftr-top-arrow{transform:translateY(-3px)}
         .ftr-record{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:var(--space-2)}
@@ -105,6 +113,9 @@ export default function Footer() {
           className="rail"
           style={{ position: 'relative', paddingTop: 'var(--space-5)', paddingBottom: 'var(--space-4)' }}
         >
+          {/* The thread's afterglow — the sun set on the horizon above;
+              its last light runs a little way into the room */}
+          <div className="ftr-after" aria-hidden="true" />
           {/* Ghost lockup — the mark above the wordmark, behind
               everything, never above 4% */}
           <div
@@ -148,41 +159,55 @@ export default function Footer() {
             </span>
           </div>
 
+          {/* The loop closes: the page ends on the hero's own words */}
+          <Reveal>
+            <p className="ftr-statement">
+              Software <span className="ftr-amp">&amp; matter</span>, one practice.
+            </p>
+          </Reveal>
+
           <div className="ftr-grid">
-            <nav aria-label="Footer">
-              <div className="ftr-eyebrow">Navigate</div>
-              <div className="ftr-links">
-                {navigateLinks.map(link => (
-                  <Link key={link.href} href={link.href} className="footer-link link-action" style={{ color: 'var(--color-text-secondary)' }}>
-                    {link.label}
-                    <span className="arrow" aria-hidden="true" style={{ marginLeft: 8, color: 'var(--color-text-muted)' }}>&rarr;</span>
-                  </Link>
-                ))}
-              </div>
-            </nav>
+            <Reveal>
+              <nav aria-label="Footer">
+                <div className="ftr-eyebrow">Navigate</div>
+                <div className="ftr-links">
+                  {navigateLinks.map(link => (
+                    <Link key={link.href} href={link.href} className="footer-link link-action" style={{ color: 'var(--color-text-secondary)' }}>
+                      {link.label}
+                      <span className="arrow" aria-hidden="true" style={{ marginLeft: 8, color: 'var(--color-text-muted)' }}>&rarr;</span>
+                    </Link>
+                  ))}
+                </div>
+              </nav>
+            </Reveal>
 
-            <nav aria-label="Elsewhere">
-              <div className="ftr-eyebrow">Elsewhere</div>
-              <div className="ftr-links">
-                {elsewhereLinks.map(link => (
-                  <a key={link.label} href={link.url} target="_blank" rel="noopener noreferrer" className="footer-link link-action" style={{ color: 'var(--color-text-secondary)' }}>
-                    {link.label}
-                    <span className="arrow" aria-hidden="true" style={{ marginLeft: 8, color: 'var(--color-text-muted)' }}>&#8599;</span>
-                  </a>
-                ))}
-              </div>
-            </nav>
+            <Reveal delay={90}>
+              <nav aria-label="Elsewhere">
+                <div className="ftr-eyebrow">Elsewhere</div>
+                <div className="ftr-links">
+                  {elsewhereLinks.map(link => (
+                    <a key={link.label} href={link.url} target="_blank" rel="noopener noreferrer" className="footer-link link-action" style={{ color: 'var(--color-text-secondary)' }}>
+                      {link.label}
+                      <span className="arrow" aria-hidden="true" style={{ marginLeft: 8, color: 'var(--color-text-muted)' }}>&#8599;</span>
+                    </a>
+                  ))}
+                </div>
+              </nav>
+            </Reveal>
 
-            <div>
-              <div className="ftr-eyebrow">Studio</div>
-              <div className="ftr-fact">
-                Hoboken, NJ
-                <br />
-                <HobokenClock /> local
-                <br />
-                Est. 2024
+            <Reveal delay={180}>
+              <div>
+                <div className="ftr-eyebrow">Studio</div>
+                <div className="ftr-fact">
+                  Hoboken, NJ
+                  <br />
+                  <span className="ftr-live" aria-hidden="true" />
+                  <HobokenClock /> local
+                  <br />
+                  Est. 2024
+                </div>
               </div>
-            </div>
+            </Reveal>
 
             <button type="button" className="ftr-top" onClick={toTop} aria-label="Back to top">
               <span className="ftr-top-arrow" aria-hidden="true">&uarr;</span>
