@@ -71,7 +71,7 @@ export default function SoftwarePage() {
       </section>
 
       {/* The two rooms — editorial spreads, wine accent, alternating sides */}
-      <section className="rail" style={{ paddingBottom: 'var(--space-6)' }}>
+      <section className="rail" style={{ paddingBottom: 'var(--space-5)' }}>
         <IndexSpread
           index="01"
           title={ray.name}

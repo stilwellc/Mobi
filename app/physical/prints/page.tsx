@@ -35,7 +35,7 @@ const REPO_FILES: Array<[string, string]> = [
 
 export default function PrintsPage() {
   return (
-    <div className="rail" style={{ paddingBlock: 'var(--space-5) var(--space-6)' }}>
+    <div className="rail" style={{ paddingBlock: 'var(--space-5)' }}>
       <style>{`
         .pr-sec{position:relative;overflow:hidden;padding:80px 0 30px}
         .pr-sec .eyebrow{margin:0 0 var(--space-1)}

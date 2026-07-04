@@ -22,7 +22,7 @@ function metaLine(item: SectionItem): string {
 
 export default function PhysicalPage() {
   return (
-    <div className="rail" style={{ paddingBlock: 'var(--space-6) var(--space-7)' }}>
+    <div className="rail" style={{ paddingBlock: 'var(--space-6) var(--space-5)' }}>
       {/* Ritual header — route numeral 02 lives behind the h1 (sitewide sequence) */}
       <header
         style={{

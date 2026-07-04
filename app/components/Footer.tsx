@@ -75,7 +75,7 @@ export default function Footer() {
   };
 
   return (
-    <footer role="contentinfo" style={{ marginTop: 'var(--space-6)' }}>
+    <footer role="contentinfo" style={{ marginTop: 'var(--space-4)' }}>
       <style>{`
         .ftr-room{position:relative;overflow:hidden;background:linear-gradient(180deg, transparent 0%, color-mix(in srgb, var(--color-bg) 60%, black) 140%)}
         [data-theme=light] .ftr-room{background:linear-gradient(180deg, transparent 0%, color-mix(in srgb, var(--color-accent-gold) 7%, transparent) 140%)}

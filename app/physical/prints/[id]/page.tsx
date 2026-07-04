@@ -61,7 +61,7 @@ export default function PrintDetailPage() {
   ].filter((s): s is { term: string; value: string } => s !== null);
 
   return (
-    <div className="rail" style={{ paddingBlock: 'var(--space-5) var(--space-6)' }}>
+    <div className="rail" style={{ paddingBlock: 'var(--space-5)' }}>
       {/* Ritual header */}
       <header style={{ marginBottom: 'var(--space-4)' }}>
         <p className="eyebrow" style={{ margin: '0 0 var(--space-2)' }}>

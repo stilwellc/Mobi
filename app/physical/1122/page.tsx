@@ -131,7 +131,7 @@ function ChapterHead({ n, kicker, title }: { n: string; kicker: string; title: s
 
 export default function Project1122() {
   return (
-    <article className="rail" style={{ paddingBlock: 'var(--space-6)' }}>
+    <article className="rail" style={{ paddingBlock: 'var(--space-6) var(--space-5)' }}>
       <style>{`
         .room-pairs {
           display: grid;
