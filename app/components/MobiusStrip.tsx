@@ -428,6 +428,13 @@ function createDust(count: number) {
 export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
   const mountRef = useRef<HTMLDivElement>(null);
   const reduced = usePrefersReducedMotion();
+  // Theme changes retune the running engine (color lerp in the tick) —
+  // the WebGL context is never torn down, so the strip never blinks.
+  const applyThemeRef = useRef<(t: 'dark' | 'light') => void>();
+
+  useEffect(() => {
+    applyThemeRef.current?.(theme);
+  }, [theme]);
 
   useEffect(() => {
     const container = mountRef.current;
@@ -448,6 +455,12 @@ export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
     const gold = new THREE.Color(isLight ? 0xa8875d : 0xd4b896);
     const wine = new THREE.Color(isLight ? 0x8f4149 : 0xc1666b);
     const base = new THREE.Color(isLight ? 0xb49b78 : 0x2e2214);
+    // lerp targets — retuned by applyTheme, chased in the tick
+    const goldT = gold.clone();
+    const wineT = wine.clone();
+    const baseT = base.clone();
+    let opacityT = isLight ? 0.62 : 0.7;
+    let lightT = isLight ? 1 : 0;
 
     const mobile = window.matchMedia('(max-width: 767px)').matches;
     const PARTICLES = reduced ? 0 : mobile ? 8000 : 20000;
@@ -589,6 +602,25 @@ export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
 
     const renderFrame = () => renderer.render(scene, camera);
 
+    const applyTheme = (tm: 'dark' | 'light') => {
+      const L = tm === 'light';
+      goldT.set(L ? 0xa8875d : 0xd4b896);
+      wineT.set(L ? 0x8f4149 : 0xc1666b);
+      baseT.set(L ? 0xb49b78 : 0x2e2214);
+      opacityT = L ? 0.62 : 0.7;
+      lightT = L ? 1 : 0;
+      // no running clock (reduced motion / paused): snap and repaint once
+      if (reduced || !raf) {
+        gold.copy(goldT);
+        wine.copy(wineT);
+        base.copy(baseT);
+        surfUniforms.uOpacity.value = opacityT;
+        surfUniforms.uLight.value = lightT;
+        renderFrame();
+      }
+    };
+    applyThemeRef.current = applyTheme;
+
     const tick = () => {
       raf = requestAnimationFrame(tick);
       const now = performance.now();
@@ -607,8 +639,26 @@ export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
       if (birthU.value < 1) {
         const bx = Math.min((now - birthStart) / 2400, 1);
         birthU.value = 1 - Math.pow(1 - bx, 3);
-        if (bx >= 1) bornOnce = true;
+        if (bx >= 1) {
+          bornOnce = true;
+          // Arrival: one soft shockwave from where the Traveler stands —
+          // the strip announces it is physical by demonstrating it.
+          mobiusPoint(((t * 0.045) % 1) * Math.PI * 2, 0, travelVec);
+          surfUniforms.uBurst.value.copy(travelVec);
+          surfUniforms.uBurstTime.value = t;
+          partUniforms.uBurst.value.copy(travelVec);
+          partUniforms.uBurstTime.value = t;
+        }
       }
+
+      // Theme crossfade: the palette chases its target — toggling themes
+      // reads as the sun moving, not a reboot
+      const tk = 1 - Math.exp(-dt * 5.0);
+      gold.lerp(goldT, tk);
+      wine.lerp(wineT, tk);
+      base.lerp(baseT, tk);
+      surfUniforms.uOpacity.value += (opacityT - surfUniforms.uOpacity.value) * tk;
+      surfUniforms.uLight.value += (lightT - surfUniforms.uLight.value) * tk;
 
       const scroll = Math.min(Math.max(window.scrollY / window.innerHeight, 0), 1);
       surfUniforms.uTime.value = t;
@@ -687,8 +737,11 @@ export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
       if (dustMat) dustMat.dispose();
       if (container.contains(renderer.domElement)) container.removeChild(renderer.domElement);
       renderer.dispose();
+      applyThemeRef.current = undefined;
     };
-  }, [theme, reduced]);
+    // theme is intentionally absent: applyTheme retunes the live engine.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reduced]);
 
   return (
     <>
