@@ -56,8 +56,12 @@ export default function PrintsPage() {
         .pass-cap p{margin:0;font-family:var(--font-mono),monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-text-muted)}
         .setup{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(26px,3.4vw,52px);padding:clamp(24px,2.8vw,42px)}
         .setup-lede{margin:0 0 var(--space-3);font-family:var(--font-serif),serif;font-weight:300;font-size:clamp(1.4rem,2vw,1.8rem);line-height:1.35;color:var(--color-fg)}
-        .setup-repo{display:inline-block;font-family:var(--font-mono),monospace;font-size:clamp(1rem,1.3vw,1.2rem);letter-spacing:0.01em;color:var(--color-fg);word-break:break-word}
-        .setup-ext{color:var(--color-accent-gold-text);margin-left:8px}
+        .repo-cta{display:block;margin:var(--space-3) 0 0;padding:18px 22px;border:1px solid color-mix(in srgb,var(--color-accent-gold) 55%,transparent);border-radius:14px;background:color-mix(in srgb,var(--color-accent-gold) 8%,transparent);text-decoration:none;transition:background var(--duration-base) var(--ease-signature),border-color var(--duration-base) var(--ease-signature),transform var(--duration-base) var(--ease-signature)}
+        .repo-cta:hover{background:color-mix(in srgb,var(--color-accent-gold) 14%,transparent);border-color:var(--color-accent-gold);transform:translateY(-2px)}
+        .repo-cta-eyebrow{display:block;margin:0 0 6px;font-family:var(--font-mono),monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--color-accent-gold-text)}
+        .repo-cta-name{font-family:var(--font-mono),monospace;font-size:clamp(0.95rem,1.2vw,1.15rem);line-height:1.5;color:var(--color-fg);word-break:break-word}
+        .repo-cta-arrow{display:inline-block;margin-left:8px;color:var(--color-accent-gold-text);transition:transform var(--duration-base) var(--ease-signature)}
+        .repo-cta:hover .repo-cta-arrow{transform:translate(3px,-3px)}
         .setup-note{margin:var(--space-2) 0 0;font-size:0.9375rem;line-height:1.6;color:var(--color-text-secondary);max-width:36ch}
         .setup-files{display:grid;grid-template-columns:1fr 1fr;gap:0 var(--space-4);align-content:start}
         .setup-file{padding:14px 0;border-top:1px solid var(--color-border)}
@@ -206,10 +210,13 @@ export default function PrintsPage() {
                 href="https://github.com/stilwellc/parametric-3d-printing"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="setup-repo link-draw"
+                className="repo-cta"
               >
-                stilwellc/parametric-3d-printing
-                <span className="setup-ext" aria-hidden="true">&#8599;</span>
+                <span className="repo-cta-eyebrow">Get the code &middot; GitHub</span>
+                <span className="repo-cta-name">
+                  stilwellc/parametric-3d-printing
+                  <span className="repo-cta-arrow" aria-hidden="true">&#8599;</span>
+                </span>
               </a>
               <p className="setup-note">
                 Nothing reaches the slicer without passing watertight validation first.
