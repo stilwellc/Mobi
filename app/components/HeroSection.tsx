@@ -92,8 +92,8 @@ export default function HeroSection() {
         }
         .hero-eyebrow{margin-bottom:36px}
         .hero-headline{max-width:68%}
-        .hero-subrow{margin-top:64px;display:flex;flex-direction:row;align-items:flex-end;gap:80px}
-        .hero-sub{max-width:400px;font-size:15px}
+        .hero-subrow{margin-top:64px;display:flex;flex-direction:row;align-items:flex-end;gap:64px}
+        .hero-sub{max-width:42ch;font-size:1.0625rem}
         @media (max-width: 1023px) {
           .hero-headline{max-width:80%}
         }
@@ -103,7 +103,7 @@ export default function HeroSection() {
           .hero-eyebrow{margin-bottom:20px}
           .hero-headline{max-width:100%}
           .hero-subrow{margin-top:32px;flex-direction:column;align-items:flex-start;gap:28px}
-          .hero-sub{max-width:100%;font-size:14px}
+          .hero-sub{max-width:100%;font-size:0.9375rem}
         }
         @keyframes heroRise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
         @keyframes heroHorizonDraw{from{transform:scaleX(0)}to{transform:scaleX(0.4)}}
@@ -116,6 +116,21 @@ export default function HeroSection() {
         .hero-cta{display:inline-flex;align-items:center;gap:12px;padding:16px 32px;color:var(--color-accent-gold);font-family:var(--font-sans),sans-serif;font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;-webkit-tap-highlight-color:transparent}
         .hero-cta svg{transition:transform var(--duration-fast) var(--ease-signature)}
         .hero-cta:hover svg{transform:translateX(2px)}
+        .hero-meta-band{position:absolute;left:0;right:0;bottom:26px;z-index:2;animation:heroRise 600ms var(--ease-signature) 1050ms both}
+        .hero-meta{display:flex;justify-content:space-between;align-items:flex-end}
+        .hero-cue{display:inline-flex;flex-direction:column;align-items:center;gap:10px;margin:0;background:none;border:0;padding:6px 8px;cursor:pointer;color:var(--color-text-muted);-webkit-tap-highlight-color:transparent;transition:color var(--duration-base) var(--ease-signature)}
+        .hero-cue:hover{color:var(--color-accent-gold-text)}
+        .hero-cue-label{font-family:var(--font-mono),monospace;font-size:10px;letter-spacing:0.24em;text-transform:uppercase}
+        .hero-cue-track{position:relative;width:1px;height:40px;overflow:hidden;background:color-mix(in srgb,var(--color-accent-gold) 25%,transparent)}
+        .hero-cue-dash{position:absolute;left:0;top:-14px;width:1px;height:14px;background:var(--color-accent-gold);animation:heroCueFall 2.4s cubic-bezier(0.45,0,0.55,1) infinite}
+        @keyframes heroCueFall{0%{transform:translateY(0)}72%{transform:translateY(56px)}100%{transform:translateY(56px)}}
+        .hero-coords{font-family:var(--font-mono),monospace;font-size:10px;letter-spacing:0.18em;color:var(--color-text-muted);padding-bottom:6px}
+        @media (max-width: 767px) {
+          .hero-meta-band{display:none}
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .hero-cue-dash{animation:none;top:0;height:40px;opacity:0.6}
+        }
       `}</style>
 
       {/* Scroll-scrubbed layer: the strip lifts 90px and dissolves.
@@ -153,15 +168,15 @@ export default function HeroSection() {
                 background: 'linear-gradient(135deg, var(--color-accent-gold) 0%, color-mix(in srgb, var(--color-accent-gold) 65%, var(--color-fg)) 45%, var(--color-accent-gold) 100%)',
                 WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
               }}>&amp; matter,</span>,
-              <span key="l3" style={{ color: 'var(--color-text-muted)' }}>one practice</span>,
+              <span key="l3" style={{ color: 'var(--color-text-secondary)' }}>one practice</span>,
             ]}
           />
         </div>
 
         <div className="hero-subrow">
           <p className="hero-sub" style={{
-            margin: 0, lineHeight: 1.65,
-            color: 'var(--color-text-muted)', fontWeight: 400,
+            margin: 0, lineHeight: 1.7,
+            color: 'var(--color-text-secondary)', fontWeight: 400,
           }}>
             I design and build across code and matter &mdash; one studio, one continuous surface.
           </p>
@@ -172,6 +187,20 @@ export default function HeroSection() {
               <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>
+        </div>
+      </div>
+
+      {/* Bottom meta band — the last entrance beat. A live scroll cue
+          on the left rail edge, the studio coordinates on the right. */}
+      <div className="hero-meta-band">
+        <div className="rail hero-meta">
+          <button className="hero-cue" onClick={scrollToIndex} aria-label="Scroll to the index">
+            <span className="hero-cue-label">Scroll</span>
+            <span className="hero-cue-track" aria-hidden="true">
+              <span className="hero-cue-dash" />
+            </span>
+          </button>
+          <span className="hero-coords" aria-hidden="true">40.7440&deg; N &middot; 74.0324&deg; W</span>
         </div>
       </div>
 
