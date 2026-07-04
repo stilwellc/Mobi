@@ -34,6 +34,10 @@ import { usePrefersReducedMotion } from './hooks';
 
 const TRAIL = 6;
 
+// The birth sweep plays once per page load — not again on theme toggles,
+// which remount the whole engine.
+let bornOnce = false;
+
 const SURF_VERT = /* glsl */ `
   uniform float uTime;
   uniform vec3 uHit;
@@ -44,11 +48,23 @@ const SURF_VERT = /* glsl */ `
   varying vec3 vView;
   varying vec2 vUv;
   varying vec3 vPos;
+  varying vec3 vTan;
 
   void main() {
     vUv = uv;
     vec3 p = position;
     vec3 n = normal;
+
+    // Analytic tangent along u — the satin's grain direction
+    float uu = vUv.x * 6.2831853;
+    float vv = (vUv.y - 0.5) * 0.4;
+    float cU = cos(uu); float sU = sin(uu);
+    float cH = cos(uu * 0.5); float sH = sin(uu * 0.5);
+    float rr = 1.0 + vv * cH;
+    vTan = normalize(normalMatrix * vec3(
+      -rr * sU - 0.5 * vv * sH * cU,
+       rr * cU - 0.5 * vv * sH * sU,
+       0.5 * vv * cH));
 
     // Touch: damped rings radiating from the hover point
     float age = uTime - uHitTime;
@@ -89,10 +105,12 @@ const SURF_FRAG = /* glsl */ `
   uniform vec3 uTrail[${TRAIL}];     // where you have been
   uniform float uTrailT[${TRAIL}];
   uniform float uLight;              // theme: 1 = light
+  uniform float uBirth;              // 0 -> 1: the strip writes itself in
   varying vec3 vNormal;
   varying vec3 vView;
   varying vec2 vUv;
   varying vec3 vPos;
+  varying vec3 vTan;
 
   float hash(vec2 q) {
     return fract(sin(dot(q, vec2(127.1, 311.7))) * 43758.5453);
@@ -112,6 +130,11 @@ const SURF_FRAG = /* glsl */ `
     // Scroll dissolve: the object surrenders to dust, pixel by pixel
     if (hash(floor(vUv * vec2(720.0, 48.0))) < uScroll * 1.15 - 0.05) discard;
 
+    // Birth: the surface writes itself in along u behind a glowing
+    // frontier — the logo's dash pulse, performed by the object itself.
+    float birthEdge = uBirth * 1.08;
+    if (vUv.x > birthEdge + (hash(vUv * 371.0) - 0.5) * 0.03) discard;
+
     vec3 N = gl_FrontFacing ? vNormal : -vNormal;
     vec3 V = normalize(vView);
 
@@ -127,13 +150,19 @@ const SURF_FRAG = /* glsl */ `
     vec3 H = normalize(keyDir + V);
     col += uGold * pow(max(dot(N, H), 0.0), 24.0) * 0.30;
 
+    // Anisotropic sheen: spun metal glints across its grain, not along it
+    float th = dot(normalize(vTan), H);
+    col += uGold * pow(max(1.0 - th * th, 0.0), 14.0) * keyD * 0.22;
+
     // Fresnel rim
     float fres = pow(1.0 - max(dot(N, V), 0.0), 3.0);
     col += uGold * fres * 0.45;
 
-    // THE TRAVELER — a band, and a true moving light on the surface
+    // THE TRAVELER — a comet now: sharp head, decaying tail, and a
+    // true moving light on the surface
     float bu = fract(vUv.x - uTime * 0.045);
-    float band = smoothstep(0.05, 0.0, min(bu, 1.0 - bu));
+    float band = smoothstep(0.02, 0.0, bu) + exp(-(1.0 - bu) * 16.0) * 0.85;
+    band = min(band, 1.0);
     col += uGold * band * 1.25;
     float tl = length(vPos - uTravel);
     col += uGold * (0.55 / (1.0 + tl * tl * 9.0));
@@ -149,6 +178,9 @@ const SURF_FRAG = /* glsl */ `
       float md = length(vPos - uTrail[i]);
       col += uGold * exp(-md * 14.0) * mem * 0.65;
     }
+
+    // The writing head: a hot gold frontier that cools as birth completes
+    col += uGold * smoothstep(0.07, 0.0, birthEdge - vUv.x) * (1.0 - uBirth) * 2.2;
 
     float alpha = uOpacity * (0.72 + band * 0.28 + fres * 0.15);
     gl_FragColor = vec4(col, min(alpha, 1.0));
@@ -169,12 +201,14 @@ const EDGE_VERT = /* glsl */ `
 const EDGE_FRAG = /* glsl */ `
   uniform vec3 uGold;
   uniform float uScroll;
+  uniform float uBirth;
   varying vec3 vN;
   varying vec3 vV;
   void main() {
-    // soft-core glow: brightest looking through the tube's center
+    // soft-core glow: brightest looking through the tube's center.
+    // The edge ignites only once the surface has finished writing itself.
     float core = pow(abs(dot(normalize(vN), normalize(vV))), 1.6);
-    gl_FragColor = vec4(uGold, core * 0.55 * (1.0 - uScroll));
+    gl_FragColor = vec4(uGold, core * 0.55 * (1.0 - uScroll) * smoothstep(0.8, 1.0, uBirth));
   }
 `;
 
@@ -186,6 +220,7 @@ const PART_VERT = /* glsl */ `
   uniform vec3 uBurst;
   uniform float uBurstTime;
   uniform float uPixel;
+  uniform float uBirth;
   attribute float aU0;    // start angle on the strip
   attribute float aV;     // lane across the width
   attribute float aLift;  // ride height above the surface
@@ -241,7 +276,8 @@ const PART_VERT = /* glsl */ `
     vec4 mv = modelViewMatrix * vec4(p, 1.0);
     gl_Position = projectionMatrix * mv;
     float twinkle = 0.30 + 0.70 * pow(sin(uTime * 1.25 + aPhase * 43.0) * 0.5 + 0.5, 2.0);
-    vAlpha = twinkle * (1.0 - uScroll);
+    // matter gathers as the surface finishes forming, each mote on its own beat
+    vAlpha = twinkle * (1.0 - uScroll) * smoothstep(0.35 + aPhase * 0.4, 1.0, uBirth + aPhase * 0.25);
     vDir = aDir;
     gl_PointSize = aSize * uPixel * (11.0 / -mv.z);
   }
@@ -265,6 +301,7 @@ const PART_FRAG = /* glsl */ `
 const DUST_VERT = /* glsl */ `
   uniform float uTime;
   uniform float uPixel;
+  uniform float uBirth;
   attribute float aPhase;
   varying float vA;
   void main() {
@@ -273,7 +310,7 @@ const DUST_VERT = /* glsl */ `
     p.y += cos(uTime * 0.04 + aPhase * 12.566) * 0.28;
     vec4 mv = modelViewMatrix * vec4(p, 1.0);
     gl_Position = projectionMatrix * mv;
-    vA = 0.35 + 0.65 * sin(uTime * 0.5 + aPhase * 40.0);
+    vA = (0.35 + 0.65 * sin(uTime * 0.5 + aPhase * 40.0)) * smoothstep(0.5, 1.0, uBirth);
     gl_PointSize = uPixel * (6.5 / -mv.z);
   }
 `;
@@ -416,6 +453,11 @@ export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
     const PARTICLES = reduced ? 0 : mobile ? 8000 : 20000;
     const DUST = reduced ? 0 : mobile ? 900 : 2400;
 
+    // One shared birth clock across surface, edge, matter, and dust.
+    // Plays once per page load; theme remounts skip straight to formed.
+    const birthU = { value: reduced || bornOnce ? 1 : 0 };
+    const birthStart = performance.now();
+
     // — Surface —
     const geo = createMobiusGeometry(400, 0.4, 16);
     const trailPts = Array.from({ length: TRAIL }, () => new THREE.Vector3(99, 99, 99));
@@ -435,6 +477,7 @@ export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
       uOpacity: { value: isLight ? 0.62 : 0.7 },
       uScroll: { value: 0 },
       uLight: { value: isLight ? 1 : 0 },
+      uBirth: birthU,
     };
     const surfMat = new THREE.ShaderMaterial({
       vertexShader: SURF_VERT,
@@ -448,7 +491,7 @@ export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
 
     // — Boundary glow tube —
     const tubeGeo = new THREE.TubeGeometry(edgeCurve(0.4), 500, 0.008, 6, true);
-    const edgeUniforms = { uGold: { value: gold }, uScroll: { value: 0 } };
+    const edgeUniforms = { uGold: { value: gold }, uScroll: { value: 0 }, uBirth: birthU };
     const tubeMat = new THREE.ShaderMaterial({
       vertexShader: EDGE_VERT,
       fragmentShader: EDGE_FRAG,
@@ -470,6 +513,7 @@ export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
       uPixel: { value: pixelRatio },
       uGold: { value: gold },
       uWine: { value: wine },
+      uBirth: birthU,
     };
     let partGeo: THREE.BufferGeometry | null = null;
     let partMat: THREE.ShaderMaterial | null = null;
@@ -491,7 +535,7 @@ export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
     // — Ambient dust (scene space, counter-slow) —
     let dustGeo: THREE.BufferGeometry | null = null;
     let dustMat: THREE.ShaderMaterial | null = null;
-    const dustUniforms = { uTime: { value: 0 }, uPixel: { value: pixelRatio }, uGold: { value: gold } };
+    const dustUniforms = { uTime: { value: 0 }, uPixel: { value: pixelRatio }, uGold: { value: gold }, uBirth: birthU };
     if (DUST > 0) {
       dustGeo = createDust(DUST);
       dustMat = new THREE.ShaderMaterial({
@@ -558,6 +602,13 @@ export default function MobiusStrip({ theme }: { theme: 'dark' | 'light' }) {
       group.rotation.y = t * 0.44;
       group.rotation.x = 0.5 + Math.sin(t * 0.22) * 0.1 + offX;
       group.rotation.z = 0.15 + Math.cos(t * 0.165) * 0.05 + offZ;
+
+      // Birth: 2.4s ease-out sweep, once per page load
+      if (birthU.value < 1) {
+        const bx = Math.min((now - birthStart) / 2400, 1);
+        birthU.value = 1 - Math.pow(1 - bx, 3);
+        if (bx >= 1) bornOnce = true;
+      }
 
       const scroll = Math.min(Math.max(window.scrollY / window.innerHeight, 0), 1);
       surfUniforms.uTime.value = t;
