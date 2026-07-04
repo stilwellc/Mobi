@@ -25,61 +25,70 @@ const DEMO_CODE = [
 
 /* The repo ledger — real files, verified one-liners. */
 const REPO_FILES: Array<[string, string]> = [
-  ['SKILL.md', 'the skill definition the AI follows — modes, triggers, print-safe design rules'],
-  ['run_cadquery_model.py', 'executes generated models, returns structured success or failure'],
-  ['preview.py', 'renders each STL so you see the object before the printer does'],
-  ['mesh_io.py', 'watertight validation — strict mode rejects unprintable meshes'],
-  ['stl_to_3mf.py', 'print-ready packaging for the slicer'],
-  ['tests/', 'the wrapper is tested like any other software here'],
+  ['SKILL.md', 'The skill definition the AI follows — modes, triggers, print-safe design rules.'],
+  ['run_cadquery_model.py', 'Executes generated models, returns structured success or failure.'],
+  ['preview.py', 'Renders each STL so you see the object before the printer does.'],
+  ['mesh_io.py', 'Watertight validation — strict mode rejects unprintable meshes.'],
+  ['stl_to_3mf.py', 'Print-ready packaging for the slicer.'],
+  ['tests/', 'The wrapper is tested like any other software here.'],
 ];
 
 export default function PrintsPage() {
   return (
     <div className="rail" style={{ paddingBlock: 'var(--space-5) var(--space-6)' }}>
       <style>{`
-        .pr-sec{position:relative;overflow:hidden;padding:56px 0 20px}
+        .pr-sec{position:relative;overflow:hidden;padding:80px 0 30px}
         .pr-sec .eyebrow{margin:0 0 var(--space-1)}
         .pr-sec-title{margin:0;font-family:var(--font-serif),serif;font-weight:300;font-size:clamp(2rem,3.6vw,3rem);line-height:1.08;letter-spacing:-0.02em;color:var(--color-fg)}
-        .demo{display:grid;grid-template-columns:1fr auto 1fr auto auto;gap:clamp(14px,1.8vw,26px);align-items:center;padding:clamp(18px,2vw,26px)}
-        .demo-quote{margin:0;font-family:var(--font-serif),serif;font-style:italic;font-weight:300;font-size:clamp(1rem,1.35vw,1.2rem);line-height:1.5;color:var(--color-fg);max-width:26ch}
-        .demo-arrow{font-family:var(--font-mono),monospace;font-size:16px;color:var(--color-accent-gold-text)}
-        .demo-code{margin:0;overflow-x:auto}
-        .demo-code code{display:block;font-family:var(--font-mono),monospace;font-size:12px;line-height:1.7;white-space:pre;color:var(--color-text-muted)}
-        .demo-img{width:clamp(120px,12vw,170px);aspect-ratio:1/1;border-radius:10px;overflow:hidden;border:1px solid var(--color-border)}
-        .demo-img img{width:100%;height:100%;object-fit:cover;display:block}
-        .demo-cap{display:flex;justify-content:space-between;align-items:baseline;gap:var(--space-2);flex-wrap:wrap;margin-top:12px;padding:0 clamp(18px,2vw,26px) clamp(14px,1.6vw,20px)}
-        .demo-cap p{margin:0;font-family:var(--font-mono),monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-text-muted)}
-        .setup{padding:clamp(22px,2.4vw,34px)}
-        .setup-top{display:flex;justify-content:space-between;align-items:flex-end;gap:var(--space-2) var(--space-4);flex-wrap:wrap;margin-bottom:var(--space-3)}
-        .setup-repo{display:inline-block;font-family:var(--font-mono),monospace;font-size:clamp(1.2rem,2vw,1.7rem);letter-spacing:0.01em;color:var(--color-fg)}
+        .pass{position:relative;display:grid;grid-template-columns:1fr 1fr 1fr;gap:clamp(18px,2.4vw,32px);align-items:stretch}
+        .pass-line{position:absolute;left:2%;right:2%;top:34px;height:1px;background:linear-gradient(90deg,transparent,var(--color-accent-gold) 10%,var(--color-accent-gold) 90%,transparent);opacity:0.5;z-index:0}
+        .pass-card{position:relative;z-index:1;display:flex;flex-direction:column;min-width:0;padding:clamp(20px,2.2vw,28px)}
+        .pass-tag{display:flex;align-items:center;gap:10px;margin:0 0 var(--space-2);font-family:var(--font-mono),monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--color-accent-gold-text)}
+        .pass-dot{flex:none;width:7px;height:7px;border-radius:50%;background:var(--color-accent-gold);box-shadow:0 0 10px var(--color-accent-gold)}
+        .pass-quote{margin:auto 0;padding:var(--space-2) 0;font-family:var(--font-serif),serif;font-style:italic;font-weight:300;font-size:clamp(1.3rem,1.75vw,1.65rem);line-height:1.45;color:var(--color-fg)}
+        .pass-code{flex:1;display:flex;align-items:center;margin:0 0 var(--space-2);padding:16px 18px;border:1px solid var(--color-border);border-radius:10px;background:color-mix(in srgb,var(--color-bg) 55%,transparent);overflow-x:auto}
+        .pass-code pre{margin:0}
+        .pass-code code{display:block;font-family:var(--font-mono),monospace;font-size:12.5px;line-height:1.75;white-space:pre;color:var(--color-text-secondary)}
+        .pass-obj{flex:1;min-height:230px;margin:0 0 var(--space-2);border:1px solid var(--color-border);border-radius:10px;overflow:hidden}
+        .pass-obj img{width:100%;height:100%;object-fit:cover;display:block}
+        .pass-foot{margin-top:auto;margin-bottom:0;font-family:var(--font-mono),monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-text-muted)}
+        .pass-cap{display:flex;justify-content:space-between;align-items:baseline;gap:var(--space-2);flex-wrap:wrap;margin-top:var(--space-3)}
+        .pass-cap p{margin:0;font-family:var(--font-mono),monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-text-muted)}
+        .setup{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(26px,3.4vw,52px);padding:clamp(24px,2.8vw,42px)}
+        .setup-lede{margin:0 0 var(--space-3);font-family:var(--font-serif),serif;font-weight:300;font-size:clamp(1.4rem,2vw,1.8rem);line-height:1.35;color:var(--color-fg)}
+        .setup-repo{display:inline-block;font-family:var(--font-mono),monospace;font-size:clamp(1rem,1.3vw,1.2rem);letter-spacing:0.01em;color:var(--color-fg);word-break:break-word}
         .setup-ext{color:var(--color-accent-gold-text);margin-left:8px}
-        .setup-note{margin:0;font-family:var(--font-mono),monospace;font-size:12px;letter-spacing:0.06em;line-height:1.7;color:var(--color-text-muted);max-width:42ch}
-        .setup-files{display:grid;grid-template-columns:1fr 1fr;gap:0 var(--space-4)}
-        .setup-file{display:grid;grid-template-columns:212px 1fr;gap:var(--space-2);padding:11px 0;border-top:1px solid var(--color-border);font-family:var(--font-mono),monospace;font-size:12px;line-height:1.65}
-        .setup-file span:first-child{color:var(--color-accent-gold-text);white-space:nowrap}
-        .setup-file span:last-child{color:var(--color-text-muted)}
-        .plate{display:flex;flex-direction:column;flex:1;min-width:0;padding:clamp(18px,2vw,24px);text-decoration:none;color:inherit}
+        .setup-note{margin:var(--space-2) 0 0;font-size:0.9375rem;line-height:1.6;color:var(--color-text-secondary);max-width:36ch}
+        .setup-files{display:grid;grid-template-columns:1fr 1fr;gap:0 var(--space-4);align-content:start}
+        .setup-file{padding:14px 0;border-top:1px solid var(--color-border)}
+        .setup-name{display:block;margin:0 0 4px;font-family:var(--font-mono),monospace;font-size:13px;color:var(--color-accent-gold-text)}
+        .setup-desc{display:block;font-size:0.9rem;line-height:1.55;color:var(--color-text-secondary)}
+        .plate{display:flex;flex-direction:column;flex:1;min-width:0;padding:clamp(20px,2.2vw,26px);text-decoration:none;color:inherit}
+        a.plate{transition:transform var(--duration-base) var(--ease-signature),background var(--duration-base) var(--ease-signature),border-color var(--duration-base) var(--ease-signature),box-shadow var(--duration-base) var(--ease-signature)}
+        a.plate:hover{transform:translateY(-4px)}
         .plate-head{display:flex;justify-content:space-between;align-items:baseline;gap:var(--space-2);margin-bottom:var(--space-2);font-family:var(--font-mono),monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase}
         .plate-no{color:var(--color-accent-gold-text)}
         .plate-role{color:var(--color-text-muted)}
         .plate-body{display:flex;flex-direction:column;flex:1}
-        .plate-cap{display:flex;justify-content:space-between;align-items:baseline;gap:var(--space-2);margin-top:var(--space-2);padding-top:10px;border-top:1px solid var(--color-border);font-family:var(--font-mono),monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-text-muted)}
+        .plate-cap{display:flex;justify-content:space-between;align-items:baseline;gap:var(--space-2);margin-top:var(--space-2);padding-top:12px;border-top:1px solid var(--color-border);font-family:var(--font-mono),monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-text-muted)}
         .plate-xref{color:var(--color-accent-gold-text);transition:transform var(--duration-base) var(--ease-signature)}
         a.plate:hover .plate-xref{transform:translateX(4px)}
-        .lib-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,1.8vw,26px);align-items:stretch}
+        .lib-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(18px,2vw,28px);align-items:stretch}
         .lib-cell{min-width:0;display:flex}
         .lib-img{position:relative;border:1px solid var(--color-border);border-radius:12px;overflow:hidden;aspect-ratio:4/3;margin-bottom:var(--space-3)}
         .lib-img img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1);transition:transform var(--duration-slow) var(--ease-signature)}
-        a.plate:hover .lib-img img{transform:scale(1.03)}
+        a.plate:hover .lib-img img{transform:scale(1.04)}
         .lib-title{margin:0 0 var(--space-1);font-family:var(--font-serif),serif;font-weight:300;font-size:clamp(1.5rem,2vw,1.85rem);line-height:1.15;letter-spacing:-0.01em}
         .lib-desc{margin:0 0 var(--space-2);font-size:0.9375rem;line-height:1.6;color:var(--color-text-secondary)}
         .lib-meta{margin:auto 0 0;font-family:var(--font-mono),monospace;font-size:12px;letter-spacing:0.08em;color:var(--color-text-muted)}
         @media (max-width: 900px){
-          .demo{grid-template-columns:1fr;gap:var(--space-2)}
-          .demo-arrow{transform:rotate(90deg);margin-left:2px}
-          .demo-img{width:100%;aspect-ratio:16/10}
+          .pass{grid-template-columns:1fr;gap:var(--space-3);padding-left:22px}
+          .pass-line{left:3px;right:auto;top:10px;bottom:10px;width:1px;height:auto;background:linear-gradient(180deg,transparent,var(--color-accent-gold) 8%,var(--color-accent-gold) 92%,transparent)}
+          .pass-obj{min-height:0;aspect-ratio:16/10;flex:none}
+          .pass-code{flex:none}
+          .pass-cap{padding-left:22px}
+          .setup{grid-template-columns:1fr}
           .setup-files{grid-template-columns:1fr}
-          .setup-file{grid-template-columns:1fr;gap:2px}
           .lib-grid{grid-template-columns:1fr}
         }
       `}</style>
@@ -122,18 +131,40 @@ export default function PrintsPage() {
 
       <Horizon variant="gold" />
 
-      {/* THE DEMO — the value case in one glance, nothing more */}
+      {/* THE DEMO — one pass along the thread: ask → model → object */}
       <Reveal>
         <section aria-label="The pipeline, in one pass" style={{ margin: 'var(--space-4) 0 0' }}>
-          <div className="glass glass-quiet">
-            <div className="demo">
-              <p className="demo-quote">
-                &ldquo;A wall sconce &mdash; perforated diffuser, flat plate that mounts flush.&rdquo;
+          <div className="pass">
+            <div className="pass-line" aria-hidden="true" />
+            <article className="glass glass-quiet pass-card">
+              <p className="pass-tag">
+                <span className="pass-dot" aria-hidden="true" />
+                01 &middot; The ask
               </p>
-              <span className="demo-arrow" aria-hidden="true">&rarr;</span>
-              <pre className="demo-code"><code>{DEMO_CODE.join('\n')}</code></pre>
-              <span className="demo-arrow" aria-hidden="true">&rarr;</span>
-              <div className="demo-img">
+              <p className="pass-quote">
+                &ldquo;A wall sconce &mdash; perforated diffuser, flat plate that mounts
+                flush.&rdquo;
+              </p>
+              <p className="pass-foot">Plain language &middot; no CAD</p>
+            </article>
+            <article className="glass glass-quiet pass-card">
+              <p className="pass-tag">
+                <span className="pass-dot" aria-hidden="true" />
+                02 &middot; The model
+              </p>
+              <div className="pass-code">
+                <pre>
+                  <code>{DEMO_CODE.join('\n')}</code>
+                </pre>
+              </div>
+              <p className="pass-foot">Parametric &middot; generated end-to-end</p>
+            </article>
+            <article className="glass glass-quiet pass-card">
+              <p className="pass-tag">
+                <span className="pass-dot" aria-hidden="true" />
+                03 &middot; The object
+              </p>
+              <div className="pass-obj">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/images/3d-prints/wall-sconce.jpg"
@@ -141,13 +172,18 @@ export default function PrintsPage() {
                   loading="lazy"
                 />
               </div>
-            </div>
-            <div className="demo-cap">
-              <p>One sentence in &mdash; a watertight, printable model out.</p>
-              <Link href="/physical/prints/wall-sconce" className="link-action" style={{ color: 'var(--color-accent-gold-text)' }}>
-                The full object <span className="arrow" aria-hidden="true">&rarr;</span>
-              </Link>
-            </div>
+              <p className="pass-foot">Printed in PLA &middot; in use</p>
+            </article>
+          </div>
+          <div className="pass-cap">
+            <p>One sentence in &mdash; a watertight, printable model out.</p>
+            <Link
+              href="/physical/prints/wall-sconce"
+              className="link-action"
+              style={{ color: 'var(--color-accent-gold-text)' }}
+            >
+              The full object <span className="arrow" aria-hidden="true">&rarr;</span>
+            </Link>
           </div>
         </section>
       </Reveal>
@@ -161,7 +197,11 @@ export default function PrintsPage() {
         </div>
         <Reveal>
           <div className="glass setup">
-            <div className="setup-top">
+            <div>
+              <p className="setup-lede">
+                Everything the pipeline needs &mdash; generation rules, validation,
+                packaging &mdash; lives in one open-source repo.
+              </p>
               <a
                 href="https://github.com/stilwellc/parametric-3d-printing"
                 target="_blank"
@@ -172,15 +212,14 @@ export default function PrintsPage() {
                 <span className="setup-ext" aria-hidden="true">&#8599;</span>
               </a>
               <p className="setup-note">
-                Everything the pipeline needs, in one open-source repo &mdash; printable output,
-                validated before it ever reaches the slicer.
+                Nothing reaches the slicer without passing watertight validation first.
               </p>
             </div>
             <div className="setup-files">
               {REPO_FILES.map(([name, desc]) => (
                 <div className="setup-file" key={name}>
-                  <span>{name}</span>
-                  <span>{desc}</span>
+                  <span className="setup-name">{name}</span>
+                  <span className="setup-desc">{desc}</span>
                 </div>
               ))}
             </div>
