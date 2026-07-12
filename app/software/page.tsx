@@ -4,7 +4,6 @@ import IndexSpread from '../components/IndexSpread';
 import RevealLines from '../components/RevealLines';
 import SectionMark from '../components/SectionMark';
 import { sections } from '../components/sections';
-import { ARTISTS } from './ray/constants';
 
 export const metadata: Metadata = {
   title: 'Software — co.stil',
@@ -76,9 +75,9 @@ export default function SoftwarePage() {
           index="01"
           title={ray.name}
           titleStyle={ray.logoStyle as React.CSSProperties}
-          description={`Auction intelligence for the art market — the flagship. Tracks ${ARTISTS.length} artists across 5 auction houses, automatically.`}
+          description="Auction intelligence for the art market — the flagship. Tracks 21 artists across 5 auction houses, automatically."
           meta={`${ray.meta!.year} · ${ray.meta!.stack} · ${ray.meta!.status}`}
-          href={ray.href!}
+          href={ray.url!}
           accent="wine"
           image={{ src: ray.image!, alt: ray.imageAlt! }}
         />

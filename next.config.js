@@ -17,7 +17,9 @@ const nextConfig = {
   },
   async redirects() {
     return [
-      { source: '/digital/ray/:path*', destination: '/software/ray/:path*', permanent: true },
+      { source: '/software/ray/:path*', destination: 'https://ray-one-theta.vercel.app/:path*', permanent: true },
+      { source: '/software/ray', destination: 'https://ray-one-theta.vercel.app', permanent: true },
+      { source: '/digital/ray/:path*', destination: 'https://ray-one-theta.vercel.app/:path*', permanent: true },
       { source: '/digital/3d-prints/:path*', destination: '/physical/prints/:path*', permanent: true },
       { source: '/digital', destination: '/software', permanent: true },
       { source: '/shop', destination: '/', permanent: true },

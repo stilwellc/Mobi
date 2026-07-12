@@ -1,5 +1,4 @@
 import { Section } from './types';
-import { ARTISTS } from '../software/ray/constants';
 
 export const sections: Section[] = [
   {
@@ -9,8 +8,8 @@ export const sections: Section[] = [
     items: [
       {
         name: 'Ray', tag: 'Market Intel',
-        description: `Auction intelligence for the art market — ${ARTISTS.length} artists tracked across 5 major houses, automatically.`,
-        href: '/software/ray',
+        description: 'Auction intelligence for the art market — 21 artists tracked across 5 major houses, automatically.',
+        url: 'https://ray-one-theta.vercel.app',
         image: '/images/work/ray.jpg',
         imageAlt: 'Ray — market performance chart, two decades of realized auction prices',
         logoStyle: { fontFamily: 'var(--font-sans), sans-serif', fontWeight: 600, letterSpacing: '-0.04em' },
